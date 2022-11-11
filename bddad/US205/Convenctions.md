@@ -1,0 +1,10 @@
+US205 - Como Gestor Agrícola, quero gerir os meus clientes, empresas ou particulares, que
+compram os bens produzidos na minha exploração agrícola.
+
+Critério de Aceitação [BDDAD]
+
+1. Um utilizador pode inserir um novo Cliente no Base de Dados, com os dados que descrevem
+   um cliente, sem a necessidade de escrever código SQL. Se a inserção for bem-sucedida, o utilizador
+   é informado sobre o valor da chave primária do novo cliente
+2. Quando o processo de inserção falha, o utilizador é informado sobre o erro que pode ter
+   ocorrido.
