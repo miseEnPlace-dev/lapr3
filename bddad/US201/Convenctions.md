@@ -35,6 +35,11 @@ In order to keep things consistent over the development of the data base these a
   - Foreign Keys - 'FK_TableName'
   - Unique Key (Combined Key) - 'UQ_TableName'
   - Check Constraint - 'CHK_TableName_ColumnName'
-  - Default Constraint - 'DC_TableName_ColumnName
+  - Default Constraint - 'DC_TableName_ColumnName'
+
+**Functions**
+
+- Use CamelCase
+- Format: 'fn_Action'
 
 
