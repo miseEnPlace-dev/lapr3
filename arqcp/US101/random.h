@@ -1,1 +1,1 @@
-uint32_t pcg_random_r();
+uint32_t pcg32_random_r();
