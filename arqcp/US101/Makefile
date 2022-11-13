@@ -1,9 +1,9 @@
 # A Makefile with variables and suffix rules
 
 # variaveis
-INCLUDES = random.h
-SOURCES = random.s main.c
-OBJFILES = random.o main.o
+INCLUDES = random.h dev_random.h
+SOURCES = random.s dev_random.c main.c
+OBJFILES = random.o dev_random.o main.o
 EXEC = prog
 
 # Suffix rules
