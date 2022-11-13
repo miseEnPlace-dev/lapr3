@@ -3,3 +3,5 @@ pseudo-aleatórios, a ser usada na simulação dos sensores. É disponibilizada 
 pcg32_ramdom_r() e pretende-se que seja desenvolvida em Assembly uma função equivalente. É
 também disponibilizado um exemplo de como ler de /dev/random para inicializar o gerador
 indicado anteriormente.
+
+@author Tomás Russo
