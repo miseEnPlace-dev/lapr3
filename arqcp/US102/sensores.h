@@ -12,7 +12,6 @@
  */
 char sens_temp(char ult_temp, char comp_rand);
 
-
 /**
  * Gera o valor de velocidade do vento com base no último valor de velocidade do vento.
  * O novo valor a gerar será o incremento ao último valor gerado, adicionado de um valor
@@ -27,7 +26,6 @@ char sens_temp(char ult_temp, char comp_rand);
  * @return O novo medição do valor da velocidade do vento (km/h)
  */
 unsigned char sens_velc_vento(unsigned char ult_velc_vento, char comp_rand);
-
 
 /**
  * Gera o valor de direção do vento com base no último valor de direção do vento.
@@ -44,7 +42,6 @@ unsigned char sens_velc_vento(unsigned char ult_velc_vento, char comp_rand);
  * @return A nova medição do valor da direção do vento (graus)
  */
 unsigned short sens_dir_vento(unsigned short ult_dir_vento, short comp_rand);
-
 
 /**
  * Gera o valor de humidade atmosférica com base no último valor de humidade atmosférica.
@@ -66,7 +63,6 @@ unsigned short sens_dir_vento(unsigned short ult_dir_vento, short comp_rand);
  */
 unsigned char sens_humd_atm(unsigned char ult_hmd_atm, unsigned char ult_pluvio, char comp_rand);
 
-
 /**
  * Gera o valor de humidade do solo com base no último valor de humidade do solo.
  * O novo valor a gerar será o incremento ao último valor gerado, adicionado de um valor
@@ -86,7 +82,6 @@ unsigned char sens_humd_atm(unsigned char ult_hmd_atm, unsigned char ult_pluvio,
  * @return A nova medição do valor da humidade do solo (percentagem)
  */
 unsigned char sens_humd_solo(unsigned char ult_hmd_solo, unsigned char ult_pluvio, char comp_rand);
-
 
 /**
  * Gera o valor de pluviosidade com base no último valor de pluviosidade.
