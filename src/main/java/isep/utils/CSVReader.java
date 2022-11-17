@@ -44,12 +44,6 @@ public class CSVReader {
         line = line.replaceAll("\"", ""); // removes double quotas
       }
 
-      // if (line.charAt(0) == '"') {
-      // line = line.replaceAll("\",\"", TEMP_SEPARATOR); // removes '","'
-      // line = line.substring(1, line.length() - 1); // removes first and last '"'
-      // separator = TEMP_SEPARATOR;
-      // }
-
       String[] lineFields = line.split(separator);
 
       for (int i = 0; i < header.length; i++)
