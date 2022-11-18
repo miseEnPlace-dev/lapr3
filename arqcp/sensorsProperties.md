@@ -92,3 +92,13 @@ Pode emitir dados:
 
 ![image4](assets/resumo_Mensal_Janeiro_Legenda.png)
 ######Figura3 - Resumo Mensal Janeiro
+
+###### ------------------------------------------------------------------------------------
+
+![image5](assets/Valores_Outubro_2019.png)
+######Figura4 - Resumo Outubro de 2019 de alguns elementos
+
+###### ------------------------------------------------------------------------------------
+
+![image6](assets/Valores_Outubro_2019_2.png)
+######Figura5 - Resumo Outubro de 2019 de mais alguns elementos
