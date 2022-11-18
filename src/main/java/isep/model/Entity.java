@@ -17,4 +17,8 @@ public class Entity {
     // this attribute may change to other classes extending Entity
     this.role = role;
   }
+
+  public String getLocalizationId() {
+    return localizationId;
+  }
 }

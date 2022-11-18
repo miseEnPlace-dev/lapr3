@@ -11,6 +11,8 @@ public class DistributionNetwork {
   }
 
   public Integer getDistanceBetween(Entity e1, Entity e2) {
-    return network.edge(e1, e2).getWeight();
+    if (network.edge(e1, e2) != null)
+      return network.edge(e1, e2).getWeight();
+    return null;
   }
 }

@@ -135,7 +135,6 @@ public class AdjacencyMapGraph<V, E> extends CommonGraph<V, E> {
 
   @Override
   public boolean addEdge(V vOrig, V vDest, E weight) {
-
     if (vOrig == null || vDest == null)
       throw new RuntimeException("Vertices cannot be null!");
     if (edge(vOrig, vDest) != null)

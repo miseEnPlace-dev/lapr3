@@ -22,10 +22,10 @@ public class CSVReader {
 
   public List<Map<String, String>> read() {
     String[] header = readHeader();
-    List<Map<String, String>> list = new ArrayList<>(100000);
+    List<Map<String, String>> list = new ArrayList<>();
 
     while (scanner.hasNextLine()) {
-      HashMap<String, String> map = new HashMap<>(header.length * 3);
+      HashMap<String, String> map = new HashMap<>();
 
       String line = scanner.nextLine();
       String separator = ",";
