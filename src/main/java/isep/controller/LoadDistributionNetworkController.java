@@ -12,22 +12,21 @@ import isep.utils.CSVReader;
 
 public class LoadDistributionNetworkController {
   private EntityStore entityStore;
-  private CSVReader distanceReader;
+  private List<Map<String, String>> distancesList;
 
   public LoadDistributionNetworkController(EntityStore entityStore, String distancesFileName)
       throws FileNotFoundException {
     this.entityStore = entityStore;
-    this.distanceReader = new CSVReader(distancesFileName);
+    CSVReader distanceReader = new CSVReader(distancesFileName);
+    System.out.println("Reading distances...");
+    this.distancesList = distanceReader.read();
   }
 
   public DistributionNetwork loadDistributionNetwork() {
     DistributionNetwork distributionNetwork = new DistributionNetwork();
 
-    System.out.println("Reading distances...");
-    List<Map<String, String>> distances = distanceReader.read();
-
     System.out.println("Loading distribution network...");
-    for (Map<String, String> distance : distances) {
+    for (Map<String, String> distance : distancesList) {
       try {
         String id1 = distance.get(Constants.DISTANCES_LOC1_ID_FIELD_NAME);
         String id2 = distance.get(Constants.DISTANCES_LOC2_ID_FIELD_NAME);
