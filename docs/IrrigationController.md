@@ -1,14 +1,18 @@
-# Irrigation Controller
+# Irrigation Controller (US 306)
 
 ## Objetivo
 
 Construir um objeto que simule o funcionamento de um controlador de rega.
 
-## Requisitos
+## Critérios de Aceitação
 
 - O controlador deve conter um plano de rega para 30 dias;
 - A qualquer momento, o controlador deve responder se está a regar ou não;
 - Caso esteja a regar, deve retornar o setor e o tempo que falta para terminar a rega (em minutos).
+
+## Clarificações do Cliente
+
+> \-
 
 ## Descrição
 
