@@ -114,7 +114,7 @@ public class ConnectedNetworkShortestPathTest {
    * Test connected network shortest path with entity in network using another
    * file
    */
-  // @Test
+  @Test
   public void testShortestPathSourceInNetworkAnotherFile() throws FileNotFoundException {
     String distancesFileName = "src/test/resources/distancesSampleV3.csv";
     LoadDistributionNetworkController loadDistributionNetworkController = new LoadDistributionNetworkController(
@@ -123,12 +123,39 @@ public class ConnectedNetworkShortestPathTest {
 
     DistributionNetwork network = loadDistributionNetworkController.loadDistributionNetwork();
 
-    Entity ct1 = entityStore.getEntityByLocalizationId("CT9");
+    Entity ct9 = entityStore.getEntityByLocalizationId("CT9");
 
-    Graph<Entity, Integer> graph = connectedNetworkShortestPath.execute(ct1, network);
+    Graph<Entity, Integer> graph = connectedNetworkShortestPath.execute(ct9, network);
 
     assertEquals(graph.numVertices(), 9);
     assertEquals(graph.numEdges(), 16);
+  }
+
+  /*
+   * Test inDegree of vertex in connected network shortest path
+   */
+  @Test
+  public void testShortestPathInDegree() throws FileNotFoundException {
+    String distancesFileName = "src/test/resources/distancesSampleV3.csv";
+    LoadDistributionNetworkController loadDistributionNetworkController = new LoadDistributionNetworkController(
+        entityStore,
+        distancesFileName);
+
+    DistributionNetwork network = loadDistributionNetworkController.loadDistributionNetwork();
+
+    Entity ct1 = entityStore.getEntityByLocalizationId("CT1");
+
+    Graph<Entity, Integer> graph = connectedNetworkShortestPath.execute(ct1, network);
+
+    assertEquals(graph.inDegree(ct1), 1);
+    assertEquals(graph.inDegree(entityStore.getEntityByLocalizationId("CT2")), 1);
+    assertEquals(graph.inDegree(entityStore.getEntityByLocalizationId("CT3")), 2);
+    assertEquals(graph.inDegree(entityStore.getEntityByLocalizationId("CT4")), 1);
+    assertEquals(graph.inDegree(entityStore.getEntityByLocalizationId("CT5")), 3);
+    assertEquals(graph.inDegree(entityStore.getEntityByLocalizationId("CT6")), 1);
+    assertEquals(graph.inDegree(entityStore.getEntityByLocalizationId("CT7")), 3);
+    assertEquals(graph.inDegree(entityStore.getEntityByLocalizationId("CT8")), 3);
+    assertEquals(graph.inDegree(entityStore.getEntityByLocalizationId("CT9")), 1);
   }
 
   /*

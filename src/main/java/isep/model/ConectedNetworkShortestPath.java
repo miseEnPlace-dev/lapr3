@@ -41,7 +41,7 @@ public class ConectedNetworkShortestPath {
 
     Graph<Entity, Integer> shortestPathGraph = graph.clone();
 
-    GraphAlgorithms.shortestPaths(shortestPathGraph, source, comparator, binaryOperator, null, paths, dist);
+    GraphAlgorithms.shortestPaths(shortestPathGraph, source, comparator, binaryOperator, 0, paths, dist);
 
     // TODO fix repetition of entities in paths
 
