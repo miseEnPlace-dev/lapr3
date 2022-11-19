@@ -19,4 +19,8 @@ public class DistributionNetwork {
   public Graph<Entity, Integer> getNetwork() {
     return network;
   }
+
+  public int getNumberOfEntities() {
+    return network.numVertices();
+  }
 }
