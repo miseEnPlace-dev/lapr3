@@ -2,6 +2,7 @@ package isep.controller;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import javax.naming.NameNotFoundException;
 import isep.model.Company;
@@ -35,12 +36,13 @@ public class BuildIrrigationCtrlController {
   // map the contents of the file to an irrigation plan object
   public IrrigationPlan mapIrrigationPlanData(List<String> data)
       throws NameNotFoundException, InvalidHourFormatException, InvalidFileFormatException {
-    return IrrigationPlanMapper.toPlan(data, this.company);
+    Calendar today = Calendar.getInstance();
+    return IrrigationPlanMapper.toPlan(data, today, this.company);
   }
 
   // create a new irrigation controller
   public IrrigationController createIrrigationController(IrrigationPlan plan) {
-    // TODO
-    throw new UnsupportedOperationException("Not implemented yet");
+    IrrigationController controller = new IrrigationController(plan);
+    return controller;
   }
 }

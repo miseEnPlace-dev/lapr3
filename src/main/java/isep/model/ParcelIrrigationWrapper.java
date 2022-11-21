@@ -1,5 +1,8 @@
 package isep.model;
 
+/**
+ * Wrapper for irrigation data for a parcel (duration and regularity).
+ */
 public class ParcelIrrigationWrapper {
   private int duration;
   private Regularity regularity;

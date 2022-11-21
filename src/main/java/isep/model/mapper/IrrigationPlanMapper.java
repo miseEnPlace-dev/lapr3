@@ -1,17 +1,18 @@
 package isep.model.mapper;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.naming.NameNotFoundException;
-import isep.controller.App;
 import isep.model.AgriculturalParcel;
 import isep.model.Company;
 import isep.model.IrrigationPlan;
 import isep.model.ParcelIrrigationWrapper;
 import isep.model.Regularity;
 import isep.model.store.AgriculturalParcelStore;
+import isep.shared.Constants;
 import isep.shared.Hour;
 import isep.shared.exceptions.InvalidFileFormatException;
 import isep.shared.exceptions.InvalidHourFormatException;
@@ -24,7 +25,7 @@ import isep.shared.exceptions.InvalidHourFormatException;
 public class IrrigationPlanMapper {
   private IrrigationPlanMapper() {}
 
-  public static IrrigationPlan toPlan(List<String> data, Company company)
+  public static IrrigationPlan toPlan(List<String> data, Calendar creationDate, Company company)
       throws InvalidHourFormatException, InvalidFileFormatException, NameNotFoundException {
     AgriculturalParcelStore parcelStore = company.getAgriculturalParcelStore();
 
@@ -76,7 +77,12 @@ public class IrrigationPlanMapper {
       parcels.put(foundParcel, wrapper);
     }
 
-    IrrigationPlan irrigationPlan = new IrrigationPlan(hours, parcels);
+    creationDate.set(Calendar.HOUR_OF_DAY, 0);
+    creationDate.set(Calendar.MINUTE, 0);
+    creationDate.set(Calendar.SECOND, 0);
+    creationDate.set(Calendar.MILLISECOND, 0);
+
+    IrrigationPlan irrigationPlan = new IrrigationPlan(hours, parcels, creationDate, Constants.DEFAULT_IRRIGATION_PLAN_DURATION);
 
     return irrigationPlan;
   }
