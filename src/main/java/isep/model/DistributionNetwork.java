@@ -15,4 +15,8 @@ public class DistributionNetwork {
       return network.edge(e1, e2).getWeight();
     return null;
   }
+
+  public int getNumberOfEntities() {
+    return network.numVertices();
+  }
 }
