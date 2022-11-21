@@ -68,6 +68,17 @@ public class Hour implements Comparable<Hour> {
     return this.getTimeInMinutes() - other.getTimeInMinutes();
   }
 
+  /**
+   * Checks if the given hour is between this hour and the other hour.
+   *
+   * @param other
+   * @param hour
+   * @return boolean
+   */
+  public boolean isBetween(Hour other, Hour hour) {
+    return this.compareTo(hour) <= 0 && other.compareTo(hour) >= 0;
+  }
+
   @Override
   public boolean equals(Object obj) {
     if (obj == null)
@@ -81,6 +92,17 @@ public class Hour implements Comparable<Hour> {
       return false;
 
     return true;
+  }
+
+  @Override
+  public Hour clone() {
+    Hour hour = null;
+    try {
+      hour = new Hour(this.hour, this.minute);
+    } catch (InvalidHourFormatException e) {
+      e.printStackTrace();
+    }
+    return hour;
   }
 
   private void setHour(int hour) throws InvalidHourFormatException {
