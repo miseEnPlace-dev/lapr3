@@ -9,4 +9,6 @@ public class Constants {
   public static final String DISTANCES_LOC1_ID_FIELD_NAME = "Loc id 1";
   public static final String DISTANCES_LOC2_ID_FIELD_NAME = "Loc id 2";
   public static final String DISTANCES_DISTANCE_FIELD_NAME = " length (m)";
+
+  public static final int DEFAULT_IRRIGATION_PLAN_DURATION = 30;
 }
