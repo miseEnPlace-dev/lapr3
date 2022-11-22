@@ -8,7 +8,8 @@ int main(void)
   printf("-- Leituras dos sensores --\n\n");
 
   printf("Sensor de temperatura:\n");
-  printf("Leitura: %dºC\n", sens_temp(20, 2));
+  for (int i = 0; i < 1000; i++) 
+  printf("Leitura: %dºC\n", sens_temp(20, i));
 
   return 0;
 }

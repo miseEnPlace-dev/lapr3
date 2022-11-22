@@ -1,4 +1,4 @@
- const double TEMP_SENSOR_ATTENUATOR = 0.01;
+ const char TEMP_SENSOR_MAX_VARIATION = 2;
 /**
  * Gera o valor de temperatura com base no último valor de temperatura.
  * O novo valor a gerar será o incremento ao último valor gerado, adicionado de um valor
