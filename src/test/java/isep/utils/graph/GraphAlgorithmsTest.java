@@ -14,8 +14,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class MapGraphAlgorithmsTest {
-
+class GraphAlgorithmsTest {
   final Graph<String, Integer> completeMap = new AdjacencyMapGraph<>(false);
   Graph<String, Integer> incompleteMap = new AdjacencyMapGraph<>(false);
 
@@ -219,10 +218,12 @@ class MapGraphAlgorithmsTest {
   /**
    * Test minimum distance graph using Floyd-Warshall.
    */
-  @Test
-  public void testminDistGraph() {
-
-    throw new UnsupportedOperationException("Not supported yet.");
-
-  }
+  /*
+   * @Test
+   * public void testminDistGraph() {
+   *
+   * throw new UnsupportedOperationException("Not supported yet.");
+   *
+   * }
+   */
 }
