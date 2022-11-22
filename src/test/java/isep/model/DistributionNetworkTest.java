@@ -9,8 +9,8 @@ public class DistributionNetworkTest {
   @Test
   public void testAddRelation() {
     DistributionNetwork network = new DistributionNetwork();
-    Entity e1 = new Entity("e1", 1, 1, "l1", Role.PRODUCER);
-    Entity e2 = new Entity("e2", 2, 2, "l2", Role.CLIENT);
+    Entity e1 = new Producer("e1", 1, 1, "l1");
+    Entity e2 = new Client("e2", 2, 2, "l2");
     Integer distance = 10;
     network.addRelation(e1, e2, distance);
     assertEquals(network.getDistanceBetween(e1, e2), distance);
@@ -19,8 +19,8 @@ public class DistributionNetworkTest {
   @Test
   public void testGetDistanceBetween() {
     DistributionNetwork network = new DistributionNetwork();
-    Entity e1 = new Entity("e1", 1, 1, "l1", Role.PRODUCER);
-    Entity e2 = new Entity("e2", 2, 2, "l2", Role.CLIENT);
+    Entity e1 = new Producer("e1", 1, 1, "l1");
+    Entity e2 = new Client("e2", 2, 2, "l2");
     Integer distance = 10;
     network.addRelation(e1, e2, distance);
     assertEquals(network.getDistanceBetween(e1, e2), distance);
@@ -29,8 +29,8 @@ public class DistributionNetworkTest {
   @Test
   public void testGetDistanceBetweenWithInvalidNodes() {
     DistributionNetwork network = new DistributionNetwork();
-    Entity e1 = new Entity("e1", 1, 1, "l1", Role.PRODUCER);
-    Entity e2 = new Entity("e2", 2, 2, "l2", Role.CLIENT);
+    Entity e1 = new Producer("e1", 1, 1, "l1");
+    Entity e2 = new Client("e2", 2, 2, "l2");
 
     assertNull(network.getDistanceBetween(e1, e2));
   }
@@ -44,8 +44,8 @@ public class DistributionNetworkTest {
   @Test
   public void testGetDistanceBetweenWithNullFirstNode() {
     DistributionNetwork network = new DistributionNetwork();
-    Entity e1 = new Entity("e1", 1, 1, "l1", Role.PRODUCER);
-    Entity e2 = new Entity("e2", 2, 2, "l2", Role.CLIENT);
+    Entity e1 = new Producer("e1", 1, 1, "l1");
+    Entity e2 = new Client("e2", 2, 2, "l2");
     Integer distance = 10;
     network.addRelation(e1, e2, distance);
 
@@ -55,8 +55,8 @@ public class DistributionNetworkTest {
   @Test
   public void testGetDistanceBetweenWithNullSecondNode() {
     DistributionNetwork network = new DistributionNetwork();
-    Entity e1 = new Entity("e1", 1, 1, "l1", Role.PRODUCER);
-    Entity e2 = new Entity("e2", 2, 2, "l2", Role.CLIENT);
+    Entity e1 = new Producer("e1", 1, 1, "l1");
+    Entity e2 = new Client("e2", 2, 2, "l2");
     Integer distance = 10;
     network.addRelation(e1, e2, distance);
 
