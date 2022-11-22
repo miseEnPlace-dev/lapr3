@@ -3,25 +3,28 @@ package isep.controller;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.FileNotFoundException;
+import java.util.List;
+import java.util.Map;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import isep.mock.DistancesDataMock;
 import isep.mock.EntityStoreMock;
 import isep.model.DistributionNetwork;
 import isep.model.Entity;
 import isep.model.store.EntityStore;
 
 public class LoadDistributionNetworkTest {
-  private final static String distancesFileName = "src/test/resources/distancesSample.csv";
   private static EntityStore entityStore;
   private static LoadDistributionNetworkController loadDistributionNetworkController;
 
   @BeforeAll
   public static void setup() throws FileNotFoundException {
     entityStore = new EntityStoreMock().mockEntityStoreFromSampleFile();
+    List<Map<String, String>> distancesData = new DistancesDataMock().mockDistancesDataFromSampleFile();
 
-    loadDistributionNetworkController = new LoadDistributionNetworkController(entityStore, distancesFileName);
+    loadDistributionNetworkController = new LoadDistributionNetworkController(entityStore, distancesData);
   }
 
   @Test
