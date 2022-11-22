@@ -1,0 +1,24 @@
+@startuml DM
+
+skinparam classAttributeIconSize 0
+hide methods
+
+class Entity {
+  - id: String
+  - latitude: double
+  - longitude: double
+  - localization: String
+}
+
+class Client {}
+class Enterprise {}
+class Producer {}
+
+Entity <|-- Client
+Entity <|-- Enterprise
+Entity <|-- Producer
+
+class DistributionNetwork {}
+
+DistributionNetwork "1" o-- "*" Entity
+@enduml
