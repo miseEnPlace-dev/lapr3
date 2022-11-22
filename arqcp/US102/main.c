@@ -8,7 +8,7 @@ int main(void)
   printf("-- Leituras dos sensores --\n\n");
 
   printf("Sensor de temperatura:\n");
-  printf("Leitura: %dºC\n", sens_temp(20, pcg32_random_r()));
+  printf("Leitura: %dºC\n", sens_temp(20, 2));
 
   return 0;
 }
