@@ -2,6 +2,7 @@
 
 | **_Termo_**                | **_Descrição_**                                                                                                                                                                       |
 | :------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Cabezes**                | Encomendas que contém produtos agrículas                                                                                                                                              |
 | **Caderno de Campo**       | Documento formal que permite registar todas as operações agrícolas relevantes ocorridas na exploração                                                                                 |
 | **Cliente**                | Pessoa que encomenda e consume os produtos agrícolas, distribuídos sob a forma de cabazes                                                                                             |
 | **Condutor**               | Pessoa que recolhe os cabazes na exploração agrícola e os deposita nos Hubs de distribuição                                                                                           |
@@ -11,6 +12,7 @@
 | **Gestor de Distribuição** | Pessoa que gere processo de recolha e transporte dos produtos agrícolas entre explorações, Hubs e posterior recolha pelos clientes                                                    |
 | **Fatores de produção**    | Todos os produtos que são aplicados no solo ou nas plantas, por forma a melhorar e nutrir o solo e as plantas, prevenir doenças, corrigir desequilíbrios, e combater pragas e doenças |
 | **Fertirrega**             | Sistema de rega                                                                                                                                                                       |
+| **Hub**                    | Local localizado dentro de uma empresa onde os clientes vão recolher as suas encomendas                                                                                               |
 | **Parcela Agrícola**       | Setores/Campos. Caracterizados por uma designação, área e cultura                                                                                                                     |
 | **Via foliar**             | Pulverização                                                                                                                                                                          |
 | **...**                    | ...                                                                                                                                                                                   |

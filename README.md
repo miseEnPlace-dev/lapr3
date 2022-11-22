@@ -10,7 +10,7 @@ Conventions
 
 Branch names & commit messages:
 
-`purpouse(specification[optional]): descriptive message`
+`purpose(specification[optional]): descriptive message`
 
 Note: Branch naming uses dash case
 branch-name ✔️
@@ -22,9 +22,9 @@ Example:
 or
 `docs(readme): added new us07 specifications`
 or
-`feat(ui): added new button to patient screen`
+`feat(tests): added new tests to us07 `
 
-Example of purpouses
+Example of purposes
 ----
 
 - feat: a new feature is being added
