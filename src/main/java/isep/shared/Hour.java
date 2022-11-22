@@ -76,7 +76,7 @@ public class Hour implements Comparable<Hour> {
    * @return boolean
    */
   public boolean isBetween(Hour other, Hour hour) {
-    return this.compareTo(hour) <= 0 && other.compareTo(hour) >= 0;
+    return this.compareTo(other) >= 0 && this.compareTo(hour) <= 0;
   }
 
   @Override
@@ -106,13 +106,13 @@ public class Hour implements Comparable<Hour> {
   }
 
   private void setHour(int hour) throws InvalidHourFormatException {
-    if (hour >= 0 && hour <= 23)
+    if (hour < 0 || hour > 23)
       throw new InvalidHourFormatException("Hour must be between 0 and 23");
     this.hour = hour;
   }
 
   private void setMinute(int minute) throws InvalidHourFormatException {
-    if (minute >= 0 && minute <= 59)
+    if (minute < 0 || minute > 59)
       throw new InvalidHourFormatException("Minute must be between 0 and 59");
     this.minute = minute;
   }
@@ -122,14 +122,15 @@ public class Hour implements Comparable<Hour> {
    *
    * @param hour
    * @return
+   * @throws InvalidHourFormatException
    */
-  private int[] stringToHour(String hour) {
+  private int[] stringToHour(String hour) throws InvalidHourFormatException {
     if (hour == null)
-      throw new IllegalArgumentException("Invalid hour");
+      throw new InvalidHourFormatException("Invalid hour");
     if (hour.length() != 5 || hour.length() != 4)
-      throw new IllegalArgumentException("Hour must be in format HH:MM");
+      throw new InvalidHourFormatException("Hour must be in format HH:MM");
     if (hour.charAt(2) != ':')
-      throw new IllegalArgumentException("Hour must be in format HH:MM");
+      throw new InvalidHourFormatException("Hour must be in format HH:MM");
     int hourValue = Integer.parseInt(hour.substring(0, 2));
     int minuteValue = Integer.parseInt(hour.substring(3, 5));
     return new int[] {hourValue, minuteValue};

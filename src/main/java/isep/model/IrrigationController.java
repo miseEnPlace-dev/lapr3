@@ -14,7 +14,6 @@ public class IrrigationController {
   }
 
   public CurrentIrrigationWrapper currentIrrigation(Calendar date) {
-    // TODO is irrigating; can two parcels be irrigating at the same time?
     return plan.getIrrigationStatus(date);
   }
 }
