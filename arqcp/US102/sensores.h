@@ -1,4 +1,9 @@
- const char TEMP_SENSOR_MAX_VARIATION = 2;
+#include <stdint.h>
+uint32_t pcg32_random_r();
+uint64_t get_value_from_dev_random();
+
+
+const char TEMP_SENSOR_MAX_VARIATION = 2;
 /**
  * Gera o valor de temperatura com base no último valor de temperatura.
  * O novo valor a gerar será o incremento ao último valor gerado, adicionado de um valor
@@ -13,6 +18,7 @@
  */
 char sens_temp(char ult_temp, char comp_rand);
 
+const char VELC_SENSOR_MAX_VARIATION = 20;
 /**
  * Gera o valor de velocidade do vento com base no último valor de velocidade do vento.
  * O novo valor a gerar será o incremento ao último valor gerado, adicionado de um valor
@@ -28,6 +34,7 @@ char sens_temp(char ult_temp, char comp_rand);
  */
 unsigned char sens_velc_vento(unsigned char ult_velc_vento, char comp_rand);
 
+const char VELC_SENSOR_DIR_VENTO_MAX_VARIATION = 10;
 /**
  * Gera o valor de direção do vento com base no último valor de direção do vento.
  * O novo valor a gerar será o incremento ao último valor gerado, adicionado de um valor
@@ -84,6 +91,9 @@ unsigned char sens_humd_atm(unsigned char ult_hmd_atm, unsigned char ult_pluvio,
  */
 unsigned char sens_humd_solo(unsigned char ult_hmd_solo, unsigned char ult_pluvio, char comp_rand);
 
+const char PLUVIO_SENSOR_MAX_VARIATION = 5;
+const char HIGH_TEMP_DEFAULT = 25;
+const char PLUVIO_SENSOR_MAX_VARIATION_HIGH_TEMP = 2;
 /**
  * Gera o valor de pluviosidade com base no último valor de pluviosidade.
  * O novo valor a gerar será o incremento ao último valor gerado, adicionado de um valor
