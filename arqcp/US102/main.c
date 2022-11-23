@@ -22,14 +22,13 @@ int main(void)
   for (int i = 0; i < 100; i++)
     printf("Leitura: %dkm\\h\n", sens_velc_vento(1, pcg32_random_r()));
 
+  printf("\nSensor de direção vento:\n");
+  for (int i = 0; i < 100; i++)
+     printf("Leitura: %dº\n", sens_dir_vento(2, pcg32_random_r()));
 
-   printf("\nSensor de direção vento:\n");
-   for (int i = 0; i < 100; i++)
-     printf("Leitura: %dº\n", sens_dir_vento(30, pcg32_random_r()));
-
-  // printf("\nSensor de pluviosidade:\n");
-  // for (char i = 0; i < 1000; i++)
-  // printf("Leitura: %dmm\n", sens_pluvio(2,20, i));
+  printf("\nSensor de pluviosidade:\n");
+  for (int i = 0; i < 100; i++)
+   printf("Leitura: %dmm\n", sens_pluvio(2,10, pcg32_random_r()));
 
   return 0;
 }
