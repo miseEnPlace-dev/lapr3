@@ -39,11 +39,7 @@ public class ConectedNetworkShortestPath {
     // get shortest path from source to all other entities in the network
     // using shortest path algorithm from GraphAlgorithms
 
-    Graph<Entity, Integer> shortestPathGraph = graph.clone();
-
-    GraphAlgorithms.shortestPaths(shortestPathGraph, source, comparator, binaryOperator, 0, paths, dist);
-
-    // TODO fix repetition of entities in paths
+    Graph<Entity, Integer> shortestPathGraph = GraphAlgorithms.prim(graph, comparator, binaryOperator);
 
     return shortestPathGraph;
 

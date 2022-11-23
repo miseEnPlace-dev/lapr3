@@ -1,9 +1,11 @@
 package isep.utils.graph;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.LinkedList;
+import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.function.BinaryOperator;
 
@@ -297,4 +299,67 @@ public class GraphAlgorithms {
 
     return minDstGraph;
   }
+
+  /**
+   * Calculates the minimum distance graph using prim algorithm
+   *
+   * @param g   initial graph
+   * @param ce  comparator between elements of type E
+   * @param sum sum two elements of type E
+   * @return the minimum distance graph
+   */
+  public static <V, E> AdjacencyMapGraph<V, E> prim(Graph<V, E> g, Comparator<E> ce, BinaryOperator<E> sum) {
+    AdjacencyMapGraph<V, E> mst = new AdjacencyMapGraph<>(g.isDirected());
+
+    // create a priority queue to store vertices that are being preprocessed.
+    Queue<V> pq = new PriorityQueue<>(g.numVertices(), new Comparator<V>() {
+      @Override
+      public int compare(V v1, V v2) {
+        return ce.compare(g.edge(v1, v2).getWeight(), (g.edge(v2, v1).getWeight()));
+      }
+    });
+
+    // create a boolean array to track vertices that are being preprocessed.
+    boolean[] mstSet = new boolean[g.numVertices()];
+
+    // add the first vertex to the priority queue.
+    pq.add(g.vertices().iterator().next());
+
+    // while the priority queue is not empty
+    while (!pq.isEmpty()) {
+      // extract the vertex with the minimum key value.
+      V u = pq.poll();
+
+      // mark the vertex as being included in the MST.
+      mstSet[g.key(u)] = true;
+
+      // for each adjacent vertex of u
+      for (Edge<V, E> e : g.outgoingEdges(u)) {
+        V v = e.getVDest();
+
+        // if v is not in the MST and the weight of (u, v) is smaller than the key value
+        // of v
+        if (!mstSet[g.key(v)] && ce.compare(g.edge(u, v).getWeight(), (g.edge(v, u).getWeight())) < 0) {
+          // update the key value of v to the weight of (u, v)
+          g.edge(v, u).setWeight(sum.apply(g.edge(u, v).getWeight(), g.edge(v, u).getWeight()));
+
+          // if v is not in the priority queue, add it
+          if (!pq.contains(v))
+            pq.add(v);
+        }
+      }
+    }
+
+    // add the edges to the MST using ce as comparator
+    for (V v : g.vertices()) {
+      for (Edge<V, E> e : g.outgoingEdges(v)) {
+        V u = e.getVDest();
+        if (ce.compare(g.edge(u, v).getWeight(), (e.getWeight())) == 0)
+          mst.addEdge(u, v, e.getWeight());
+      }
+    }
+
+    return mst;
+  }
+
 }
