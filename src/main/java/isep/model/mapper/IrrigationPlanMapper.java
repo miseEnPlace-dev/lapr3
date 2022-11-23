@@ -2,10 +2,8 @@ package isep.model.mapper;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import javax.naming.NameNotFoundException;
 import isep.model.AgriculturalParcel;
 import isep.model.Company;
@@ -74,7 +72,6 @@ public class IrrigationPlanMapper {
       }
 
       ParcelIrrigationWrapper wrapper = new ParcelIrrigationWrapper(foundParcel, duration, method);
-
       parcels.add(wrapper);
     }
 
