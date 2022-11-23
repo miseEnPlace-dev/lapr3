@@ -1,4 +1,6 @@
- const char TEMP_SENSOR_MAX_VARIATION = 2;
+const char TEMP_SENSOR_MAX_VARIATION = 2;
+const char SOIL_HUMD_SENSOR_MAX_VARIATION = 1; // 1% without rain
+const char PLUV_CONTRIB_HUMD = 10; // every mm of pluv contributes to humidity (%) 
 /**
  * Gera o valor de temperatura com base no último valor de temperatura.
  * O novo valor a gerar será o incremento ao último valor gerado, adicionado de um valor

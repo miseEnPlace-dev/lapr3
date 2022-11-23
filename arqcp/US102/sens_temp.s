@@ -3,6 +3,10 @@
 # rdi ult_temp
 # rsi comp_rand
 
+# Limit the max variation using the remainder of division
+#
+# The random component is divided by the max variation + 1, this way, the ramainder will allways be
+# a random value in the interval [-n,n], n = max variation.
 sens_temp:
   movb %sil, %al # al = random component
   movb TEMP_SENSOR_MAX_VARIATION(%rip), %cl # cl = max variation
