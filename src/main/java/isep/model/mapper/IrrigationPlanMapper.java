@@ -3,6 +3,7 @@ package isep.model.mapper;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import javax.naming.NameNotFoundException;
@@ -30,7 +31,7 @@ public class IrrigationPlanMapper {
     AgriculturalParcelStore parcelStore = company.getAgriculturalParcelStore();
 
     List<Hour> hours = new ArrayList<>();
-    Map<AgriculturalParcel, ParcelIrrigationWrapper> parcels = new HashMap<>();
+    List<ParcelIrrigationWrapper> parcels = new LinkedList<>();
 
     // header contains hours
     String[] header = data.get(0).split(",");
@@ -72,9 +73,9 @@ public class IrrigationPlanMapper {
               String.format("Invalid regularity %s in line %d", regularity, i + 1));
       }
 
-      ParcelIrrigationWrapper wrapper = new ParcelIrrigationWrapper(duration, method);
+      ParcelIrrigationWrapper wrapper = new ParcelIrrigationWrapper(foundParcel, duration, method);
 
-      parcels.put(foundParcel, wrapper);
+      parcels.add(wrapper);
     }
 
     creationDate.set(Calendar.HOUR_OF_DAY, 0);
