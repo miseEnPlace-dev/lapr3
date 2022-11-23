@@ -19,8 +19,16 @@ int main(void)
      printf("Leitura: %dºC\n", sens_temp(20, pcg32_random_r()));*/
 
   printf("\nSensor de velocidade vento:\n");
-  for (int i = 0; i < 20; i++)
-    printf("Leitura: %dkm\\h\n", sens_velc_vento(1, pcg32_random_r()));
+  for (int i = 0; i < 100; i++) {
+    uint32_t r = pcg32_random_r();
+    //printf("valor random %d\n", r);
+    printf("Leitura: %dkm\\h\n", sens_velc_vento(1, r));
+
+  // -363869824 fail
+  // 2072429184 fail
+  // 1639080576 fail
+
+  }
 
   // printf("\nSensor de direção vento:\n");
   // for (int i = 0; i < 1000; i++)
