@@ -17,46 +17,13 @@ public class ConnectedNetworkShortestPathTest {
   private static EntityStore entityStore;
   private static LoadDistributionNetworkController loadDistributionNetworkController;
   private final static String distancesFileName = "src/test/resources/distancesSampleV2.csv";
-  private ConectedNetworkShortestPath connectedNetworkShortestPath = new ConectedNetworkShortestPath();
+  private ConnectedNetworkShortestPath connectedNetworkShortestPath = new ConnectedNetworkShortestPath();
 
   @BeforeAll
   public static void setup() throws FileNotFoundException {
     entityStore = new EntityStoreMock().mockEntityStoreFromSampleFile();
 
     loadDistributionNetworkController = new LoadDistributionNetworkController(entityStore, distancesFileName);
-  }
-
-  /*
-   * Test connected network shortest path is null when network is null and source
-   * is null
-   */
-  @Test
-  public void testShortestPathConnectedNetworkNull() {
-
-    assertEquals(connectedNetworkShortestPath.execute(null, null), null);
-  }
-
-  /*
-   * Test connected network shortest path is null when network is null and source
-   * is not null
-   */
-  @Test
-  public void testShortestPathConnectedNetworkEmpty() {
-
-    Entity ct1 = entityStore.getEntityByLocalizationId("CT1");
-
-    assertEquals(connectedNetworkShortestPath.execute(ct1, null), null);
-  }
-
-  /*
-   * Test connected network shortest path is null when network is not null and
-   * source is null
-   */
-  @Test
-  public void testShortestPathSourceNull() {
-    DistributionNetwork network = loadDistributionNetworkController.loadDistributionNetwork();
-
-    assertEquals(connectedNetworkShortestPath.execute(null, network), null);
   }
 
   /*
@@ -68,7 +35,7 @@ public class ConnectedNetworkShortestPathTest {
 
     Entity ct1 = entityStore.getEntityByLocalizationId("CT1");
 
-    assertEquals(connectedNetworkShortestPath.execute(ct1, network).numVertices(), 9);
+    assertEquals(connectedNetworkShortestPath.getConnectedNetworkShortestPath(ct1, network).numVertices(), 9);
   }
 
   /*
@@ -80,19 +47,7 @@ public class ConnectedNetworkShortestPathTest {
 
     Entity ct1 = entityStore.getEntityByLocalizationId("CT1");
 
-    assertEquals(connectedNetworkShortestPath.execute(ct1, network).numEdges(), 22);
-  }
-
-  /*
-   * Test connected network shortest path with entity not in network
-   */
-  @Test
-  public void testShortestPathSourceNotInNetwork() {
-    DistributionNetwork network = loadDistributionNetworkController.loadDistributionNetwork();
-
-    Entity ct10 = entityStore.getEntityByLocalizationId("CT10");
-
-    assertEquals(connectedNetworkShortestPath.execute(ct10, network), null);
+    assertEquals(connectedNetworkShortestPath.getConnectedNetworkShortestPath(ct1, network).numEdges(), 22);
   }
 
   /*
@@ -104,7 +59,7 @@ public class ConnectedNetworkShortestPathTest {
 
     Entity ct1 = entityStore.getEntityByLocalizationId("CT1");
 
-    Graph<Entity, Integer> graph = connectedNetworkShortestPath.execute(ct1, network);
+    Graph<Entity, Integer> graph = connectedNetworkShortestPath.getConnectedNetworkShortestPath(ct1, network);
 
     assertEquals(graph.numVertices(), 9);
     assertEquals(graph.numEdges(), 22);
@@ -125,7 +80,7 @@ public class ConnectedNetworkShortestPathTest {
 
     Entity ct9 = entityStore.getEntityByLocalizationId("CT9");
 
-    Graph<Entity, Integer> graph = connectedNetworkShortestPath.execute(ct9, network);
+    Graph<Entity, Integer> graph = connectedNetworkShortestPath.getConnectedNetworkShortestPath(ct9, network);
 
     assertEquals(graph.numVertices(), 9);
     assertEquals(graph.numEdges(), 16);
@@ -145,7 +100,7 @@ public class ConnectedNetworkShortestPathTest {
 
     Entity ct1 = entityStore.getEntityByLocalizationId("CT1");
 
-    Graph<Entity, Integer> graph = connectedNetworkShortestPath.execute(ct1, network);
+    Graph<Entity, Integer> graph = connectedNetworkShortestPath.getConnectedNetworkShortestPath(ct1, network);
 
     assertEquals(graph.inDegree(ct1), 1);
     assertEquals(graph.inDegree(entityStore.getEntityByLocalizationId("CT2")), 1);
@@ -175,7 +130,7 @@ public class ConnectedNetworkShortestPathTest {
     Entity ct8 = entityStore.getEntityByLocalizationId("CT8");
     Entity ct9 = entityStore.getEntityByLocalizationId("CT9");
 
-    Graph<Entity, Integer> result = connectedNetworkShortestPath.execute(ct9, network);
+    Graph<Entity, Integer> result = connectedNetworkShortestPath.getConnectedNetworkShortestPath(ct9, network);
 
     Graph<Entity, Integer> expectedGraph = new AdjacencyMapGraph<>(true);
     expectedGraph.addEdge(ct9, ct5, 62655);

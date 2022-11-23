@@ -13,21 +13,8 @@ import isep.utils.graph.GraphAlgorithms;
  * Class that gets the shortest path between all entities in a network
  * @author André Barros <1211299@isep.ipp.pt>
  */
-public class ConectedNetworkShortestPath {
-
-  public ConectedNetworkShortestPath() {
-  }
-
+public class ConnectedNetworkShortestPath {
   private static Graph<Entity, Integer> graph;
-
-  public Graph<Entity, Integer> execute(Entity source, DistributionNetwork network) {
-    if (source == null || network == null) {
-      System.out.println("Source or network is null");
-      return null;
-    }
-
-    return getConnectedNetworkShortestPath(source, network);
-  }
 
   public Graph<Entity, Integer> getConnectedNetworkShortestPath(Entity source, DistributionNetwork network) {
 
