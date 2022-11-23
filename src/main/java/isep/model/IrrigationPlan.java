@@ -8,14 +8,14 @@ import isep.shared.exceptions.InvalidHourFormatException;
 
 public class IrrigationPlan {
   private List<Hour> hours;
-  private Map<AgriculturalParcel, ParcelIrrigationWrapper> parcels;
+  private List<ParcelIrrigationWrapper> parcelIrrigations;
   private Calendar creationDate;
   private int planDuration;
 
-  public IrrigationPlan(List<Hour> hours, Map<AgriculturalParcel, ParcelIrrigationWrapper> parcels,
+  public IrrigationPlan(List<Hour> hours, List<ParcelIrrigationWrapper> parcelIrrigations,
       Calendar creationDate, int planDuration) {
     this.hours = hours;
-    this.parcels = parcels;
+    this.parcelIrrigations = parcelIrrigations;
     this.creationDate = creationDate;
     this.planDuration = planDuration;
   }
@@ -24,8 +24,8 @@ public class IrrigationPlan {
     return hours;
   }
 
-  public Map<AgriculturalParcel, ParcelIrrigationWrapper> getParcels() {
-    return parcels;
+  public List<ParcelIrrigationWrapper> getParcelIrrigations() {
+    return parcelIrrigations;
   }
 
   public Calendar getCreationDate() {
@@ -33,7 +33,7 @@ public class IrrigationPlan {
   }
 
   public CurrentIrrigationWrapper getIrrigationStatus(Calendar date) {
-    // TODO: if multiple parcels can be irrigating at the same time, this will need to be changed
+    // TODO: change this
     // compare number of days between creationDate and date
     // check if the plan duration is not exceeded
     Calendar tmp = (Calendar) date.clone();

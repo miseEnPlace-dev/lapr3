@@ -35,3 +35,5 @@ Este ficheiro tem o seguinte formato:
 
 \
 Existe uma linha `<parcela>,<duração>,<regularidade>` para cada parcela a regar.
+
+Só uma parcela pode estar a ser regada a qualquer momento. A ordem de rega é de acordo com a ordem das linhas no plano.
