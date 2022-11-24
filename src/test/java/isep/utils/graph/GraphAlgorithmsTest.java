@@ -14,10 +14,11 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class MapGraphAlgorithmsTest {
+class GraphAlgorithmsTest {
 
   final Graph<String, Integer> completeMap = new AdjacencyMapGraph<>(false);
   Graph<String, Integer> incompleteMap = new AdjacencyMapGraph<>(false);
+  Graph<Integer, Integer> integerGraph = new AdjacencyMapGraph<>(false);
 
   @BeforeEach
   public void setUp() {
@@ -225,4 +226,72 @@ class MapGraphAlgorithmsTest {
     throw new UnsupportedOperationException("Not supported yet.");
 
   }
+
+  /**
+   * Test of minimumSpanningTree method, of class GraphAlgorithms.
+   */
+  @Test
+  public void testMinimumSpanningTree() {
+    System.out.println("Test of minimum spanning tree");
+
+    integerGraph.addVertex(0);
+    integerGraph.addVertex(1);
+    integerGraph.addVertex(2);
+    integerGraph.addVertex(3);
+    integerGraph.addVertex(4);
+    integerGraph.addVertex(5);
+    integerGraph.addVertex(6);
+    integerGraph.addVertex(7);
+    integerGraph.addVertex(8);
+
+    integerGraph.addEdge(0, 1, 4);
+    integerGraph.addEdge(0, 7, 8);
+    integerGraph.addEdge(1, 7, 11);
+    integerGraph.addEdge(1, 2, 8);
+    integerGraph.addEdge(7, 6, 1);
+    integerGraph.addEdge(7, 8, 7);
+    integerGraph.addEdge(2, 3, 7);
+    integerGraph.addEdge(2, 8, 2);
+    integerGraph.addEdge(2, 5, 4);
+    integerGraph.addEdge(6, 5, 2);
+    integerGraph.addEdge(6, 8, 6);
+    integerGraph.addEdge(3, 4, 9);
+    integerGraph.addEdge(3, 5, 14);
+    integerGraph.addEdge(5, 4, 10);
+
+    Graph<Integer, Integer> result = GraphAlgorithms.kruskall(integerGraph, Integer::compare);
+
+    Graph<Integer, Integer> expectedGraph = new AdjacencyMapGraph<Integer, Integer>(false);
+    expectedGraph.addVertex(0);
+    expectedGraph.addVertex(1);
+    expectedGraph.addVertex(2);
+    expectedGraph.addVertex(3);
+    expectedGraph.addVertex(4);
+    expectedGraph.addVertex(5);
+    expectedGraph.addVertex(6);
+    expectedGraph.addVertex(7);
+    expectedGraph.addVertex(8);
+
+    expectedGraph.addEdge(7, 6, 1);
+    expectedGraph.addEdge(6, 7, 1);
+    expectedGraph.addEdge(6, 5, 2);
+    expectedGraph.addEdge(5, 6, 2);
+    expectedGraph.addEdge(2, 8, 2);
+    expectedGraph.addEdge(8, 2, 2);
+    expectedGraph.addEdge(0, 1, 4);
+    expectedGraph.addEdge(1, 0, 4);
+    expectedGraph.addEdge(5, 2, 4);
+    expectedGraph.addEdge(2, 5, 4);
+    expectedGraph.addEdge(2, 3, 7);
+    expectedGraph.addEdge(3, 2, 7);
+    expectedGraph.addEdge(0, 7, 8);
+    expectedGraph.addEdge(7, 0, 8);
+    expectedGraph.addEdge(3, 4, 9);
+    expectedGraph.addEdge(4, 3, 9);
+    assertEquals(expectedGraph.numVertices(), result.numVertices(), "The number of vertices should be the same");
+    assertEquals(expectedGraph.numEdges(), result.numEdges(), "The number of edges should be the same");
+
+    assertEquals(expectedGraph, result);
+  }
+
 }
