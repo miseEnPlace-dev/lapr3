@@ -9,15 +9,76 @@
 # The random component is divided by the max variation + 1, this way, the ramainder will allways be
 # a random value in the interval [-n,n], n = max variation.
 sens_humd_solo:
-  movb %dil, %al # al = random component
-  movb SOIL_HUMD_SENSOR_MAX_VARIATION(%rip), %cl # cl = max variation
-  incb %cl # cl = max variation + 1
+  movb %dl, %al # al = random component
+  movb SOIL_HUMD_SENSOR_RAINING_MAX_VARIATION(%rip), %cl # cl = max raining variation
+
+  pushq %rdx # save random component
 
   cbtw # cast byte to word
-  divb %cl # divide random component by max variation (remainder in %ah)
+  idivb %cl # divide random component by max variation (remainder in %ah)
 
   shrw $8, %ax # get the value to right position (%al)
+  
+  cbtw
+  imulb %sil # al = last pluv * (random%max_raining_variation)
 
-  addb %dil, %al # add to last random value
+  movb PLUV_CONTRIB_HUMD(%rip), %sil
+  cbtw
+  imulb %sil # al = pluvio contrib
+
+  testb %al, %al # if pluv contrib < 0
+  jge .C1
+  negb %al
+
+  .C1:
+    cmpb %al, %cl
+    jg .over_limit # if over limit set contrib to max contrib
+    negb %cl
+    cmpb %al, %cl
+    jl .under_limit # if under limit set contrib to min contrib
+  .C2:
+    movb SOIL_HUMD_SENSOR_MAX_VARIATION(%rip), %cl # cl = max variation of humidity sensor
+    incb %cl # cl = max variation + 1 
+
+  movb %al, %r8b # r8b = pluv contrib
+
+  popq %rdx # get value of random component
+  movb %dl, %al
+
+  cbtw # cast byte to word
+  idivb %cl # divide random component by max variation (remainder in %ah)
+
+  shrw $8, %ax # get the value to right position (%al)
+  addb %al, %dil # dil = last humidity + random component
+  addb %r8b, %dil # dil = last humidity + random component + pluvio contrib
+  
+  cmpb $100, %dil # if result > 100
+  jg .over_percentage
+
+  cmpb $0, %dil
+  jl .zero
+
+  .C3:
+    movb %dil, %al
 
   ret
+.over_limit:
+  movb %cl, %al
+  jmp .C2
+.under_limit:
+  negb %cl
+  movb %cl, %al
+  jmp .C2
+.over_percentage:
+  testb %al, %al
+  jl .module
+  .continue:
+    movb $100, %dil
+    subb %al, %dil
+  jmp .C3
+.module:
+  negb %al
+  jmp .continue
+.zero:
+  movb $0, %dil
+  jmp .C3
