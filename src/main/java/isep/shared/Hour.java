@@ -54,7 +54,7 @@ public class Hour implements Comparable<Hour> {
   }
 
   public String toString() {
-    return String.format("%02d:%02d", hour, minute);
+    return String.format("%02dh%02d", hour, minute);
   }
 
   /**
@@ -127,12 +127,13 @@ public class Hour implements Comparable<Hour> {
   private int[] stringToHour(String hour) throws InvalidHourFormatException {
     if (hour == null)
       throw new InvalidHourFormatException("Invalid hour");
-    if (hour.length() != 5 || hour.length() != 4)
-      throw new InvalidHourFormatException("Hour must be in format HH:MM");
-    if (hour.charAt(2) != ':')
-      throw new InvalidHourFormatException("Hour must be in format HH:MM");
-    int hourValue = Integer.parseInt(hour.substring(0, 2));
-    int minuteValue = Integer.parseInt(hour.substring(3, 5));
+    if (hour.length() < 3 || hour.length() > 5)
+      throw new InvalidHourFormatException("Hour must be in format HHhMM");
+    if (!hour.contains("h"))
+      throw new InvalidHourFormatException("Hour must be in format HHhMM");
+    String[] hourParts = hour.split("h");
+    int hourValue = Integer.parseInt(hourParts[0]);
+    int minuteValue = Integer.parseInt(hourParts[1]);
     return new int[] {hourValue, minuteValue};
   }
 }
