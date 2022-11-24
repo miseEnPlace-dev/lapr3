@@ -31,7 +31,7 @@ public class DistributionNetwork {
   }
 
   public AdjacencyMapGraph<Entity, Integer> getMinimumShortestPathNetwork(Comparator<Integer> ce) {
-    return kruskall(getNetwork(), ce);
+    return kruskall(this.getNetwork(), ce);
   }
 
   /**

@@ -33,9 +33,7 @@ public class ConnectedNetworkShortestPathTest {
   public void testShortestPathSourceNotNullNumVertices() {
     DistributionNetwork network = loadDistributionNetworkController.loadDistributionNetwork();
 
-    Entity ct1 = entityStore.getEntityByLocalizationId("CT1");
-
-    assertEquals(connectedNetworkShortestPath.getConnectedNetworkShortestPath(ct1, network).numVertices(), 9);
+    assertEquals(connectedNetworkShortestPath.getConnectedNetworkShortestPath(network).numVertices(), 9);
   }
 
   /*
@@ -45,24 +43,10 @@ public class ConnectedNetworkShortestPathTest {
   public void testShortestPathSourceNotNullNumEdges() {
     DistributionNetwork network = loadDistributionNetworkController.loadDistributionNetwork();
 
-    Entity ct1 = entityStore.getEntityByLocalizationId("CT1");
+    Graph<Entity, Integer> graph = connectedNetworkShortestPath.getConnectedNetworkShortestPath(network);
 
-    assertEquals(connectedNetworkShortestPath.getConnectedNetworkShortestPath(ct1, network).numEdges(), 22);
-  }
-
-  /*
-   * Test connected network shortest path with entity in network
-   */
-  // @Test
-  public void testShortestPathSourceInNetwork() {
-    DistributionNetwork network = loadDistributionNetworkController.loadDistributionNetwork();
-
-    Entity ct1 = entityStore.getEntityByLocalizationId("CT1");
-
-    Graph<Entity, Integer> graph = connectedNetworkShortestPath.getConnectedNetworkShortestPath(ct1, network);
-
+    assertEquals(graph.numEdges(), 16);
     assertEquals(graph.numVertices(), 9);
-    assertEquals(graph.numEdges(), 22);
   }
 
   /*
@@ -78,9 +62,7 @@ public class ConnectedNetworkShortestPathTest {
 
     DistributionNetwork network = loadDistributionNetworkController.loadDistributionNetwork();
 
-    Entity ct9 = entityStore.getEntityByLocalizationId("CT9");
-
-    Graph<Entity, Integer> graph = connectedNetworkShortestPath.getConnectedNetworkShortestPath(ct9, network);
+    Graph<Entity, Integer> graph = connectedNetworkShortestPath.getConnectedNetworkShortestPath(network);
 
     assertEquals(graph.numVertices(), 9);
     assertEquals(graph.numEdges(), 16);
@@ -100,7 +82,7 @@ public class ConnectedNetworkShortestPathTest {
 
     Entity ct1 = entityStore.getEntityByLocalizationId("CT1");
 
-    Graph<Entity, Integer> graph = connectedNetworkShortestPath.getConnectedNetworkShortestPath(ct1, network);
+    Graph<Entity, Integer> graph = connectedNetworkShortestPath.getConnectedNetworkShortestPath(network);
 
     assertEquals(graph.inDegree(ct1), 1);
     assertEquals(graph.inDegree(entityStore.getEntityByLocalizationId("CT2")), 1);
@@ -117,7 +99,12 @@ public class ConnectedNetworkShortestPathTest {
    * Test connected network shortest path
    */
   // @Test
-  public void testShortestPathConnectedNetwork() {
+  public void testShortestPathConnectedNetwork() throws FileNotFoundException {
+    String distancesFileName = "src/test/resources/distancesSampleV2.csv";
+    LoadDistributionNetworkController loadDistributionNetworkController = new LoadDistributionNetworkController(
+        entityStore,
+        distancesFileName);
+
     DistributionNetwork network = loadDistributionNetworkController.loadDistributionNetwork();
 
     Entity ct1 = entityStore.getEntityByLocalizationId("CT1");
@@ -130,26 +117,36 @@ public class ConnectedNetworkShortestPathTest {
     Entity ct8 = entityStore.getEntityByLocalizationId("CT8");
     Entity ct9 = entityStore.getEntityByLocalizationId("CT9");
 
-    Graph<Entity, Integer> result = connectedNetworkShortestPath.getConnectedNetworkShortestPath(ct9, network);
+    Graph<Entity, Integer> result = connectedNetworkShortestPath.getConnectedNetworkShortestPath(network);
 
     Graph<Entity, Integer> expectedGraph = new AdjacencyMapGraph<>(true);
-    expectedGraph.addEdge(ct9, ct5, 62655);
-    expectedGraph.addEdge(ct5, ct9, 62655);
-    expectedGraph.addEdge(ct5, ct7, 125041);
-    expectedGraph.addEdge(ct7, ct5, 125041);
-    expectedGraph.addEdge(ct7, ct6, 67584);
-    expectedGraph.addEdge(ct6, ct7, 67584);
+    expectedGraph.addVertex(ct1);
+    expectedGraph.addVertex(ct2);
+    expectedGraph.addVertex(ct3);
+    expectedGraph.addVertex(ct4);
+    expectedGraph.addVertex(ct5);
+    expectedGraph.addVertex(ct6);
+    expectedGraph.addVertex(ct7);
+    expectedGraph.addVertex(ct8);
+    expectedGraph.addVertex(ct9);
+
+    expectedGraph.addEdge(ct3, ct4, 2000);
+    expectedGraph.addEdge(ct4, ct3, 2000);
     expectedGraph.addEdge(ct6, ct8, 3000);
     expectedGraph.addEdge(ct8, ct6, 3000);
-    expectedGraph.addEdge(ct8, ct1, 62877);
-    expectedGraph.addEdge(ct1, ct8, 62877);
     expectedGraph.addEdge(ct1, ct2, 5000);
     expectedGraph.addEdge(ct2, ct1, 5000);
     expectedGraph.addEdge(ct2, ct3, 8000);
     expectedGraph.addEdge(ct3, ct2, 8000);
-    expectedGraph.addEdge(ct3, ct4, 2000);
-    expectedGraph.addEdge(ct4, ct3, 2000);
-    System.out.println(expectedGraph.toString());
+    expectedGraph.addEdge(ct9, ct5, 62655);
+    expectedGraph.addEdge(ct5, ct9, 62655);
+    expectedGraph.addEdge(ct8, ct1, 62877);
+    expectedGraph.addEdge(ct1, ct8, 62877);
+    expectedGraph.addEdge(ct7, ct6, 67584);
+    expectedGraph.addEdge(ct6, ct7, 67584);
+    expectedGraph.addEdge(ct5, ct7, 125041);
+    expectedGraph.addEdge(ct7, ct5, 125041);
+    System.out.println(result.toString());
 
     assertEquals(expectedGraph, result);
   }

@@ -1,6 +1,5 @@
 package isep.model;
 
-import java.util.Comparator;
 import isep.utils.graph.Graph;
 
 /*
@@ -10,17 +9,6 @@ import isep.utils.graph.Graph;
 public class ConnectedNetworkShortestPath {
   public Graph<Entity, Integer> getConnectedNetworkShortestPath(DistributionNetwork network) {
 
-    return network.getMinimumShortestPathNetwork(comparator);
+    return network.getMinimumShortestPathNetwork(Integer::compare);
   }
-
-  /*
-   * Comparator to compare two integers
-   */
-  private static Comparator<Integer> comparator = new Comparator<Integer>() {
-    @Override
-    public int compare(Integer o1, Integer o2) {
-      return o1.compareTo(o2);
-    }
-  };
-
 }

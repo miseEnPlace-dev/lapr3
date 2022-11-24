@@ -13,14 +13,12 @@ import isep.model.ConnectedNetworkShortestPath;
  */
 public class ConnectedNetworkShortestPathController {
   private DistributionNetwork network;
-  private Entity source;
 
   /*
    * Constructor
    */
-  public ConnectedNetworkShortestPathController(DistributionNetwork network, Entity source) {
+  public ConnectedNetworkShortestPathController(DistributionNetwork network) {
     this.network = network;
-    this.source = source;
   }
 
   /*
@@ -29,7 +27,7 @@ public class ConnectedNetworkShortestPathController {
   public Graph<Entity, Integer> getConnectedNetworkShortestPath() {
     ConnectedNetworkShortestPath conectedNetworkShortestPath = new ConnectedNetworkShortestPath();
 
-    return conectedNetworkShortestPath.getConnectedNetworkShortestPath(this.source, this.network);
+    return conectedNetworkShortestPath.getConnectedNetworkShortestPath(this.network);
   }
 
 }
