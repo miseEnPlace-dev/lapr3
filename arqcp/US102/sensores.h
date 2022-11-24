@@ -1,7 +1,8 @@
 const char TEMP_SENSOR_MAX_VARIATION = 2;
-const char SOIL_HUMD_SENSOR_MAX_VARIATION = 1; // 1% without rain
-const char PLUV_CONTRIB_HUMD = 10;             // every mm of pluv contributes to humidity (%)
-const char VELC_SENSOR_MAX_VARIATION = 30;     // velocity variation (km/h)
+const char SOIL_HUMD_SENSOR_MAX_VARIATION = 3; // 1% without rain
+const char PLUV_CONTRIB_HUMD = 8;             // every mm of pluv contributes to humidity (%)
+const char SOIL_HUMD_SENSOR_RAINING_MAX_VARIATION = 20;
+const char VELC_SENSOR_MAX_VARIATION = 20;     // velocity variation (km/h)
 
 #include <stdint.h>
 uint32_t pcg32_random_r();

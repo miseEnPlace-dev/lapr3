@@ -30,17 +30,14 @@ int main(void)
   for (int i = 0; i < 100; i++)
     printf("Leitura: %dmm\n", sens_pluvio(2, 10, pcg32_random_r()));
 
-  char lastHumidityRead = 0;
-  for (char i = 0; i < 100; i++)
+  unsigned char lastHumidityRead = 0;
+  for (char i = 0; i < 127; i++)
   {
     if (i == 20)
       printf("--------\n");
-    char random = (char)pcg32_random_r();
-    //    char lastPluvRead = random%20;
-    char lastPluvRead = i > 20 ? 0 : 5;
-    char pluvContribRate = 8;
-    char maxDiff = 3;
-    char maxRainingDiff = 20;
+    char random = pcg32_random_r();
+    // char lastPluvRead = random%20;
+    unsigned char lastPluvRead = i > 20 ? 0 : 5;
     char pluvContrib = lastPluvRead * pluvContribRate * (random % (maxRainingDiff));
 
     if (lastPluvRead != 0 && pluvContrib < 0)
@@ -50,7 +47,7 @@ int main(void)
     if (pluvContrib < -maxRainingDiff)
       pluvContrib = -maxRainingDiff;
 
-    int result = 0;
+    unsigned char result = 0;
     if (lastHumidityRead + pluvContrib + (random % (maxDiff + 1)) >= 100)
     {
       char inc = random % (maxDiff + 1);
