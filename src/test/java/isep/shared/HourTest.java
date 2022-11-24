@@ -42,10 +42,13 @@ public class HourTest {
 
   @Test
   public void testStringConstructor() throws InvalidHourFormatException {
-    assertEquals((new Hour(12, 30)).getHour(), 12);
-    assertThrows(InvalidHourFormatException.class, () -> new Hour("24:30"));
-    assertThrows(InvalidHourFormatException.class, () -> new Hour("00:60"));
-    assertThrows(InvalidHourFormatException.class, () -> new Hour("00:-1"));
+    Hour h1 = new Hour(8, 30);
+    Hour h2 = new Hour(12, 0);
+    assertEquals((new Hour("8h30")), h1);
+    assertEquals((new Hour("12h00")), h2);
+    assertThrows(InvalidHourFormatException.class, () -> new Hour("24h30"));
+    assertThrows(InvalidHourFormatException.class, () -> new Hour("00h60"));
+    assertThrows(InvalidHourFormatException.class, () -> new Hour("00h-1"));
   }
 
   /**
