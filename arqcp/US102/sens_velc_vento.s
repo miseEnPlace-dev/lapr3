@@ -5,12 +5,19 @@
 # rsi comp_rand
 
 sens_velc_vento:
-
   movb %sil, %al # al = random component
+  cbtw # cast byte to word
+
+  testw %ax, %ax
+  je compRandZero
+
+  testw %ax, %ax
+  js compRandNeg
+
+continue:
+
   movb VELC_SENSOR_MAX_VARIATION (%rip), %cl # cl = max variation
   incb %cl # cl = max variation + 1
-
-  cbtw # cast byte to word
 
   divb %cl # divide random component by max variation (remainder in %ah)
 
@@ -18,4 +25,16 @@ sens_velc_vento:
 
   addb %dil, %al # add to last random value
 
+  jmp end
+
+compRandZero:
+
+  movb %dil, %al # al = last random value
+  jmp end
+
+compRandNeg:
+  negw %ax # make positive
+  jmp continue
+
+end:
 ret

@@ -1,6 +1,8 @@
 const char TEMP_SENSOR_MAX_VARIATION = 2;
 const char SOIL_HUMD_SENSOR_MAX_VARIATION = 1; // 1% without rain
-const char PLUV_CONTRIB_HUMD = 10; // every mm of pluv contributes to humidity (%) 
+const char PLUV_CONTRIB_HUMD = 10;             // every mm of pluv contributes to humidity (%)
+const char VELC_SENSOR_MAX_VARIATION = 30;     // velocity variation (km/h)
+
 #include <stdint.h>
 uint32_t pcg32_random_r();
 uint64_t get_value_from_dev_random();
@@ -19,7 +21,6 @@ uint64_t get_value_from_dev_random();
  */
 char sens_temp(char ult_temp, char comp_rand);
 
-const char VELC_SENSOR_MAX_VARIATION = 20;
 /**
  * Gera o valor de velocidade do vento com base no último valor de velocidade do vento.
  * O novo valor a gerar será o incremento ao último valor gerado, adicionado de um valor
@@ -35,7 +36,7 @@ const char VELC_SENSOR_MAX_VARIATION = 20;
  */
 unsigned char sens_velc_vento(unsigned char ult_velc_vento, char comp_rand);
 
-const char VELC_SENSOR_DIR_VENTO_MAX_VARIATION = 10;
+const char VELC_SENSOR_DIR_WIND_MAX_VARIATION = 10;
 /**
  * Gera o valor de direção do vento com base no último valor de direção do vento.
  * O novo valor a gerar será o incremento ao último valor gerado, adicionado de um valor
