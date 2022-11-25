@@ -1,0 +1,4 @@
+8h30,15h00
+Parcela1,15,todos
+Parcela2,20,impares
+Parcela3,12,pares
