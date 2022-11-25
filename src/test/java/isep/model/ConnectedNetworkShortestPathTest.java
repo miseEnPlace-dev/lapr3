@@ -11,6 +11,7 @@ import isep.controller.LoadDistributionNetworkController;
 import isep.mock.EntityStoreMock;
 import isep.model.store.EntityStore;
 import isep.utils.graph.AdjacencyMapGraph;
+import isep.utils.graph.Edge;
 import isep.utils.graph.Graph;
 
 public class ConnectedNetworkShortestPathTest {
@@ -98,9 +99,9 @@ public class ConnectedNetworkShortestPathTest {
   /*
    * Test connected network shortest path
    */
-  // @Test
+  @Test
   public void testShortestPathConnectedNetwork() throws FileNotFoundException {
-    String distancesFileName = "src/test/resources/distancesSampleV2.csv";
+    String distancesFileName = "src/test/resources/distancesSampleV3.csv";
     LoadDistributionNetworkController loadDistributionNetworkController = new LoadDistributionNetworkController(
         entityStore,
         distancesFileName);
@@ -119,7 +120,7 @@ public class ConnectedNetworkShortestPathTest {
 
     Graph<Entity, Integer> result = connectedNetworkShortestPath.getConnectedNetworkShortestPath(network);
 
-    Graph<Entity, Integer> expectedGraph = new AdjacencyMapGraph<>(true);
+    Graph<Entity, Integer> expectedGraph = new AdjacencyMapGraph<>(false);
     expectedGraph.addVertex(ct1);
     expectedGraph.addVertex(ct2);
     expectedGraph.addVertex(ct3);
@@ -130,23 +131,32 @@ public class ConnectedNetworkShortestPathTest {
     expectedGraph.addVertex(ct8);
     expectedGraph.addVertex(ct9);
 
-    expectedGraph.addEdge(ct3, ct4, 2000);
-    expectedGraph.addEdge(ct4, ct3, 2000);
-    expectedGraph.addEdge(ct6, ct8, 3000);
-    expectedGraph.addEdge(ct8, ct6, 3000);
-    expectedGraph.addEdge(ct1, ct2, 5000);
-    expectedGraph.addEdge(ct2, ct1, 5000);
-    expectedGraph.addEdge(ct2, ct3, 8000);
-    expectedGraph.addEdge(ct3, ct2, 8000);
+    expectedGraph.addEdge(ct3, ct5, 10000);
+    expectedGraph.addEdge(ct5, ct3, 10000);
+    expectedGraph.addEdge(ct8, ct3, 50467);
+    expectedGraph.addEdge(ct3, ct8, 50467);
     expectedGraph.addEdge(ct9, ct5, 62655);
     expectedGraph.addEdge(ct5, ct9, 62655);
     expectedGraph.addEdge(ct8, ct1, 62877);
     expectedGraph.addEdge(ct1, ct8, 62877);
+    expectedGraph.addEdge(ct2, ct7, 63448);
+    expectedGraph.addEdge(ct7, ct2, 63448);
     expectedGraph.addEdge(ct7, ct6, 67584);
     expectedGraph.addEdge(ct6, ct7, 67584);
-    expectedGraph.addEdge(ct5, ct7, 125041);
+    expectedGraph.addEdge(ct8, ct4, 70717);
+    expectedGraph.addEdge(ct4, ct8, 70717);
     expectedGraph.addEdge(ct7, ct5, 125041);
-    System.out.println(result.toString());
+    expectedGraph.addEdge(ct5, ct7, 125041);
+
+    int sumWeight = 0;
+    // gets the sum of the weights of the edges
+    for (Edge<Entity, Integer> weight : result.edges()) {
+      sumWeight += weight.getWeight();
+    }
+
+    assertEquals(expectedGraph.numVertices(), result.numVertices());
+    assertEquals(expectedGraph.numEdges(), result.numEdges());
+    assertEquals(1025578, sumWeight);
 
     assertEquals(expectedGraph, result);
   }

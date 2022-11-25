@@ -37,11 +37,6 @@ public class Edge<V, E> {
   }
 
   @Override
-  public String toString() {
-    return String.format("%s -> %s\nWeight: %s", vOrig, vDest, weight);
-  }
-
-  @Override
   public boolean equals(Object o) {
     if (this == o)
       return true;
@@ -56,5 +51,10 @@ public class Edge<V, E> {
   @Override
   public int hashCode() {
     return Objects.hash(vOrig, vDest);
+  }
+
+  @Override
+  public String toString() {
+    return "Edge [vOrig=" + vOrig + ", vDest=" + vDest + ", weight=" + weight + "]";
   }
 }

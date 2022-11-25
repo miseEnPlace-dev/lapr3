@@ -89,4 +89,11 @@ public class Entity {
     return o1.getId().compareTo(o2.getId());
   }
 
+  // tostring
+  @Override
+  public String toString() {
+    return "Entity [id=" + id + ", latitude=" + latitude + ", longitude=" + longitude + ", localizationId="
+        + localizationId + ", role=" + role + "]";
+  }
+
 }
