@@ -1,5 +1,8 @@
+#ifndef SENSORS_H
+#define SENSORS_H
+
 const char TEMP_SENSOR_MAX_VARIATION = 2;
-const char PLUV_CONTRIB_HUMD = 8;              // every mm of pluv contributes to humidity (%)
+const char PLUV_CONTRIB_HUMD = 8; // every mm of pluv contributes to humidity (%)
 const char SOIL_HUMD_SENSOR_MAX_VARIATION = 3;
 const char SOIL_HUMD_SENSOR_RAINING_MAX_VARIATION = 20;
 const char VELC_SENSOR_MAX_VARIATION = 20; // velocity variation (km/h)
@@ -7,7 +10,6 @@ const char VELC_SENSOR_DIR_WIND_MAX_VARIATION = 10;
 const char PLUVIO_SENSOR_MAX_VARIATION = 5;
 const char HIGH_TEMP_DEFAULT = 25;
 const char PLUVIO_SENSOR_MAX_VARIATION_HIGH_TEMP = 2;
-
 #include <stdint.h>
 uint32_t pcg32_random_r();
 uint64_t get_value_from_dev_random();
@@ -118,3 +120,4 @@ unsigned char sens_humd_solo(unsigned char ult_hmd_solo, unsigned char ult_pluvi
  * @return A nova medição do valor de pluviosidade (mm)
  */
 unsigned char sens_pluvio(unsigned char ult_pluvio, char ult_temp, char comp_rand);
+#endif
