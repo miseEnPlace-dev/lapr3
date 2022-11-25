@@ -1,6 +1,5 @@
 package isep.model;
 
-import java.util.AbstractList;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -25,7 +24,7 @@ public class DefineHubs {
 
     public List<Enterprise> execute(){
 
-        List<Map.Entry<Enterprise, Double>> list = new ArrayList<>();
+        List<Map.Entry<Enterprise, Integer>> list = new ArrayList<>();
         
         // if the graph is not connect there is no hub
         // if(!distN.isConnected) return distN;
@@ -36,7 +35,7 @@ public class DefineHubs {
         for (int i = 0; i < enterprises.size(); i++) {
 
             int count = 0;
-            double sum = 0;
+            int sum = 0;
             Enterprise e1 = enterprises.get(i);
 
             // if e1 was a Hub before unMakes it
@@ -50,11 +49,11 @@ public class DefineHubs {
             }
 
             // calc avg
-            list.add(new AbstractMap.SimpleEntry<Enterprise, Double>(e1, sum/(double)count));
+            list.add(new AbstractMap.SimpleEntry<Enterprise, Integer>(e1, sum/count));
         }
 
         // order list
-        list = new MergeSort<Map.Entry<Enterprise, Double>>().sort(list, cmp);
+        list = new MergeSort<Map.Entry<Enterprise, Integer>>().sort(list, cmp);
 
         // make N enterprises Hubs and return them in a list
         List<Enterprise> result = new ArrayList<>();
@@ -66,9 +65,9 @@ public class DefineHubs {
         return result;
     }
 
-    private final Comparator<Map.Entry<Enterprise, Double>> cmp = new Comparator<Map.Entry<Enterprise, Double>>(){
+    private final Comparator<Map.Entry<Enterprise, Integer>> cmp = new Comparator<Map.Entry<Enterprise, Integer>>(){
         @Override
-        public int compare(Map.Entry<Enterprise, Double> o1, Map.Entry<Enterprise, Double> o2) {
+        public int compare(Map.Entry<Enterprise, Integer> o1, Map.Entry<Enterprise, Integer> o2) {
           return (int) (o1.getValue()-o2.getValue());
         }
     };
