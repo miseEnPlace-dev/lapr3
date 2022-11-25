@@ -28,9 +28,9 @@ int main(void)
   // for (int i = 0; i < 100; i++)
   //  printf("Leitura: %dºC\n", sens_temp(20, pcg32_random_r()));
 
-  //  printf("\nSensor de velocidade vento:\n");
-  // for (int i = 0; i < 100; i++)
-  //  printf("Leitura: %dkm\\h\n", sens_velc_vento(1, pcg32_random_r()));
+  printf("\nSensor de velocidade vento:\n");
+  for (int i = 0; i < 100; i++)
+   printf("Leitura: %dkm\\h\n", sens_velc_vento(1, pcg32_random_r()));
 
   // printf("\nSensor de direção vento:\n");
   // for (int i = 0; i < 100; i++)
