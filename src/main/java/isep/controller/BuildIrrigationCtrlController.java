@@ -16,21 +16,22 @@ import isep.utils.CustomScanner;
 public class BuildIrrigationCtrlController {
   Company company;
   CustomScanner scanner;
+  List<String> data;
 
   public BuildIrrigationCtrlController(Company company, String fileName)
       throws FileNotFoundException {
     this.company = company;
     this.scanner = new CustomScanner(fileName);
+    this.data = new ArrayList<>();
   }
 
   // read the irrigation plan file
   public List<String> readIrrigationPlanFile() {
-    List<String> data = new ArrayList<>();
+    if (this.data.isEmpty())
+      while (scanner.hasNextLine())
+        data.add(scanner.nextLine());
 
-    while (scanner.hasNextLine())
-      data.add(scanner.nextLine());
-
-    return data;
+    return this.data;
   }
 
   // map the contents of the file to an irrigation plan object

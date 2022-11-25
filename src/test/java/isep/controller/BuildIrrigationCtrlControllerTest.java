@@ -43,10 +43,10 @@ public class BuildIrrigationCtrlControllerTest {
   @Test
   public void testSlightlyDifferentIrrigationPlan1() throws NameNotFoundException,
       InvalidHourFormatException, InvalidFileFormatException, FileNotFoundException {
-    ctrl = new BuildIrrigationCtrlController(App.getInstance().getCompany(),
+    BuildIrrigationCtrlController ctrl2 = new BuildIrrigationCtrlController(App.getInstance().getCompany(),
         IRRIGATION_PLAN_2_FILEPATH);
     IrrigationPlan irrigationPlan = IrrigationPlanMock.mockIrrigationPlan();
-    IrrigationPlan actual = ctrl.mapIrrigationPlanData(ctrl.readIrrigationPlanFile());
+    IrrigationPlan actual = ctrl2.mapIrrigationPlanData(ctrl2.readIrrigationPlanFile());
     assertNotEquals(irrigationPlan, actual);
   }
 

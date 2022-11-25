@@ -1,7 +1,7 @@
 package isep.model;
 
 public enum ERegularity {
-  TODOS("RegularityAll"), PARES("RegularityEven"), IMPARES("RegularityOdd");
+  T("RegularityAll"), P("RegularityEven"), I("RegularityOdd");
 
   public final String name;
   public static final String prefix = "isep.model.";

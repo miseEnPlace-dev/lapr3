@@ -27,13 +27,17 @@ public class IrrigationPlanMock {
     AgriculturalParcelStore pStore = App.getInstance().getCompany().getAgriculturalParcelStore();
 
     Cultivation c = new Cultivation("C1", false);
-    cStore.add(c);
+    if (cStore.findCultivationByDesignation("C1") == null)
+      cStore.add(c);
     AgriculturalParcel p1 = new AgriculturalParcel("Parcela1", 10, c);
     AgriculturalParcel p2 = new AgriculturalParcel("Parcela2", 10, c);
     AgriculturalParcel p3 = new AgriculturalParcel("Parcela3", 10, c);
-    pStore.add(p1);
-    pStore.add(p2);
-    pStore.add(p3);
+
+    if (pStore.findParcelByDesignation("Parcela1") == null) {
+      pStore.add(p1);
+      pStore.add(p2);
+      pStore.add(p3);
+    }
 
     List<ParcelIrrigationWrapper> parcels = new ArrayList<>();
     parcels.add(new ParcelIrrigationWrapper(p1, 15, new RegularityAll()));
@@ -44,15 +48,16 @@ public class IrrigationPlanMock {
     Calendar startDate = Calendar.getInstance();
     // startDate.set(2022, 11, 20);
 
-    return new IrrigationPlan(hours, parcels, startDate, Constants.DEFAULT_IRRIGATION_PLAN_DURATION);
+    return new IrrigationPlan(hours, parcels, startDate,
+        Constants.DEFAULT_IRRIGATION_PLAN_DURATION);
   }
 
   public static List<String> mockIrrigationPlanFile1() {
     List<String> data = new ArrayList<>();
     data.add("8h30,15h00");
-    data.add("Parcela1,15,todos");
-    data.add("Parcela2,20,impares");
-    data.add("Parcela3,12,pares");
+    data.add("Parcela1,15,t");
+    data.add("Parcela2,20,i");
+    data.add("Parcela3,12,p");
     return data;
   }
 }
