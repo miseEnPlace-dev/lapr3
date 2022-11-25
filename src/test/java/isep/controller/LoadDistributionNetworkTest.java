@@ -22,6 +22,7 @@ public class LoadDistributionNetworkTest {
     entityStore = new EntityStoreMock().mockEntityStoreFromSampleFile();
 
     loadDistributionNetworkController = new LoadDistributionNetworkController(entityStore, distancesFileName);
+
   }
 
   @Test

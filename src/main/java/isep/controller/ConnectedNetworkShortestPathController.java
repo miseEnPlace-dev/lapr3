@@ -18,6 +18,8 @@ public class ConnectedNetworkShortestPathController {
    * Constructor
    */
   public ConnectedNetworkShortestPathController(DistributionNetwork network) {
+    if (network == null)
+      throw new IllegalArgumentException("Network is null");
     this.network = network;
   }
 
