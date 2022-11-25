@@ -30,8 +30,14 @@ public class DistributionNetwork {
     return network.numVertices();
   }
 
+  /**
+   * Gets the shortest path between all entities in the network
+   *
+   * @param ce comparator to sort the entities by the distance
+   * @return graph of the shortest path from the distribution network
+   */
   public AdjacencyMapGraph<Entity, Integer> getMinimumShortestPathNetwork(Comparator<Integer> ce) {
-    return kruskall(this.getNetwork(), ce);
+    return getConnectedNetworkShortestPath(this.getNetwork(), ce);
   }
 
   /**
@@ -43,7 +49,8 @@ public class DistributionNetwork {
    * @param ce  comparator between elements of type E
    * @return the minimum distance graph
    */
-  private AdjacencyMapGraph<Entity, Integer> kruskall(Graph<Entity, Integer> g, Comparator<Integer> ce) {
+  private AdjacencyMapGraph<Entity, Integer> getConnectedNetworkShortestPath(Graph<Entity, Integer> g,
+      Comparator<Integer> ce) {
     AdjacencyMapGraph<Entity, Integer> mst = new AdjacencyMapGraph<>(false);
 
     List<Edge<Entity, Integer>> edges = new ArrayList<>();
