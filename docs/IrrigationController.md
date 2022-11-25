@@ -37,3 +37,9 @@ Este ficheiro tem o seguinte formato:
 Existe uma linha `<parcela>,<duração>,<regularidade>` para cada parcela a regar.
 
 Só uma parcela pode estar a ser regada a qualquer momento. A ordem de rega é de acordo com a ordem das linhas no plano.
+
+O campo `<regularidade>` pode ter os seguintes valores:
+
+- `t` - a rega acontece todos os dias;
+- `i` - a rega acontece nos dias ímpares;
+- `p` - a rega acontece nos dias pares.
