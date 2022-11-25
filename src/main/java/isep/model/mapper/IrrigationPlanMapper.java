@@ -9,6 +9,7 @@ import isep.model.AgriculturalParcel;
 import isep.model.Company;
 import isep.model.IrrigationPlan;
 import isep.model.ParcelIrrigationWrapper;
+import isep.model.RegularityFactory;
 import isep.model.Regularity;
 import isep.model.store.AgriculturalParcelStore;
 import isep.shared.Constants;
@@ -33,7 +34,7 @@ public class IrrigationPlanMapper {
 
     // header contains hours
     String[] header = data.get(0).split(",");
-    for (int i = 1; i < header.length; i++) {
+    for (int i = 0; i < header.length; i++) {
       hours.add(new Hour(header[i]));
     }
 
@@ -54,22 +55,7 @@ public class IrrigationPlanMapper {
 
       int duration = Integer.parseInt(durationStr);
 
-      Regularity method = null;
-
-      switch (regularity) {
-        case "todos":
-          method = (day) -> (true);
-          break;
-        case "pares":
-          method = (day) -> (day % 2 == 0);
-          break;
-        case "impares":
-          method = (day) -> (day % 2 == 1);
-          break;
-        default:
-          throw new InvalidFileFormatException(
-              String.format("Invalid regularity %s in line %d", regularity, i + 1));
-      }
+      Regularity method = RegularityFactory.getRegularity(regularity);
 
       ParcelIrrigationWrapper wrapper = new ParcelIrrigationWrapper(foundParcel, duration, method);
       parcels.add(wrapper);
@@ -80,7 +66,8 @@ public class IrrigationPlanMapper {
     creationDate.set(Calendar.SECOND, 0);
     creationDate.set(Calendar.MILLISECOND, 0);
 
-    IrrigationPlan irrigationPlan = new IrrigationPlan(hours, parcels, creationDate, Constants.DEFAULT_IRRIGATION_PLAN_DURATION);
+    IrrigationPlan irrigationPlan = new IrrigationPlan(hours, parcels, creationDate,
+        Constants.DEFAULT_IRRIGATION_PLAN_DURATION);
 
     return irrigationPlan;
   }
