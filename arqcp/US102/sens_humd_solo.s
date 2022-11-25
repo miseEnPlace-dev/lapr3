@@ -26,15 +26,15 @@ sens_humd_solo:
   cbtw
   imulb %sil # al = pluvio contrib
 
-  testb %al, %al # if pluv contrib < 0
+  cmpb $0, %al # if pluv contrib < 0
   jge .C1
   negb %al
 
   .C1:
-    cmpb %al, %cl
+    cmpb %cl, %al
     jg .over_limit # if over limit set contrib to max contrib
     negb %cl
-    cmpb %al, %cl
+    cmpb %cl, %al
     jl .under_limit # if under limit set contrib to min contrib
   .C2:
     movb SOIL_HUMD_SENSOR_MAX_VARIATION(%rip), %cl # cl = max variation of humidity sensor
@@ -66,11 +66,10 @@ sens_humd_solo:
   movb %cl, %al
   jmp .C2
 .under_limit:
-  negb %cl
   movb %cl, %al
   jmp .C2
 .over_percentage:
-  testb %al, %al
+  cmpb $0, %al
   jl .module
   .continue:
     movb $100, %dil

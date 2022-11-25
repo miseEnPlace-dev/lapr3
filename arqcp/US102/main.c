@@ -34,7 +34,7 @@ int main(void)
   unsigned char lastRead = 0;
   for (char i = 0; i < 127; i++) {
     if(i == 20) printf("--------\n");
-    unsigned char result = sens_humd_solo(lastRead,i > 0 ? 0 : 5, pcg32_random_r());
+    unsigned char result = sens_humd_solo(lastRead,i > 20 ? 0 : 5, pcg32_random_r());
     printf("Leitura: %d%\n", result);
     lastRead = result;
   }
