@@ -1,8 +1,15 @@
 #ifndef SENSORS_H
 #define SENSORS_H
 
+#define TEMPERATUES_SENSOR_INTERVAL 10
+#define VELOCITY_SENSOR_INTERVAL 10
+#define DIRECTION_SENSOR_INTERVAL 10
+#define PLUVIOSITY_SENSOR_INTERVAL 10
+#define SOIL_HUMIDITY_SENSOR_INTERVAL 10
+#define AIR_HUMIDITY_SENSOR_INTERVAL 10
+
 const char TEMP_SENSOR_MAX_VARIATION = 2;
-const char VELC_SENSOR_MAX_VARIATION = 20; // velocity variation (km/h)
+const char VELC_SENSOR_MAX_VARIATION = 10; // velocity variation (km/h)
 const char PLUV_CONTRIB_HUMD = 8;          // every mm of pluv contributes to humidity (%)
 const char SOIL_HUMD_SENSOR_MAX_VARIATION = 3;
 const char SOIL_HUMD_SENSOR_RAINING_MAX_VARIATION = 20;
