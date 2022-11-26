@@ -162,6 +162,60 @@ public class ConnectedNetworkShortestPathTest {
   }
 
   /*
-   *
+   * Test connected network with file distancias_small.csv
    */
+  @Test
+  public void testShortestPathConnectedNetworkSmall() throws FileNotFoundException {
+    String distancesFileName = "src/test/resources/distancias_small.csv";
+    entityStore = new EntityStoreMock().mockSimpleEntityStore();
+
+    LoadDistributionNetworkController loadDistributionNetworkController = new LoadDistributionNetworkController(
+        entityStore,
+        distancesFileName);
+
+    DistributionNetwork network = loadDistributionNetworkController.loadDistributionNetwork();
+
+    Graph<Entity, Integer> result = connectedNetworkShortestPath.getConnectedNetworkShortestPath(network);
+
+    assertEquals(17, result.numVertices());
+    assertEquals(32, result.numEdges());
+
+    int sumWeight = 0;
+    // gets the sum of the weights of the edges
+    for (Edge<Entity, Integer> weight : result.edges()) {
+      sumWeight += weight.getWeight();
+    }
+
+    assertEquals(2370464, sumWeight);
+
+  }
+
+  /*
+   * Test connected network with file distancias_big.csv
+   */
+  @Test
+  public void testShortestPathConnectedNetworkBig() throws FileNotFoundException {
+    String distancesFileName = "data/big/distancias_big.csv";
+    entityStore = new EntityStoreMock().mockEntityStoreWithBigFile();
+
+    LoadDistributionNetworkController loadDistributionNetworkController = new LoadDistributionNetworkController(
+        entityStore,
+        distancesFileName);
+
+    DistributionNetwork network = loadDistributionNetworkController.loadDistributionNetwork();
+
+    Graph<Entity, Integer> result = connectedNetworkShortestPath.getConnectedNetworkShortestPath(network);
+
+    assertEquals(323, result.numVertices());
+    assertEquals(644, result.numEdges());
+
+    int sumWeight = 0;
+    // gets the sum of the weights of the edges
+    for (Edge<Entity, Integer> weight : result.edges()) {
+      sumWeight += weight.getWeight();
+    }
+
+    assertEquals(8463964, sumWeight);
+
+  }
 }
