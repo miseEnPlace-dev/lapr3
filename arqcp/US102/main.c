@@ -15,6 +15,8 @@
 #define NUM_SOIL_HUMIDITY_REGISTERS SEC_IN_DAY / SOIL_HUMIDITY_SENSOR_INTERVAL
 #define NUM_AIR_HUMIDITY_REGISTERS SEC_IN_DAY / AIR_HUMIDITY_SENSOR_INTERVAL
 
+#define NUM_OF_SENSORS 6
+
 uint64_t state = 0;
 uint64_t inc = 0;
 
@@ -29,6 +31,14 @@ int main(void)
   unsigned char pluvio[NUM_PLUVIO_REGISTERS];
   unsigned char soil_humidity[NUM_SOIL_HUMIDITY_REGISTERS];
   unsigned char air_humidity[NUM_AIR_HUMIDITY_REGISTERS];
+
+  char *matrix[NUM_OF_SENSORS];
+  matrix[0] = temperatures;
+  matrix[1] = vel_wind;
+  matrix[2] = dir_wind;
+  matrix[3] = pluvio;
+  matrix[4] = soil_humidity;
+  matrix[5] = air_humidity;
 
   generate_base_temp_values(temperatures, NUM_TEMPERATURE_REGISTERS);
 

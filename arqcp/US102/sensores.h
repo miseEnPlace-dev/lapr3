@@ -18,6 +18,9 @@ const char VELC_SENSOR_DIR_WIND_MAX_VARIATION = 10;
 const char PLUVIO_SENSOR_MAX_VARIATION = 5;
 const char HIGH_TEMP_DEFAULT = 25;
 const char PLUVIO_SENSOR_MAX_VARIATION_HIGH_TEMP = 2;
+
+extern char **matrix;
+
 #include <stdint.h>
 uint32_t pcg32_random_r();
 uint64_t get_value_from_dev_random();
