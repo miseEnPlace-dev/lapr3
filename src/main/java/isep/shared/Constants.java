@@ -11,4 +11,6 @@ public class Constants {
   public static final String DISTANCES_DISTANCE_FIELD_NAME = " length (m)";
 
   public static final int DEFAULT_IRRIGATION_PLAN_DURATION = 30;
+
+  public static final String PARAMS_FILENAME = "config.properties";
 }
