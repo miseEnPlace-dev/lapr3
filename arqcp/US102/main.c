@@ -100,5 +100,8 @@ int main(void)
   printf("\n");
   print_unsigned_result(air_humidity, NUM_AIR_HUMIDITY_REGISTERS, "Humidade do Ar", "%");
 
+  printf("\n-- Leituras dos sensores agrupadas --\n\n");
+  print_result_matrix(matrix,NUM_TEMPERATURE_REGISTERS, NUM_VEL_WIND_REGISTERS, NUM_DIR_WIND_REGISTERS, NUM_PLUVIO_REGISTERS, NUM_SOIL_HUMIDITY_REGISTERS, NUM_AIR_HUMIDITY_REGISTERS);
+
   return 0;
 }
