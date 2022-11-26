@@ -4,9 +4,16 @@
 #include "sensores.h"
 #include "random.h"
 #include "generate_base_values.h"
+#include "print_result.h"
 
 #define SEC_IN_DAY 86400
-#define NUM_TEMP_VALUES 50
+
+#define NUM_TEMPERATURE_REGISTERS SEC_IN_DAY / TEMPERATURES_SENSOR_INTERVAL
+#define NUM_VEL_WIND_REGISTERS SEC_IN_DAY / VELOCITY_SENSOR_INTERVAL
+#define NUM_DIR_WIND_REGISTERS SEC_IN_DAY / DIRECTION_SENSOR_INTERVAL
+#define NUM_PLUVIO_REGISTERS SEC_IN_DAY / PLUVIO_SENSOR_INTERVAL
+#define NUM_SOIL_HUMIDITY_REGISTERS SEC_IN_DAY / SOIL_HUMIDITY_SENSOR_INTERVAL
+#define NUM_AIR_HUMIDITY_REGISTERS SEC_IN_DAY / AIR_HUMIDITY_SENSOR_INTERVAL
 
 uint64_t state = 0;
 uint64_t inc = 0;
@@ -16,73 +23,72 @@ int main(void)
   state = get_value_from_dev_random();
   inc = get_value_from_dev_random();
 
-  char base_temp_values[NUM_TEMP_VALUES];
-  generate_base_temp_values(base_temp_values,NUM_TEMP_VALUES);
+  char temperatures[NUM_TEMPERATURE_REGISTERS];
+  unsigned char vel_wind[NUM_VEL_WIND_REGISTERS];
+  unsigned char dir_wind[NUM_DIR_WIND_REGISTERS];
+  unsigned char pluvio[NUM_PLUVIO_REGISTERS];
+  unsigned char soil_humidity[NUM_SOIL_HUMIDITY_REGISTERS];
+  unsigned char air_humidity[NUM_AIR_HUMIDITY_REGISTERS];
 
-  char temperatues[SEC_IN_DAY/TEMPERATUES_SENSOR_INTERVAL];
-  char vel_wind[SEC_IN_DAY/VELOCITY_SENSOR_INTERVAL];
-  char dir_wind[SEC_IN_DAY/DIRECTION_SENSOR_INTERVAL];
-  char pluvio[SEC_IN_DAY/PLUVIOSITY_SENSOR_INTERVAL];
-  char soil_humd[SEC_IN_DAY/SOIL_HUMIDITY_SENSOR_INTERVAL];
-  char air_humd[SEC_IN_DAY/AIR_HUMIDITY_SENSOR_INTERVAL];
+  generate_base_temp_values(temperatures, NUM_TEMPERATURE_REGISTERS);
+
+  char last_temp_read = TEMP_BASE_VALUE;
+  for (int i = 0; i < NUM_TEMPERATURE_REGISTERS; i++)
+  {
+    last_temp_read = sens_temp(last_temp_read, pcg32_random_r());
+    temperatures[i] = (last_temp_read + temperatures[i]) / 2;
+  }
+
+  unsigned char last_read = 1;
+  for (int i = 0; i < NUM_VEL_WIND_REGISTERS; i++)
+  {
+    last_read = sens_velc_vento(last_read, pcg32_random_r());
+    vel_wind[i] = last_read;
+  }
+
+  last_read = 1;
+  for (int i = 0; i < NUM_DIR_WIND_REGISTERS; i++)
+  {
+    last_read = sens_dir_vento(last_read, pcg32_random_r());
+    dir_wind[i] = last_read;
+  }
+
+  last_read = 1;
+  for (int i = 0; i < NUM_PLUVIO_REGISTERS; i++)
+  {
+    unsigned char last_temp_read = temperatures[i * (TEMPERATURES_SENSOR_INTERVAL / PLUVIO_SENSOR_INTERVAL)];
+    last_read = sens_pluvio(last_read, last_temp_read, pcg32_random_r());
+    pluvio[i] = last_read;
+  }
+
+  last_read = 10;
+  for (int i = 0; i < NUM_SOIL_HUMIDITY_REGISTERS; i++)
+  {
+    unsigned char last_pluvio_read = pluvio[i * (NUM_PLUVIO_REGISTERS / NUM_SOIL_HUMIDITY_REGISTERS)];
+    last_read = sens_humd_solo(last_read, last_pluvio_read, pcg32_random_r());
+    soil_humidity[i] = last_read;
+  }
+
+  last_read = 10;
+  for (int i = 0; i < NUM_AIR_HUMIDITY_REGISTERS; i++)
+  {
+    unsigned char last_pluvio_read = pluvio[i * (NUM_PLUVIO_REGISTERS / NUM_SOIL_HUMIDITY_REGISTERS)];
+    last_read = sens_humd_atm(last_read, last_pluvio_read, pcg32_random_r());
+    air_humidity[i] = last_read;
+  }
 
   printf("-- Leituras dos sensores --\n\n");
+  print_result(temperatures, NUM_TEMPERATURE_REGISTERS, "Temperatura", "ºC");
+  printf("\n");
+  print_unsigned_result(vel_wind, NUM_VEL_WIND_REGISTERS, "Velocidade do Vento", "km/h");
+  printf("\n");
+  print_unsigned_result(dir_wind, NUM_DIR_WIND_REGISTERS, "Direção do Vento", "º");
+  printf("\n");
+  print_unsigned_result(pluvio, NUM_PLUVIO_REGISTERS, "Pluviosidade", "mm");
+  printf("\n");
+  print_unsigned_result(soil_humidity, NUM_SOIL_HUMIDITY_REGISTERS, "Humidade do Solo", "%");
+  printf("\n");
+  print_unsigned_result(air_humidity, NUM_AIR_HUMIDITY_REGISTERS, "Humidade do Ar", "%");
 
-  //for(int i = 0; i < NUM_TEMP_VALUES; i++)
-  //printf("base_temp_values[%d]=%d\n",i,base_temp_values[i]);
-
-  printf("Sensor de temperatura:\n");
-  char lastReadTemp = 10;
-  for (int i = 0; i < 100; i++) {
-      char result = sens_temp(lastReadTemp, pcg32_random_r());
-      temperatues[i] = result;
-      printf("Leitura: %dºC\n", result);
-      lastReadTemp = result;
-  }
-
-  printf("\nSensor de velocidade vento:\n");
-  unsigned char lastReadVel = 1;
-  for (int i = 0; i < 100; i++) {
-    unsigned char result = sens_velc_vento(lastReadVel, pcg32_random_r());
-    vel_wind[i] = result;
-    printf("Leitura: %dkm\\h\n", result);
-    lastReadVel = result;
-  }
-
-  printf("\nSensor de direção vento:\n");
-  unsigned char lastReadDir = 1;
-  for (int i = 0; i < 100; i++) {
-    unsigned char result = sens_dir_vento(lastReadDir, pcg32_random_r());
-    dir_wind[i] = result;
-    printf("Leitura: %dº\n", result);
-    lastReadDir = result;
-  }
-
-  printf("\nSensor de pluviosidade:\n");
-  unsigned char lastReadPluvio = 2;
-  for (int i = 0; i < 100; i++) {
-    unsigned char result = sens_pluvio(lastReadPluvio,20, pcg32_random_r());
-    pluvio[i] = result;
-    printf("Leitura: %dmm\n", result);
-    lastReadPluvio = result;
-  }
-
-  printf("\nSensor de humidade Solo:\n");
-  unsigned char lastReadSoil = 10;
-  for (int i = 0; i < 100; i++) {
-   unsigned char result = sens_humd_solo(lastReadSoil,1, pcg32_random_r());
-   soil_humd[i] = result;
-   printf("Leitura: %d%\n", result);
-   lastReadSoil = result;
-  }
-
-  printf("\nSensor de humidade Ar:\n");
-  unsigned char lastRead = 10;
-  for (int i = 0; i < 100; i++) {
-   unsigned char result = sens_humd_atm(lastRead,1, pcg32_random_r());
-   air_humd[i] = result;
-   printf("Leitura: %d%\n", result);
-   lastRead = result;
-  }
   return 0;
 }
