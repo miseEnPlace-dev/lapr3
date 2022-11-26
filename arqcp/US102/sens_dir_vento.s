@@ -17,7 +17,7 @@ sens_dir_vento:
 
   idivb %cl # divide random component by max variation (remainder in %ah)
 
-  shrw $8, %ax # get the value to right position (%al)
+  sarw $8, %ax # get the value to right position (%al)
 
   addb %dil, %al # add to last random value
 

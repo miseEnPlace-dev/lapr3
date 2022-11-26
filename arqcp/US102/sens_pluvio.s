@@ -1,5 +1,5 @@
 .section .text
-  .global sens_pluvio # char sens_pluvio(unsigned char ult_pluvio, char ult_temp, char comp_rand)
+  .global sens_pluvio # unsigned char sens_pluvio(unsigned char ult_pluvio, char ult_temp, char comp_rand)
 
 # rdi ult_pluvio
 # rsi ult_temp
@@ -9,29 +9,24 @@ sens_pluvio:
   movb %dl, %al # al = random component
   cbtw # cast byte to word
 
-  testw %ax, %ax # if random value < 0
-  js compRandNegative
-
-continue1:
-
   cmpb HIGH_TEMP_DEFAULT(%rip), %sil # if ult_temp > HIGH_TEMP_DEFAULT
   jge high_temp
 
   movb PLUVIO_SENSOR_MAX_VARIATION(%rip), %cl # cl = max variation
-  jmp continue2
+  jmp continue
 
 high_temp:
     movb PLUVIO_SENSOR_MAX_VARIATION_HIGH_TEMP(%rip), %cl # cl = max variation
 
-continue2:
+continue:
   incb %cl # cl = max variation + 1
 
-  divb %cl # divide random component by max variation (remainder in %ah)
+  idivb %cl # divide random component by max variation (remainder in %ah)
 
-  shrw $8, %ax # get the value to right position (%al)
+  sarw $8, %ax # get the value to right position (%al)
 
   addb %dil, %al # add to last random value
-  jmp end
+  jmp continue2
 
 pluvioZero:
 
@@ -46,7 +41,11 @@ compRandNegative:
 
   negw %ax # make positive
 
-  jmp continue1
+  jmp end
+
+continue2:
+  testb %al, %al # if random component == 0
+  js compRandNegative
 
 end:
   ret
