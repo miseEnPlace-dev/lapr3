@@ -18,7 +18,7 @@ class GraphAlgorithmsTest {
 
   final Graph<String, Integer> completeMap = new AdjacencyMapGraph<>(false);
   Graph<String, Integer> incompleteMap = new AdjacencyMapGraph<>(false);
-  Graph<Integer, Integer> integerGraph = new AdjacencyMapGraph<>(false);
+  Graph<Integer, Integer> integerGraphNotDirected = new AdjacencyMapGraph<>(false);
 
   @BeforeEach
   public void setUp() {
@@ -228,38 +228,39 @@ class GraphAlgorithmsTest {
   }
 
   /**
-   * Test of minimumSpanningTree method, of class GraphAlgorithms.
+   * Test of minimumSpanningTree method, of class GraphAlgorithms, with
+   * notDirected graph.
    */
   @Test
   public void testMinimumSpanningTree() {
     System.out.println("Test of minimum spanning tree");
 
-    integerGraph.addVertex(0);
-    integerGraph.addVertex(1);
-    integerGraph.addVertex(2);
-    integerGraph.addVertex(3);
-    integerGraph.addVertex(4);
-    integerGraph.addVertex(5);
-    integerGraph.addVertex(6);
-    integerGraph.addVertex(7);
-    integerGraph.addVertex(8);
+    integerGraphNotDirected.addVertex(0);
+    integerGraphNotDirected.addVertex(1);
+    integerGraphNotDirected.addVertex(2);
+    integerGraphNotDirected.addVertex(3);
+    integerGraphNotDirected.addVertex(4);
+    integerGraphNotDirected.addVertex(5);
+    integerGraphNotDirected.addVertex(6);
+    integerGraphNotDirected.addVertex(7);
+    integerGraphNotDirected.addVertex(8);
 
-    integerGraph.addEdge(0, 1, 4);
-    integerGraph.addEdge(0, 7, 8);
-    integerGraph.addEdge(1, 7, 11);
-    integerGraph.addEdge(1, 2, 8);
-    integerGraph.addEdge(7, 6, 1);
-    integerGraph.addEdge(7, 8, 7);
-    integerGraph.addEdge(2, 3, 7);
-    integerGraph.addEdge(2, 8, 2);
-    integerGraph.addEdge(2, 5, 4);
-    integerGraph.addEdge(6, 5, 2);
-    integerGraph.addEdge(6, 8, 6);
-    integerGraph.addEdge(3, 4, 9);
-    integerGraph.addEdge(3, 5, 14);
-    integerGraph.addEdge(5, 4, 10);
+    integerGraphNotDirected.addEdge(0, 1, 4);
+    integerGraphNotDirected.addEdge(0, 7, 8);
+    integerGraphNotDirected.addEdge(1, 7, 11);
+    integerGraphNotDirected.addEdge(1, 2, 8);
+    integerGraphNotDirected.addEdge(7, 6, 1);
+    integerGraphNotDirected.addEdge(7, 8, 7);
+    integerGraphNotDirected.addEdge(2, 3, 7);
+    integerGraphNotDirected.addEdge(2, 8, 2);
+    integerGraphNotDirected.addEdge(2, 5, 4);
+    integerGraphNotDirected.addEdge(6, 5, 2);
+    integerGraphNotDirected.addEdge(6, 8, 6);
+    integerGraphNotDirected.addEdge(3, 4, 9);
+    integerGraphNotDirected.addEdge(3, 5, 14);
+    integerGraphNotDirected.addEdge(5, 4, 10);
 
-    Graph<Integer, Integer> result = GraphAlgorithms.kruskall(integerGraph, Integer::compare);
+    Graph<Integer, Integer> result = GraphAlgorithms.kruskall(integerGraphNotDirected, Integer::compare);
 
     Graph<Integer, Integer> expectedGraph = new AdjacencyMapGraph<Integer, Integer>(false);
     expectedGraph.addVertex(0);
@@ -291,7 +292,11 @@ class GraphAlgorithmsTest {
     assertEquals(expectedGraph.numVertices(), result.numVertices(), "The number of vertices should be the same");
     assertEquals(expectedGraph.numEdges(), result.numEdges(), "The number of edges should be the same");
 
+    int totalWeight = 0;
+    for (Edge<Integer, Integer> edge : result.edges()) {
+      totalWeight += edge.getWeight();
+    }
+    assertEquals(74, totalWeight, "The total weight of the minimum spanning tree should be 74");
     assertEquals(expectedGraph, result);
   }
-
 }

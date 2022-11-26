@@ -32,6 +32,7 @@ public class ConnectedNetworkShortestPathTest {
    */
   @Test
   public void testShortestPathSourceNotNullNumVertices() {
+    System.out.println("testShortestPathSourceNotNullNumVertices");
     DistributionNetwork network = loadDistributionNetworkController.loadDistributionNetwork();
 
     assertEquals(connectedNetworkShortestPath.getConnectedNetworkShortestPath(network).numVertices(), 9);
@@ -42,6 +43,7 @@ public class ConnectedNetworkShortestPathTest {
    */
   @Test
   public void testShortestPathSourceNotNullNumEdges() {
+    System.out.println("testShortestPathSourceNotNullNumEdges");
     DistributionNetwork network = loadDistributionNetworkController.loadDistributionNetwork();
 
     Graph<Entity, Integer> graph = connectedNetworkShortestPath.getConnectedNetworkShortestPath(network);
@@ -56,6 +58,7 @@ public class ConnectedNetworkShortestPathTest {
    */
   @Test
   public void testShortestPathSourceInNetworkAnotherFile() throws FileNotFoundException {
+    System.out.println("testShortestPathSourceInNetworkAnotherFile");
     String distancesFileName = "src/test/resources/distancesSampleV3.csv";
     LoadDistributionNetworkController loadDistributionNetworkController = new LoadDistributionNetworkController(
         entityStore,
@@ -74,6 +77,7 @@ public class ConnectedNetworkShortestPathTest {
    */
   @Test
   public void testShortestPathInDegree() throws FileNotFoundException {
+    System.out.println("testShortestPathInDegree");
     String distancesFileName = "src/test/resources/distancesSampleV3.csv";
     LoadDistributionNetworkController loadDistributionNetworkController = new LoadDistributionNetworkController(
         entityStore,
@@ -101,6 +105,7 @@ public class ConnectedNetworkShortestPathTest {
    */
   @Test
   public void testShortestPathConnectedNetwork() throws FileNotFoundException {
+    System.out.println("testShortestPathConnectedNetwork");
     String distancesFileName = "src/test/resources/distancesSampleV3.csv";
     LoadDistributionNetworkController loadDistributionNetworkController = new LoadDistributionNetworkController(
         entityStore,
@@ -166,6 +171,7 @@ public class ConnectedNetworkShortestPathTest {
    */
   @Test
   public void testShortestPathConnectedNetworkSmall() throws FileNotFoundException {
+    System.out.println("testShortestPathConnectedNetworkSmall");
     String distancesFileName = "src/test/resources/distancias_small.csv";
     entityStore = new EntityStoreMock().mockSimpleEntityStore();
 
@@ -195,6 +201,7 @@ public class ConnectedNetworkShortestPathTest {
    */
   @Test
   public void testShortestPathConnectedNetworkBig() throws FileNotFoundException {
+    System.out.println("testShortestPathConnectedNetworkBig");
     String distancesFileName = "data/big/distancias_big.csv";
     entityStore = new EntityStoreMock().mockEntityStoreWithBigFile();
 
