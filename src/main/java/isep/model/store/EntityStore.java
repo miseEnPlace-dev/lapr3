@@ -9,20 +9,18 @@ import isep.model.Entity;
 import isep.model.Role;
 import isep.shared.Constants;
 
-public class EntityStore {
-  private List<Entity> entities;
-
+public class EntityStore extends Store<Entity> {
   public EntityStore() {
-    this.entities = new ArrayList<Entity>();
+    super();
   }
 
   public boolean addEntity(String id, double latitude, double longitude, String localizationId, Role role) {
     Entity entity = new Entity(id, latitude, longitude, localizationId, role);
-    return entities.add(entity);
+    return store.add(entity);
   }
 
   public Entity getEntityByLocalizationId(String localizationId) {
-    for (Entity entity : entities)
+    for (Entity entity : store)
       if (entity.getLocalizationId().equals(localizationId))
         return entity;
 
@@ -42,8 +40,13 @@ public class EntityStore {
     return null;
   }
 
+  /**
+   * Deprecated method, use getElements() instead.
+   *
+   * @deprecated
+   */
   public Iterator<Entity> getEntities() {
-    return entities.iterator();
+    return store.iterator();
   }
 
   public void addEntitiesFromList(List<Map<String, String>> localizations) {
