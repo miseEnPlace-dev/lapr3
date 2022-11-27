@@ -14,6 +14,11 @@ import isep.utils.graph.AdjacencyMapGraph;
 import isep.utils.graph.Edge;
 import isep.utils.graph.Graph;
 
+/*
+ * Test connected network shortest path
+ *
+ * @author André Barros <1211299@isep.ipp.pt>
+ */
 public class ConnectedNetworkShortestPathTest {
   private static EntityStore entityStore;
   private static LoadDistributionNetworkController loadDistributionNetworkController;
@@ -85,11 +90,9 @@ public class ConnectedNetworkShortestPathTest {
 
     DistributionNetwork network = loadDistributionNetworkController.loadDistributionNetwork();
 
-    Entity ct1 = entityStore.getEntityByLocalizationId("CT1");
-
     Graph<Entity, Integer> graph = connectedNetworkShortestPath.getConnectedNetworkShortestPath(network);
 
-    assertEquals(graph.inDegree(ct1), 1);
+    assertEquals(graph.inDegree(entityStore.getEntityByLocalizationId("CT1")), 1);
     assertEquals(graph.inDegree(entityStore.getEntityByLocalizationId("CT2")), 1);
     assertEquals(graph.inDegree(entityStore.getEntityByLocalizationId("CT3")), 2);
     assertEquals(graph.inDegree(entityStore.getEntityByLocalizationId("CT4")), 1);
