@@ -3,6 +3,9 @@ package isep.model;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 
 public class DistributionNetworkTest {
@@ -62,4 +65,65 @@ public class DistributionNetworkTest {
 
     assertNull(network.getDistanceBetweenDirectedConnected(e1, null));
   }
+
+  @Test
+  public void testGetEnterprises() {
+    DistributionNetwork network = new DistributionNetwork();
+    Enterprise e1 = new Enterprise("e1", 1, 1, "l1");
+    Producer e2 = new Producer("e2", 2, 2, "l2");
+    Client e3 = new Client("e3", 3, 3, "l3");
+    Enterprise e4 = new Enterprise("e4", 4, 4, "l4");
+    Integer distance = 10;
+    network.addRelation(e1, e2, distance);
+    network.addRelation(e3, e4, distance);
+
+    List<Enterprise> expected = new ArrayList<>();
+    expected.add(e1);
+    expected.add(e4);
+
+    List<Enterprise> actual = network.getEnterprises();
+
+    assertEquals(expected.size(), actual.size());
+    assertEquals(expected.get(0), actual.get(0));
+    assertEquals(expected.get(1), actual.get(1));
+  }
+
+
+  @Test
+  public void testGetEnterprisesForEmptyNetwork() {
+    DistributionNetwork network = new DistributionNetwork();
+
+    assertEquals(network.getEnterprises(), new ArrayList<>());
+  }
+
+
+  @Test
+  public void testGetNonEnterprises() {
+    DistributionNetwork network = new DistributionNetwork();
+    Enterprise e1 = new Enterprise("e1", 1, 1, "l1");
+    Producer e2 = new Producer("e2", 2, 2, "l2");
+    Client e3 = new Client("e3", 3, 3, "l3");
+    Enterprise e4 = new Enterprise("e4", 4, 4, "l4");
+    Integer distance = 10;
+    network.addRelation(e1, e2, distance);
+    network.addRelation(e3, e4, distance);
+
+    List<Entity> expected = new ArrayList<>();
+    expected.add(e2);
+    expected.add(e3);
+
+    List<Entity> actual = network.getNonEnterprises();
+
+    assertEquals(expected.size(), actual.size());
+    assertEquals(expected.get(0), actual.get(0));
+    assertEquals(expected.get(1), actual.get(1));
+  }
+
+  @Test
+  public void testGetNonEnterprisesForEmptyNetwork() {
+    DistributionNetwork network = new DistributionNetwork();
+
+    assertEquals(network.getNonEnterprises(), new ArrayList<>());
+  }
+
 }
