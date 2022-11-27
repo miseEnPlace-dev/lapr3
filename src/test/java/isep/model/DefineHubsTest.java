@@ -34,6 +34,10 @@ public class DefineHubsTest {
         assertEquals(expected.size(), actual.size());
         assertEquals(expected.get(0), actual.get(0));
         assertEquals(expected.get(1), actual.get(1));
+        assertEquals(true, e3.isHub());
+        assertEquals(true, e1.isHub());
+        assertEquals(false, e2.isHub());
+
     }
 
     @Test
@@ -80,6 +84,8 @@ public class DefineHubsTest {
 
         assertEquals(expected.size(), actual.size());
         assertEquals(expected.get(0), actual.get(0));
+        assertEquals(true, e1.isHub());
+
     }
     
 }
