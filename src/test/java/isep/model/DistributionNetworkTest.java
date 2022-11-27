@@ -126,4 +126,30 @@ public class DistributionNetworkTest {
     assertEquals(network.getNonEnterprises(), new ArrayList<>());
   }
 
+  @Test
+  public void testShortestPathDistance() {
+    DistributionNetwork network = new DistributionNetwork();
+    Entity e1 = new Enterprise("e1", 1, 1, "l1");
+    Entity e2 = new Producer("e2", 2, 2, "l2");
+    Entity e3 = new Client("e3", 3, 3, "l3");
+    network.addRelation(e1, e2, 100);
+    network.addRelation(e2, e3, 200);
+    network.addRelation(e1, e3, 350);
+
+    assertEquals(300, network.shortestPathDistance(e1, e3));
+  }
+
+  @Test
+  public void testShortestPathDistanceBetweenSameEntities() {
+    DistributionNetwork network = new DistributionNetwork();
+    Entity e1 = new Enterprise("e1", 1, 1, "l1");
+    Entity e2 = new Producer("e2", 2, 2, "l2");
+    Entity e3 = new Client("e3", 3, 3, "l3");
+    network.addRelation(e1, e2, 100);
+    network.addRelation(e2, e3, 200);
+    network.addRelation(e1, e3, 350);
+
+    assertEquals(0, network.shortestPathDistance(e1, e1));
+  }
+
 }
