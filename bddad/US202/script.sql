@@ -27,14 +27,14 @@ DROP TABLE AplicacaoFatorProducao CASCADE CONSTRAINTS PURGE;
 DROP TABLE TipoAplicacaoFatorProducao CASCADE CONSTRAINTS PURGE;
 
 CREATE TABLE Setor (
-  id_setor   number(10),
+  id_setor   number(10) GENERATED AS IDENTITY,
   designacao varchar2(50) NOT NULL,
   area       float(10) NOT NULL,
   PRIMARY KEY (id_setor)
 );
 
 CREATE TABLE Cultura (
-  id_cultura      number(2),
+  id_cultura      number(2) GENERATED AS IDENTITY,
   cultura         varchar2(50) NOT NULL,
   id_tipo_cultura number(2) NOT NULL,
   id_produto      number(8) NOT NULL,
@@ -42,13 +42,13 @@ CREATE TABLE Cultura (
 );
 
 CREATE TABLE TipoCultura (
-  id_tipo_cultura number(2),
+  id_tipo_cultura number(2) GENERATED AS IDENTITY,
   tipo_cultura    varchar2(50) NOT NULL,
   PRIMARY KEY (id_tipo_cultura)
 );
 
 CREATE TABLE FatorProducao (
-  id_fator_producao      number(2),
+  id_fator_producao      number(2) GENERATED AS IDENTITY,
   id_tipo_fator_producao number(2) NOT NULL,
   nome                   varchar2(50) NOT NULL,
   id_tipo_formulacao     number(2) NOT NULL,
@@ -56,13 +56,13 @@ CREATE TABLE FatorProducao (
 );
 
 CREATE TABLE TipoFatorProducao (
-  id_tipo_fator_producao number(2),
+  id_tipo_fator_producao number(2) GENERATED AS IDENTITY,
   tipo_fator_producao    varchar2(50) NOT NULL,
   PRIMARY KEY (id_tipo_fator_producao)
 );
 
 CREATE TABLE Substancia (
-  id_substancia number(2),
+  id_substancia number(2) GENERATED AS IDENTITY,
   substancia    varchar2(50) NOT NULL,
   PRIMARY KEY (id_substancia)
 );
@@ -75,7 +75,7 @@ CREATE TABLE FatorProducaoSubstancia (
 );
 
 CREATE TABLE TipoFormulacao (
-  id_tipo_formulacao number(2),
+  id_tipo_formulacao number(2) GENERATED AS IDENTITY,
   tipo_formulacao    varchar2(50) NOT NULL,
   PRIMARY KEY (id_tipo_formulacao)
 );
@@ -91,19 +91,19 @@ CREATE TABLE PlanoRega (
 );
 
 CREATE TABLE TipoRega (
-  id_tpo_rega     number(2),
+  id_tpo_rega     number(2) GENERATED AS IDENTITY,
   id_tipo_tubagem number(10) NOT NULL,
   PRIMARY KEY (id_tpo_rega)
 );
 
 CREATE TABLE TipoTubagem (
-  id_tipo_tubagem number(10),
+  id_tipo_tubagem number(10) GENERATED AS IDENTITY,
   tipo_tubagem    varchar2(50) NOT NULL,
   PRIMARY KEY (id_tipo_tubagem)
 );
 
 CREATE TABLE Sensor (
-  id_sensor        number(8),
+  id_sensor        number(8) GENERATED AS IDENTITY,
   identificador    varchar2(5) NOT NULL,
   id_tipo_sensor   number(2) NOT NULL,
   valor_referencia double precision NOT NULL,
@@ -111,13 +111,13 @@ CREATE TABLE Sensor (
 );
 
 CREATE TABLE TipoSensor (
-  id_tipo_sensor number(2),
+  id_tipo_sensor number(2) GENERATED AS IDENTITY,
   tipo_sensor    varchar2(2) NOT NULL,
   PRIMARY KEY (id_tipo_sensor)
 );
 
 CREATE TABLE Cliente (
-  id_cliente         number(8),
+  id_cliente         number(8) GENERATED AS IDENTITY,
   nome               varchar2(50) NOT NULL,
   nif                number(9) NOT NULL,
   email              varchar2(250) NOT NULL,
@@ -141,7 +141,7 @@ CREATE TABLE ProdutoEncomenda (
 );
 
 CREATE TABLE Produto (
-  id_produto     number(8),
+  id_produto     number(8) GENERATED AS IDENTITY,
   designacao     varchar2(50) NOT NULL,
   preco          double precision NOT NULL,
   id_escalao_iva number(2) NOT NULL,
@@ -156,7 +156,7 @@ CREATE TABLE Localidade (
 );
 
 CREATE TABLE EscalaoIva (
-  id_escalao_iva number(2),
+  id_escalao_iva number(2) GENERATED AS IDENTITY,
   valor          double precision NOT NULL,
   PRIMARY KEY (id_escalao_iva)
 );
@@ -185,7 +185,7 @@ CREATE TABLE Colheita (
 );
 
 CREATE TABLE Encomenda (
-  id_encomenda              number(8),
+  id_encomenda              number(8) GENERATED AS IDENTITY,
   id_cliente                number(8) NOT NULL,
   data_vencimento_pagamento timestamp(0) NOT NULL,
   data_registo              timestamp(0) NOT NULL,
@@ -204,13 +204,13 @@ CREATE TABLE Plantacao (
 );
 
 CREATE TABLE Edificio (
-  id_edificio      number(10),
+  id_edificio      number(10) GENERATED AS IDENTITY,
   id_tipo_edificio number(3) NOT NULL,
   PRIMARY KEY (id_edificio)
 );
 
 CREATE TABLE TipoEdificio (
-  id_tipo_edificio number(3),
+  id_tipo_edificio number(3) GENERATED AS IDENTITY,
   tipo_edificio    varchar2(50) NOT NULL,
   PRIMARY KEY (id_tipo_edificio)
 );
@@ -224,7 +224,7 @@ CREATE TABLE AplicacaoFatorProducao (
 );
 
 CREATE TABLE TipoAplicacaoFatorProducao (
-  id_tipo_aplicacao_fator_producao number(3),
+  id_tipo_aplicacao_fator_producao number(3) GENERATED AS IDENTITY,
   tipo_aplicacao_fator_producao    varchar2(50) NOT NULL,
   PRIMARY KEY (id_tipo_aplicacao_fator_producao)
 );
