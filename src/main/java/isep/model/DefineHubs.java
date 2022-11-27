@@ -27,7 +27,7 @@ public class DefineHubs {
         List<Map.Entry<Enterprise, Integer>> list = new ArrayList<>();
         
         // if the graph is not connect there is no hub
-        // if(!distN.isConnected) return distN;
+        // if(!distN.isConnected) return null;
 
         List<Enterprise> enterprises = distN.getEnterprises();
         List<Entity> nonEnterprises = distN.getNonEnterprises();
@@ -58,9 +58,14 @@ public class DefineHubs {
         // make N enterprises Hubs and return them in a list
         List<Enterprise> result = new ArrayList<>();
         for (int i = 0; i < N; i++) {
+            try{
             Enterprise hub = list.get(i).getKey();
             hub.makeHub();
             result.add(hub);
+            } catch (Exception E){
+                System.out.printf("There are only %d number of Enterprises\n", i);
+                break;
+            }
         } 
         return result;
     }
