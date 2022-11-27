@@ -44,7 +44,7 @@ public class DefineHubs {
             // sums the shortest path size to from e1 to all nonEnterprises
             // count paths between e1 and all nonEnterprises
             for (int j = 0; j < nonEnterprises.size(); j++) {
-                sum += distN.shortestPathSize(e1, nonEnterprises.get(j));
+                sum += distN.shortestPathDistance(e1, nonEnterprises.get(j));
                 count++;
             }
 

@@ -55,7 +55,7 @@ public class DistributionNetwork {
     return nonEnterprises;
   }
 
-  public int shortestPathSize(Entity e1, Entity e2){
+  public int shortestPathDistance(Entity e1, Entity e2){
     ArrayList<Integer> shortPath = new ArrayList<>();
     GraphAlgorithms.shortestPath(network, e1, e2, Integer :: compareTo, Integer :: sum, null, new LinkedList<>());
     int dist = 0;
