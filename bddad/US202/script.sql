@@ -123,7 +123,6 @@ CREATE TABLE Encomenda (
   id_encomenda              number(8) GENERATED AS IDENTITY, 
   id_cliente                number(8) NOT NULL, 
   data_vencimento_pagamento timestamp(0) NOT NULL, 
-  valor                     float(10) NOT NULL, 
   data_entrega              timestamp(0), 
   data_pagamento            timestamp(0), 
   morada_entrega            varchar2(80) NOT NULL, 
