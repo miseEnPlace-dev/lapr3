@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import isep.utils.MergeSort;
+import isep.utils.graph.GraphAlgorithms;
 
 
 public class DefineHubs {
@@ -26,8 +27,7 @@ public class DefineHubs {
 
         List<Map.Entry<Enterprise, Integer>> list = new ArrayList<>();
         
-        // if the graph is not connect there is no hub
-        // if(!distN.isConnected) return null;
+        if(!distN.isConnected()) return null;
 
         List<Enterprise> enterprises = distN.getEnterprises();
         List<Entity> nonEnterprises = distN.getNonEnterprises();

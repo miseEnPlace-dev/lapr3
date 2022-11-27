@@ -59,4 +59,8 @@ public class DistributionNetwork {
     return GraphAlgorithms.shortestPath(network, e1, e2, Integer :: compareTo, Integer :: sum, 0, new LinkedList<>());
   }
 
+  public boolean isConnected(){
+    return GraphAlgorithms.isConnected(network);
+  }
+
 }
