@@ -30,41 +30,56 @@ CREATE TABLE Setor (
   id_setor   number(10),
   designacao varchar2(50) NOT NULL,
   area       float(10) NOT NULL,
-  PRIMARY KEY (id_setor));
+  PRIMARY KEY (id_setor)
+);
+
 CREATE TABLE Cultura (
   id_cultura      number(2),
   cultura         varchar2(50) NOT NULL,
   id_tipo_cultura number(2) NOT NULL,
   id_produto      number(8) NOT NULL,
-  PRIMARY KEY (id_cultura));
+  PRIMARY KEY (id_cultura)
+);
+
 CREATE TABLE TipoCultura (
   id_tipo_cultura number(2),
   tipo_cultura    varchar2(50) NOT NULL,
-  PRIMARY KEY (id_tipo_cultura));
+  PRIMARY KEY (id_tipo_cultura)
+);
+
 CREATE TABLE FatorProducao (
   id_fator_producao      number(2),
   id_tipo_fator_producao number(2) NOT NULL,
   nome                   varchar2(50) NOT NULL,
   id_tipo_formulacao     number(2) NOT NULL,
-  PRIMARY KEY (id_fator_producao));
+  PRIMARY KEY (id_fator_producao)
+);
+
 CREATE TABLE TipoFatorProducao (
   id_tipo_fator_producao number(2),
   tipo_fator_producao    varchar2(50) NOT NULL,
-  PRIMARY KEY (id_tipo_fator_producao));
+  PRIMARY KEY (id_tipo_fator_producao)
+);
+
 CREATE TABLE Substancia (
   id_substancia number(2),
   substancia    varchar2(50) NOT NULL,
-  PRIMARY KEY (id_substancia));
+  PRIMARY KEY (id_substancia)
+);
+
 CREATE TABLE FatorProducaoSubstancia (
   id_fator_producao number(2) NOT NULL,
   id_substancia     number(2) NOT NULL,
   percentagem       number(3) NOT NULL,
-  PRIMARY KEY (id_fator_producao,
-  id_substancia));
+  PRIMARY KEY (id_fator_producao, id_substancia)
+);
+
 CREATE TABLE TipoFormulacao (
   id_tipo_formulacao number(2),
   tipo_formulacao    varchar2(50) NOT NULL,
-  PRIMARY KEY (id_tipo_formulacao));
+  PRIMARY KEY (id_tipo_formulacao)
+);
+
 CREATE TABLE PlanoRega (
   id_setor      number(10) NOT NULL,
   data_inicio   timestamp(0) NOT NULL,
@@ -72,26 +87,35 @@ CREATE TABLE PlanoRega (
   periodicidade number(10) NOT NULL,
   id_tipo_rega  number(2) NOT NULL,
   data_fim      timestamp(0),
-  PRIMARY KEY (id_setor,
-  data_inicio));
+  PRIMARY KEY (id_setor, data_inicio)
+);
+
 CREATE TABLE TipoRega (
   id_tpo_rega     number(2),
   id_tipo_tubagem number(10) NOT NULL,
-  PRIMARY KEY (id_tpo_rega));
+  PRIMARY KEY (id_tpo_rega)
+);
+
 CREATE TABLE TipoTubagem (
   id_tipo_tubagem number(10),
   tipo_tubagem    varchar2(50) NOT NULL,
-  PRIMARY KEY (id_tipo_tubagem));
+  PRIMARY KEY (id_tipo_tubagem)
+);
+
 CREATE TABLE Sensor (
   id_sensor        number(8),
   identificador    varchar2(5) NOT NULL,
   id_tipo_sensor   number(2) NOT NULL,
   valor_referencia double precision NOT NULL,
-  PRIMARY KEY (id_sensor));
+  PRIMARY KEY (id_sensor)
+);
+
 CREATE TABLE TipoSensor (
   id_tipo_sensor number(2),
   tipo_sensor    varchar2(2) NOT NULL,
-  PRIMARY KEY (id_tipo_sensor));
+  PRIMARY KEY (id_tipo_sensor)
+);
+
 CREATE TABLE Cliente (
   id_cliente         number(8),
   nome               varchar2(50) NOT NULL,
@@ -103,7 +127,9 @@ CREATE TABLE Cliente (
   cod_postal_entrega varchar2(8) NOT NULL,
   cod_postal         varchar2(8) NOT NULL,
   CONSTRAINT ck_email_format CHECK(REGEXP_LIKE(email, '^[a-zA-Z0-9]+(?:\.[a-zA-Z0-9]+)*@[a-zA-Z0-9]+(?:\.[a-zA-Z0-9]+)*$')),
-  PRIMARY KEY (id_cliente));
+  PRIMARY KEY (id_cliente)
+);
+
 CREATE TABLE ProdutoEncomenda (
   id_encomenda       number(8) NOT NULL,
   id_produto         number(8) NOT NULL,
@@ -111,44 +137,53 @@ CREATE TABLE ProdutoEncomenda (
   preco_unitario     double precision NOT NULL,
   iva                double precision NOT NULL,
   designacao_produto varchar2(50) NOT NULL,
-  PRIMARY KEY (id_encomenda,
-  id_produto));
+  PRIMARY KEY (id_encomenda, id_produto)
+);
+
 CREATE TABLE Produto (
   id_produto     number(8),
   designacao     varchar2(50) NOT NULL,
   preco          double precision NOT NULL,
   id_escalao_iva number(2) NOT NULL,
-  PRIMARY KEY (id_produto));
+  PRIMARY KEY (id_produto)
+);
+
 CREATE TABLE Localidade (
   cod_postal varchar2(8),
   localidade varchar2(50) NOT NULL,
   CONSTRAINT ck_codigos_postais_cod_postal CHECK(REGEXP_LIKE(cod_postal,'\d{4}-\d{3}') ),
-  PRIMARY KEY (cod_postal));
+  PRIMARY KEY (cod_postal)
+);
+
 CREATE TABLE EscalaoIva (
   id_escalao_iva number(2),
   valor          double precision NOT NULL,
-  PRIMARY KEY (id_escalao_iva));
+  PRIMARY KEY (id_escalao_iva)
+);
+
 CREATE TABLE MedicaoSensor (
   id_sensor number(8) NOT NULL,
   id_setor  number(10) NOT NULL,
   medicao   number(3) NOT NULL,
   data_hora timestamp(0) NOT NULL,
-  PRIMARY KEY (id_sensor,
-  id_setor));
+  PRIMARY KEY (id_sensor, id_setor)
+);
+
 CREATE TABLE Rega (
   id_setor     number(10) NOT NULL,
   data         timestamp(0) NOT NULL,
   id_tipo_rega number(2) NOT NULL,
-  PRIMARY KEY (id_setor,
-  data,
-  id_tipo_rega));
+  PRIMARY KEY (id_setor, data, id_tipo_rega)
+);
+
 CREATE TABLE Colheita (
   id_produto number(8) NOT NULL,
   data       timestamp(0) NOT NULL,
   quantidade number(8) NOT NULL,
   id_setor   number(10) NOT NULL,
-  PRIMARY KEY (id_produto,
-  data));
+  PRIMARY KEY (id_produto, data)
+);
+
 CREATE TABLE Encomenda (
   id_encomenda              number(8),
   id_cliente                number(8) NOT NULL,
@@ -158,34 +193,42 @@ CREATE TABLE Encomenda (
   data_pagamento            timestamp(0),
   morada_entrega            varchar2(80) NOT NULL,
   cod_postal_entrega        varchar2(8) NOT NULL,
-  PRIMARY KEY (id_encomenda));
+  PRIMARY KEY (id_encomenda)
+);
+
 CREATE TABLE Plantacao (
   id_setor    number(10) NOT NULL,
   id_cultura  number(2) NOT NULL,
   data_inicio timestamp(0) NOT NULL,
-  PRIMARY KEY (id_setor,
-  id_cultura,
-  data_inicio));
+  PRIMARY KEY (id_setor, id_cultura, data_inicio)
+);
+
 CREATE TABLE Edificio (
   id_edificio      number(10),
   id_tipo_edificio number(3) NOT NULL,
-  PRIMARY KEY (id_edificio));
+  PRIMARY KEY (id_edificio)
+);
+
 CREATE TABLE TipoEdificio (
   id_tipo_edificio number(3),
   tipo_edificio    varchar2(50) NOT NULL,
-  PRIMARY KEY (id_tipo_edificio));
+  PRIMARY KEY (id_tipo_edificio)
+);
+
 CREATE TABLE AplicacaoFatorProducao (
   id_setor                         number(10) NOT NULL,
   id_fator_producao                number(2) NOT NULL,
   data                             timestamp(0) NOT NULL,
   id_tipo_aplicacao_fator_producao number(3) NOT NULL,
-  PRIMARY KEY (id_setor,
-  id_fator_producao,
-  data));
+  PRIMARY KEY (id_setor, id_fator_producao, data)
+);
+
 CREATE TABLE TipoAplicacaoFatorProducao (
   id_tipo_aplicacao_fator_producao number(3),
   tipo_aplicacao_fator_producao    varchar2(50) NOT NULL,
-  PRIMARY KEY (id_tipo_aplicacao_fator_producao));
+  PRIMARY KEY (id_tipo_aplicacao_fator_producao)
+);
+
 ALTER TABLE FatorProducaoSubstancia ADD CONSTRAINT FKFatorProdu760304 FOREIGN KEY (id_substancia) REFERENCES Substancia (id_substancia);
 ALTER TABLE FatorProducaoSubstancia ADD CONSTRAINT FKFatorProdu994771 FOREIGN KEY (id_fator_producao) REFERENCES FatorProducao (id_fator_producao);
 ALTER TABLE FatorProducao ADD CONSTRAINT FKFatorProdu929110 FOREIGN KEY (id_tipo_fator_producao) REFERENCES TipoFatorProducao (id_tipo_fator_producao);
