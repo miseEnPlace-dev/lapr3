@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import isep.mock.EntityStoreMock;
 import isep.model.Entity;
 import isep.model.store.EntityStore;
+import isep.shared.exceptions.NetworkNotConnectedException;
 import isep.utils.graph.AdjacencyMapGraph;
 import isep.utils.graph.Graph;
 
@@ -37,7 +38,7 @@ public class ConnectedNetworkShortestPathControllerTest {
    * Test connected network shortest path controller
    */
   @Test
-  public void testGetConnectedNetworkShortestPathCtrl() {
+  public void testGetConnectedNetworkShortestPathCtrl() throws NetworkNotConnectedException {
     System.out.println("testGetConnectedNetworkShortestPathCtrl");
     connectedNetworkShortestPathController = new ConnectedNetworkShortestPathController(
         loadDistributionNetworkController.loadDistributionNetwork());
@@ -91,7 +92,7 @@ public class ConnectedNetworkShortestPathControllerTest {
    * Test network null assertThrow
    */
   @Test
-  public void testGetConnectedNetworkShortestCtrlNetworkNull() {
+  public void testGetConnectedNetworkShortestCtrlNetworkNull() throws NetworkNotConnectedException {
     System.out.println("testGetConnectedNetworkShortestCtrlNetworkNull");
     assertThrows(IllegalArgumentException.class, () -> {
       connectedNetworkShortestPathController = new ConnectedNetworkShortestPathController(null);
@@ -102,7 +103,7 @@ public class ConnectedNetworkShortestPathControllerTest {
    * Test connected network shortest path controller inDegree vertices
    */
   @Test
-  public void testGetConnectedNetworkkShortestPathCtrlInDegree() {
+  public void testGetConnectedNetworkkShortestPathCtrlInDegree() throws NetworkNotConnectedException {
     System.out.println("testGetConnectedNetworkkShortestPathCtrlInDegree");
     connectedNetworkShortestPathController = new ConnectedNetworkShortestPathController(
         loadDistributionNetworkController.loadDistributionNetwork());
@@ -170,7 +171,7 @@ public class ConnectedNetworkShortestPathControllerTest {
    * Test connected network shortest path controller outDegree vertices
    */
   @Test
-  public void testGetConnectedNetworkkShortestPathCtrlOutDegree() {
+  public void testGetConnectedNetworkkShortestPathCtrlOutDegree() throws NetworkNotConnectedException {
     System.out.println("testGetConnectedNetworkkShortestPathCtrlOutDegree");
 
     connectedNetworkShortestPathController = new ConnectedNetworkShortestPathController(

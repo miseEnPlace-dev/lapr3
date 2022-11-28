@@ -3,7 +3,7 @@ package isep.controller;
 import isep.model.DistributionNetwork;
 import isep.utils.graph.Graph;
 import isep.model.Entity;
-
+import isep.shared.exceptions.NetworkNotConnectedException;
 import isep.model.ConnectedNetworkShortestPath;
 
 /*
@@ -26,7 +26,7 @@ public class ConnectedNetworkShortestPathController {
   /*
    * Get shortest path between all entities in a network
    */
-  public Graph<Entity, Integer> getConnectedNetworkShortestPath() {
+  public Graph<Entity, Integer> getConnectedNetworkShortestPath() throws NetworkNotConnectedException {
     ConnectedNetworkShortestPath conectedNetworkShortestPath = new ConnectedNetworkShortestPath();
 
     return conectedNetworkShortestPath.getConnectedNetworkShortestPath(this.network);

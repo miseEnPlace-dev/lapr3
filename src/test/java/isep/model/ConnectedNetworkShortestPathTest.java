@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import isep.controller.LoadDistributionNetworkController;
 import isep.mock.EntityStoreMock;
 import isep.model.store.EntityStore;
+import isep.shared.exceptions.NetworkNotConnectedException;
 import isep.utils.graph.AdjacencyMapGraph;
 import isep.utils.graph.Edge;
 import isep.utils.graph.Graph;
@@ -36,7 +37,7 @@ public class ConnectedNetworkShortestPathTest {
    * Test connected network shortest path num vertices
    */
   @Test
-  public void testShortestPathSourceNotNullNumVertices() {
+  public void testShortestPathSourceNotNullNumVertices() throws NetworkNotConnectedException {
     System.out.println("testShortestPathSourceNotNullNumVertices");
     DistributionNetwork network = loadDistributionNetworkController.loadDistributionNetwork();
 
@@ -47,7 +48,7 @@ public class ConnectedNetworkShortestPathTest {
    * Test connected network shortest path num edges
    */
   @Test
-  public void testShortestPathSourceNotNullNumEdges() {
+  public void testShortestPathSourceNotNullNumEdges() throws NetworkNotConnectedException {
     System.out.println("testShortestPathSourceNotNullNumEdges");
     DistributionNetwork network = loadDistributionNetworkController.loadDistributionNetwork();
 
@@ -62,7 +63,7 @@ public class ConnectedNetworkShortestPathTest {
    * file
    */
   @Test
-  public void testShortestPathSourceInNetworkAnotherFile() throws FileNotFoundException {
+  public void testShortestPathSourceInNetworkAnotherFile() throws FileNotFoundException, NetworkNotConnectedException {
     System.out.println("testShortestPathSourceInNetworkAnotherFile");
     String distancesFileName = "src/test/resources/distancesSampleV3.csv";
     LoadDistributionNetworkController loadDistributionNetworkController = new LoadDistributionNetworkController(
@@ -81,7 +82,7 @@ public class ConnectedNetworkShortestPathTest {
    * Test inDegree of vertex in connected network shortest path
    */
   @Test
-  public void testShortestPathInDegree() throws FileNotFoundException {
+  public void testShortestPathInDegree() throws FileNotFoundException, NetworkNotConnectedException {
     System.out.println("testShortestPathInDegree");
     String distancesFileName = "src/test/resources/distancesSampleV3.csv";
     LoadDistributionNetworkController loadDistributionNetworkController = new LoadDistributionNetworkController(
@@ -107,7 +108,7 @@ public class ConnectedNetworkShortestPathTest {
    * Test connected network shortest path
    */
   @Test
-  public void testShortestPathConnectedNetwork() throws FileNotFoundException {
+  public void testShortestPathConnectedNetwork() throws FileNotFoundException, NetworkNotConnectedException {
     System.out.println("testShortestPathConnectedNetwork");
     String distancesFileName = "src/test/resources/distancesSampleV3.csv";
     LoadDistributionNetworkController loadDistributionNetworkController = new LoadDistributionNetworkController(
@@ -173,7 +174,7 @@ public class ConnectedNetworkShortestPathTest {
    * Test connected network with file distancias_small.csv
    */
   @Test
-  public void testShortestPathConnectedNetworkSmall() throws FileNotFoundException {
+  public void testShortestPathConnectedNetworkSmall() throws FileNotFoundException, NetworkNotConnectedException {
     System.out.println("testShortestPathConnectedNetworkSmall");
     String distancesFileName = "src/test/resources/distancias_small.csv";
     entityStore = new EntityStoreMock().mockSimpleEntityStore();
@@ -203,7 +204,7 @@ public class ConnectedNetworkShortestPathTest {
    * Test connected network with file distancias_big.csv
    */
   @Test
-  public void testShortestPathConnectedNetworkBig() throws FileNotFoundException {
+  public void testShortestPathConnectedNetworkBig() throws FileNotFoundException, NetworkNotConnectedException {
     System.out.println("testShortestPathConnectedNetworkBig");
     String distancesFileName = "data/big/distancias_big.csv";
     entityStore = new EntityStoreMock().mockEntityStoreWithBigFile();
