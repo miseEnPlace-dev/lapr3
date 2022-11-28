@@ -27,12 +27,12 @@ int main(void)
 
   char temperatures[NUM_TEMPERATURE_REGISTERS];
   unsigned char vel_wind[NUM_VEL_WIND_REGISTERS];
-  unsigned char dir_wind[NUM_DIR_WIND_REGISTERS];
+  unsigned short dir_wind[NUM_DIR_WIND_REGISTERS];
   unsigned char pluvio[NUM_PLUVIO_REGISTERS];
   unsigned char soil_humidity[NUM_SOIL_HUMIDITY_REGISTERS];
   unsigned char air_humidity[NUM_AIR_HUMIDITY_REGISTERS];
 
-  char *matrix[NUM_OF_SENSORS];
+  short *matrix[NUM_OF_SENSORS];
   matrix[0] = temperatures;
   matrix[1] = vel_wind;
   matrix[2] = dir_wind;
@@ -56,11 +56,11 @@ int main(void)
     vel_wind[i] = last_read;
   }
 
-  last_read = 1;
+  short last_read_wind = 100;
   for (int i = 0; i < NUM_DIR_WIND_REGISTERS; i++)
   {
-    last_read = sens_dir_vento(last_read, pcg32_random_r());
-    dir_wind[i] = last_read;
+    last_read_wind = sens_dir_vento(last_read_wind, pcg32_random_r());
+    dir_wind[i] = last_read_wind;
   }
 
   last_read = 1;
@@ -92,7 +92,7 @@ int main(void)
   printf("\n");
   print_unsigned_result(vel_wind, NUM_VEL_WIND_REGISTERS, "Velocidade do Vento", "km/h");
   printf("\n");
-  print_unsigned_result(dir_wind, NUM_DIR_WIND_REGISTERS, "Direção do Vento", "º");
+  //print_unsigned_result(dir_wind, NUM_DIR_WIND_REGISTERS, "Direção do Vento", "º");
   printf("\n");
   print_unsigned_result(pluvio, NUM_PLUVIO_REGISTERS, "Pluviosidade", "mm");
   printf("\n");
