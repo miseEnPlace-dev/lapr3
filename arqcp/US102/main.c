@@ -87,21 +87,18 @@ int main(void)
     air_humidity[i] = last_read;
   }
 
-  printf("-- Leituras dos sensores --\n\n");
-  print_result(temperatures, NUM_TEMPERATURE_REGISTERS, "Temperatura", "ºC");
-  printf("\n");
-  print_unsigned_result(vel_wind, NUM_VEL_WIND_REGISTERS, "Velocidade do Vento", "km/h");
-  printf("\n");
-  print_unsigned_result(dir_wind, NUM_DIR_WIND_REGISTERS, "Direção do Vento", "º");
-  printf("\n");
-  print_unsigned_result(pluvio, NUM_PLUVIO_REGISTERS, "Pluviosidade", "mm");
-  printf("\n");
-  print_unsigned_result(soil_humidity, NUM_SOIL_HUMIDITY_REGISTERS, "Humidade do Solo", "%");
-  printf("\n");
-  print_unsigned_result(air_humidity, NUM_AIR_HUMIDITY_REGISTERS, "Humidade do Ar", "%");
-
-  printf("\n-- Leituras dos sensores agrupadas --\n\n");
-  print_result_matrix(matrix,NUM_TEMPERATURE_REGISTERS, NUM_VEL_WIND_REGISTERS, NUM_DIR_WIND_REGISTERS, NUM_PLUVIO_REGISTERS, NUM_SOIL_HUMIDITY_REGISTERS, NUM_AIR_HUMIDITY_REGISTERS);
+  // printf("-- Leituras dos sensores --\n\n");
+  // print_result(temperatures, NUM_TEMPERATURE_REGISTERS, "Temperatura", "ºC");
+  // printf("\n");
+  // print_unsigned_result(vel_wind, NUM_VEL_WIND_REGISTERS, "Velocidade do Vento", "km/h");
+  // printf("\n");
+  // print_unsigned_result(dir_wind, NUM_DIR_WIND_REGISTERS, "Direção do Vento", "º");
+  // printf("\n");
+  // print_unsigned_result(pluvio, NUM_PLUVIO_REGISTERS, "Pluviosidade", "mm");
+  // printf("\n");
+  // print_unsigned_result(soil_humidity, NUM_SOIL_HUMIDITY_REGISTERS, "Humidade do Solo", "%");
+  // printf("\n");
+  // print_unsigned_result(air_humidity, NUM_AIR_HUMIDITY_REGISTERS, "Humidade do Ar", "%");
 
   return 0;
 }
