@@ -9,7 +9,8 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-import Exceptions.InvalidNumberOfHubsException;
+import isep.shared.exceptions.InvalidNumberOfHubsException;
+
 
 public class DistributionNetworkTest {
   @Test
