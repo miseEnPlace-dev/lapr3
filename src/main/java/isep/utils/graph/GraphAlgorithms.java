@@ -85,6 +85,19 @@ public class GraphAlgorithms {
   }
 
   /**
+   * Checks if a graph is connected by performing a breadth-first search and
+   * checking if all vertices were visited
+   *
+   * @param g    Graph instance
+   * @param vert vertex of graph g that will be the source of the search
+   * @return true if the graph is connected, false otherwise
+   */
+  public static <V, E> boolean isConnected(Graph<V, E> g) {
+    LinkedList<V> bfs = BreadthFirstSearch(g, g.vertices().iterator().next());
+    return bfs != null && bfs.size() == g.numVertices();
+  }
+
+  /**
    * Returns all paths from vOrig to vDest
    *
    * @param g       Graph instance
