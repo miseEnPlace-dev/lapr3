@@ -56,7 +56,7 @@ int main(void)
     vel_wind[i] = last_read;
   }
 
-  short last_read_wind = 1;
+  unsigned short last_read_wind = 100;
   for (int i = 0; i < NUM_DIR_WIND_REGISTERS; i++)
   {
     last_read_wind = sens_dir_vento(last_read_wind, pcg32_random_r());
@@ -92,7 +92,7 @@ int main(void)
   printf("\n");
   print_unsigned_result(vel_wind, NUM_VEL_WIND_REGISTERS, "Velocidade do Vento", "km/h");
   printf("\n");
-  //print_unsigned_result(dir_wind, NUM_DIR_WIND_REGISTERS, "Direção do Vento", "º");
+  print_unsigned_result_short(dir_wind, NUM_DIR_WIND_REGISTERS, "Direção do Vento", "º");
   printf("\n");
   print_unsigned_result(pluvio, NUM_PLUVIO_REGISTERS, "Pluviosidade", "mm");
   printf("\n");

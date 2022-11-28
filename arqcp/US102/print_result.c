@@ -14,6 +14,13 @@ void print_unsigned_result(unsigned char *arr, int size, char *name, char *units
     printf("Leitura: %u%s\n", (unsigned int)arr[i], units);
 }
 
+void print_unsigned_result_short(unsigned short *arr, int size, char *name, char *units)
+{
+  printf("Registos %s:\n", name);
+  for (int i = 0; i < size; i++)
+    printf("Leitura: %u%s\n", (unsigned int)arr[i], units);
+}
+
 void print_result_matrix(char *matrix[6], int sizeTemp, int sizeVel, int sizeDir, int sizePluvio, int sizeSoil, int sizeAir)
 {
   print_result(matrix[0], sizeTemp, "Temperatura", "ºC");

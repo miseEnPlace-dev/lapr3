@@ -1,5 +1,5 @@
 .section .text
-  .global sens_dir_vento # unsigned char sens_dir_vento(unsigned short ult_dir_vento, short comp_rand)
+  .global sens_dir_vento # unsigned short sens_dir_vento(unsigned short ult_dir_vento, short comp_rand)
 
 # rdi ult_dir_vento
 # rsi comp_rand
@@ -7,18 +7,21 @@
 sens_dir_vento:
 
   movw %si, %ax # ax = random component
-  cwtd # cast byte to word
+  cbtw # cast byte to word
 
   testw %ax, %ax
   je compRandZero
 
-  movw VELC_SENSOR_DIR_WIND_MAX_VARIATION (%rip), %cx # cw = max variation
-  incw %cx # cx = max variation + 1
+  movb VELC_SENSOR_DIR_WIND_MAX_VARIATION (%rip), %cl # cx = max variation
+  incb %cl # cx = max variation + 1
 
-  idivw %cx # divide random component by max variation (remainder in %dx)
+  idivb %cl # divide random component by max variation (remainder in %ah)
 
-  addw %di, %dx # add to last random value
-  movw %dx, %ax
+  sarw $8, %ax # get the value to right position (%al)
+
+  movsbw %al, %ax # ax = last random
+
+  addw %di, %ax # add to last random value
 
   jmp continue
 
