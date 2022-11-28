@@ -44,5 +44,3 @@ CREATE OR REPLACE PACKAGE BODY gestao_clientes AS
       ROLLBACK TO inicio;
   END registar_cliente;
 END gestao_clientes;
-
-CALL registar_cliente('estiq la', 123456789, 'email@email.com', 'morada', 'morada entrega', 1000, 1234, 1234);

@@ -21,7 +21,7 @@ public class EntityStore {
 
   public boolean addEntity(String id, double latitude, double longitude, String localizationId, Role role) {
     Entity entity = null;
-    switch(role){
+    switch (role) {
       case PRODUCER:
         entity = new Producer(id, latitude, longitude, localizationId);
         break;
@@ -31,6 +31,8 @@ public class EntityStore {
       case ENTERPRISE:
         entity = new Enterprise(id, latitude, longitude, localizationId);
         break;
+      default:
+        entity = null;
     }
     return entities.add(entity);
   }
@@ -46,11 +48,11 @@ public class EntityStore {
   private Role mapIdToRole(String id) {
     String letter = id.substring(0, 1).toLowerCase();
 
-    if (letter.equals('c'))
+    if (letter.equals("c"))
       return Role.CLIENT;
-    if (letter.equals('p'))
+    if (letter.equals("p"))
       return Role.PRODUCER;
-    if (letter.equals('e'))
+    if (letter.equals("e"))
       return Role.ENTERPRISE;
 
     return null;
