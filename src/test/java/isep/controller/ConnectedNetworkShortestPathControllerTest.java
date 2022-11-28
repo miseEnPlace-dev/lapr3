@@ -306,7 +306,7 @@ public class ConnectedNetworkShortestPathControllerTest {
     Entity ct8 = entityStore.getEntityByLocalizationId("CT8");
     Entity ct9 = entityStore.getEntityByLocalizationId("CT9");
 
-    Graph<Entity, Integer> result = network.getMinimumShortestPathNetwork(Integer::compare);
+    Graph<Entity, Integer> result = network.getMinimumShortestPathNetwork();
 
     Graph<Entity, Integer> expectedGraph = new AdjacencyMapGraph<>(false);
     expectedGraph.addVertex(ct1);
