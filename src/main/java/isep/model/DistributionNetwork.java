@@ -1,9 +1,14 @@
 package isep.model;
 
+import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
+import Exceptions.InvalidNumberOfHubsException;
+import isep.utils.MergeSort;
 import isep.utils.graph.AdjacencyMapGraph;
 import isep.utils.graph.Graph;
 import isep.utils.graph.GraphAlgorithms;
@@ -61,6 +66,60 @@ public class DistributionNetwork {
 
   public boolean isConnected(){
     return GraphAlgorithms.isConnected(network);
+  }
+
+  public List<Enterprise> defineHubs(int numberOfHubs) throws InvalidNumberOfHubsException{
+    if(numberOfHubs <= 0) throw(new InvalidNumberOfHubsException());
+
+    List<Map.Entry<Enterprise, Integer>> list = new ArrayList<>();
+    
+    if(!this.isConnected()) return null;
+
+    List<Enterprise> enterprises = this.getEnterprises();
+    List<Entity> nonEnterprises = this.getNonEnterprises();
+
+    for (int i = 0; i < enterprises.size(); i++) {
+
+        int count = 0;
+        int sum = 0;
+        Enterprise e1 = enterprises.get(i);
+
+        // if e1 was a Hub before unMakes it
+        e1.unMakeHub();
+        
+        // sums the shortest path size to from e1 to all nonEnterprises
+        // count paths between e1 and all nonEnterprises
+        for (int j = 0; j < nonEnterprises.size(); j++) {
+            sum += this.shortestPathDistance(e1, nonEnterprises.get(j));
+            count++;
+        }
+
+        // calc avg
+        list.add(new AbstractMap.SimpleEntry<Enterprise, Integer>(e1, sum/count));
+    }
+
+    final Comparator<Map.Entry<Enterprise, Integer>> cmp = new Comparator<Map.Entry<Enterprise, Integer>>(){
+      @Override
+      public int compare(Map.Entry<Enterprise, Integer> o1, Map.Entry<Enterprise, Integer> o2) {
+        return (int) (o1.getValue()-o2.getValue());
+      }
+    };
+    // order list
+    list = new MergeSort<Map.Entry<Enterprise, Integer>>().sort(list, cmp);
+
+    // make N enterprises Hubs and return them in a list
+    List<Enterprise> result = new ArrayList<>();
+    for (int i = 0; i < numberOfHubs; i++) {
+        try{
+        Enterprise hub = list.get(i).getKey();
+        hub.makeHub();
+        result.add(hub);
+        } catch (Exception E){
+            System.out.printf("There are only %d number of Enterprises\n", i);
+            break;
+        }
+    } 
+    return result;
   }
 
 }
