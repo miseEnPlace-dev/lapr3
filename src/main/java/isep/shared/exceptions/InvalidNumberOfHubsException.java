@@ -1,4 +1,4 @@
-package Exceptions;
+package isep.shared.exceptions;
 
 public class InvalidNumberOfHubsException extends Exception{
     public InvalidNumberOfHubsException(){

@@ -2,6 +2,7 @@ CREATE OR REPLACE PACKAGE gestao_clientes AS
   TYPE clientes IS TABLE OF NUMBER INDEX BY BINARY_INTEGER;
 
 FUNCTION registar_cliente(
+    id_cliente CLIENTE.id_cliente%TYPE,
     nome CLIENTE.nome%TYPE,
     nif CLIENTE.nif%TYPE,
     email CLIENTE.email%TYPE,
