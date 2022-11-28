@@ -56,7 +56,7 @@ int main(void)
     vel_wind[i] = last_read;
   }
 
-  short last_read_wind = 100;
+  short last_read_wind = 1;
   for (int i = 0; i < NUM_DIR_WIND_REGISTERS; i++)
   {
     last_read_wind = sens_dir_vento(last_read_wind, pcg32_random_r());

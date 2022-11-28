@@ -35,9 +35,9 @@ public class LoadDistributionNetworkTest {
     Entity ct9 = entityStore.getEntityByLocalizationId("CT9");
     Entity ct5 = entityStore.getEntityByLocalizationId("CT5");
 
-    assertEquals(network.getDistanceBetween(ct7, ct2), 63448);
-    assertEquals(network.getDistanceBetween(ct7, ct6), 67584);
-    assertEquals(network.getDistanceBetween(ct9, ct5), 62655);
+    assertEquals(network.getDistanceBetweenConnectedEntities(ct7, ct2), 63448);
+    assertEquals(network.getDistanceBetweenConnectedEntities(ct7, ct6), 67584);
+    assertEquals(network.getDistanceBetweenConnectedEntities(ct9, ct5), 62655);
   }
 
   @Test
@@ -47,6 +47,6 @@ public class LoadDistributionNetworkTest {
     Entity ct7 = entityStore.getEntityByLocalizationId("CT7");
     Entity ct2 = entityStore.getEntityByLocalizationId("CT2");
 
-    assertEquals(network.getDistanceBetween(ct7, ct2), network.getDistanceBetween(ct2, ct7));
+    assertEquals(network.getDistanceBetweenConnectedEntities(ct7, ct2), network.getDistanceBetweenConnectedEntities(ct2, ct7));
   }
 }

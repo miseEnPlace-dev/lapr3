@@ -5,7 +5,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import isep.model.Client;
+import isep.model.Enterprise;
 import isep.model.Entity;
+import isep.model.Producer;
 import isep.model.Role;
 import isep.shared.Constants;
 
@@ -17,7 +20,18 @@ public class EntityStore {
   }
 
   public boolean addEntity(String id, double latitude, double longitude, String localizationId, Role role) {
-    Entity entity = new Entity(id, latitude, longitude, localizationId, role);
+    Entity entity = null;
+    switch(role){
+      case PRODUCER:
+        entity = new Producer(id, latitude, longitude, localizationId);
+        break;
+      case CLIENT:
+        entity = new Client(id, latitude, longitude, localizationId);
+        break;
+      case ENTERPRISE:
+        entity = new Enterprise(id, latitude, longitude, localizationId);
+        break;
+    }
     return entities.add(entity);
   }
 
