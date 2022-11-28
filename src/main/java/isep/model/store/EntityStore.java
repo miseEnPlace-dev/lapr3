@@ -31,8 +31,6 @@ public class EntityStore {
       case ENTERPRISE:
         entity = new Enterprise(id, latitude, longitude, localizationId);
         break;
-      default:
-        entity = null;
     }
     return entities.add(entity);
   }
