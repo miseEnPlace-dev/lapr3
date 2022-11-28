@@ -1,15 +1,15 @@
 CREATE OR REPLACE PACKAGE BODY gestao_clientes AS
   FUNCTION registar_cliente (
-    id_cliente CLIENTE.id_cliente%TYPE,
-    nome CLIENTE.nome,
+    nome CLIENTE.nome%TYPE,
     nif CLIENTE.nif%TYPE,
     email CLIENTE.email%TYPE,
     morada CLIENTE.morada%TYPE,
     morada_entrega CLIENTE.morada_entrega%TYPE,
-    plafond CLIENTE.plafond%TYPE,
-    cod_postal CLIENTE.cod_postal%TYPE,
-    cod_postal_entrega CLIENTE.cod_postal_entrega%TYPE)
-  RETURN Cliente.id_encomenda%TYPE;
+    plafond CLIENTE.plafond%TYPE)
+  RETURN Cliente.id_cliente%TYPE IS
+    id_cliente Cliente.id_cliente%TYPE;
+    cod_postal Cliente.cod_postal%TYPE;
+    cod_postal_entrega Cliente.cod_postal_entrega%TYPE;
   BEGIN
     SAVEPOINT inicio;
 
@@ -32,7 +32,7 @@ CREATE OR REPLACE PACKAGE BODY gestao_clientes AS
       morada_entrega,
       plafond,
       cod_postal,
-      cod_postal_entrega);
+      cod_postal_entrega) RETURNING id_cliente INTO id_cliente;
 
     DBMS_OUTPUT.PUT_LINE('Cliente ' || id_cliente || ' registado com sucesso.');
 
@@ -44,3 +44,5 @@ CREATE OR REPLACE PACKAGE BODY gestao_clientes AS
       ROLLBACK TO inicio;
   END registar_cliente;
 END gestao_clientes;
+
+CALL registar_cliente('estiq la', 123456789, 'email@email.com', 'morada', 'morada entrega', 1000, 1234, 1234);
