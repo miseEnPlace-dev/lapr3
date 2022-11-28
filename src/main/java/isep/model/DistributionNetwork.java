@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import Exceptions.InvalidNumberOfHubsException;
+import isep.shared.exceptions.InvalidNumberOfHubsException;
 import isep.utils.MergeSort;
 import isep.utils.graph.AdjacencyMapGraph;
 import isep.utils.graph.Graph;
