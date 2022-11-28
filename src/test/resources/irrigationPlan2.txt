@@ -1,0 +1,4 @@
+8h30,15h00
+Parcela1,15,p
+Parcela2,20,i
+Parcela3,12,p
