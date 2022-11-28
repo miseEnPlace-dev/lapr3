@@ -235,4 +235,16 @@ class GraphAlgorithmsTest {
     assertTrue(GraphAlgorithms.isConnected(completeMap), "Complete Map should be connected");
     assertFalse(GraphAlgorithms.isConnected(incompleteMap), "Incomplete Map should not be connected");
   }
+
+  /**
+   * Tests if it is possible to find the minimum number of connections for any two nodes to be connected.
+   *
+   * Vila Real/Braga - Porto - Aveiro - Coimbra - Lisboa - Faro -> 5 connections
+   */
+  @Test
+  public void test1() {
+    LinkedList<String> shortestPath = GraphAlgorithms.shortestPathBetweenFarthestNodes(completeMap, Integer::compare, Integer::sum, 0);
+    int shortestPathConnections = shortestPath.size() - 1;
+    assertEquals(5, shortestPathConnections);
+  }
 }
