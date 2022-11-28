@@ -22,7 +22,7 @@ public class DistributionNetwork {
     return null;
   }
 
-  public Graph<Entity, Integer> getNetwork() {
+  private Graph<Entity, Integer> getNetwork() {
     return network;
   }
 
