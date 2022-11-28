@@ -4,14 +4,15 @@ skinparam classAttributeIconSize 0
 hide methods
 
 class Entity {
-  - id: String
-  - latitude: double
-  - longitude: double
-  - localization: String
+  - latitude
+  - longitude
+  - localization
 }
 
 class Client {}
-class Enterprise {}
+class Enterprise {
+  - isHub
+}
 class Producer {}
 
 Entity <|-- Client
