@@ -248,7 +248,7 @@ public class ConnectedNetworkShortestPathControllerTest {
     System.out.println("testShortestPathSourceNotNullNumVertices");
     DistributionNetwork network = loadDistributionNetworkController.loadDistributionNetwork();
 
-    assertEquals(network.getMinimumShortestPathNetwork(Integer::compare).numVertices(), 9);
+    assertEquals(network.getMinimumShortestPathNetwork().numVertices(), 9);
   }
 
   /*
@@ -259,7 +259,7 @@ public class ConnectedNetworkShortestPathControllerTest {
     System.out.println("testShortestPathSourceNotNullNumEdges");
     DistributionNetwork network = loadDistributionNetworkController.loadDistributionNetwork();
 
-    Graph<Entity, Integer> graph = network.getMinimumShortestPathNetwork(Integer::compare);
+    Graph<Entity, Integer> graph = network.getMinimumShortestPathNetwork();
 
     assertEquals(graph.numEdges(), 16);
     assertEquals(graph.numVertices(), 9);
@@ -278,7 +278,7 @@ public class ConnectedNetworkShortestPathControllerTest {
 
     DistributionNetwork network = loadDistributionNetworkController.loadDistributionNetwork();
 
-    Graph<Entity, Integer> graph = network.getMinimumShortestPathNetwork(Integer::compare);
+    Graph<Entity, Integer> graph = network.getMinimumShortestPathNetwork();
 
     assertEquals(graph.numVertices(), 9);
     assertEquals(graph.numEdges(), 16);
@@ -290,10 +290,9 @@ public class ConnectedNetworkShortestPathControllerTest {
   @Test
   public void testShortestPathConnectedNetwork() throws FileNotFoundException, NetworkNotConnectedException {
     System.out.println("testShortestPathConnectedNetwork");
-    String distancesFileName = "src/test/resources/distancesSampleV3.csv";
     LoadDistributionNetworkController loadDistributionNetworkController = new LoadDistributionNetworkController(
         entityStore,
-        distancesFileName);
+        DISTANCESFILENAMEV3);
 
     DistributionNetwork network = loadDistributionNetworkController.loadDistributionNetwork();
 
@@ -364,7 +363,7 @@ public class ConnectedNetworkShortestPathControllerTest {
 
     DistributionNetwork network = loadDistributionNetworkController.loadDistributionNetwork();
 
-    Graph<Entity, Integer> result = network.getMinimumShortestPathNetwork(Integer::compare);
+    Graph<Entity, Integer> result = network.getMinimumShortestPathNetwork();
 
     assertEquals(17, result.numVertices());
     assertEquals(32, result.numEdges());
@@ -393,7 +392,7 @@ public class ConnectedNetworkShortestPathControllerTest {
 
     DistributionNetwork network = loadDistributionNetworkController.loadDistributionNetwork();
 
-    Graph<Entity, Integer> result = network.getMinimumShortestPathNetwork(Integer::compare);
+    Graph<Entity, Integer> result = network.getMinimumShortestPathNetwork();
 
     assertEquals(323, result.numVertices());
     assertEquals(644, result.numEdges());

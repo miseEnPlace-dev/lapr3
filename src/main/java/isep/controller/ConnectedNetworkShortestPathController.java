@@ -1,6 +1,7 @@
 package isep.controller;
 
 import isep.model.DistributionNetwork;
+import isep.utils.graph.Edge;
 import isep.utils.graph.Graph;
 import isep.model.Entity;
 import isep.shared.exceptions.NetworkNotConnectedException;
@@ -27,7 +28,7 @@ public class ConnectedNetworkShortestPathController {
    */
   public Graph<Entity, Integer> getConnectedNetworkShortestPath() throws NetworkNotConnectedException {
 
-    return network.getMinimumShortestPathNetwork(Integer::compare);
+    return network.getMinimumShortestPathNetwork();
   }
 
 }

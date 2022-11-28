@@ -5,8 +5,8 @@ import java.util.Comparator;
 import java.util.List;
 
 public class MergeSort<E> {
-  public List<E> sort(List<E> original, Comparator<E> cmp) {
-    if (original == null || original.isEmpty() || original.size() == 1 || cmp == null)
+  public List<E> sort(List<E> original, Comparator<E> ce) {
+    if (original == null || original.isEmpty() || original.size() == 1 || ce == null)
       return original;
 
     // divide the array into two halves
@@ -16,11 +16,11 @@ public class MergeSort<E> {
     List<E> right = original.subList(mid, original.size());
 
     // sort each half
-    left = sort(left, cmp);
-    right = sort(right, cmp);
+    left = sort(left, ce);
+    right = sort(right, ce);
 
     // merge the sorted halves
-    return merge(left, right, cmp);
+    return merge(left, right, ce);
   }
 
   private List<E> merge(List<E> left, List<E> right, Comparator<E> cmp) {

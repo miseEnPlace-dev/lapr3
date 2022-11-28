@@ -48,7 +48,8 @@ public class DistributionNetwork {
    * @param ce comparator to sort the entities by the distance
    * @return graph of the shortest path from the distribution network
    */
-  public AdjacencyMapGraph<Entity, Integer> getMinimumShortestPathNetwork(Comparator<Integer> ce) {
+  public AdjacencyMapGraph<Entity, Integer> getMinimumShortestPathNetwork() {
+    final Comparator<Edge<Entity, Integer>> ce = (e1, e2) -> e1.getWeight().compareTo(e2.getWeight());
     return getConnectedNetworkShortestPath(this.getNetwork(), ce);
   }
 
@@ -62,7 +63,7 @@ public class DistributionNetwork {
    * @return the minimum distance graph
    */
   private AdjacencyMapGraph<Entity, Integer> getConnectedNetworkShortestPath(Graph<Entity, Integer> g,
-      Comparator<Integer> ce) {
+      Comparator<Edge<Entity, Integer>> ce) {
     AdjacencyMapGraph<Entity, Integer> mst = new AdjacencyMapGraph<>(false);
 
     List<Edge<Entity, Integer>> edges = new ArrayList<>();
@@ -73,12 +74,7 @@ public class DistributionNetwork {
     for (Edge<Entity, Integer> e : g.edges())
       edges.add(e);
 
-    edges.sort(new Comparator<Edge<Entity, Integer>>() {
-      @Override
-      public int compare(Edge<Entity, Integer> e1, Edge<Entity, Integer> e2) {
-        return ce.compare(e1.getWeight(), e2.getWeight());
-      }
-    });
+    new MergeSort<Edge<Entity, Integer>>().sort(edges, ce);
 
     for (Edge<Entity, Integer> e : edges) {
       Entity vOrig = e.getVOrig();
