@@ -80,22 +80,14 @@ public class DistributionNetwork {
 
     for (int i = 0; i < enterprises.size(); i++) {
 
-        int count = 0;
-        int sum = 0;
         Enterprise e1 = enterprises.get(i);
 
         // if e1 was a Hub before unMakes it
         e1.unMakeHub();
-        
-        // sums the shortest path size to from e1 to all nonEnterprises
-        // count paths between e1 and all nonEnterprises
-        for (int j = 0; j < nonEnterprises.size(); j++) {
-            sum += this.shortestPathDistance(e1, nonEnterprises.get(j));
-            count++;
-        }
 
-        // calc avg
-        list.add(new AbstractMap.SimpleEntry<Enterprise, Integer>(e1, sum/count));
+        int average = this.getAveragePathDistanceBetweenGroupOfEntities(e1, nonEnterprises);
+
+        list.add(new AbstractMap.SimpleEntry<Enterprise, Integer>(e1, average));
     }
 
     final Comparator<Map.Entry<Enterprise, Integer>> cmp = new Comparator<Map.Entry<Enterprise, Integer>>(){
@@ -104,6 +96,7 @@ public class DistributionNetwork {
         return (int) (o1.getValue()-o2.getValue());
       }
     };
+
     // order list
     list = new MergeSort<Map.Entry<Enterprise, Integer>>().sort(list, cmp);
 
@@ -120,6 +113,20 @@ public class DistributionNetwork {
         }
     } 
     return result;
+  }
+
+  public int getAveragePathDistanceBetweenGroupOfEntities(Entity e1, List<Entity> entities){
+    int count = 0;
+    int sum = 0;
+
+    // sums the shortest path size to from e1 to all entities
+    // count paths between e1 and all entities
+    for (int i = 0; i < entities.size(); i++) {
+      sum += this.shortestPathDistance(e1, entities.get(i));
+      count++;
+    }
+
+    return sum / count;
   }
 
 }

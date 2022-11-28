@@ -184,7 +184,7 @@ public class DistributionNetworkTest {
   @Test
   public void testDefineHubsForInvalidN(){
       DistributionNetwork network = new DistributionNetwork();
-      assertThrows(NumberFormatException.class, () -> network.defineHubs(0));
+      assertThrows(InvalidNumberOfHubsException.class, () -> network.defineHubs(0));
   }
 
   @Test
