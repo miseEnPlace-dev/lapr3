@@ -1,8 +1,20 @@
 package isep.model;
 
+/**
+ * Cultivation class.
+ *
+ * @author Ricardo Moreira <1211285@isep.ipp.pt>
+ */
 public class Cultivation {
-  String designation;
-  boolean isPermanent;
+  /**
+   * The name of the cultivation.
+   */
+  private String designation;
+
+  /**
+   * The type (temporary or permanent) of the cultivation.
+   */
+  private boolean isPermanent;
 
   public Cultivation(String designation, boolean isPermanent) {
     this.designation = designation;

@@ -6,6 +6,8 @@ import isep.shared.Hour;
 import isep.shared.exceptions.InvalidHourFormatException;
 
 public class IrrigationPlan {
+  private final int SECONDS_IN_DAY = 1000 * 60 * 60 * 24;
+
   private List<Hour> hours;
   private List<ParcelIrrigationWrapper> parcelIrrigations;
   private Calendar creationDate;
@@ -37,20 +39,11 @@ public class IrrigationPlan {
 
   public CurrentIrrigationWrapper getIrrigationStatus(Calendar date) {
     // check if the plan duration is not exceeded
-    Calendar tmp = (Calendar) date.clone();
-    tmp.set(Calendar.HOUR_OF_DAY, 0);
-    tmp.set(Calendar.MINUTE, 0);
-    tmp.set(Calendar.SECOND, 0);
-    tmp.set(Calendar.MILLISECOND, 0);
-
-    tmp.add(Calendar.DAY_OF_MONTH, -planDuration);
-    if (creationDate.after(tmp))
-      return null;
-    tmp.add(Calendar.DAY_OF_MONTH, planDuration);
+    if (isExceeded(date)) return null;
 
     // get difference of days between creationDate and date for regularity
     int diff =
-        (int) ((date.getTimeInMillis() - creationDate.getTimeInMillis()) / (1000 * 60 * 60 * 24));
+        (int) ((date.getTimeInMillis() - creationDate.getTimeInMillis()) / SECONDS_IN_DAY);
 
     // create an hour for the current date to be checked
     Hour hour = null;
@@ -85,6 +78,16 @@ public class IrrigationPlan {
     }
 
     return null;
+  }
+
+  private boolean isExceeded(Calendar date) {
+    Calendar tmp = (Calendar) date.clone();
+    tmp.set(Calendar.HOUR_OF_DAY, 0);
+    tmp.set(Calendar.MINUTE, 0);
+    tmp.set(Calendar.SECOND, 0);
+    tmp.set(Calendar.MILLISECOND, 0);
+    tmp.add(Calendar.DAY_OF_MONTH, -planDuration);
+    return creationDate.after(tmp);
   }
 
   @Override

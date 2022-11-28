@@ -9,18 +9,25 @@ import isep.model.Company;
 import isep.model.IrrigationController;
 import isep.model.IrrigationPlan;
 import isep.model.mapper.IrrigationPlanMapper;
+import isep.model.store.AgriculturalParcelStore;
 import isep.shared.exceptions.InvalidFileFormatException;
 import isep.shared.exceptions.InvalidHourFormatException;
 import isep.utils.CustomScanner;
 
 public class BuildIrrigationCtrlController {
-  Company company;
-  CustomScanner scanner;
-  List<String> data;
+  private AgriculturalParcelStore store;
+  private CustomScanner scanner;
+  private List<String> data;
 
-  public BuildIrrigationCtrlController(Company company, String fileName)
+  public BuildIrrigationCtrlController(String fileName, AgriculturalParcelStore store)
       throws FileNotFoundException {
-    this.company = company;
+    this.store = store;
+    this.scanner = new CustomScanner(fileName);
+    this.data = new ArrayList<>();
+  }
+
+  public BuildIrrigationCtrlController(String fileName) throws FileNotFoundException {
+    this.store = App.getInstance().getCompany().getAgriculturalParcelStore();
     this.scanner = new CustomScanner(fileName);
     this.data = new ArrayList<>();
   }
@@ -38,7 +45,7 @@ public class BuildIrrigationCtrlController {
   public IrrigationPlan mapIrrigationPlanData(List<String> data)
       throws NameNotFoundException, InvalidHourFormatException, InvalidFileFormatException {
     Calendar today = Calendar.getInstance();
-    return IrrigationPlanMapper.toPlan(data, today, this.company);
+    return IrrigationPlanMapper.toPlan(data, today, this.store);
   }
 
   // create a new irrigation controller

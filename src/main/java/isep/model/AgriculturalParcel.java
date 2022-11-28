@@ -1,8 +1,24 @@
 package isep.model;
 
+/**
+ * Agricultural sector.
+ *
+ * @author Ricardo Moreira <1211285@isep.ipp.pt>
+ */
 public class AgriculturalParcel {
+  /**
+   * The name of the agricultural parcel.
+   */
   String designation;
-  int area; // in hectares
+
+  /**
+   * The area of the agricultural parcel, in hectares.
+   */
+  int area;
+
+  /**
+   * The cultivation of the agricultural parcel.
+   */
   Cultivation cultivation;
 
   public AgriculturalParcel(String designation, int area, Cultivation cultivation) {

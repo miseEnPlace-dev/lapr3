@@ -22,7 +22,7 @@ public class BuildIrrigationCtrlControllerTest {
   @BeforeAll
   public static void setup() throws FileNotFoundException {
     Company company = App.getInstance().getCompany();
-    ctrl = new BuildIrrigationCtrlController(company, IRRIGATION_PLAN_1_FILEPATH);
+    ctrl = new BuildIrrigationCtrlController(IRRIGATION_PLAN_1_FILEPATH, company.getAgriculturalParcelStore());
   }
 
   @Test
@@ -43,8 +43,7 @@ public class BuildIrrigationCtrlControllerTest {
   @Test
   public void testSlightlyDifferentIrrigationPlan1() throws NameNotFoundException,
       InvalidHourFormatException, InvalidFileFormatException, FileNotFoundException {
-    BuildIrrigationCtrlController ctrl2 = new BuildIrrigationCtrlController(App.getInstance().getCompany(),
-        IRRIGATION_PLAN_2_FILEPATH);
+    BuildIrrigationCtrlController ctrl2 = new BuildIrrigationCtrlController(IRRIGATION_PLAN_2_FILEPATH, App.getInstance().getCompany().getAgriculturalParcelStore());
     IrrigationPlan irrigationPlan = IrrigationPlanMock.mockIrrigationPlan();
     IrrigationPlan actual = ctrl2.mapIrrigationPlanData(ctrl2.readIrrigationPlanFile());
     assertNotEquals(irrigationPlan, actual);
@@ -56,7 +55,7 @@ public class BuildIrrigationCtrlControllerTest {
   @Test
   public void testInvalidIrrigationPlanFile() {
     assertThrows(FileNotFoundException.class,
-        () -> new BuildIrrigationCtrlController(App.getInstance().getCompany(),
-            "invalid_file_path"));
+        () -> new BuildIrrigationCtrlController(
+            "invalid_file_path", App.getInstance().getCompany().getAgriculturalParcelStore()));
   }
 }

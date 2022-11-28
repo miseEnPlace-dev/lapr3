@@ -6,7 +6,6 @@ import java.util.LinkedList;
 import java.util.List;
 import javax.naming.NameNotFoundException;
 import isep.model.AgriculturalParcel;
-import isep.model.Company;
 import isep.model.IrrigationPlan;
 import isep.model.ParcelIrrigationWrapper;
 import isep.model.RegularityFactory;
@@ -25,10 +24,9 @@ import isep.shared.exceptions.InvalidHourFormatException;
 public class IrrigationPlanMapper {
   private IrrigationPlanMapper() {}
 
-  public static IrrigationPlan toPlan(List<String> data, Calendar creationDate, Company company)
+  public static IrrigationPlan toPlan(List<String> data, Calendar creationDate,
+      AgriculturalParcelStore parcelStore)
       throws InvalidHourFormatException, InvalidFileFormatException, NameNotFoundException {
-    AgriculturalParcelStore parcelStore = company.getAgriculturalParcelStore();
-
     List<Hour> hours = new ArrayList<>();
     List<ParcelIrrigationWrapper> parcels = new LinkedList<>();
 
