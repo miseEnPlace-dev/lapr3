@@ -1,5 +1,7 @@
 package isep.model;
 
+import isep.model.store.AgriculturalParcelStore;
+import isep.model.store.CultivationStore;
 import isep.model.store.EntityStore;
 
 /**
@@ -12,10 +14,14 @@ import isep.model.store.EntityStore;
 public class Company {
   private final DistributionNetwork distributionNetwork;
   private final EntityStore entityStore;
+  private final AgriculturalParcelStore agriculturalParcelStore;
+  private final CultivationStore cultivationStore;
 
   public Company() {
     this.distributionNetwork = new DistributionNetwork();
     this.entityStore = new EntityStore();
+    this.agriculturalParcelStore = new AgriculturalParcelStore();
+    this.cultivationStore = new CultivationStore();
   }
 
   public DistributionNetwork getDistributionNetwork() {
@@ -24,5 +30,13 @@ public class Company {
 
   public EntityStore getEntityStore() {
     return entityStore;
+  }
+
+  public AgriculturalParcelStore getAgriculturalParcelStore() {
+    return agriculturalParcelStore;
+  }
+
+  public CultivationStore getCultivationStore() {
+    return cultivationStore;
   }
 }

@@ -1,21 +1,18 @@
 package isep.model;
 
-public class Entity {
+public abstract class Entity {
   private String id;
   private double latitude;
   private double longitude;
   private String localizationId;
-  private Role role;
 
-  public Entity(String id, double latitude, double longitude, String localizationId, Role role) {
+  public Entity(String id, double latitude, double longitude, String localizationId) {
     // TODO: verifications
     this.id = id;
     this.latitude = latitude;
     this.longitude = longitude;
     this.localizationId = localizationId;
 
-    // this attribute may change to other classes extending Entity
-    this.role = role;
   }
 
   public String getLocalizationId() {
@@ -69,20 +66,6 @@ public class Entity {
    */
   public void setLocalizationId(String localizationId) {
     this.localizationId = localizationId;
-  }
-
-  /**
-   * @return Role return the role
-   */
-  public Role getRole() {
-    return role;
-  }
-
-  /**
-   * @param role the role to set
-   */
-  public void setRole(Role role) {
-    this.role = role;
   }
 
   public <E extends Comparable<E>> Integer compare(Entity o1, Entity o2) {
