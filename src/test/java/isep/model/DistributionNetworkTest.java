@@ -19,7 +19,7 @@ public class DistributionNetworkTest {
     Entity e2 = new Client("e2", 2, 2, "l2");
     Integer distance = 10;
     network.addRelation(e1, e2, distance);
-    assertEquals(network.getDistanceBetweenDirectedConnected(e1, e2), distance);
+    assertEquals(network.getDistanceBetweenConnectedEntities(e1, e2), distance);
   }
 
   @Test
@@ -29,7 +29,7 @@ public class DistributionNetworkTest {
     Entity e2 = new Client("e2", 2, 2, "l2");
     Integer distance = 10;
     network.addRelation(e1, e2, distance);
-    assertEquals(network.getDistanceBetweenDirectedConnected(e1, e2), distance);
+    assertEquals(network.getDistanceBetweenConnectedEntities(e1, e2), distance);
   }
 
   @Test
@@ -38,13 +38,13 @@ public class DistributionNetworkTest {
     Entity e1 = new Producer("e1", 1, 1, "l1");
     Entity e2 = new Client("e2", 2, 2, "l2");
 
-    assertNull(network.getDistanceBetweenDirectedConnected(e1, e2));
+    assertNull(network.getDistanceBetweenConnectedEntities(e1, e2));
   }
 
   @Test
   public void testGetDistanceBetweenWithNullNodes() {
     DistributionNetwork network = new DistributionNetwork();
-    assertNull(network.getDistanceBetweenDirectedConnected(null, null));
+    assertNull(network.getDistanceBetweenConnectedEntities(null, null));
   }
 
   @Test
@@ -55,7 +55,7 @@ public class DistributionNetworkTest {
     Integer distance = 10;
     network.addRelation(e1, e2, distance);
 
-    assertNull(network.getDistanceBetweenDirectedConnected(null, e2));
+    assertNull(network.getDistanceBetweenConnectedEntities(null, e2));
   }
 
   @Test
@@ -66,7 +66,7 @@ public class DistributionNetworkTest {
     Integer distance = 10;
     network.addRelation(e1, e2, distance);
 
-    assertNull(network.getDistanceBetweenDirectedConnected(e1, null));
+    assertNull(network.getDistanceBetweenConnectedEntities(e1, null));
   }
 
   @Test
