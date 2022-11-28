@@ -126,7 +126,6 @@ CREATE TABLE Cliente (
   plafond            double precision NOT NULL,
   cod_postal_entrega varchar2(8) NOT NULL,
   cod_postal         varchar2(8) NOT NULL,
-  CONSTRAINT ck_email_format CHECK(REGEXP_LIKE(email, '^[a-zA-Z0-9]+(?:\.[a-zA-Z0-9]+)*@[a-zA-Z0-9]+(?:\.[a-zA-Z0-9]+)*$')),
   PRIMARY KEY (id_cliente)
 );
 
