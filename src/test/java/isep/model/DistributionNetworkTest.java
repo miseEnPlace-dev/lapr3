@@ -9,6 +9,8 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+import Exceptions.InvalidNumberOfHubsException;
+
 public class DistributionNetworkTest {
   @Test
   public void testAddRelation() {
@@ -152,7 +154,7 @@ public class DistributionNetworkTest {
 
     assertEquals(0, network.shortestPathDistance(e1, e1));
   }@Test
-  public void testDefineHubsWorks(){
+  public void testDefineHubsWorks() throws InvalidNumberOfHubsException{
       DistributionNetwork network = new DistributionNetwork();
       Enterprise e1 = new Enterprise("e1", 1, 1, "l1");
       Producer p1 = new Producer("p1", 2, 2, "l2");
@@ -186,7 +188,7 @@ public class DistributionNetworkTest {
   }
 
   @Test
-  public void testDefineHubsForNonConnectedNetwork(){
+  public void testDefineHubsForNonConnectedNetwork() throws InvalidNumberOfHubsException{
       DistributionNetwork network = new DistributionNetwork();
       Enterprise e1 = new Enterprise("e1", 1, 1, "l1");
       Producer e2 = new Producer("e2", 2, 2, "l2");
@@ -200,7 +202,7 @@ public class DistributionNetworkTest {
   }
 
   @Test
-  public void testDefineHubsForLowerNumberOfEnterprises(){
+  public void testDefineHubsForLowerNumberOfEnterprises() throws InvalidNumberOfHubsException{
       DistributionNetwork network = new DistributionNetwork();
       Enterprise e1 = new Enterprise("e1", 1, 1, "l1");
       Producer p1 = new Producer("p1", 2, 2, "l2");
