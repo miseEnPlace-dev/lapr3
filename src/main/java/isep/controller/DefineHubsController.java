@@ -2,9 +2,9 @@ package isep.controller;
 
 import java.util.List;
 
-import Exceptions.InvalidNumberOfHubsException;
 import isep.model.DistributionNetwork;
 import isep.model.Enterprise;
+import isep.shared.exceptions.InvalidNumberOfHubsException;
 
 public class DefineHubsController {
 
