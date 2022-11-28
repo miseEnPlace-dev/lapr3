@@ -1,6 +1,5 @@
 package isep.utils.graph;
 
-import java.util.Comparator;
 import java.util.Objects;
 
 /**
@@ -8,7 +7,7 @@ import java.util.Objects;
  * @param <E> Edge value type
  * @author DEI-ESINF
  */
-public class Edge<V, E> implements Comparator<Edge<V, E>> {
+public class Edge<V, E> {
   final private V vOrig; // vertex origin
   final private V vDest; // vertex destination
   private E weight; // Edge weight
@@ -59,8 +58,4 @@ public class Edge<V, E> implements Comparator<Edge<V, E>> {
     return "Edge [vOrig=" + vOrig + ", vDest=" + vDest + ", weight=" + weight + "]";
   }
 
-  @Override
-  public int compare(Edge<V, E> arg0, Edge<V, E> arg1) {
-    return ((Comparable<E>) arg0.getWeight()).compareTo(arg1.getWeight());
-  }
 }

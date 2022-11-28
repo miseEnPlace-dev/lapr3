@@ -34,10 +34,6 @@ public class DistributionNetwork {
     return null;
   }
 
-  private Graph<Entity, Integer> getNetwork() {
-    return network;
-  }
-
   public int getNumberOfEntities() {
     return network.numVertices();
   }
@@ -49,8 +45,14 @@ public class DistributionNetwork {
    * @return graph of the shortest path from the distribution network
    */
   public AdjacencyMapGraph<Entity, Integer> getMinimumShortestPathNetwork() {
-    final Comparator<Edge<Entity, Integer>> ce = (e1, e2) -> e1.getWeight().compareTo(e2.getWeight());
-    return getConnectedNetworkShortestPath(this.getNetwork(), ce);
+    final Comparator<Edge<Entity, Integer>> ce = new Comparator<Edge<Entity, Integer>>() {
+      @Override
+      public int compare(Edge<Entity, Integer> arg0, Edge<Entity, Integer> arg1) {
+        return arg0.getWeight() - arg1.getWeight();
+      }
+    };
+
+    return getConnectedNetworkShortestPath(network, ce);
   }
 
   /**
@@ -74,7 +76,7 @@ public class DistributionNetwork {
     for (Edge<Entity, Integer> e : g.edges())
       edges.add(e);
 
-    new MergeSort<Edge<Entity, Integer>>().sort(edges, ce);
+    edges = new MergeSort<Edge<Entity, Integer>>().sort(edges, ce);
 
     for (Edge<Entity, Integer> e : edges) {
       Entity vOrig = e.getVOrig();
@@ -120,7 +122,7 @@ public class DistributionNetwork {
 
   public List<Enterprise> defineHubs(int numberOfHubs) throws InvalidNumberOfHubsException {
     if (numberOfHubs <= 0)
-      throw (new InvalidNumberOfHubsException());
+      throw new InvalidNumberOfHubsException();
 
     List<Map.Entry<Enterprise, Integer>> list = new ArrayList<>();
 
