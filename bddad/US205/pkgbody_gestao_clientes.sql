@@ -43,7 +43,7 @@ CREATE OR REPLACE PACKAGE BODY gestao_clientes AS
     WHEN cod_postal_inexistente THEN
       RAISE_APPLICATION_ERROR(-20001, 'Código postal inexistente.');
       ROLLBACK TO inicio;
-    WHEN no_Data_found THEN
+    WHEN NO_DATA_FOUND THEN
       RAISE_APPLICATION_ERROR(-20002, 'Código postal inexistente.');
       ROLLBACK TO inicio;
   END registar_cliente;
