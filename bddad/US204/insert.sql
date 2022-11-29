@@ -25,10 +25,9 @@ INSERT INTO Produto (designacao,preco,id_escalao_iva) VALUES ('Laranja',2,2);
 INSERT INTO Produto (designacao,preco,id_escalao_iva) VALUES ('Cerejeira',10,1);
 
 -- Encomendas
-INSERT INTO Encomenda (id_cliente,data_vencimento_pagamento,data_registo,data_entrega,data_pagamento,morada_entrega,cod_postal_entrega) VALUES (1,'2017-12-12','2017-12-12','2017-12-12','2017-12-12','Rua do Joao','1234-567');
-INSERT INTO Encomenda (id_cliente,data_vencimento_pagamento,data_registo,data_entrega,data_pagamento,morada_entrega,cod_postal_entrega) VALUES (2,'2017-12-12','2017-12-12','2017-12-12','2017-12-12','Rua da Maria','1234-566');
-INSERT INTO Encomenda (id_cliente,data_vencimento_pagamento,data_registo,data_entrega,data_pagamento,morada_entrega,cod_postal_entrega) VALUES (3,'2017-12-12','2017-12-12','2017-12-12','2017-12-12','Rua do Jose','1234-565');
-
+INSERT INTO Encomenda (id_cliente,data_vencimento_pagamento,data_registo,data_entrega,data_pagamento,morada_entrega,cod_postal_entrega) VALUES (1,'01-Jan-2022','01-Jan-2022',NULL,NULL,'Rua do Joao','1234-567');
+INSERT INTO Encomenda (id_cliente,data_vencimento_pagamento,data_registo,data_entrega,data_pagamento,morada_entrega,cod_postal_entrega) VALUES (2,'02-Jan-2022','02-Jan-2022',NULL,NULL,'Rua da Maria','1234-566');
+INSERT INTO Encomenda (id_cliente,data_vencimento_pagamento,data_registo,data_entrega,data_pagamento,morada_entrega,cod_postal_entrega) VALUES (3,'03-Jan-2022','03-Jan-2022',NULL,NULL,'Rua do Jose','1234-565');
 
 -- ProdutoEncomenda
 INSERT INTO ProdutoEncomenda (id_encomenda,id_produto,quantidade,preco_unitario,iva,designacao_produto) VALUES (1,1,500,2,13,'Maça');
@@ -57,8 +56,29 @@ INSERT INTO TipoRega (id_tipo_tubagem) VALUES (1);
 INSERT INTO TipoRega (id_tipo_tubagem) VALUES (2);
 
 -- Rega
-INSERT INTO Rega (id_setor,data,id_tipo_rega) VALUES (1,'2017-12-12',1);
-INSERT INTO Rega (id_setor,data,id_tipo_rega) VALUES (2,'2017-12-12',1);
+INSERT INTO Rega (id_setor,data,id_tipo_rega) VALUES (1,'10-Jan-2022',1);
+INSERT INTO Rega (id_setor,data,id_tipo_rega) VALUES (2,'11-Jan-2022',1);
 
 -- PlanoRega
-INSERT INTO PlanoRega (id_setor,data_inicio,tempo,periodicidade,id_tipo_rega,data_fim) VALUES (1,'2017-12-12',1,1,1,'2017-12-12');
+INSERT INTO PlanoRega (id_setor,data_inicio,tempo,periodicidade,id_tipo_rega,data_fim) VALUES (1,'10-Jan-2022',1,1,1,Null);
+
+-- TipoEdificio
+INSERT INTO TipoEdificio (tipo_edificio) VALUES ('Armazem');
+INSERT INTO TipoEdificio (tipo_edificio) VALUES ('Silo');
+
+-- Edificio
+INSERT INTO Edificio (id_tipo_edificio) VALUES (1);
+INSERT INTO Edificio (id_tipo_edificio) VALUES (2);
+
+-- Substancia
+INSERT INTO Substancia (substancia) VALUES ('Fertilizante 1');
+INSERT INTO Substancia (substancia) VALUES ('Adubo 1');
+
+--TipoFatorProducao
+INSERT INTO TipoFatorProducao (tipo_fator_producao) VALUES ('Fertilizante');
+
+-- TipoFormulacao
+INSERT INTO TipoFormulacao (tipo_formulacao) VALUES ('Fertilizante 1');
+
+-- FatorProducao
+INSERT INTO (id_tipo_fator_producao,nome,id_tipo_formulacao) VALUES (1,'Fertilizante 1',1);
