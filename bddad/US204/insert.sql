@@ -36,28 +36,32 @@ INSERT INTO ProdutoEncomenda (id_encomenda,id_produto,quantidade,preco_unitario,
 INSERT INTO ProdutoEncomenda (id_encomenda,id_produto,quantidade,preco_unitario,iva,designacao_produto) VALUES (4,4,3000,10,23,'Cerejeira');
 
 -- TipoCulturas
-INSERT INTO TipoCultura (tipo_cultura) VALUES ('Maças');
-INSERT INTO TipoCultura (tipo_cultura) VALUES ('Peras');
-INSERT INTO TipoCultura (tipo_cultura) VALUES ('Laranjas');
-INSERT INTO TipoCultura (tipo_cultura) VALUES ('Cerejeiras');
+INSERT INTO TipoCultura (tipo_cultura) VALUES ('Temporária');
+INSERT INTO TipoCultura (tipo_cultura) VALUES ('Permanentemente');
 
 -- Culturas
-INSERT INTO Cultura (cultura,id_tipo_cultura,id_produto) VALUES ('Maças',1,1);
-INSERT INTO Cultura (cultura,id_tipo_cultura,id_produto) VALUES ('Pera',1,2);
-INSERT INTO Cultura (cultura,id_tipo_cultura,id_produto) VALUES ('Laranja',1,3);
-INSERT INTO Cultura (cultura,id_tipo_cultura,id_produto) VALUES ('Cerejeira',1,4);
+INSERT INTO Cultura (cultura,id_tipo_cultura,id_produto) VALUES ('Macieira',1,1);
+INSERT INTO Cultura (cultura,id_tipo_cultura,id_produto) VALUES ('Pereira',1,2);
+INSERT INTO Cultura (cultura,id_tipo_cultura,id_produto) VALUES ('Laranjeira',1,1);
+INSERT INTO Cultura (cultura,id_tipo_cultura,id_produto) VALUES ('Cerejeira',1,1);
 
 -- TipoTubagem
-INSERT INTO TipoTubagem (tipo_tubagem) VALUES ('Tubagem 1');
-INSERT INTO TipoTubagem (tipo_tubagem) VALUES ('Tubagem 2');
+INSERT INTO TipoTubagem (tipo_tubagem) VALUES ('Dispersão');
+INSERT INTO TipoTubagem (tipo_tubagem) VALUES ('Irrigação');
+INSERT INTO TipoTubagem (tipo_tubagem) VALUES ('Drenagem');
+INSERT INTO TipoTubagem (tipo_tubagem) VALUES ('Gravidade');
 
 -- TipoRega
 INSERT INTO TipoRega (id_tipo_tubagem) VALUES (1);
 INSERT INTO TipoRega (id_tipo_tubagem) VALUES (2);
+INSERT INTO TipoRega (id_tipo_tubagem) VALUES (3);
+INSERT INTO TipoRega (id_tipo_tubagem) VALUES (4);
 
 -- Rega
 INSERT INTO Rega (id_setor,data,id_tipo_rega) VALUES (1,'10-Jan-2022',1);
-INSERT INTO Rega (id_setor,data,id_tipo_rega) VALUES (2,'11-Jan-2022',1);
+INSERT INTO Rega (id_setor,data,id_tipo_rega) VALUES (2,'11-Jan-2022',2);
+INSERT INTO Rega (id_setor,data,id_tipo_rega) VALUES (3,'12-Jan-2022',3);
+INSERT INTO Rega (id_setor,data,id_tipo_rega) VALUES (4,'13-Jan-2022',4);
 
 -- PlanoRega
 INSERT INTO PlanoRega (id_setor,data_inicio,tempo,periodicidade,id_tipo_rega,data_fim) VALUES (1,'10-Jan-2022',1,1,1,Null);
@@ -71,14 +75,60 @@ INSERT INTO Edificio (id_tipo_edificio) VALUES (1);
 INSERT INTO Edificio (id_tipo_edificio) VALUES (2);
 
 -- Substancia
-INSERT INTO Substancia (substancia) VALUES ('Fertilizante 1');
-INSERT INTO Substancia (substancia) VALUES ('Adubo 1');
+INSERT INTO Substancia (substancia) VALUES ('Azoto orgânico');
+INSERT INTO Substancia (substancia) VALUES ('Pentóxido de fósforo');
+INSERT INTO Substancia (substancia) VALUES ('Oxido de Potássio');
+INSERT INTO Substancia (substancia) VALUES ('Oxido de Cálcio');
+INSERT INTO Substancia (substancia) VALUES ('Oxido de Magnésio');
 
 --TipoFatorProducao
 INSERT INTO TipoFatorProducao (tipo_fator_producao) VALUES ('Fertilizante');
+INSERT INTO TipoFatorProducao (tipo_fator_producao) VALUES ('Adubo');
 
 -- TipoFormulacao
-INSERT INTO TipoFormulacao (tipo_formulacao) VALUES ('Fertilizante 1');
+INSERT INTO TipoFormulacao (tipo_formulacao) VALUES ('Granulado');
+INSERT INTO TipoFormulacao (tipo_formulacao) VALUES ('Líquido');
+INSERT INTO TipoFormulacao (tipo_formulacao) VALUES ('Pó');
 
 -- FatorProducao
-INSERT INTO (id_tipo_fator_producao,nome,id_tipo_formulacao) VALUES (1,'Fertilizante 1',1);
+INSERT INTO FatorProducao (id_tipo_fator_producao,nome,id_tipo_formulacao) VALUES (1,'Fertilizante 1',1);
+INSERT INTO FatorProducao (id_tipo_fator_producao,nome,id_tipo_formulacao) VALUES (2,'Adubo 1',2);
+
+-- FatorProducaoSubstancia
+INSERT INTO FatorProducaoSubstancia (id_fator_producao,id_substancia,percentagem) VALUES (1,1,60);
+INSERT INTO FatorProducaoSubstancia (id_fator_producao,id_substancia,percentagem) VALUES (1,2,20);
+
+-- TipoSensor
+INSERT INTO TipoSensor (tipo_sensor) VALUES ('Temperatura');
+INSERT INTO TipoSensor (tipo_sensor) VALUES ('Humidade do solo');
+INSERT INTO TipoSensor (tipo_sensor) VALUES ('Velocidade Vento');
+INSERT INTO TipoSensor (tipo_sensor) VALUES ('Direção do vento');
+INSERT INTO TipoSensor (tipo_sensor) VALUES ('Humidade do ar');
+INSERT INTO TipoSensor (tipo_sensor) VALUES ('Pluviosidade');
+
+-- Sensor
+INSERT INTO Sensor (identificador,id_tipo_sensor,valor_referencia) VALUES ('TS',1,10);
+INSERT INTO Sensor (identificador,id_tipo_sensor,valor_referencia) VALUES ('HS',2,10);
+INSERT INTO Sensor (identificador,id_tipo_sensor,valor_referencia) VALUES ('VS',3,10);
+INSERT INTO Sensor (identificador,id_tipo_sensor,valor_referencia) VALUES ('DS',4,10);
+INSERT INTO Sensor (identificador,id_tipo_sensor,valor_referencia) VALUES ('HA',5,10);
+INSERT INTO Sensor (identificador,id_tipo_sensor,valor_referencia) VALUES ('PL',6,10);
+
+-- MedicaoSensor
+INSERT INTO MedicaoSensor (id_sensor,id_setor,medicao,data_hora) VALUES (1,1,20,'10-Jan-2022');
+INSERT INTO MedicaoSensor (id_sensor,id_setor,medicao,data_hora) VALUES (1,2,60,'10-Jan-2022');
+INSERT INTO MedicaoSensor (id_sensor,id_setor,medicao,data_hora) VALUES (1,3,10,'10-Jan-2022');
+INSERT INTO MedicaoSensor (id_sensor,id_setor,medicao,data_hora) VALUES (1,4,10,'10-Jan-2022');
+INSERT INTO MedicaoSensor (id_sensor,id_setor,medicao,data_hora) VALUES (1,5,80,'10-Jan-2022');
+INSERT INTO MedicaoSensor (id_sensor,id_setor,medicao,data_hora) VALUES (1,6,5,'10-Jan-2022');
+
+-- Plantacao
+INSERT INTO Plantacao (id_setor,id_cultura,data_inicio) VALUES (1,1,'10-Jan-2022');
+INSERT INTO Plantacao (id_setor,id_cultura,data_inicio) VALUES (2,2,'10-Jan-2022');
+INSERT INTO Plantacao (id_setor,id_cultura,data_inicio) VALUES (3,3,'10-Jan-2022');
+
+-- Colheita
+INSERT INTO Colheita (id_produto,data,quantidade,id_setor) VALUES (1,'10-Jan-2022',10,1);
+INSERT INTO Colheita (id_produto,data,quantidade,id_setor) VALUES (2,'10-Jan-2022',10,2);
+INSERT INTO Colheita (id_produto,data,quantidade,id_setor) VALUES (3,'10-Jan-2022',10,3);
+
