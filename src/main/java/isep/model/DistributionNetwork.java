@@ -1,15 +1,17 @@
 package isep.model;
 
-import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.LinkedList;
 import java.util.List;
+
+import java.util.AbstractMap;
+import java.util.LinkedList;
 import java.util.Map;
 
 import isep.shared.exceptions.InvalidNumberOfHubsException;
 import isep.utils.MergeSort;
 import isep.utils.graph.AdjacencyMapGraph;
+import isep.utils.graph.Edge;
 import isep.utils.graph.Graph;
 import isep.utils.graph.GraphAlgorithms;
 
@@ -34,6 +36,58 @@ public class DistributionNetwork {
 
   public int getNumberOfEntities() {
     return network.numVertices();
+  }
+
+  /**
+   * Gets the shortest path between all entities in the network
+   *
+   * @param ce comparator to sort the entities by the distance
+   * @return graph of the shortest path from the distribution network
+   */
+  public AdjacencyMapGraph<Entity, Integer> getMinimumShortestPathNetwork() {
+    final Comparator<Edge<Entity, Integer>> ce = new Comparator<Edge<Entity, Integer>>() {
+      @Override
+      public int compare(Edge<Entity, Integer> arg0, Edge<Entity, Integer> arg1) {
+        return arg0.getWeight() - arg1.getWeight();
+      }
+    };
+
+    return getConnectedNetworkShortestPath(network, ce);
+  }
+
+  /**
+   * Calculates the minimum distance graph using Kruskal algorithm
+   *
+   * @param <V> vertex type
+   * @param <E> edge type
+   * @param g   initial graph
+   * @param ce  comparator between elements of type E
+   * @return the minimum distance graph
+   */
+  private AdjacencyMapGraph<Entity, Integer> getConnectedNetworkShortestPath(Graph<Entity, Integer> g,
+      Comparator<Edge<Entity, Integer>> ce) {
+    AdjacencyMapGraph<Entity, Integer> mst = new AdjacencyMapGraph<>(false);
+
+    List<Edge<Entity, Integer>> edges = new ArrayList<>();
+
+    for (Entity v : g.vertices())
+      mst.addVertex(v);
+
+    for (Edge<Entity, Integer> e : g.edges())
+      edges.add(e);
+
+    edges = new MergeSort<Edge<Entity, Integer>>().sort(edges, ce);
+
+    for (Edge<Entity, Integer> e : edges) {
+      Entity vOrig = e.getVOrig();
+      Entity vDest = e.getVDest();
+      List<Entity> connectedVerts = GraphAlgorithms.DepthFirstSearch(mst, vOrig);
+      if (!connectedVerts.contains(vDest))
+        mst.addEdge(vOrig, vDest, e.getWeight());
+    }
+
+    return mst;
+
   }
 
   public List<Enterprise> getEnterprises() {

@@ -1,0 +1,9 @@
+@startuml US305_DM
+
+class Company {}
+
+class Entity {}
+
+class Role {}
+
+@enduml

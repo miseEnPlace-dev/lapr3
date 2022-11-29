@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 import java.util.function.BinaryOperator;
 
@@ -347,4 +348,44 @@ public class GraphAlgorithms {
 
     return minDstGraph;
   }
+
+  /**
+   * Calculates the minimum distance graph using Kruskal algorithm
+   *
+   * @param <V> vertex type
+   * @param <E> edge type
+   * @param g   initial graph
+   * @param ce  comparator between elements of type E
+   * @return the minimum distance graph
+   */
+  public static <V, E> AdjacencyMapGraph<V, E> kruskall(Graph<V, E> g, Comparator<E> ce) {
+    AdjacencyMapGraph<V, E> mst = new AdjacencyMapGraph<>(false);
+
+    List<Edge<V, E>> edges = new ArrayList<>();
+
+    for (V v : g.vertices())
+      mst.addVertex(v);
+
+    for (Edge<V, E> e : g.edges())
+      edges.add(e);
+
+    edges.sort(new Comparator<Edge<V, E>>() {
+      @Override
+      public int compare(Edge<V, E> e1, Edge<V, E> e2) {
+        return ce.compare(e1.getWeight(), e2.getWeight());
+      }
+    });
+
+    for (Edge<V, E> e : edges) {
+      V vOrig = e.getVOrig();
+      V vDest = e.getVDest();
+      List<V> connectedVerts = DepthFirstSearch(mst, vOrig);
+      if (!connectedVerts.contains(vDest))
+        mst.addEdge(vOrig, vDest, e.getWeight());
+    }
+
+    return mst;
+
+  }
+
 }
