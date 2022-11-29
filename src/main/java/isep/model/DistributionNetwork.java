@@ -20,12 +20,11 @@ public class DistributionNetwork {
     return network.addEdge(e1, e2, distance);
   }
 
-
-  
-  /** 
+  /**
    * @param e1 entity 1
    * @param e2 entity 2
-   * @return Integer - If e1 and e2 are directed connected, returns distance between, null otherwise
+   * @return Integer - If e1 and e2 are directed connected, returns distance
+   *         between, null otherwise
    */
   public Integer getDistanceBetweenConnectedEntities(Entity e1, Entity e2) {
     if (network.edge(e1, e2) != null)
@@ -37,62 +36,67 @@ public class DistributionNetwork {
     return network.numVertices();
   }
 
-  public List<Enterprise> getEnterprises(){
+  public List<Enterprise> getEnterprises() {
     List<Enterprise> enterprises = new ArrayList<>();
     List<Entity> entities = network.vertices();
+
     for (int i = 0; i < entities.size(); i++) {
       Entity e = entities.get(i);
-      if(entities.get(i).getClass() == Enterprise.class)
+      if (entities.get(i).getClass() == Enterprise.class)
         enterprises.add((Enterprise) e);
     }
+
     return enterprises;
   }
 
-  public List<Entity> getNonEnterprises(){
+  public List<Entity> getNonEnterprises() {
     List<Entity> nonEnterprises = new ArrayList<>();
     List<Entity> entities = network.vertices();
+
     for (int i = 0; i < entities.size(); i++) {
       Entity e = entities.get(i);
-      if(entities.get(i).getClass() != Enterprise.class)
+      if (entities.get(i).getClass() != Enterprise.class)
         nonEnterprises.add(e);
     }
+
     return nonEnterprises;
   }
 
-  public int shortestPathDistance(Entity e1, Entity e2){
-    return GraphAlgorithms.shortestPath(network, e1, e2, Integer :: compareTo, Integer :: sum, 0, new LinkedList<>());
+  public int shortestPathDistance(Entity e1, Entity e2) {
+    return GraphAlgorithms.shortestPath(network, e1, e2, Integer::compareTo, Integer::sum, 0, new LinkedList<>());
   }
 
-  public boolean isConnected(){
+  public boolean isConnected() {
     return GraphAlgorithms.isConnected(network);
   }
 
-  public List<Enterprise> defineHubs(int numberOfHubs) throws InvalidNumberOfHubsException{
-    if(numberOfHubs <= 0) throw(new InvalidNumberOfHubsException());
+  public List<Enterprise> defineHubs(int numberOfHubs) throws InvalidNumberOfHubsException {
+    if (numberOfHubs <= 0)
+      throw new InvalidNumberOfHubsException();
 
     List<Map.Entry<Enterprise, Integer>> list = new ArrayList<>();
-    
-    if(!this.isConnected()) return null;
+
+    if (!this.isConnected())
+      return null;
 
     List<Enterprise> enterprises = this.getEnterprises();
     List<Entity> nonEnterprises = this.getNonEnterprises();
 
     for (int i = 0; i < enterprises.size(); i++) {
+      Enterprise e1 = enterprises.get(i);
 
-        Enterprise e1 = enterprises.get(i);
+      // if e1 was a Hub before unMakes it
+      e1.unMakeHub();
 
-        // if e1 was a Hub before unMakes it
-        e1.unMakeHub();
+      int average = this.getAveragePathDistanceBetweenGroupOfEntities(e1, nonEnterprises);
 
-        int average = this.getAveragePathDistanceBetweenGroupOfEntities(e1, nonEnterprises);
-
-        list.add(new AbstractMap.SimpleEntry<Enterprise, Integer>(e1, average));
+      list.add(new AbstractMap.SimpleEntry<Enterprise, Integer>(e1, average));
     }
 
-    final Comparator<Map.Entry<Enterprise, Integer>> cmp = new Comparator<Map.Entry<Enterprise, Integer>>(){
+    final Comparator<Map.Entry<Enterprise, Integer>> cmp = new Comparator<Map.Entry<Enterprise, Integer>>() {
       @Override
       public int compare(Map.Entry<Enterprise, Integer> o1, Map.Entry<Enterprise, Integer> o2) {
-        return (int) (o1.getValue()-o2.getValue());
+        return (int) (o1.getValue() - o2.getValue());
       }
     };
 
@@ -102,19 +106,19 @@ public class DistributionNetwork {
     // make N enterprises Hubs and return them in a list
     List<Enterprise> result = new ArrayList<>();
     for (int i = 0; i < numberOfHubs; i++) {
-        try{
+      try {
         Enterprise hub = list.get(i).getKey();
         hub.makeHub();
         result.add(hub);
-        } catch (Exception E){
-            System.out.printf("There are only %d number of Enterprises\n", i);
-            break;
-        }
-    } 
+      } catch (Exception E) {
+        System.out.printf("There are only %d number of Enterprises\n", i);
+        break;
+      }
+    }
     return result;
   }
 
-  public int getAveragePathDistanceBetweenGroupOfEntities(Entity e1, List<Entity> entities){
+  public int getAveragePathDistanceBetweenGroupOfEntities(Entity e1, List<Entity> entities) {
     int count = 0;
     int sum = 0;
 
@@ -127,5 +131,4 @@ public class DistributionNetwork {
 
     return sum / count;
   }
-
 }
