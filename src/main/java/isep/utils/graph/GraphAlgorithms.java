@@ -95,7 +95,44 @@ public class GraphAlgorithms {
    */
   public static <V, E> boolean isConnected(Graph<V, E> g) {
     LinkedList<V> bfs = BreadthFirstSearch(g, g.vertices().iterator().next());
+    return isConnected(g, bfs);
+  }
+
+  /**
+   * Checks if a graph is connected by performing a breadth-first search and
+   * checking if all vertices were visited
+   *
+   * @param g    Graph instance
+   * @param vert vertex of graph g that will be the source of the search
+   * @return true if the graph is connected, false otherwise
+   */
+  private static <V, E> boolean isConnected(Graph<V, E> g, LinkedList<V> bfs) {
     return bfs != null && bfs.size() == g.numVertices();
+  }
+
+  /**
+   * Find the shortest path between the two farthest nodes of a graph using DFS.
+   *
+   * @param g Graph instance
+   * @return the shortest path between the farthest nodes of a graph.
+   */
+  public static <V, E> LinkedList<V> shortestPathBetweenFarthestNodes(Graph<V, E> g, Comparator<E> ce, BinaryOperator<E> sum, E zero) {
+    LinkedList<V> max = new LinkedList<>();
+
+    for (V v : g.vertices()) {
+      LinkedList<V> dfs = DepthFirstSearch(g, v);
+      if (!isConnected(g, dfs))
+        return null;
+
+      for (V w : dfs) {
+        LinkedList<V> path = new LinkedList<>();
+        shortestPath(g, v, w, ce, sum, zero, path);
+        if (path.size() > max.size())
+          max = path;
+      }
+    }
+
+    return max;
   }
 
   /**

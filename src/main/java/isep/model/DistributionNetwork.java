@@ -93,22 +93,26 @@ public class DistributionNetwork {
   public List<Enterprise> getEnterprises() {
     List<Enterprise> enterprises = new ArrayList<>();
     List<Entity> entities = network.vertices();
+
     for (int i = 0; i < entities.size(); i++) {
       Entity e = entities.get(i);
       if (entities.get(i).getClass() == Enterprise.class)
         enterprises.add((Enterprise) e);
     }
+
     return enterprises;
   }
 
   public List<Entity> getNonEnterprises() {
     List<Entity> nonEnterprises = new ArrayList<>();
     List<Entity> entities = network.vertices();
+
     for (int i = 0; i < entities.size(); i++) {
       Entity e = entities.get(i);
       if (entities.get(i).getClass() != Enterprise.class)
         nonEnterprises.add(e);
     }
+
     return nonEnterprises;
   }
 
@@ -133,7 +137,6 @@ public class DistributionNetwork {
     List<Entity> nonEnterprises = this.getNonEnterprises();
 
     for (int i = 0; i < enterprises.size(); i++) {
-
       Enterprise e1 = enterprises.get(i);
 
       // if e1 was a Hub before unMakes it
@@ -182,5 +185,4 @@ public class DistributionNetwork {
 
     return sum / count;
   }
-
 }
