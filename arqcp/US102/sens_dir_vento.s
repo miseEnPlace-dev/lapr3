@@ -40,4 +40,9 @@ continue:
   js compRandNeg
 
 end:
+  cwtd # cast word to long
+  movw $360, %cx # cx = 360
+  idivw %cx # divide by 360 (remainder in %dx)
+  movw %dx, %ax # ax = result
+
 ret
