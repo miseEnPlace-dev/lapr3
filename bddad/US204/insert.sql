@@ -28,6 +28,7 @@ INSERT INTO Produto (designacao,preco,id_escalao_iva) VALUES ('Cerejeira',10,1);
 INSERT INTO Encomenda (id_cliente,data_vencimento_pagamento,data_registo,data_entrega,data_pagamento,morada_entrega,cod_postal_entrega) VALUES (1,'01-Jan-2022','01-Jan-2022',NULL,NULL,'Rua do Joao','1234-567');
 INSERT INTO Encomenda (id_cliente,data_vencimento_pagamento,data_registo,data_entrega,data_pagamento,morada_entrega,cod_postal_entrega) VALUES (2,'02-Jan-2022','02-Jan-2022',NULL,NULL,'Rua da Maria','1234-566');
 INSERT INTO Encomenda (id_cliente,data_vencimento_pagamento,data_registo,data_entrega,data_pagamento,morada_entrega,cod_postal_entrega) VALUES (3,'03-Jan-2022','03-Jan-2022',NULL,NULL,'Rua do Jose','1234-565');
+INSERT INTO Encomenda (id_cliente,data_vencimento_pagamento,data_registo,data_entrega,data_pagamento,morada_entrega,cod_postal_entrega) VALUES (1,'04-Jan-2022','04-Jan-2022',NULL,NULL,'Rua do Joao','1234-567');
 
 -- ProdutoEncomenda
 INSERT INTO ProdutoEncomenda (id_encomenda,id_produto,quantidade,preco_unitario,iva,designacao_produto) VALUES (1,1,500,2,13,'Maça');
@@ -61,7 +62,7 @@ INSERT INTO TipoRega (id_tipo_tubagem) VALUES (4);
 INSERT INTO Rega (id_setor,data,id_tipo_rega) VALUES (1,'10-Jan-2022',1);
 INSERT INTO Rega (id_setor,data,id_tipo_rega) VALUES (2,'11-Jan-2022',2);
 INSERT INTO Rega (id_setor,data,id_tipo_rega) VALUES (3,'12-Jan-2022',3);
-INSERT INTO Rega (id_setor,data,id_tipo_rega) VALUES (4,'13-Jan-2022',4);
+INSERT INTO Rega (id_setor,data,id_tipo_rega) VALUES (1,'13-Jan-2022',4);
 
 -- PlanoRega
 INSERT INTO PlanoRega (id_setor,data_inicio,tempo,periodicidade,id_tipo_rega,data_fim) VALUES (1,'10-Jan-2022',1,1,1,Null);
@@ -99,12 +100,12 @@ INSERT INTO FatorProducaoSubstancia (id_fator_producao,id_substancia,percentagem
 INSERT INTO FatorProducaoSubstancia (id_fator_producao,id_substancia,percentagem) VALUES (1,2,20);
 
 -- TipoSensor
-INSERT INTO TipoSensor (tipo_sensor) VALUES ('Temperatura');
-INSERT INTO TipoSensor (tipo_sensor) VALUES ('Humidade do solo');
-INSERT INTO TipoSensor (tipo_sensor) VALUES ('Velocidade Vento');
-INSERT INTO TipoSensor (tipo_sensor) VALUES ('Direção do vento');
-INSERT INTO TipoSensor (tipo_sensor) VALUES ('Humidade do ar');
-INSERT INTO TipoSensor (tipo_sensor) VALUES ('Pluviosidade');
+INSERT INTO TipoSensor (tipo_sensor) VALUES ('TS');
+INSERT INTO TipoSensor (tipo_sensor) VALUES ('HS');
+INSERT INTO TipoSensor (tipo_sensor) VALUES ('VS');
+INSERT INTO TipoSensor (tipo_sensor) VALUES ('DS');
+INSERT INTO TipoSensor (tipo_sensor) VALUES ('HA');
+INSERT INTO TipoSensor (tipo_sensor) VALUES ('PL');
 
 -- Sensor
 INSERT INTO Sensor (identificador,id_tipo_sensor,valor_referencia) VALUES ('TS',1,10);
@@ -116,11 +117,11 @@ INSERT INTO Sensor (identificador,id_tipo_sensor,valor_referencia) VALUES ('PL',
 
 -- MedicaoSensor
 INSERT INTO MedicaoSensor (id_sensor,id_setor,medicao,data_hora) VALUES (1,1,20,'10-Jan-2022');
-INSERT INTO MedicaoSensor (id_sensor,id_setor,medicao,data_hora) VALUES (1,2,60,'10-Jan-2022');
-INSERT INTO MedicaoSensor (id_sensor,id_setor,medicao,data_hora) VALUES (1,3,10,'10-Jan-2022');
-INSERT INTO MedicaoSensor (id_sensor,id_setor,medicao,data_hora) VALUES (1,4,10,'10-Jan-2022');
-INSERT INTO MedicaoSensor (id_sensor,id_setor,medicao,data_hora) VALUES (1,5,80,'10-Jan-2022');
-INSERT INTO MedicaoSensor (id_sensor,id_setor,medicao,data_hora) VALUES (1,6,5,'10-Jan-2022');
+INSERT INTO MedicaoSensor (id_sensor,id_setor,medicao,data_hora) VALUES (2,1,60,'10-Jan-2022');
+INSERT INTO MedicaoSensor (id_sensor,id_setor,medicao,data_hora) VALUES (3,1,10,'10-Jan-2022');
+INSERT INTO MedicaoSensor (id_sensor,id_setor,medicao,data_hora) VALUES (4,1,10,'10-Jan-2022');
+INSERT INTO MedicaoSensor (id_sensor,id_setor,medicao,data_hora) VALUES (5,1,80,'10-Jan-2022');
+INSERT INTO MedicaoSensor (id_sensor,id_setor,medicao,data_hora) VALUES (6,1,5,'10-Jan-2022');
 
 -- Plantacao
 INSERT INTO Plantacao (id_setor,id_cultura,data_inicio) VALUES (1,1,'10-Jan-2022');
@@ -132,3 +133,22 @@ INSERT INTO Colheita (id_produto,data,quantidade,id_setor) VALUES (1,'10-Jan-202
 INSERT INTO Colheita (id_produto,data,quantidade,id_setor) VALUES (2,'10-Jan-2022',10,2);
 INSERT INTO Colheita (id_produto,data,quantidade,id_setor) VALUES (3,'10-Jan-2022',10,3);
 
+-- TipoAplicacaoFatorProducao
+INSERT INTO TipoAplicacaoFatorProducao (tipo_aplicacao_fator_producao) VALUES ('Foliar');
+INSERT INTO TipoAplicacaoFatorProducao (tipo_aplicacao_fator_producao) VALUES ('Solo');
+
+-- AplicacaoFatorProducao
+INSERT INTO AplicacaoFatorProducao (id_setor,id_fator_producao,data,id_tipo_aplicacao_fator_producao) VALUES (1,1,'10-Jan-2022',1);
+INSERT INTO AplicacaoFatorProducao (id_setor,id_fator_producao,data,id_tipo_aplicacao_fator_producao) VALUES (2,2,'10-Jan-2022',2);
+
+-- Visualisacao de dados
+DECLARE
+    numero_dados NUMBER;
+BEGIN
+    DBMS_OUTPUT.PUT_LINE('Visualisação dos dados:');
+    FOR I IN (SELECT TABLE_NAME FROM USER_TABLES)
+        LOOP
+            EXECUTE IMMEDIATE 'SELECT count(*) FROM ' || i.TABLE_NAME INTO numero_dados;
+            DBMS_OUTPUT.PUT_LINE('|' || i.TABLE_NAME || '| ' || numero_dados || ' |');
+        END LOOP;
+END;
