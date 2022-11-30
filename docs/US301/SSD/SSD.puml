@@ -1,0 +1,18 @@
+@startuml
+autonumber
+actor "Gestor de Distribuição" as GD
+
+activate GD
+GD -> ":System" : asks to create a new distribution network
+activate ":System"
+":System" --> GD : requests data (entities data file path, entities localization file path)
+deactivate ":System"
+
+GD -> ":System" : types requested data
+activate ":System"
+":System" --> GD : informs operation success
+deactivate ":System"
+
+deactivate GD
+
+@enduml

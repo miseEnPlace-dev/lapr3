@@ -94,7 +94,6 @@ public abstract class CommonGraph<V, E> implements Graph<V, E> {
    */
   @Override
   public boolean equals(Object otherObj) {
-
     if (this == otherObj)
       return true;
 

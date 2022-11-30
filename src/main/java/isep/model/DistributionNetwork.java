@@ -1,11 +1,10 @@
 package isep.model;
 
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.List;
-
-import java.util.AbstractMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import isep.shared.exceptions.InvalidNumberOfHubsException;
@@ -18,6 +17,13 @@ import isep.utils.graph.GraphAlgorithms;
 public class DistributionNetwork {
   private NetworkGraph<Entity, Integer> network = new NetworkGraph<>(false);
 
+  /**
+   *
+   * @param e1       First entity
+   * @param e2       Second entity
+   * @param distance Distance between them (in meters)
+   * @return True if the relation was added successfully, false otherwise
+   */
   public boolean addRelation(Entity e1, Entity e2, Integer distance) {
     return network.addEdge(e1, e2, distance);
   }
@@ -34,8 +40,17 @@ public class DistributionNetwork {
     return null;
   }
 
+  /**
+   *
+   * @return The number of entities that have a minimum of one relation
+   *         represented in the network
+   */
   public int getNumberOfEntities() {
     return network.numVertices();
+  }
+
+  public int getNumberOfRelations() {
+    return network.numEdges() / 2;
   }
 
   /**
