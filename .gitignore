@@ -7,6 +7,8 @@
 *.obj
 *.bc
 
+out
+
 ### C ###
 # Prerequisites
 *.d
@@ -105,3 +107,5 @@ buildNumber.properties
 .classpath
 
 # End of https://www.toptal.com/developers/gitignore/api/java,maven,c,assembler
+
+out/
