@@ -1,11 +1,10 @@
 package isep.model;
 
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.List;
-
-import java.util.AbstractMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import isep.shared.exceptions.InvalidNumberOfHubsException;
@@ -16,8 +15,15 @@ import isep.utils.graph.Graph;
 import isep.utils.graph.GraphAlgorithms;
 
 public class DistributionNetwork {
-  private Graph<Entity, Integer> network = new AdjacencyMapGraph<>(false);
+  private NetworkGraph<Entity, Integer> network = new NetworkGraph<>(false);
 
+  /**
+   *
+   * @param e1       First entity
+   * @param e2       Second entity
+   * @param distance Distance between them (in meters)
+   * @return True if the relation was added successfully, false otherwise
+   */
   public boolean addRelation(Entity e1, Entity e2, Integer distance) {
     return network.addEdge(e1, e2, distance);
   }
@@ -34,8 +40,17 @@ public class DistributionNetwork {
     return null;
   }
 
+  /**
+   *
+   * @return The number of entities that have a minimum of one relation
+   *         represented in the network
+   */
   public int getNumberOfEntities() {
     return network.numVertices();
+  }
+
+  public int getNumberOfRelations() {
+    return network.numEdges() / 2;
   }
 
   /**
@@ -91,29 +106,13 @@ public class DistributionNetwork {
   }
 
   public List<Enterprise> getEnterprises() {
-    List<Enterprise> enterprises = new ArrayList<>();
-    List<Entity> entities = network.vertices();
-
-    for (int i = 0; i < entities.size(); i++) {
-      Entity e = entities.get(i);
-      if (entities.get(i).getClass() == Enterprise.class)
-        enterprises.add((Enterprise) e);
-    }
-
-    return enterprises;
+    return network.getEntitiesWithClass(Enterprise.class);
   }
 
   public List<Entity> getNonEnterprises() {
-    List<Entity> nonEnterprises = new ArrayList<>();
-    List<Entity> entities = network.vertices();
-
-    for (int i = 0; i < entities.size(); i++) {
-      Entity e = entities.get(i);
-      if (entities.get(i).getClass() != Enterprise.class)
-        nonEnterprises.add(e);
-    }
-
-    return nonEnterprises;
+    List<Entity> result = network.getEntitiesWithClass(Client.class);
+    result.addAll(network.getEntitiesWithClass(Producer.class));
+    return result;
   }
 
   public int shortestPathDistance(Entity e1, Entity e2) {

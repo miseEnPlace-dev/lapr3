@@ -13,7 +13,7 @@ import java.util.Map;
  * @author Tomás Lopes <1211289@isep.ipp.pt>
  */
 public class AdjacencyMapGraph<V, E> extends CommonGraph<V, E> {
-  final private Map<V, MapVertex<V, E>> mapVertices; // all the Vertices of the graph
+  final protected Map<V, MapVertex<V, E>> mapVertices; // all the Vertices of the graph
 
   // Constructs an empty graph (either undirected or directed)
   public AdjacencyMapGraph(boolean directed) {
