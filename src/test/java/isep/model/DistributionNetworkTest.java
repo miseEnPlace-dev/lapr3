@@ -3,6 +3,7 @@ package isep.model;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -119,8 +120,8 @@ public class DistributionNetworkTest {
     List<Entity> actual = network.getNonEnterprises();
 
     assertEquals(expected.size(), actual.size());
-    assertEquals(expected.get(0), actual.get(0));
-    assertEquals(expected.get(1), actual.get(1));
+    assertTrue(actual.contains(e2));
+    assertTrue(actual.contains(e3));
   }
 
   @Test
