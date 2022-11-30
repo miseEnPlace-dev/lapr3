@@ -25,10 +25,10 @@ INSERT INTO Produto (designacao,preco,id_escalao_iva) VALUES ('Laranja',2,2);
 INSERT INTO Produto (designacao,preco,id_escalao_iva) VALUES ('Cerejeira',10,1);
 
 -- Encomendas
-INSERT INTO Encomenda (id_cliente,data_vencimento_pagamento,data_registo,data_entrega,data_pagamento,morada_entrega,cod_postal_entrega) VALUES (1,'01-Jan-2022','01-Jan-2022',NULL,NULL,'Rua do Joao','1234-567');
-INSERT INTO Encomenda (id_cliente,data_vencimento_pagamento,data_registo,data_entrega,data_pagamento,morada_entrega,cod_postal_entrega) VALUES (2,'02-Jan-2022','02-Jan-2022',NULL,NULL,'Rua da Maria','1234-566');
-INSERT INTO Encomenda (id_cliente,data_vencimento_pagamento,data_registo,data_entrega,data_pagamento,morada_entrega,cod_postal_entrega) VALUES (3,'03-Jan-2022','03-Jan-2022',NULL,NULL,'Rua do Jose','1234-565');
-INSERT INTO Encomenda (id_cliente,data_vencimento_pagamento,data_registo,data_entrega,data_pagamento,morada_entrega,cod_postal_entrega) VALUES (1,'04-Jan-2022','04-Jan-2022',NULL,NULL,'Rua do Joao','1234-567');
+INSERT INTO Encomenda (id_cliente,data_vencimento_pagamento,data_registo,data_entrega,data_pagamento,morada_entrega,cod_postal_entrega) VALUES (1,CURRENT_DATE,CURRENT_DATE,NULL,NULL,'Rua do Joao','1234-567');
+INSERT INTO Encomenda (id_cliente,data_vencimento_pagamento,data_registo,data_entrega,data_pagamento,morada_entrega,cod_postal_entrega) VALUES (2,CURRENT_DATE,CURRENT_DATE,NULL,NULL,'Rua da Maria','1234-566');
+INSERT INTO Encomenda (id_cliente,data_vencimento_pagamento,data_registo,data_entrega,data_pagamento,morada_entrega,cod_postal_entrega) VALUES (3,CURRENT_DATE,CURRENT_DATE,NULL,NULL,'Rua do Jose','1234-565');
+INSERT INTO Encomenda (id_cliente,data_vencimento_pagamento,data_registo,data_entrega,data_pagamento,morada_entrega,cod_postal_entrega) VALUES (1,CURRENT_DATE,CURRENT_DATE,NULL,NULL,'Rua do Joao','1234-567');
 
 -- ProdutoEncomenda
 INSERT INTO ProdutoEncomenda (id_encomenda,id_produto,quantidade,preco_unitario,iva,designacao_produto) VALUES (1,1,500,2,13,'Maça');
@@ -145,10 +145,10 @@ INSERT INTO AplicacaoFatorProducao (id_setor,id_fator_producao,data,id_tipo_apli
 DECLARE
     numero_dados NUMBER;
 BEGIN
-    DBMS_OUTPUT.PUT_LINE('Visualisação dos dados:');
+    DBMS_OUTPUT.PUT_LINE('Quantidade de registos em cada tabela:');
     FOR I IN (SELECT TABLE_NAME FROM USER_TABLES)
         LOOP
             EXECUTE IMMEDIATE 'SELECT count(*) FROM ' || i.TABLE_NAME INTO numero_dados;
-            DBMS_OUTPUT.PUT_LINE('|' || i.TABLE_NAME || '| ' || numero_dados || ' |');
+            DBMS_OUTPUT.PUT_LINE('Tabela ' || i.TABLE_NAME || ': ' || numero_dados || ' registos');
         END LOOP;
 END;
