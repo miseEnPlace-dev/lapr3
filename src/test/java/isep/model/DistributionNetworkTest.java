@@ -119,8 +119,8 @@ public class DistributionNetworkTest {
     List<Entity> actual = network.getNonEnterprises();
 
     assertEquals(expected.size(), actual.size());
-    assertEquals(expected.get(0), actual.get(0));
-    assertEquals(expected.get(1), actual.get(1));
+    assertEquals(true, actual.contains(e2));
+    assertEquals(true, actual.contains(e3));
   }
 
   @Test
