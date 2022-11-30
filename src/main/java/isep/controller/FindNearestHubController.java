@@ -1,6 +1,11 @@
 package isep.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import isep.model.Client;
 import isep.model.DistributionNetwork;
+import isep.model.Enterprise;
 
 /**
  * Controller for US304 - for each client, find the nearest hub.
@@ -24,4 +29,14 @@ public class FindNearestHubController {
    *
    * @return a map with the client as key and the nearest hub as value
    */
+  public Map<Client, Enterprise> findNearestHub() {
+    Map<Client, Enterprise> result = new HashMap<>();
+
+    // For each client, find the nearest hub
+    for (Client client : distributionNetwork.getClients()) {
+      result.put(client, distributionNetwork.getNearestHub(client));
+    }
+
+    return result;
+  }
 }
