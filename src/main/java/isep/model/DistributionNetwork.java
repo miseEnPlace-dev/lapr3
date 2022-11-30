@@ -49,6 +49,10 @@ public class DistributionNetwork {
     return network.numVertices();
   }
 
+  public int getNumberOfRelations() {
+    return network.numEdges() / 2;
+  }
+
   /**
    * Gets the shortest path between all entities in the network
    *
