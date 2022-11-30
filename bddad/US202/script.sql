@@ -25,6 +25,7 @@ DROP TABLE Edificio CASCADE CONSTRAINTS PURGE;
 DROP TABLE TipoEdificio CASCADE CONSTRAINTS PURGE;
 DROP TABLE AplicacaoFatorProducao CASCADE CONSTRAINTS PURGE;
 DROP TABLE TipoAplicacaoFatorProducao CASCADE CONSTRAINTS PURGE;
+DROP TABLE ProdutoCultura CASCADE CONSTRAINTS PURGE;
 
 CREATE TABLE Setor (
   id_setor   number(10),
@@ -108,9 +109,9 @@ CREATE TABLE TipoTubagem (
 );
 
 CREATE TABLE TipoRega (
-  id_tpo_rega     number(2),
+  id_tipo_rega     number(2),
   id_tipo_tubagem number(10) NOT NULL,
-  PRIMARY KEY (id_tpo_rega),
+  PRIMARY KEY (id_tipo_rega),
   FOREIGN KEY (id_tipo_tubagem) REFERENCES TipoTubagem (id_tipo_tubagem) ON DELETE CASCADE
 );
 
@@ -123,7 +124,7 @@ CREATE TABLE PlanoRega (
   data_fim      timestamp(0),
   PRIMARY KEY (id_setor, data_inicio),
   FOREIGN KEY (id_setor) REFERENCES Setor (id_setor) ON DELETE CASCADE,
-  FOREIGN KEY (id_tipo_rega) REFERENCES TipoRega (id_tpo_rega) ON DELETE CASCADE
+  FOREIGN KEY (id_tipo_rega) REFERENCES TipoRega (id_tipo_rega) ON DELETE CASCADE
 );
 
 CREATE TABLE TipoSensor (
@@ -206,7 +207,7 @@ CREATE TABLE Rega (
   data         timestamp(0) NOT NULL,
   id_tipo_rega number(2) NOT NULL,
   PRIMARY KEY (id_setor, data, id_tipo_rega),
-  FOREIGN KEY (id_tipo_rega) REFERENCES TipoRega (id_tpo_rega) ON DELETE CASCADE,
+  FOREIGN KEY (id_tipo_rega) REFERENCES TipoRega (id_tipo_rega) ON DELETE CASCADE,
   FOREIGN KEY (id_setor) REFERENCES Setor (id_setor) ON DELETE CASCADE
 );
 
