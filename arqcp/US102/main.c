@@ -52,21 +52,21 @@ int main(void)
     temperatures[i] = (last_temp_read + base_temp_read) / 2;
   }
 
-  unsigned char last_read = 1;
+  unsigned char last_read = pcg32_random_r() % 50;
   for (int i = 0; i < NUM_VEL_WIND_REGISTERS; i++)
   {
     last_read = sens_velc_vento(last_read, pcg32_random_r());
     vel_wind[i] = last_read;
   }
 
-  unsigned short last_read_wind = 100;
+  unsigned short last_read_wind = pcg32_random_r() % 360;
   for (int i = 0; i < NUM_DIR_WIND_REGISTERS; i++)
   {
     last_read_wind = sens_dir_vento(last_read_wind, pcg32_random_r());
     dir_wind[i] = last_read_wind;
   }
 
-  last_read = 1;
+  last_read = pcg32_random_r() % 5;
   for (int i = 0; i < NUM_PLUVIO_REGISTERS; i++)
   {
     unsigned char last_temp_read = temperatures[i * (TEMPERATURES_SENSOR_INTERVAL / PLUVIO_SENSOR_INTERVAL)];
