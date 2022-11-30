@@ -10,11 +10,12 @@ import java.util.Map;
 import isep.shared.exceptions.InvalidNumberOfHubsException;
 import isep.utils.MergeSort;
 import isep.utils.graph.AdjacencyMapGraph;
+import isep.utils.graph.Edge;
 import isep.utils.graph.Graph;
 import isep.utils.graph.GraphAlgorithms;
 
 public class DistributionNetwork {
-  private Graph<Entity, Integer> network = new AdjacencyMapGraph<>(false);
+  private NetworkGraph<Entity, Integer> network = new NetworkGraph<>(false);
 
   /**
    *
@@ -49,34 +50,65 @@ public class DistributionNetwork {
   }
 
   /**
+   * Gets the shortest path between all entities in the network
    *
-   * @return The number of relations between entities
+   * @param ce comparator to sort the entities by the distance
+   * @return graph of the shortest path from the distribution network
    */
-  public int getNumberOfRelations() {
-    // divide by two because is not directed, every vertex has 2 relations
-    return network.numEdges() / 2;
+  public AdjacencyMapGraph<Entity, Integer> getMinimumShortestPathNetwork() {
+    final Comparator<Edge<Entity, Integer>> ce = new Comparator<Edge<Entity, Integer>>() {
+      @Override
+      public int compare(Edge<Entity, Integer> arg0, Edge<Entity, Integer> arg1) {
+        return arg0.getWeight() - arg1.getWeight();
+      }
+    };
+
+    return getConnectedNetworkShortestPath(network, ce);
+  }
+
+  /**
+   * Calculates the minimum distance graph using Kruskal algorithm
+   *
+   * @param <V> vertex type
+   * @param <E> edge type
+   * @param g   initial graph
+   * @param ce  comparator between elements of type E
+   * @return the minimum distance graph
+   */
+  private AdjacencyMapGraph<Entity, Integer> getConnectedNetworkShortestPath(Graph<Entity, Integer> g,
+      Comparator<Edge<Entity, Integer>> ce) {
+    AdjacencyMapGraph<Entity, Integer> mst = new AdjacencyMapGraph<>(false);
+
+    List<Edge<Entity, Integer>> edges = new ArrayList<>();
+
+    for (Entity v : g.vertices())
+      mst.addVertex(v);
+
+    for (Edge<Entity, Integer> e : g.edges())
+      edges.add(e);
+
+    edges = new MergeSort<Edge<Entity, Integer>>().sort(edges, ce);
+
+    for (Edge<Entity, Integer> e : edges) {
+      Entity vOrig = e.getVOrig();
+      Entity vDest = e.getVDest();
+      List<Entity> connectedVerts = GraphAlgorithms.DepthFirstSearch(mst, vOrig);
+      if (!connectedVerts.contains(vDest))
+        mst.addEdge(vOrig, vDest, e.getWeight());
+    }
+
+    return mst;
+
   }
 
   public List<Enterprise> getEnterprises() {
-    List<Enterprise> enterprises = new ArrayList<>();
-    List<Entity> entities = network.vertices();
-    for (int i = 0; i < entities.size(); i++) {
-      Entity e = entities.get(i);
-      if (entities.get(i).getClass() == Enterprise.class)
-        enterprises.add((Enterprise) e);
-    }
-    return enterprises;
+    return network.getEntitiesWithClass(Enterprise.class);
   }
 
   public List<Entity> getNonEnterprises() {
-    List<Entity> nonEnterprises = new ArrayList<>();
-    List<Entity> entities = network.vertices();
-    for (int i = 0; i < entities.size(); i++) {
-      Entity e = entities.get(i);
-      if (entities.get(i).getClass() != Enterprise.class)
-        nonEnterprises.add(e);
-    }
-    return nonEnterprises;
+    List<Entity> result = network.getEntitiesWithClass(Client.class);
+    result.addAll(network.getEntitiesWithClass(Producer.class));
+    return result;
   }
 
   public int shortestPathDistance(Entity e1, Entity e2) {
@@ -89,7 +121,7 @@ public class DistributionNetwork {
 
   public List<Enterprise> defineHubs(int numberOfHubs) throws InvalidNumberOfHubsException {
     if (numberOfHubs <= 0)
-      throw (new InvalidNumberOfHubsException());
+      throw new InvalidNumberOfHubsException();
 
     List<Map.Entry<Enterprise, Integer>> list = new ArrayList<>();
 
@@ -100,7 +132,6 @@ public class DistributionNetwork {
     List<Entity> nonEnterprises = this.getNonEnterprises();
 
     for (int i = 0; i < enterprises.size(); i++) {
-
       Enterprise e1 = enterprises.get(i);
 
       // if e1 was a Hub before unMakes it

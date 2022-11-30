@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 import java.util.function.BinaryOperator;
 
@@ -94,7 +95,44 @@ public class GraphAlgorithms {
    */
   public static <V, E> boolean isConnected(Graph<V, E> g) {
     LinkedList<V> bfs = BreadthFirstSearch(g, g.vertices().iterator().next());
+    return isConnected(g, bfs);
+  }
+
+  /**
+   * Checks if a graph is connected by performing a breadth-first search and
+   * checking if all vertices were visited
+   *
+   * @param g    Graph instance
+   * @param vert vertex of graph g that will be the source of the search
+   * @return true if the graph is connected, false otherwise
+   */
+  private static <V, E> boolean isConnected(Graph<V, E> g, LinkedList<V> bfs) {
     return bfs != null && bfs.size() == g.numVertices();
+  }
+
+  /**
+   * Find the shortest path between the two farthest nodes of a graph using DFS.
+   *
+   * @param g Graph instance
+   * @return the shortest path between the farthest nodes of a graph.
+   */
+  public static <V, E> LinkedList<V> shortestPathBetweenFarthestNodes(Graph<V, E> g, Comparator<E> ce, BinaryOperator<E> sum, E zero) {
+    LinkedList<V> max = new LinkedList<>();
+
+    for (V v : g.vertices()) {
+      LinkedList<V> dfs = DepthFirstSearch(g, v);
+      if (!isConnected(g, dfs))
+        return null;
+
+      for (V w : dfs) {
+        LinkedList<V> path = new LinkedList<>();
+        shortestPath(g, v, w, ce, sum, zero, path);
+        if (path.size() > max.size())
+          max = path;
+      }
+    }
+
+    return max;
   }
 
   /**
@@ -310,4 +348,44 @@ public class GraphAlgorithms {
 
     return minDstGraph;
   }
+
+  /**
+   * Calculates the minimum distance graph using Kruskal algorithm
+   *
+   * @param <V> vertex type
+   * @param <E> edge type
+   * @param g   initial graph
+   * @param ce  comparator between elements of type E
+   * @return the minimum distance graph
+   */
+  public static <V, E> AdjacencyMapGraph<V, E> kruskall(Graph<V, E> g, Comparator<E> ce) {
+    AdjacencyMapGraph<V, E> mst = new AdjacencyMapGraph<>(false);
+
+    List<Edge<V, E>> edges = new ArrayList<>();
+
+    for (V v : g.vertices())
+      mst.addVertex(v);
+
+    for (Edge<V, E> e : g.edges())
+      edges.add(e);
+
+    edges.sort(new Comparator<Edge<V, E>>() {
+      @Override
+      public int compare(Edge<V, E> e1, Edge<V, E> e2) {
+        return ce.compare(e1.getWeight(), e2.getWeight());
+      }
+    });
+
+    for (Edge<V, E> e : edges) {
+      V vOrig = e.getVOrig();
+      V vDest = e.getVDest();
+      List<V> connectedVerts = DepthFirstSearch(mst, vOrig);
+      if (!connectedVerts.contains(vDest))
+        mst.addEdge(vOrig, vDest, e.getWeight());
+    }
+
+    return mst;
+
+  }
+
 }

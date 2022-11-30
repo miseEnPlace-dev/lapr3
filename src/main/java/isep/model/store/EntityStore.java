@@ -52,7 +52,6 @@ public class EntityStore {
       return Role.PRODUCER;
     if (letter.equals("e"))
       return Role.ENTERPRISE;
-
     return null;
   }
 
