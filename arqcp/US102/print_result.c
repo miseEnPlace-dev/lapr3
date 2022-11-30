@@ -27,7 +27,7 @@ void print_result_matrix(char *matrix[6], int sizeTemp, int sizeVel, int sizeDir
   printf("\n");
   print_unsigned_result(matrix[1], sizeVel, "Velocidade do Vento", "m/s");
   printf("\n");
-  print_unsigned_result(matrix[2], sizeDir, "Direção do Vento", "º");
+  print_unsigned_result_short(matrix[2], sizeDir, "Direção do Vento", "º");
   printf("\n");
   print_unsigned_result(matrix[3], sizePluvio, "Pluviometria", "mm");
   printf("\n");
