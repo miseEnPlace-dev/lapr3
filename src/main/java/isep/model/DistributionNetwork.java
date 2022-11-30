@@ -192,4 +192,23 @@ public class DistributionNetwork {
 
     return sum / count;
   }
+
+  public Enterprise getNearestHub(Client client) {
+    List<Enterprise> hubs = this.getHubs();
+    Enterprise nearestHub = null;
+    int minDistance = Integer.MAX_VALUE;
+
+    for (int i = 0; i < hubs.size(); i++) {
+      Enterprise hub = hubs.get(i);
+
+      int distance = this.shortestPathDistance(client, hub);
+
+      if (distance < minDistance) {
+        minDistance = distance;
+        nearestHub = hub;
+      }
+    }
+
+    return nearestHub;
+  }
 }
