@@ -46,6 +46,10 @@ INSERT INTO Cultura (cultura,id_tipo_cultura,id_produto) VALUES ('Pereira',1,2);
 INSERT INTO Cultura (cultura,id_tipo_cultura,id_produto) VALUES ('Laranjeira',1,1);
 INSERT INTO Cultura (cultura,id_tipo_cultura,id_produto) VALUES ('Cerejeira',1,1);
 
+-- ProdutoCultura
+INSERT INTO ProdutoCultura (id_produto,id_cultura) VALUES (1,1);
+INSERT INTO ProdutoCultura (id_produto,id_cultura) VALUES (2,2);
+
 -- TipoTubagem
 INSERT INTO TipoTubagem (tipo_tubagem) VALUES ('Dispersão');
 INSERT INTO TipoTubagem (tipo_tubagem) VALUES ('Irrigação');
