@@ -25,7 +25,6 @@ DROP TABLE Edificio CASCADE CONSTRAINTS PURGE;
 DROP TABLE TipoEdificio CASCADE CONSTRAINTS PURGE;
 DROP TABLE AplicacaoFatorProducao CASCADE CONSTRAINTS PURGE;
 DROP TABLE TipoAplicacaoFatorProducao CASCADE CONSTRAINTS PURGE;
-DROP TABLE ProdutoCultura CASCADE CONSTRAINTS PURGE;
 
 CREATE TABLE Setor (
   id_setor   number(10) GENERATED AS IDENTITY,
@@ -159,6 +158,8 @@ CREATE TABLE Cliente (
   plafond            double precision NOT NULL,
   cod_postal_entrega varchar2(8) NOT NULL,
   cod_postal         varchar2(8) NOT NULL,
+  n_encomendas           number(3) DEFAULT 0 NOT NULL, 
+  valor_total_encomendas number(10) DEFAULT 0 NOT NULL, 
   PRIMARY KEY (id_cliente),
   FOREIGN KEY (cod_postal_entrega) REFERENCES Localidade (cod_postal) ON DELETE CASCADE,
   FOREIGN KEY (cod_postal) REFERENCES Localidade (cod_postal) ON DELETE CASCADE
@@ -259,8 +260,8 @@ CREATE TABLE AplicacaoFatorProducao (
 );
 
 CREATE TABLE ProdutoCultura (
-  id_cultura number(8) NOT NULL,
-  id_produto number(8) NOT NULL,
+  id_cultura number(8) NOT NULL, 
+  id_produto number(8) NOT NULL, 
   PRIMARY KEY (id_cultura, id_produto),
   FOREIGN KEY (id_cultura) REFERENCES Cultura (id_cultura) ON DELETE CASCADE,
   FOREIGN KEY (id_produto) REFERENCES Produto (id_produto) ON DELETE CASCADE
