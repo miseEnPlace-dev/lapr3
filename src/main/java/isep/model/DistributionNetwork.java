@@ -115,6 +115,10 @@ public class DistributionNetwork {
     return result;
   }
 
+  public List<Enterprise> getHubs() {
+    return network.getHubs();
+  }
+
   public int shortestPathDistance(Entity e1, Entity e2) {
     return GraphAlgorithms.shortestPath(network, e1, e2, Integer::compareTo, Integer::sum, 0, new LinkedList<>());
   }
