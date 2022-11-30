@@ -115,6 +115,10 @@ public class DistributionNetwork {
     return result;
   }
 
+  public List<Client> getClients() {
+    return network.getEntitiesWithClass(Client.class);
+  }
+
   public List<Enterprise> getHubs() {
     return network.getHubs();
   }
