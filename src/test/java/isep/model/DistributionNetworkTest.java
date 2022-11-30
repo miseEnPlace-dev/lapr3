@@ -165,7 +165,7 @@ public class DistributionNetworkTest {
   }
 
   @Test
-  public void testGetNonEnterprises() {
+  public void testGetEntities() {
     DistributionNetwork network = new DistributionNetwork();
     Enterprise e1 = new Enterprise("e1", 1, 1, "l1");
     Producer e2 = new Producer("e2", 2, 2, "l2");
@@ -176,21 +176,25 @@ public class DistributionNetworkTest {
     network.addRelation(e3, e4, distance);
 
     List<Entity> expected = new ArrayList<>();
+    expected.add(e1);
     expected.add(e2);
     expected.add(e3);
+    expected.add(e4);
 
-    List<Entity> actual = network.getNonEnterprises();
+    List<Entity> actual = network.getEntities();
 
     assertEquals(expected.size(), actual.size());
+    assertTrue(actual.contains(e1));
     assertTrue(actual.contains(e2));
     assertTrue(actual.contains(e3));
+    assertTrue(actual.contains(e4));
   }
 
   @Test
-  public void testGetNonEnterprisesForEmptyNetwork() {
+  public void testGetEntitiesForEmptyNetwork() {
     DistributionNetwork network = new DistributionNetwork();
 
-    assertEquals(network.getNonEnterprises(), new ArrayList<>());
+    assertEquals(network.getEntities(), new ArrayList<>());
   }
 
   @Test

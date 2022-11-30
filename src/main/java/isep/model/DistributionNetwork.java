@@ -109,10 +109,8 @@ public class DistributionNetwork {
     return network.getEntitiesWithClass(Enterprise.class);
   }
 
-  public List<Entity> getNonEnterprises() {
-    List<Entity> result = network.getEntitiesWithClass(Client.class);
-    result.addAll(network.getEntitiesWithClass(Producer.class));
-    return result;
+  public List<Entity> getEntities() {
+    return network.vertices();
   }
 
   public int shortestPathDistance(Entity e1, Entity e2) {
@@ -133,7 +131,7 @@ public class DistributionNetwork {
       return null;
 
     List<Enterprise> enterprises = this.getEnterprises();
-    List<Entity> nonEnterprises = this.getNonEnterprises();
+    List<Entity> entities = this.getEntities();
 
     for (int i = 0; i < enterprises.size(); i++) {
       Enterprise e1 = enterprises.get(i);
@@ -141,7 +139,7 @@ public class DistributionNetwork {
       // if e1 was a Hub before unMakes it
       e1.unMakeHub();
 
-      int average = this.getAveragePathDistanceBetweenGroupOfEntities(e1, nonEnterprises);
+      int average = this.getAveragePathDistanceBetweenGroupOfEntities(e1, entities);
 
       list.add(new AbstractMap.SimpleEntry<Enterprise, Integer>(e1, average));
     }
