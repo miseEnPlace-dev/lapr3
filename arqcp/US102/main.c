@@ -25,6 +25,8 @@ int main(void)
   state = get_value_from_dev_random();
   inc = get_value_from_dev_random();
 
+  char base_temperatures[NUM_TEMPERATURE_REGISTERS];
+
   char temperatures[NUM_TEMPERATURE_REGISTERS];
   unsigned char vel_wind[NUM_VEL_WIND_REGISTERS];
   unsigned short dir_wind[NUM_DIR_WIND_REGISTERS];
@@ -40,13 +42,14 @@ int main(void)
   matrix[4] = soil_humidity;
   matrix[5] = air_humidity;
 
-  generate_base_temp_values(temperatures, NUM_TEMPERATURE_REGISTERS);
+  generate_base_temp_values(base_temperatures, NUM_TEMPERATURE_REGISTERS);
 
   char last_temp_read = TEMP_BASE_VALUE;
   for (int i = 0; i < NUM_TEMPERATURE_REGISTERS; i++)
   {
     last_temp_read = sens_temp(last_temp_read, pcg32_random_r());
-    temperatures[i] = (last_temp_read + temperatures[i]) / 2;
+    char base_temp_read = (i == 0 ? TEMP_BASE_VALUE : base_temperatures[i - 1]);
+    temperatures[i] = (last_temp_read + base_temp_read) / 2;
   }
 
   unsigned char last_read = 1;
@@ -101,7 +104,7 @@ int main(void)
   print_unsigned_result(air_humidity, NUM_AIR_HUMIDITY_REGISTERS, "Humidade do Ar", "%");
 
   printf("\n-- Leituras dos sensores agrupadas --\n\n");
-  print_result_matrix(matrix,NUM_TEMPERATURE_REGISTERS, NUM_VEL_WIND_REGISTERS, NUM_DIR_WIND_REGISTERS, NUM_PLUVIO_REGISTERS, NUM_SOIL_HUMIDITY_REGISTERS, NUM_AIR_HUMIDITY_REGISTERS);
+  print_result_matrix(matrix, NUM_TEMPERATURE_REGISTERS, NUM_VEL_WIND_REGISTERS, NUM_DIR_WIND_REGISTERS, NUM_PLUVIO_REGISTERS, NUM_SOIL_HUMIDITY_REGISTERS, NUM_AIR_HUMIDITY_REGISTERS);
 
   return 0;
 }
