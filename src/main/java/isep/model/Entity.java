@@ -71,4 +71,11 @@ public abstract class Entity {
   public <E extends Comparable<E>> Integer compare(Entity o1, Entity o2) {
     return o1.getId().compareTo(o2.getId());
   }
+
+  @Override
+  public String toString() {
+    return "Entity [id=" + id + ", latitude=" + latitude + ", longitude=" + longitude + ", localizationId="
+        + localizationId;
+  }
+
 }
