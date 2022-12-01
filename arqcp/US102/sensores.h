@@ -19,7 +19,21 @@ const char PLUVIO_SENSOR_MAX_VARIATION = 5;
 const char HIGH_TEMP_DEFAULT = 25;
 const char PLUVIO_SENSOR_MAX_VARIATION_HIGH_TEMP = 2;
 
-extern char **matrix;
+#define N_OF_TEMP_SENSORS 3
+#define N_OF_VELOCITY_SENSORS 3
+#define N_OF_DIRECTION_SENSORS 3
+#define N_OF_PLUVIO_SENSORS 3
+#define N_OF_SOIL_HUMIDITY_SENSORS 3
+#define N_OF_AIR_HUMIDITY_SENSORS 3
+
+#define TEMPERATURE_SENSORS_INDEX 0
+#define VELOCITY_SENSORS_INDEX 1
+#define DIR_WIND_SENSORS_INDEX 2
+#define PLUVIO_SENSORS_INDEX 3
+#define SOIL_HUMIDITY_SENSORS_INDEX 4
+#define AIR_HUMIDITY_SENSORS_INDEX 5
+
+extern int ***matrix;
 
 #include <stdint.h>
 uint32_t pcg32_random_r();

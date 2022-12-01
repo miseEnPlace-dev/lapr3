@@ -200,7 +200,6 @@ public class DistributionNetwork {
 
     for (int i = 0; i < hubs.size(); i++) {
       Enterprise hub = hubs.get(i);
-
       int distance = this.shortestPathDistance(client, hub);
 
       if (distance < minDistance) {
