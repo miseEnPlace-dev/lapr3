@@ -12,5 +12,7 @@ FUNCTION registar_cliente(
     plafond IN CLIENTE.plafond%TYPE)
   RETURN CLIENTE.id_cliente%TYPE;
 
-  cod_postal_inexistente EXCEPTION;
+PROCEDURE atualizar_encomendas_cliente(
+    cliente_id IN CLIENTE.id_cliente%TYPE);
+
 END gestao_clientes;
