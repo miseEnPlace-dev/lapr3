@@ -116,7 +116,8 @@ public class GraphAlgorithms {
    * @param g Graph instance
    * @return the shortest path between the farthest nodes of a graph.
    */
-  public static <V, E> LinkedList<V> shortestPathBetweenFarthestNodes(Graph<V, E> g, Comparator<E> ce, BinaryOperator<E> sum, E zero) {
+  public static <V, E> LinkedList<V> shortestPathBetweenFarthestNodes(Graph<V, E> g, Comparator<E> ce,
+      BinaryOperator<E> sum, E zero) {
     LinkedList<V> max = new LinkedList<>();
 
     for (V v : g.vertices()) {
