@@ -18,9 +18,6 @@ CREATE OR REPLACE PACKAGE BODY gestao_clientes AS
     SELECT cod_postal INTO cod_postal_var FROM Localidade WHERE COD_POSTAL LIKE postal;
 
     SELECT cod_postal INTO cod_postal_entrega_var FROM Localidade WHERE COD_POSTAL LIKE postal_entrega;
-    IF cod_postal_entrega_var IS NULL THEN
-      RAISE cod_postal_inexistente;
-    END IF;
 
     INSERT INTO cliente (nome, nif, email, morada, morada_entrega, plafond, cod_postal_entrega, cod_postal) VALUES (
       nome,
@@ -50,14 +47,14 @@ CREATE OR REPLACE PACKAGE BODY gestao_clientes AS
     SAVEPOINT inicio;
 
     SELECT id_cliente INTO null_id FROM cliente WHERE id_cliente = cliente_id;
-    IF null_id IS NULL THEN
-      RAISE cliente_inexistente;
-    END IF;
 
     SELECT SUM((preco_unitario * (1 + iva / 100)) * quantidade), COUNT(*) INTO total_encomendas, num_encomendas
     FROM produtoEncomenda
     INNER JOIN encomenda ON produtoEncomenda.id_encomenda = encomenda.id_encomenda
-    WHERE id_cliente = cliente_id;
+    WHERE
+      id_cliente = cliente_id
+      AND data_registo >= trunc(sysdate, 'yyyy') - interval '1' year
+      AND data_registo <  trunc(sysdate, 'yyyy');
 
     UPDATE Cliente SET valor_total_encomendas = total_encomendas, n_encomendas = num_encomendas WHERE id_cliente = cliente_id;
 
@@ -69,13 +66,3 @@ CREATE OR REPLACE PACKAGE BODY gestao_clientes AS
       ROLLBACK TO inicio;
   END atualizar_encomendas_cliente;
 END gestao_clientes;
-
-DECLARE
-    id_cliente NUMBER;
-BEGIN
-    id_cliente := gestao_clientes.registar_cliente('name',123456789,'email@email.com','morada','morada','4500-123','4400-456',100);
-END;
-
-BEGIN
-  gestao_clientes.atualizar_encomendas_cliente(1);
-END;

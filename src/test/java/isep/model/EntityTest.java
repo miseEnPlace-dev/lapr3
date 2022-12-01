@@ -84,34 +84,6 @@ public class EntityTest {
   }
 
   @Test
-  public void testEntitySetId() {
-    Entity entity = new Enterprise("Test", 10, 10, "Test");
-    entity.setId("Test2");
-    assertEquals(entity.getId(), "Test2");
-  }
-
-  @Test
-  public void testEntitySetLatitude() {
-    Entity entity = new Enterprise("Test", 10, 10, "Test");
-    entity.setLatitude(20);
-    assertEquals(entity.getLatitude(), 20);
-  }
-
-  @Test
-  public void testEntitySetLongitude() {
-    Entity entity = new Enterprise("Test", 10, 10, "Test");
-    entity.setLongitude(20);
-    assertEquals(entity.getLongitude(), 20);
-  }
-
-  @Test
-  public void testEntitySetLocalizationId() {
-    Entity entity = new Enterprise("Test", 10, 10, "Test");
-    entity.setLocalizationId("Test2");
-    assertEquals(entity.getLocalizationId(), "Test2");
-  }
-
-  @Test
   public void testEntityToString() {
     Entity entity = new Enterprise("Test", 10, 10, "Test");
     assertEquals(entity.toString(), "Entity [id=Test, latitude=10.0, longitude=10.0, localizationId=Test");
