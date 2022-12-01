@@ -2,9 +2,12 @@
 
 #include "random.h"
 
-void reset_seed(uint64_t *state, uint64_t *inc) {
-    *state = get_value_from_dev_random();
-    *inc = get_value_from_dev_random();
+extern uint64_t state;
+extern uint64_t inc;
+
+void reset_seed() {
+    state = get_value_from_dev_random();
+    inc = get_value_from_dev_random();
 }
 
 char limit(short value) {
