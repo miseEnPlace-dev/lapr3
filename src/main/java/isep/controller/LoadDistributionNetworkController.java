@@ -1,6 +1,5 @@
 package isep.controller;
 
-import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Map;
 
@@ -13,8 +12,7 @@ public class LoadDistributionNetworkController {
   private EntityStore entityStore;
   private List<Map<String, String>> distancesData;
 
-  public LoadDistributionNetworkController(EntityStore entityStore, List<Map<String, String>> distancesData)
-      throws FileNotFoundException {
+  public LoadDistributionNetworkController(EntityStore entityStore, List<Map<String, String>> distancesData) {
     this.entityStore = entityStore;
     this.distancesData = distancesData;
   }
