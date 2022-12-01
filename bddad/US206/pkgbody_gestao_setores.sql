@@ -56,10 +56,13 @@ CREATE OR REPLACE PACKAGE BODY gestao_setores AS
 
 
 
-  FUNCTION registar_cultura(cultura CULTURA.cultura%TYPE,
+  FUNCTION registar_cultura(cultura_param CULTURA.cultura%TYPE,
     id_tipo_cultura CULTURA.id_tipo_cultura%TYPE,
-    id_produto CULTURA.id_produto&TYPE)
-    RETURN CULTURA.id_cultura%TYPE 
+    id_produto CULTURA.id_produto%TYPE)
+    RETURN CULTURA.id_cultura%TYPE AS
+    new_id CULTURA.id_cultura%TYPE;
+    flag NUMBER;
+
 
   BEGIN
     SAVEPOINT inicio;
@@ -89,8 +92,8 @@ CREATE OR REPLACE PACKAGE BODY gestao_setores AS
     END IF;
 
 
-    INSERT INTO CULTURA(cultura, id_tipo_cultura, id_produto)
-    VAlUES (new_id, id_tipo_cultura, id_produto);
+    INSERT INTO CULTURA(id_cultura, cultura, id_tipo_cultura, id_produto)
+    VAlUES (new_id, cultura_param, id_tipo_cultura, id_produto);
 
     DBMS_OUTPUT.PUT_LINE('CULTURA ' || new_id || ' registado com sucesso.');
 
@@ -106,12 +109,13 @@ CREATE OR REPLACE PACKAGE BODY gestao_setores AS
     WHEN OTHERS THEN
       RAISE_APPLICATION_ERROR(-20005, 'Erro ao registar entrega.');
       ROLLBACK TO inicio;
-
   END registar_cultura;
 
 
 
 END gestao_setores;
+
+
 
 DECLARE
     id_setor NUMBER;
