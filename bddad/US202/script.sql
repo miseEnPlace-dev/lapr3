@@ -60,7 +60,7 @@ CREATE TABLE Cultura (
   cultura         varchar2(50) NOT NULL,
   id_tipo_cultura number(2) NOT NULL,
   PRIMARY KEY (id_cultura),
-  FOREIGN KEY (id_tipo_cultura) REFERENCES TipoCultura (id_tipo_cultura) ON DELETE CASCADE,
+  FOREIGN KEY (id_tipo_cultura) REFERENCES TipoCultura (id_tipo_cultura) ON DELETE CASCADE
 );
 
 CREATE TABLE TipoFatorProducao (

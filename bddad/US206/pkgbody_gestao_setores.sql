@@ -57,8 +57,7 @@ CREATE OR REPLACE PACKAGE BODY gestao_setores AS
 
 
   FUNCTION registar_cultura(cultura_param CULTURA.cultura%TYPE,
-    id_tipo_cultura CULTURA.id_tipo_cultura%TYPE,
-    id_produto CULTURA.id_produto%TYPE)
+    id_tipo_cultura CULTURA.id_tipo_cultura%TYPE)
     RETURN CULTURA.id_cultura%TYPE AS
     new_id CULTURA.id_cultura%TYPE;
     flag NUMBER;
@@ -83,17 +82,9 @@ CREATE OR REPLACE PACKAGE BODY gestao_setores AS
       RAISE tipo_cultura_inexistente;
     END IF;
 
-    /* check if product type is already registered */
-    SELECT COUNT(*) INTO flag 
-    FROM PRODUTO
-    WHERE id_produto = id_produto;
-    IF flag = 0 THEN
-      RAISE produto_inexistente;
-    END IF;
 
-
-    INSERT INTO CULTURA(id_cultura, cultura, id_tipo_cultura, id_produto)
-    VAlUES (new_id, cultura_param, id_tipo_cultura, id_produto);
+    INSERT INTO CULTURA(id_cultura, cultura, id_tipo_cultura)
+    VAlUES (new_id, cultura_param, id_tipo_cultura);
 
     DBMS_OUTPUT.PUT_LINE('CULTURA ' || new_id || ' registado com sucesso.');
 
@@ -102,10 +93,6 @@ CREATE OR REPLACE PACKAGE BODY gestao_setores AS
     EXCEPTION
     WHEN tipo_cultura_inexistente THEN
       RAISE_APPLICATION_ERROR(-20001, 'Tipo cultura inexistente.');
-      ROLLBACK TO inicio;
-    WHEN produto_inexistente THEN
-      RAISE_APPLICATION_ERROR(-20002, 'Produto inexistente.');
-      ROLLBACK TO inicio;
     WHEN OTHERS THEN
       RAISE_APPLICATION_ERROR(-20005, 'Erro ao registar entrega.');
       ROLLBACK TO inicio;
@@ -132,5 +119,5 @@ END;
 DECLARE
     id_cultura NUMBER;
 BEGIN
-    id_cultura := gestao_setores.registar_cultura('cultura', 1, 1);
+    id_cultura := gestao_setores.registar_cultura('cultura', 1);
 END;
