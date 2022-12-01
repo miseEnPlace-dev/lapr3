@@ -13,6 +13,7 @@ import isep.model.DistributionNetwork;
 import isep.model.Entity;
 import isep.model.store.EntityStore;
 import isep.shared.exceptions.NetworkNotConnectedException;
+import isep.utils.CSVReader;
 import isep.utils.graph.AdjacencyMapGraph;
 import isep.utils.graph.Edge;
 import isep.utils.graph.Graph;
@@ -35,7 +36,7 @@ public class ConnectedNetworkShortestPathControllerTest {
   public static void setup() throws FileNotFoundException {
     entityStore = new EntityStoreMock().mockEntityStoreFromSampleFile();
     loadDistributionNetworkController = new LoadDistributionNetworkController(entityStore,
-        DISTANCESFILENAMEV3);
+        new CSVReader(DISTANCESFILENAMEV3).read());
 
   }
 
@@ -274,7 +275,7 @@ public class ConnectedNetworkShortestPathControllerTest {
     System.out.println("testShortestPathSourceInNetworkAnotherFile");
     LoadDistributionNetworkController loadDistributionNetworkController = new LoadDistributionNetworkController(
         entityStore,
-        DISTANCESFILENAMEV3);
+        new CSVReader(DISTANCESFILENAMEV3).read());
 
     DistributionNetwork network = loadDistributionNetworkController.loadDistributionNetwork();
 
@@ -292,7 +293,7 @@ public class ConnectedNetworkShortestPathControllerTest {
     System.out.println("testShortestPathConnectedNetwork");
     LoadDistributionNetworkController loadDistributionNetworkController = new LoadDistributionNetworkController(
         entityStore,
-        DISTANCESFILENAMEV3);
+        new CSVReader(DISTANCESFILENAMEV3).read());
 
     DistributionNetwork network = loadDistributionNetworkController.loadDistributionNetwork();
 
@@ -359,7 +360,7 @@ public class ConnectedNetworkShortestPathControllerTest {
 
     LoadDistributionNetworkController loadDistributionNetworkController = new LoadDistributionNetworkController(
         entityStore,
-        DISTANCESFILENAMESMALL);
+        new CSVReader(DISTANCESFILENAMESMALL).read());
 
     DistributionNetwork network = loadDistributionNetworkController.loadDistributionNetwork();
 
@@ -388,7 +389,7 @@ public class ConnectedNetworkShortestPathControllerTest {
 
     LoadDistributionNetworkController loadDistributionNetworkController = new LoadDistributionNetworkController(
         entityStore,
-        DISTANCESFILENAMEBIG);
+        new CSVReader(DISTANCESFILENAMEBIG).read());
 
     DistributionNetwork network = loadDistributionNetworkController.loadDistributionNetwork();
 

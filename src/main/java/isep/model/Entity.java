@@ -7,12 +7,41 @@ public abstract class Entity {
   private String localizationId;
 
   public Entity(String id, double latitude, double longitude, String localizationId) {
-    // TODO: verifications
-    this.id = id;
-    this.latitude = latitude;
-    this.longitude = longitude;
-    this.localizationId = localizationId;
+    validateId(id);
+    validateLatitude(latitude);
+    validateLongitude(longitude);
+    validateLocalizationId(localizationId);
 
+  }
+
+  private void validateId(String id) {
+    if (id == null)
+      throw new IllegalArgumentException("Id cannot be null");
+
+    this.id = id;
+  }
+
+  private void validateLatitude(double latitude) {
+    final int MAX_LATITUDE = 90;
+    if (latitude < -MAX_LATITUDE || latitude > MAX_LATITUDE)
+      throw new IllegalArgumentException("Latitude must be between -90 and 90");
+
+    this.latitude = latitude;
+  }
+
+  private void validateLongitude(double longitude) {
+    final int MAX_LONGITUDE = 180;
+    if (longitude < -MAX_LONGITUDE || longitude > MAX_LONGITUDE)
+      throw new IllegalArgumentException("Longitude must be between -180 and 180");
+
+    this.longitude = longitude;
+  }
+
+  private void validateLocalizationId(String localizationId) {
+    if (localizationId == null)
+      throw new IllegalArgumentException("LocalizationId cannot be null");
+
+    this.localizationId = localizationId;
   }
 
   public String getLocalizationId() {
@@ -27,24 +56,10 @@ public abstract class Entity {
   }
 
   /**
-   * @param id the id to set
-   */
-  public void setId(String id) {
-    this.id = id;
-  }
-
-  /**
    * @return double return the latitude
    */
   public double getLatitude() {
     return latitude;
-  }
-
-  /**
-   * @param latitude the latitude to set
-   */
-  public void setLatitude(double latitude) {
-    this.latitude = latitude;
   }
 
   /**
@@ -54,28 +69,9 @@ public abstract class Entity {
     return longitude;
   }
 
-  /**
-   * @param longitude the longitude to set
-   */
-  public void setLongitude(double longitude) {
-    this.longitude = longitude;
-  }
-
-  /**
-   * @param localizationId the localizationId to set
-   */
-  public void setLocalizationId(String localizationId) {
-    this.localizationId = localizationId;
-  }
-
-  public <E extends Comparable<E>> Integer compare(Entity o1, Entity o2) {
-    return o1.getId().compareTo(o2.getId());
-  }
-
   @Override
   public String toString() {
     return "Entity [id=" + id + ", latitude=" + latitude + ", longitude=" + longitude + ", localizationId="
         + localizationId;
   }
-
 }

@@ -1,6 +1,5 @@
 package isep.controller;
 
-import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Map;
 
@@ -8,25 +7,21 @@ import isep.model.DistributionNetwork;
 import isep.model.Entity;
 import isep.model.store.EntityStore;
 import isep.shared.Constants;
-import isep.utils.CSVReader;
 
 public class LoadDistributionNetworkController {
   private EntityStore entityStore;
-  private List<Map<String, String>> distancesList;
+  private List<Map<String, String>> distancesData;
 
-  public LoadDistributionNetworkController(EntityStore entityStore, String distancesFileName)
-      throws FileNotFoundException {
+  public LoadDistributionNetworkController(EntityStore entityStore, List<Map<String, String>> distancesData) {
     this.entityStore = entityStore;
-    CSVReader distanceReader = new CSVReader(distancesFileName);
-    System.out.println("Reading distances...");
-    this.distancesList = distanceReader.read();
+    this.distancesData = distancesData;
   }
 
   public DistributionNetwork loadDistributionNetwork() {
     DistributionNetwork distributionNetwork = new DistributionNetwork();
 
     System.out.println("Loading distribution network...");
-    for (Map<String, String> distance : distancesList) {
+    for (Map<String, String> distance : distancesData) {
       try {
         String id1 = distance.get(Constants.DISTANCES_LOC1_ID_FIELD_NAME);
         String id2 = distance.get(Constants.DISTANCES_LOC2_ID_FIELD_NAME);
