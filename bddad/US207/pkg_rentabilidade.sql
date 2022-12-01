@@ -1,6 +1,4 @@
 CREATE OR REPLACE PACKAGE rentabilidade AS
-  FUNCTION calcular_rentabilidade(id_cliente CLIENTE.id_cliente%TYPE)
-  RETURN NUMBER;
-
-  rentabilidade_inexistente EXCEPTION;
+  TYPE ListaSetores IS TABLE OF Setor%ROWTYPE;
+  FUNCTION listarSetoresPorQtdProducao RETURN ListaSetores;
 END rentabilidade;
