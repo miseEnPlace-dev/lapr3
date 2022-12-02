@@ -55,8 +55,8 @@ public class EntityStore {
     return null;
   }
 
-  public List<Entity> getEntities() {
-    return entities;
+  public Iterator<Entity> getEntities() {
+    return entities.iterator();
   }
 
   public void addEntitiesFromList(List<Map<String, String>> localizations) {

@@ -35,23 +35,25 @@ public class FindNearestHubTest {
   private static DistributionNetwork distributionNetwork;
   private static DefineHubsController defineHubsController;
 
-  @BeforeAll
-  public static void setup() {
+  private static final String ENTITIES_FILE_PATH_WITH_ZERO_ENTERPRISES = "src/test/resources/entitiesSampleV3.csv";
+  private static final String ENTITIES_FILE_PATH_WITH_ONE_ENTERPRISE = "src/test/resources/entitiesSampleV2.csv";
+  private static final String ENTITIES_FILE_PATH_WITH_TWO_ENTERPRISES = "src/test/resources/entitiesSampleV4.csv";
 
-  }
+  private static final String DISTANCES_FILE_PATH = "src/test/resources/distancesSampleV4.csv";
 
   @Test
   public void testWithNoEnterprises() throws FileNotFoundException {
-    loadDistributionNetwork("src/test/resources/entitiesSampleV3.csv", "src/test/resources/distancesSampleV4.csv");
+    loadDistributionNetwork(ENTITIES_FILE_PATH_WITH_ZERO_ENTERPRISES, DISTANCES_FILE_PATH);
 
     findNearestHubController = new FindNearestHubController(distributionNetwork);
 
     Map<Entity, Enterprise> expected = new HashMap<>();
-    for (Entity entity : entityStore.getEntities()) {
-      if (entity instanceof Producer)
-        continue;
+    Iterator<Entity> iterator = entityStore.getEntities();
+    while (iterator.hasNext()) {
+      Entity entity = iterator.next();
 
-      expected.put(entity, null);
+      if (!(entity instanceof Producer))
+        expected.put((Entity) entity, null);
     }
 
     Map<Entity, Enterprise> actual = findNearestHubController.findNearestHub();
@@ -62,16 +64,17 @@ public class FindNearestHubTest {
 
   @Test
   public void testWithZeroHubs() throws FileNotFoundException {
-    loadDistributionNetwork("src/test/resources/entitiesSampleV2.csv", "src/test/resources/distancesSampleV4.csv");
+    loadDistributionNetwork(ENTITIES_FILE_PATH_WITH_ONE_ENTERPRISE, DISTANCES_FILE_PATH);
 
     findNearestHubController = new FindNearestHubController(distributionNetwork);
 
     Map<Entity, Enterprise> expected = new HashMap<>();
-    for (Entity entity : entityStore.getEntities()) {
-      if (entity instanceof Producer)
-        continue;
+    Iterator<Entity> iterator = entityStore.getEntities();
+    while (iterator.hasNext()) {
+      Entity entity = iterator.next();
 
-      expected.put(entity, null);
+      if (!(entity instanceof Producer))
+        expected.put((Entity) entity, null);
     }
 
     Map<Entity, Enterprise> actual = findNearestHubController.findNearestHub();
@@ -82,7 +85,7 @@ public class FindNearestHubTest {
 
   @Test
   public void testWithOneHub() throws FileNotFoundException, InvalidNumberOfHubsException {
-    loadDistributionNetwork("src/test/resources/entitiesSampleV2.csv", "src/test/resources/distancesSampleV4.csv");
+    loadDistributionNetwork(ENTITIES_FILE_PATH_WITH_ONE_ENTERPRISE, DISTANCES_FILE_PATH);
 
     findNearestHubController = new FindNearestHubController(distributionNetwork);
 
@@ -92,11 +95,12 @@ public class FindNearestHubTest {
     Enterprise hub = (Enterprise) entityStore.getEntityByLocalizationId("CT4");
 
     Map<Entity, Enterprise> expected = new HashMap<>();
-    for (Entity entity : entityStore.getEntities()) {
-      if (entity instanceof Producer)
-        continue;
+    Iterator<Entity> iterator = entityStore.getEntities();
+    while (iterator.hasNext()) {
+      Entity entity = iterator.next();
 
-      expected.put(entity, hub);
+      if (!(entity instanceof Producer))
+        expected.put((Entity) entity, hub);
     }
 
     Map<Entity, Enterprise> actual = findNearestHubController.findNearestHub();
@@ -107,7 +111,7 @@ public class FindNearestHubTest {
 
   @Test
   public void testWithTwoHubs() throws FileNotFoundException, InvalidNumberOfHubsException {
-    loadDistributionNetwork("src/test/resources/entitiesSampleV4.csv", "src/test/resources/distancesSampleV4.csv");
+    loadDistributionNetwork(ENTITIES_FILE_PATH_WITH_TWO_ENTERPRISES, DISTANCES_FILE_PATH);
 
     findNearestHubController = new FindNearestHubController(distributionNetwork);
 
@@ -118,13 +122,16 @@ public class FindNearestHubTest {
     Enterprise hub2 = (Enterprise) entityStore.getEntityByLocalizationId("CT5");
 
     Map<Entity, Enterprise> expected = new HashMap<>();
-    for (Entity entity : entityStore.getEntities()) {
+    Iterator<Entity> iterator = entityStore.getEntities();
+    while (iterator.hasNext()) {
+      Entity entity = iterator.next();
+
       if (entity instanceof Producer)
         continue;
       if (entity.getLocalizationId().equals("CT5"))
-        expected.put(entity, hub2);
+        expected.put((Entity) entity, hub2);
       else
-        expected.put(entity, hub1);
+        expected.put((Entity) entity, hub1);
     }
 
     Map<Entity, Enterprise> actual = findNearestHubController.findNearestHub();

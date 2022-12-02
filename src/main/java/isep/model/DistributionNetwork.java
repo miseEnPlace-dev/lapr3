@@ -208,11 +208,11 @@ public class DistributionNetwork {
     if (hubs.size() == 1)
       return hubs.get(0);
 
-    Enterprise nearestHub = null;
-    int minDistance = Integer.MAX_VALUE;
+    Enterprise nearestHub = hubs.get(0);
+    int minDistance = this.shortestPathDistance(entity, hubs.get(0));
 
     // If there is more than one hub, find the nearest one
-    for (int i = 0; i < hubs.size(); i++) {
+    for (int i = 1; i < hubs.size(); i++) {
       Enterprise hub = hubs.get(i);
       int distance = this.shortestPathDistance(entity, hub);
 
