@@ -9,9 +9,9 @@ INSERT INTO Cliente (id_cliente,nome,nif,email,morada,morada_entrega,plafond,cod
 INSERT INTO Cliente (id_cliente,nome,nif,email,morada,morada_entrega,plafond,cod_postal_entrega,cod_postal) VALUES (3,'Jose','11111111','jose@gmail.com','Rua do Jose','Rua do Jose','1000','1234-565','1234-565');
 
 -- Setores
-INSERT INTO Setor (id_setor,designacao,area) VALUES (1,'Setor 1','100');
-INSERT INTO Setor (id_setor,designacao,area) VALUES (2,'Setor 2','100');
-INSERT INTO Setor (id_setor,designacao,area) VALUES (3,'Setor 3','100');
+INSERT INTO Setor (id_setor,designacao,area) VALUES (1,'Setor 1',200);
+INSERT INTO Setor (id_setor,designacao,area) VALUES (2,'Setor 2',100);
+INSERT INTO Setor (id_setor,designacao,area) VALUES (3,'Setor 3',300);
 
 -- EscalaoIva
 INSERT INTO EscalaoIva (id_escalao_iva,valor) VALUES (1,23);
