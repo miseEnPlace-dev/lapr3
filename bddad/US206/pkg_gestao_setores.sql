@@ -11,6 +11,11 @@ CREATE OR REPLACE PACKAGE gestao_setores AS
     id_tipo_cultura CULTURA.id_tipo_cultura%TYPE)
   RETURN CULTURA.id_cultura%TYPE;
 
+  PROCEDURE listar_setores_ordem_alfabetica;
+  PROCEDURE listar_setores_tamanho_crescente;
+  PROCEDURE listar_setores_tamanho_decrescente;
+
+
   tipo_cultura_inexistente EXCEPTION;
 
 END gestao_setores;

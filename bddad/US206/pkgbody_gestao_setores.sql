@@ -100,24 +100,103 @@ CREATE OR REPLACE PACKAGE BODY gestao_setores AS
 
 
 
+  PROCEDURE listar_setores_ordem_alfabetica IS
+    CURSOR setores IS
+      SELECT id_setor, designacao, area
+      FROM SETOR
+      ORDER BY designacao;
+    setor_id SETOR.id_setor%TYPE;
+    nome SETOR.designacao%TYPE;
+    tamanho SETOR.area%TYPE;
+  BEGIN
+    OPEN setores;
+    FETCH setores INTO setor_id, nome, tamanho;
+
+    IF setores%NOTFOUND THEN
+      DBMS_OUTPUT.PUT_LINE('Não existem setores entregues.');
+    ELSE
+      DBMS_OUTPUT.PUT_LINE('Setores Ordem Alfabética:');
+      DBMS_OUTPUT.PUT_LINE('');
+
+      LOOP
+        EXIT WHEN setores%NOTFOUND;
+
+        DBMS_OUTPUT.PUT_LINE('id ' || setor_id || ': Setor ' || nome || ' tem area de ' || tamanho || '.');
+
+        FETCH setores INTO setor_id, nome, tamanho;
+
+      END LOOP;
+    END IF;
+
+    CLOSE setores;
+  END listar_setores_ordem_alfabetica;
+
+
+
+  PROCEDURE listar_setores_tamanho_crescente IS
+    CURSOR setores IS
+      SELECT id_setor, designacao, area
+      FROM SETOR
+      ORDER BY area ASC;
+    setor_id SETOR.id_setor%TYPE;
+    nome SETOR.designacao%TYPE;
+    tamanho SETOR.area%TYPE;
+  BEGIN
+    OPEN setores;
+    FETCH setores INTO setor_id, nome, tamanho;
+
+    IF setores%NOTFOUND THEN
+      DBMS_OUTPUT.PUT_LINE('Não existem setores entregues.');
+    ELSE
+      DBMS_OUTPUT.PUT_LINE('Setores Ordem Alfabética:');
+      DBMS_OUTPUT.PUT_LINE('');
+
+      LOOP
+        EXIT WHEN setores%NOTFOUND;
+
+        DBMS_OUTPUT.PUT_LINE('id ' || setor_id || ': Setor ' || nome || ' tem area de ' || tamanho || '.');
+
+        FETCH setores INTO setor_id, nome, tamanho;
+
+      END LOOP;
+    END IF;
+
+    CLOSE setores;
+  END listar_setores_tamanho_crescente;
+
+
+
+  PROCEDURE listar_setores_tamanho_decrescente IS
+    CURSOR setores IS
+      SELECT id_setor, designacao, area
+      FROM SETOR
+      ORDER BY area DESC;
+    setor_id SETOR.id_setor%TYPE;
+    nome SETOR.designacao%TYPE;
+    tamanho SETOR.area%TYPE;
+  BEGIN
+    OPEN setores;
+    FETCH setores INTO setor_id, nome, tamanho;
+
+    IF setores%NOTFOUND THEN
+      DBMS_OUTPUT.PUT_LINE('Não existem setores entregues.');
+    ELSE
+      DBMS_OUTPUT.PUT_LINE('Setores Ordem Alfabética:');
+      DBMS_OUTPUT.PUT_LINE('');
+
+      LOOP
+        EXIT WHEN setores%NOTFOUND;
+
+        DBMS_OUTPUT.PUT_LINE('id ' || setor_id || ': Setor ' || nome || ' tem area de ' || tamanho || '.');
+
+        FETCH setores INTO setor_id, nome, tamanho;
+
+      END LOOP;
+    END IF;
+
+    CLOSE setores;
+  END listar_setores_tamanho_decrescente;
+
+
+
 END gestao_setores;
-
-
-
-DECLARE
-    id_setor NUMBER;
-BEGIN
-    id_setor := gestao_setores.registar_setor('designação', 300);
-END;
-
-DECLARE
-    id_tipo_cultura NUMBER;
-BEGIN
-    id_tipo_cultura := gestao_setores.registar_tipo_cultura('tipo cultura');
-END;
-
-DECLARE
-    id_cultura NUMBER;
-BEGIN
-    id_cultura := gestao_setores.registar_cultura('cultura', 1);
-END;
