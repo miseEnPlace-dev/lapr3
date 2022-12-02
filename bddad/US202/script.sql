@@ -31,12 +31,14 @@ CREATE TABLE Setor (
   id_setor   number(10),
   designacao varchar2(50) NOT NULL,
   area       float(10) NOT NULL,
+  CONSTRAINT CHK_Setor_PositiveArea CHECK (area >= 0),
   PRIMARY KEY (id_setor)
 );
 
 CREATE TABLE EscalaoIva (
   id_escalao_iva number(2),
   valor          double precision NOT NULL,
+  CONSTRAINT CHK_EscalaoIva_PositiveIva CHECK (valor >= 0),
   PRIMARY KEY (id_escalao_iva)
 );
 
@@ -45,6 +47,7 @@ CREATE TABLE Produto (
   designacao     varchar2(50) NOT NULL,
   preco          double precision NOT NULL,
   id_escalao_iva number(2) NOT NULL,
+  CONSTRAINT CHK_Produto_PositivePreco CHECK (preco >= 0),
   PRIMARY KEY (id_produto),
   FOREIGN KEY (id_escalao_iva) REFERENCES EscalaoIva (id_escalao_iva) ON DELETE CASCADE
 );
@@ -56,13 +59,11 @@ CREATE TABLE TipoCultura (
 );
 
 CREATE TABLE Cultura (
-  id_cultura      number(2),
+  id_cultura      number(8),
   cultura         varchar2(50) NOT NULL,
   id_tipo_cultura number(2) NOT NULL,
-  id_produto      number(8) NOT NULL,
   PRIMARY KEY (id_cultura),
-  FOREIGN KEY (id_tipo_cultura) REFERENCES TipoCultura (id_tipo_cultura) ON DELETE CASCADE,
-  FOREIGN KEY (id_produto) REFERENCES Produto (id_produto) ON DELETE CASCADE
+  FOREIGN KEY (id_tipo_cultura) REFERENCES TipoCultura (id_tipo_cultura) ON DELETE CASCADE
 );
 
 CREATE TABLE TipoFatorProducao (
@@ -97,6 +98,8 @@ CREATE TABLE FatorProducaoSubstancia (
   id_fator_producao number(2) NOT NULL,
   id_substancia     number(2) NOT NULL,
   percentagem       number(3) NOT NULL,
+  CONSTRAINT CHK_FatorProducaoSubstancia_PositivePercentagem CHECK (percentagem > 0),
+  CONSTRAINT CHK_FatorProducaoSubstancia_Percentagem CHECK (percentagem <= 100),
   PRIMARY KEY (id_fator_producao, id_substancia),
   FOREIGN KEY (id_substancia) REFERENCES Substancia (id_substancia) ON DELETE CASCADE,
   FOREIGN KEY (id_fator_producao) REFERENCES FatorProducao (id_fator_producao) ON DELETE CASCADE
@@ -123,6 +126,8 @@ CREATE TABLE PlanoRega (
   id_tipo_rega  number(2) NOT NULL,
   data_fim      timestamp(0),
   PRIMARY KEY (id_setor, data_inicio),
+  CONSTRAINT CHK_PlanoRega_PositiveTempo CHECK (tempo > 0),
+  CONSTRAINT CHK_PlanoRega_PositivePeriodicidade CHECK (periodicidade > 0),
   FOREIGN KEY (id_setor) REFERENCES Setor (id_setor) ON DELETE CASCADE,
   FOREIGN KEY (id_tipo_rega) REFERENCES TipoRega (id_tipo_rega) ON DELETE CASCADE
 );
@@ -139,13 +144,14 @@ CREATE TABLE Sensor (
   id_tipo_sensor   number(2) NOT NULL,
   valor_referencia double precision NOT NULL,
   PRIMARY KEY (id_sensor),
+  CONSTRAINT CHK_Sensor_PositiveValorReferencia CHECK (valor_referencia > 0),
   FOREIGN KEY (id_tipo_sensor) REFERENCES TipoSensor (id_tipo_sensor) ON DELETE CASCADE
 );
 
 CREATE TABLE Localidade (
   cod_postal varchar2(8),
   localidade varchar2(50) NOT NULL,
-  CONSTRAINT ck_codigos_postais_cod_postal CHECK(REGEXP_LIKE(cod_postal,'\d{4}-\d{3}') ),
+  CONSTRAINT CHK_Localidade_CodigoPostal CHECK(REGEXP_LIKE(cod_postal,'\d{4}-\d{3}') ),
   PRIMARY KEY (cod_postal)
 );
 
@@ -162,8 +168,13 @@ CREATE TABLE Cliente (
   n_encomendas           number(3) DEFAULT 0 NOT NULL,
   valor_total_encomendas number(10) DEFAULT 0 NOT NULL,
   PRIMARY KEY (id_cliente),
+  CONSTRAINT CHK_Cliente_NonNegativePlafond CHECK (plafond >= 0),
+  CONSTRAINT CHK_Cliente_NonNegativeEncomendas CHECK (n_encomendas >= 0),
+  CONSTRAINT CHK_Cliente_NonNegativeValorTotal CHECK (valor_total_encomendas >= 0),
   FOREIGN KEY (cod_postal_entrega) REFERENCES Localidade (cod_postal) ON DELETE CASCADE,
-  FOREIGN KEY (cod_postal) REFERENCES Localidade (cod_postal) ON DELETE CASCADE
+  FOREIGN KEY (cod_postal) REFERENCES Localidade (cod_postal) ON DELETE CASCADE,
+  CONSTRAINT chk_email_clt  CHECK (email like '%___@___%.__%'),
+  CONSTRAINT chk_nif_clt    CHECK (nif > 100000000 AND nif < 999999999)
 );
 
 CREATE TABLE Encomenda (
@@ -176,6 +187,9 @@ CREATE TABLE Encomenda (
   morada_entrega            varchar2(80) NOT NULL,
   cod_postal_entrega        varchar2(8) NOT NULL,
   PRIMARY KEY (id_encomenda),
+  CONSTRAINT CHK_Encomenda_DataVencimentoPagamento CHECK (data_vencimento_pagamento > data_registo),
+  CONSTRAINT CHK_Encomenda_DataEntrega CHECK (data_entrega > data_registo),
+  CONSTRAINT CHK_Encomenda_DataPagamento CHECK (data_pagamento > data_registo),
   FOREIGN KEY (id_cliente) REFERENCES Cliente (id_cliente) ON DELETE CASCADE,
   FOREIGN KEY (cod_postal_entrega) REFERENCES Localidade (cod_postal) ON DELETE CASCADE
 );
@@ -188,6 +202,9 @@ CREATE TABLE ProdutoEncomenda (
   iva                double precision NOT NULL,
   designacao_produto varchar2(50) NOT NULL,
   PRIMARY KEY (id_encomenda, id_produto),
+  CONSTRAINT CHK_ProdutoEncomenda_PositiveQuantidade CHECK (quantidade > 0),
+  CONSTRAINT CHK_ProdutoEncomenda_PositivePrecoUnitario CHECK (preco_unitario > 0),
+  CONSTRAINT CHK_ProdutoEncomenda_PositiveIva CHECK (iva > 0),
   FOREIGN KEY (id_produto) REFERENCES Produto (id_produto) ON DELETE CASCADE,
   FOREIGN KEY (id_encomenda) REFERENCES Encomenda (id_encomenda) ON DELETE CASCADE
 );
@@ -217,13 +234,14 @@ CREATE TABLE Colheita (
   quantidade number(8) NOT NULL,
   id_setor   number(10) NOT NULL,
   PRIMARY KEY (id_produto, data),
+  CONSTRAINT CHK_Colheita_PositiveQuantidade CHECK (quantidade > 0),
   FOREIGN KEY (id_produto) REFERENCES Produto (id_produto) ON DELETE CASCADE,
   FOREIGN KEY (id_setor) REFERENCES Setor (id_setor) ON DELETE CASCADE
 );
 
 CREATE TABLE Plantacao (
   id_setor    number(10) NOT NULL,
-  id_cultura  number(2) NOT NULL,
+  id_cultura  number(8) NOT NULL,
   data_inicio timestamp(0) NOT NULL,
   PRIMARY KEY (id_setor, id_cultura, data_inicio),
   FOREIGN KEY (id_setor) REFERENCES Setor (id_setor) ON DELETE CASCADE,
