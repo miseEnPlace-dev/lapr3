@@ -2,13 +2,15 @@ CREATE OR REPLACE PACKAGE gestao_encomendas AS
   TYPE produtos IS TABLE OF NUMBER INDEX BY BINARY_INTEGER;
 
   FUNCTION registar_encomenda(id_cliente CLIENTE.id_cliente%TYPE, 
-    lista_produtos produtos) 
+    lista_produtos produtos,
+    data_registo ENCOMENDA.data_registo%TYPE) 
   RETURN ENCOMENDA.id_encomenda%TYPE;
   
   FUNCTION registar_encomenda(id_cliente CLIENTE.id_cliente%TYPE, 
     lista_produtos produtos, 
     morada_entrega ENCOMENDA.morada_entrega%TYPE, 
-    cod_postal_entrega ENCOMENDA.cod_postal_entrega%TYPE)
+    cod_postal_entrega ENCOMENDA.cod_postal_entrega%TYPE,
+    data_registo ENCOMENDA.data_registo%TYPE)
   RETURN ENCOMENDA.id_encomenda%TYPE;
   
   PROCEDURE registar_entrega(id_encomenda ENCOMENDA.id_encomenda%TYPE, 

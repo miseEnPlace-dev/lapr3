@@ -113,6 +113,14 @@ public class DistributionNetwork {
     return network.vertices();
   }
 
+  public List<Client> getClients() {
+    return network.getEntitiesWithClass(Client.class);
+  }
+
+  public List<Enterprise> getHubs() {
+    return network.getHubs();
+  }
+
   public int shortestPathDistance(Entity e1, Entity e2) {
     return GraphAlgorithms.shortestPath(network, e1, e2, Integer::compareTo, Integer::sum, 0, new LinkedList<>());
   }
@@ -181,5 +189,37 @@ public class DistributionNetwork {
     }
 
     return sum / count;
+  }
+
+  public Enterprise getNearestHub(Entity entity) {
+    // If entity is a hub, return it
+    if (entity instanceof Enterprise && ((Enterprise) entity).isHub())
+      return (Enterprise) entity;
+
+    List<Enterprise> hubs = this.getHubs();
+
+    // If there are no hubs, return null
+    if (hubs.size() == 0)
+      return null;
+
+    // If there is only one hub, return it
+    if (hubs.size() == 1)
+      return hubs.get(0);
+
+    Enterprise nearestHub = hubs.get(0);
+    int minDistance = this.shortestPathDistance(entity, hubs.get(0));
+
+    // If there is more than one hub, find the nearest one
+    for (int i = 1; i < hubs.size(); i++) {
+      Enterprise hub = hubs.get(i);
+      int distance = this.shortestPathDistance(entity, hub);
+
+      if (distance < minDistance) {
+        minDistance = distance;
+        nearestHub = hub;
+      }
+    }
+
+    return nearestHub;
   }
 }
