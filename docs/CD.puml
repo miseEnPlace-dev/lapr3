@@ -1,0 +1,57 @@
+@startuml CD
+
+skinparam classAttributeIconSize 0
+
+class Entity {
+  - id: String
+  - latitude: double
+  - longitude: double
+  - localizationId: String
+
+  -validateId(): void
+  -validateLatitude(): void
+  -validateLongitude(): void
+  -validateLocalizationId(): void
+
+  +getId(): String
+  +getLatitude(): double
+  +getLongitude(): double
+  +getLocalizationId(): String
+  +toString(): String
+}
+
+class Client {}
+
+class Enterprise {
+  -isHub: boolean
+
+  +makeHub(): void
+  +unmakeHub(): void
+  +isHub(): boolean
+}
+
+class Producer {}
+
+Client <|-- Entity
+Enterprise <|-- Entity
+Producer <|-- Entity
+
+class Company {
+   - distributionNetwork: DistributionNetwork
+   - entityStore: EntityStore
+   - agriculturalParcelStore: AgriculturalParcelStore
+   - cultivationStore: CultivationStore
+
+  +getDistributionNetwork(): DistributionNetwork
+  +getEntityStore(): EntityStore
+  +getAgriculturalParcelStore(): AgriculturalParcelStore
+  +getCultivationStore(): CultivationStore
+}
+
+class EntityStore {}
+
+EntityStore "1" o-- "*" Entity
+
+Company "1" o-- "1" EntityStore
+
+@enduml

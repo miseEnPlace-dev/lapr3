@@ -20,4 +20,12 @@ public class NetworkGraph<V, E> extends AdjacencyMapGraph<V, E> {
     return result;
   }
 
+  public List<Enterprise> getHubs() {
+    List<Enterprise> hubs = new ArrayList<>();
+    for (V vertice : super.mapVertices.keySet()) {
+      if (vertice.getClass() == Enterprise.class && ((Enterprise) vertice).isHub())
+        hubs.add((Enterprise) vertice);
+    }
+    return hubs;
+  }
 }

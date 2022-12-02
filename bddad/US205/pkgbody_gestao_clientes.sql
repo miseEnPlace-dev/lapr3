@@ -1,13 +1,13 @@
-CREATE OR REPLACE PACKAGE BODY gestao_clientes AS
+CREATE OR REPLACE PACKAGE BODY fn_GestaoClientes AS
   FUNCTION registar_cliente (
-    nome IN CLIENTE.nome%TYPE,
-    nif IN CLIENTE.nif%TYPE,
-    email IN CLIENTE.email%TYPE,
-    morada IN CLIENTE.morada%TYPE,
-    morada_entrega IN CLIENTE.morada_entrega%TYPE,
-    postal IN CLIENTE.cod_postal%TYPE,
-    postal_entrega IN CLIENTE.cod_postal_entrega%TYPE,
-    plafond IN CLIENTE.plafond%TYPE)
+    nome CLIENTE.nome%TYPE,
+    nif CLIENTE.nif%TYPE,
+    email CLIENTE.email%TYPE,
+    morada CLIENTE.morada%TYPE,
+    morada_entrega CLIENTE.morada_entrega%TYPE,
+    postal CLIENTE.cod_postal%TYPE,
+    postal_entrega CLIENTE.cod_postal_entrega%TYPE,
+    plafond CLIENTE.plafond%TYPE)
   RETURN CLIENTE.id_cliente%TYPE AS
     id_cliente CLIENTE.id_cliente%TYPE;
     cod_postal_var CLIENTE.cod_postal%TYPE;
@@ -18,9 +18,6 @@ CREATE OR REPLACE PACKAGE BODY gestao_clientes AS
     SELECT cod_postal INTO cod_postal_var FROM Localidade WHERE COD_POSTAL LIKE postal;
 
     SELECT cod_postal INTO cod_postal_entrega_var FROM Localidade WHERE COD_POSTAL LIKE postal_entrega;
-    IF cod_postal_entrega_var IS NULL THEN
-      RAISE cod_postal_inexistente;
-    END IF;
 
     INSERT INTO cliente (nome, nif, email, morada, morada_entrega, plafond, cod_postal_entrega, cod_postal) VALUES (
       nome,
@@ -42,7 +39,7 @@ CREATE OR REPLACE PACKAGE BODY gestao_clientes AS
       ROLLBACK TO inicio;
   END registar_cliente;
 
-  PROCEDURE atualizar_encomendas_cliente(cliente_id IN CLIENTE.id_cliente%TYPE) IS
+  PROCEDURE pr_AtualizarEncomendasCliente(cliente_id CLIENTE.id_cliente%TYPE) IS
     total_encomendas NUMBER;
     num_encomendas NUMBER;
     null_id CLIENTE.id_cliente%TYPE;
@@ -50,14 +47,14 @@ CREATE OR REPLACE PACKAGE BODY gestao_clientes AS
     SAVEPOINT inicio;
 
     SELECT id_cliente INTO null_id FROM cliente WHERE id_cliente = cliente_id;
-    IF null_id IS NULL THEN
-      RAISE cliente_inexistente;
-    END IF;
 
     SELECT SUM((preco_unitario * (1 + iva / 100)) * quantidade), COUNT(*) INTO total_encomendas, num_encomendas
     FROM produtoEncomenda
     INNER JOIN encomenda ON produtoEncomenda.id_encomenda = encomenda.id_encomenda
-    WHERE id_cliente = cliente_id;
+    WHERE
+      id_cliente = cliente_id
+      AND data_registo >= trunc(sysdate, 'yyyy') - interval '1' year
+      AND data_registo <  trunc(sysdate, 'yyyy');
 
     UPDATE Cliente SET valor_total_encomendas = total_encomendas, n_encomendas = num_encomendas WHERE id_cliente = cliente_id;
 
@@ -68,14 +65,26 @@ CREATE OR REPLACE PACKAGE BODY gestao_clientes AS
       RAISE_APPLICATION_ERROR(-20001, 'Cliente inexistente.');
       ROLLBACK TO inicio;
   END atualizar_encomendas_cliente;
+
+  FUNCTION fn_risco_cliente AS (
+    cliente_id CLIENTE.id_cliente%TYPE)
+    RETURN NUMBER IS
+    risco NUMBER,
+    n_encomendas_pendentes NUMBER,
+    valor_total_incidentes NUMBER;
+
+  BEGIN
+
+  SELECT SUM((preco_unitario * (1 + iva / 100)) * quantidade) FROM produtoEncomenda INNER JOIN encomenda ON produtoEncomenda.id_encomenda = encomenda.id_encomenda WHERE id_cliente = cliente_id AND (data_pagamento > data_vencimento_pagamento OR (data_vencimento_pagamento < SYSDATE AND data_pagamento IS NULL)) INTO valor_total_incidentes;
+
+  SELECT COUNT(*) FROM Encomenda WHERE id_cliente = cliente_id AND data_pagamento IS NULL INTO n_encomendas_pendentes;
+
+  IF n_encomendas_pendentes > 0 THEN
+    risco := valor_total_incidentes / n_encomendas_pendentes;
+  END IF;
+  RETURN risco;
+  END fn_risco_cliente;
+
+
+
 END gestao_clientes;
-
-DECLARE
-    id_cliente NUMBER;
-BEGIN
-    id_cliente := gestao_clientes.registar_cliente('name',123456789,'email@email.com','morada','morada','4500-123','4400-456',100);
-END;
-
-BEGIN
-  gestao_clientes.atualizar_encomendas_cliente(1);
-END;

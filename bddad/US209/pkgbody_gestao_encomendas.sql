@@ -1,6 +1,7 @@
 CREATE OR REPLACE PACKAGE BODY gestao_encomendas AS
   FUNCTION registar_encomenda(id_cliente CLIENTE.id_cliente%TYPE, 
-    lista_produtos produtos) 
+    lista_produtos produtos,
+    data_registo ENCOMENDA.data_registo%TYPE) 
   RETURN ENCOMENDA.id_encomenda%TYPE IS
     id_enc ENCOMENDA.id_encomenda%TYPE;
     id_prod PRODUTO.id_produto%TYPE;
@@ -27,9 +28,16 @@ CREATE OR REPLACE PACKAGE BODY gestao_encomendas AS
       RAISE cliente_inexistente;
     END IF;
 
-    INSERT INTO encomenda (id_cliente, data_vencimento_pagamento, data_registo, morada_entrega, cod_postal_entrega)
-    VALUES (id_cliente, SYSDATE + 30, SYSDATE, morada_entrega, cod_postal_entrega)
-    RETURNING id_encomenda INTO id_enc;
+    SELECT MAX(id_encomenda) INTO id_enc FROM encomenda;
+
+    IF id_enc IS NULL THEN
+      id_enc := 1;
+    ELSE
+      id_enc := id_enc + 1;
+    END IF;
+
+    INSERT INTO encomenda (id_encomenda, id_cliente, data_vencimento_pagamento, data_registo, morada_entrega, cod_postal_entrega)
+    VALUES (id_enc, id_cliente, data_registo + 30, data_registo, morada_entrega, cod_postal_entrega);
 
     valor_encomenda := 0;
 
@@ -87,7 +95,8 @@ CREATE OR REPLACE PACKAGE BODY gestao_encomendas AS
   FUNCTION registar_encomenda(id_cliente CLIENTE.id_cliente%TYPE, 
     lista_produtos produtos, 
     morada_entrega ENCOMENDA.morada_entrega%TYPE, 
-    cod_postal_entrega ENCOMENDA.cod_postal_entrega%TYPE) 
+    cod_postal_entrega ENCOMENDA.cod_postal_entrega%TYPE,
+    data_registo ENCOMENDA.data_registo%TYPE) 
   RETURN ENCOMENDA.id_encomenda%TYPE IS
     id_enc ENCOMENDA.id_encomenda%TYPE;
     id_prod PRODUTO.id_produto%TYPE;
@@ -112,9 +121,16 @@ CREATE OR REPLACE PACKAGE BODY gestao_encomendas AS
       RAISE cliente_inexistente;
     END IF;
 
-    INSERT INTO encomenda (id_cliente, data_vencimento_pagamento, data_registo, morada_entrega, cod_postal_entrega)
-    VALUES (id_cliente, SYSDATE + 30, SYSDATE, morada_entrega, cod_postal_entrega)
-    RETURNING id_encomenda INTO id_enc;
+    SELECT MAX(id_encomenda) INTO id_enc FROM encomenda;
+
+    IF id_enc IS NULL THEN
+      id_enc := 1;
+    ELSE
+      id_enc := id_enc + 1;
+    END IF;
+
+    INSERT INTO encomenda (id_encomenda, id_cliente, data_vencimento_pagamento, data_registo, morada_entrega, cod_postal_entrega)
+    VALUES (id_enc, id_cliente, data_registo + 30, data_registo, morada_entrega, cod_postal_entrega);
 
     valor_encomenda := 0;
 

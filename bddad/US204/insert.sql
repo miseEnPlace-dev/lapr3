@@ -9,9 +9,9 @@ INSERT INTO Cliente (id_cliente,nome,nif,email,morada,morada_entrega,plafond,cod
 INSERT INTO Cliente (id_cliente,nome,nif,email,morada,morada_entrega,plafond,cod_postal_entrega,cod_postal) VALUES (3,'Jose','11111111','jose@gmail.com','Rua do Jose','Rua do Jose','1000','1234-565','1234-565');
 
 -- Setores
-INSERT INTO Setor (id_setor,designacao,area) VALUES (1,'Setor 1','100');
-INSERT INTO Setor (id_setor,designacao,area) VALUES (2,'Setor 2','100');
-INSERT INTO Setor (id_setor,designacao,area) VALUES (3,'Setor 3','100');
+INSERT INTO Setor (id_setor,designacao,area) VALUES (1,'Setor 1',200);
+INSERT INTO Setor (id_setor,designacao,area) VALUES (2,'Setor 2',100);
+INSERT INTO Setor (id_setor,designacao,area) VALUES (3,'Setor 3',300);
 
 -- EscalaoIva
 INSERT INTO EscalaoIva (id_escalao_iva,valor) VALUES (1,23);
@@ -41,10 +41,10 @@ INSERT INTO TipoCultura (id_tipo_cultura,tipo_cultura) VALUES (1,'Temporária');
 INSERT INTO TipoCultura (id_tipo_cultura,tipo_cultura) VALUES (2,'Permanentemente');
 
 -- Culturas
-INSERT INTO Cultura (id_cultura,cultura,id_tipo_cultura,id_produto) VALUES (1,'Macieira',1,1);
-INSERT INTO Cultura (id_cultura,cultura,id_tipo_cultura,id_produto) VALUES (2,'Pereira',1,2);
-INSERT INTO Cultura (id_cultura,cultura,id_tipo_cultura,id_produto) VALUES (3,'Laranjeira',1,1);
-INSERT INTO Cultura (id_cultura,cultura,id_tipo_cultura,id_produto) VALUES (4,'Cerejeira',1,1);
+INSERT INTO Cultura (id_cultura,cultura,id_tipo_cultura) VALUES (1,'Macieira',1);
+INSERT INTO Cultura (id_cultura,cultura,id_tipo_cultura) VALUES (2,'Pereira',1);
+INSERT INTO Cultura (id_cultura,cultura,id_tipo_cultura) VALUES (3,'Laranjeira',1);
+INSERT INTO Cultura (id_cultura,cultura,id_tipo_cultura) VALUES (4,'Cerejeira',1);
 
 -- ProdutoCultura
 INSERT INTO ProdutoCultura (id_produto,id_cultura) VALUES (1,1);
