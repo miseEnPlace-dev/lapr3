@@ -1,6 +1,6 @@
 CREATE OR REPLACE PACKAGE BODY gestao_setores AS
 
-  FUNCTION registar_setor(designacao SETOR.designacao%TYPE, 
+  FUNCTION fn_RegistarSetor(designacao SETOR.designacao%TYPE, 
     area SETOR.area%TYPE) 
     RETURN SETOR.id_setor%TYPE AS
     new_id SETOR.id_setor%TYPE;
@@ -24,11 +24,11 @@ CREATE OR REPLACE PACKAGE BODY gestao_setores AS
 
     RETURN new_id;
 
-  END registar_setor;
+  END fn_RegistarSetor;
 
 
 
-  FUNCTION registar_tipo_cultura(tipo_cultura TIPOCULTURA.tipo_cultura%TYPE)  
+  FUNCTION fn_RegistarTipoCultura(tipo_cultura TIPOCULTURA.tipo_cultura%TYPE)  
     RETURN TIPOCULTURA.id_tipo_cultura%TYPE AS
     new_id TIPOCULTURA.id_tipo_cultura%TYPE;
 
@@ -51,12 +51,12 @@ CREATE OR REPLACE PACKAGE BODY gestao_setores AS
 
     RETURN new_id;
 
-  END registar_tipo_cultura;
+  END fn_RegistarTipoCultura;
 
 
 
 
-  FUNCTION registar_cultura(cultura_param CULTURA.cultura%TYPE,
+  FUNCTION fn_RegistarCultura(cultura_param CULTURA.cultura%TYPE,
     id_tipo_cultura CULTURA.id_tipo_cultura%TYPE)
     RETURN CULTURA.id_cultura%TYPE AS
     new_id CULTURA.id_cultura%TYPE;
@@ -96,11 +96,11 @@ CREATE OR REPLACE PACKAGE BODY gestao_setores AS
     WHEN OTHERS THEN
       RAISE_APPLICATION_ERROR(-20005, 'Erro ao registar entrega.');
       ROLLBACK TO inicio;
-  END registar_cultura;
+  END fn_RegistarCultura;
 
 
 
-  PROCEDURE listar_setores_ordem_alfabetica IS
+  PROCEDURE pr_ListarSetoresOrdemAlfabetica IS
     CURSOR setores IS
       SELECT id_setor, designacao, area
       FROM SETOR
@@ -129,11 +129,11 @@ CREATE OR REPLACE PACKAGE BODY gestao_setores AS
     END IF;
 
     CLOSE setores;
-  END listar_setores_ordem_alfabetica;
+  END pr_ListarSetoresOrdemAlfabetica;
 
 
 
-  PROCEDURE listar_setores_tamanho_crescente IS
+  PROCEDURE pr_ListarSetoresTamanhoCrescente IS
     CURSOR setores IS
       SELECT id_setor, designacao, area
       FROM SETOR
@@ -162,11 +162,11 @@ CREATE OR REPLACE PACKAGE BODY gestao_setores AS
     END IF;
 
     CLOSE setores;
-  END listar_setores_tamanho_crescente;
+  END pr_ListarSetoresTamanhoCrescente;
 
 
 
-  PROCEDURE listar_setores_tamanho_decrescente IS
+  PROCEDURE pr_ListarSetoresTamanhoDecrescente IS
     CURSOR setores IS
       SELECT id_setor, designacao, area
       FROM SETOR
@@ -195,7 +195,90 @@ CREATE OR REPLACE PACKAGE BODY gestao_setores AS
     END IF;
 
     CLOSE setores;
-  END listar_setores_tamanho_decrescente;
+  END pr_ListarSetoresTamanhoDecrescente;
+
+
+  PROCEDURE pr_ListarSetoresOrdemTipoCultura IS
+    CURSOR setores IS
+      SELECT s.id_setor, s.designacao, s.area, c.cultura, tc.tipo_cultura
+      FROM setor s, plantacao p, cultura c, TipoCultura tc
+      WHERE p.id_cultura = c.id_cultura
+        AND tc.id_tipo_cultura = c.id_tipo_cultura
+        AND s.id_setor = (
+                    SELECT pl.id_setor
+                      FROM Plantacao pl
+                    ORDER BY data_inicio DESC
+                    FETCH FIRST 1 ROWS ONLY)
+      ORDER BY tc.tipo_cultura, c.cultura;
+    setor_id SETOR.id_setor%TYPE;
+    nome SETOR.designacao%TYPE;
+    tamanho SETOR.area%TYPE;
+    cultura_designacao CULTURA.cultura%TYPE;
+    t_culura TIPOCULTURA.tipo_cultura%TYPE;
+  BEGIN
+    OPEN setores;
+    FETCH setores INTO setor_id, nome, tamanho, cultura_designacao, t_culura;
+
+    IF setores%NOTFOUND THEN
+      DBMS_OUTPUT.PUT_LINE('Não existem setores entregues.');
+    ELSE
+      DBMS_OUTPUT.PUT_LINE('Setores Ordem Alfabética:');
+      DBMS_OUTPUT.PUT_LINE('');
+
+      LOOP
+        EXIT WHEN setores%NOTFOUND;
+
+        DBMS_OUTPUT.PUT_LINE('id ' || setor_id || ': Setor ' || nome || ' tem area de ' || tamanho || '. Cultura: ' || cultura_designacao || ' , tipo: ' || t_culura);
+
+        FETCH setores INTO setor_id, nome, tamanho, cultura_designacao, t_culura;
+
+      END LOOP;
+    END IF;
+
+    CLOSE setores;
+  END pr_ListarSetoresOrdemTipoCultura;
+
+
+
+
+  PROCEDURE pr_ListarSetoresOrdemCultura IS
+    CURSOR setores IS
+      SELECT s.id_setor, s.designacao, s.area, c.cultura
+      FROM setor s, plantacao p, cultura c
+      WHERE p.id_cultura = c.id_cultura
+        AND s.id_setor = (
+                    SELECT pl.id_setor
+                      FROM Plantacao pl
+                    ORDER BY data_inicio DESC
+                    FETCH FIRST 1 ROWS ONLY)
+      ORDER BY c.cultura;
+    setor_id SETOR.id_setor%TYPE;
+    nome SETOR.designacao%TYPE;
+    tamanho SETOR.area%TYPE;
+    cultura_designacao CULTURA.cultura%TYPE;
+  BEGIN
+    OPEN setores;
+    FETCH setores INTO setor_id, nome, tamanho, cultura_designacao;
+
+    IF setores%NOTFOUND THEN
+      DBMS_OUTPUT.PUT_LINE('Não existem setores entregues.');
+    ELSE
+      DBMS_OUTPUT.PUT_LINE('Setores Ordem Alfabética:');
+      DBMS_OUTPUT.PUT_LINE('');
+
+      LOOP
+        EXIT WHEN setores%NOTFOUND;
+
+        DBMS_OUTPUT.PUT_LINE('id ' || setor_id || ': Setor ' || nome || ' tem area de ' || tamanho || '. Cultura: ' || cultura_designacao || '.');
+
+        FETCH setores INTO setor_id, nome, tamanho, cultura_designacao;
+
+      END LOOP;
+    END IF;
+
+    CLOSE setores;
+  END pr_ListarSetoresOrdemCultura;
+
 
 
 

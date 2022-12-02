@@ -5,7 +5,7 @@ In order to keep things consistent over the development of the data base these a
 
 **Naming Tables**
 
-- When naming tables use Pascal Case (Ex: 'PascalCase')
+- When naming tables or views use Pascal Case (Ex: 'PascalCase')
 - Use full names (no abbreviations)
 - Use singular nouns
 - Avoid using DBMS specific keywords (like 'Order')
