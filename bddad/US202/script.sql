@@ -86,12 +86,12 @@ CREATE TABLE CategoriaSubstancia (
   PRIMARY KEY (id_categoria_substancia)
 );
 
+
 CREATE TABLE Substancia (
   id_substancia number(2),
   substancia    varchar2(50) NOT NULL,
   id_fornecedor           number(8) NOT NULL,
   id_categoria_substancia number(8) NOT NULL,
-  unidades                varchar2(50) NOT NULL,
   PRIMARY KEY (id_substancia),
   FOREIGN KEY (id_fornecedor) REFERENCES Fornecedor (id_fornecedor),
   FOREIGN KEY (id_categoria_substancia) REFERENCES CategoriaSubstancia (id_categoria_substancia)
@@ -116,9 +116,9 @@ CREATE TABLE FatorProducao (
 CREATE TABLE FatorProducaoSubstancia (
   id_fator_producao number(2) NOT NULL,
   id_substancia     number(2) NOT NULL,
-  percentagem       number(3) NOT NULL,
-  CONSTRAINT CHK_FatorProducaoSubstancia_PositivePercentagem CHECK (percentagem > 0),
-  CONSTRAINT CHK_FatorProducaoSubstancia_Percentagem CHECK (percentagem <= 100),
+  quantidade        number(3) NOT NULL,
+  unidades          varchar2(50) NOT NULL,
+  CONSTRAINT CHK_FatorProducaoSubstancia_PositiveQuantidade CHECK (quantidade > 0),
   PRIMARY KEY (id_fator_producao, id_substancia),
   FOREIGN KEY (id_substancia) REFERENCES Substancia (id_substancia) ON DELETE CASCADE,
   FOREIGN KEY (id_fator_producao) REFERENCES FatorProducao (id_fator_producao) ON DELETE CASCADE
