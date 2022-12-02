@@ -26,6 +26,8 @@ DROP TABLE TipoEdificio CASCADE CONSTRAINTS PURGE;
 DROP TABLE AplicacaoFatorProducao CASCADE CONSTRAINTS PURGE;
 DROP TABLE TipoAplicacaoFatorProducao CASCADE CONSTRAINTS PURGE;
 DROP TABLE ProdutoCultura CASCADE CONSTRAINTS PURGE;
+DROP TABLE Fornecedor CASCADE CONSTRAINTS PURGE;
+DROP TABLE CategoriaSubstancia CASCADE CONSTRAINTS PURGE;
 
 CREATE TABLE Setor (
   id_setor   number(10),
@@ -70,6 +72,18 @@ CREATE TABLE TipoFatorProducao (
   id_tipo_fator_producao number(2),
   tipo_fator_producao    varchar2(50) NOT NULL,
   PRIMARY KEY (id_tipo_fator_producao)
+);
+
+CREATE TABLE Fornecedor (
+  id_fornecedor number(8),
+  fornecedor    varchar2(50) NOT NULL,
+  PRIMARY KEY (id_fornecedor)
+);
+
+CREATE TABLE CategoriaSubstancia (
+  id_categoria_substancia number(8),
+  categoria_substancia    varchar2(50) NOT NULL,
+  PRIMARY KEY (id_categoria_substancia)
 );
 
 CREATE TABLE Substancia (
@@ -289,16 +303,4 @@ CREATE TABLE ProdutoCultura (
   PRIMARY KEY (id_cultura, id_produto),
   FOREIGN KEY (id_cultura) REFERENCES Cultura (id_cultura) ON DELETE CASCADE,
   FOREIGN KEY (id_produto) REFERENCES Produto (id_produto) ON DELETE CASCADE
-);
-
-CREATE TABLE Fornecedor (
-  id_fornecedor number(8) GENERATED AS IDENTITY,
-  fornecedor    varchar2(50) NOT NULL,
-  PRIMARY KEY (id_fornecedor)
-);
-
-CREATE TABLE CategoriaSubstancia (
-  id_categoria_substancia number(8) GENERATED AS IDENTITY,
-  categoria_substancia    varchar2(50) NOT NULL,
-  PRIMARY KEY (id_categoria_substancia)
 );
