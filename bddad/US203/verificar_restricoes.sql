@@ -194,3 +194,63 @@ INSERT INTO ProdutoCultura (id_cultura,id_produto) VALUES (NULL,NULL);
 INSERT INTO ProdutoCultura (id_cultura,id_produto) VALUES (12345678910,12345678910);
 -- FALHA (teste prova restricoes)
 
+-- Teste especidico para as restrições das tabelas
+INSERT INTO Setor (id_setor,designacao,area) VALUES (1,'Designacao',-1);
+-- Input invalido (area >= 0)
+
+INSERT INTO EscalaoIva (id_escalao_iva,valor) VALUES (-1,10);
+-- Input invalido(valor >= 0)
+
+INSERT INTO Produto (id_produto,designacao,preco,id_escalao_iva) VALUES (1,'alface', -1,1);
+-- Input invalido(preco >= 0)
+
+INSERT INTO Substancia (id_substancia,substancia) VALUES (1,'aaa');
+INSERT INTO FatorProducaoSubstancia (id_fator_producao,id_substancia,percentagem) VALUES (1,1,10);
+-- Input valido para testar as restrições
+INSERT INTO FatorProducaoSubstancia (id_fator_producao,id_substancia,percentagem) VALUES (1,1,-1);
+-- Input invalido(percentagem > 0)
+INSERT INTO FatorProducaoSubstancia (id_fator_producao,id_substancia,percentagem) VALUES (1,1,101);
+-- Input invalido(percentagem <= 100)
+
+INSERT INTO PlanoRega (id_setor,data_inicio,tempo,periodicidade,id_tipo_rega,data_fim) VALUES (1,'2020-01-01',-1,10,1,null);
+-- Input invalido(tempo > 0)
+INSERT INTO PlanoRega (id_setor,data_inicio,tempo,periodicidade,id_tipo_rega,data_fim) VALUES (1,'2020-01-01',1,-1,1,null);
+-- Input invalido(periodicidade > 0)
+
+INSERT INTO Sensor (id_sensor,identificador,id_tipo_sensor,valor_referencia) VALUES (1,'sensor 1',1,-1);
+-- Input invalido(valor_referencia > 0)
+
+INSERT INTO Localidade (cod_postal,localidade) VALUES ('1-1','Porto');
+-- Input invalido(cod_postal 'XXXX-XXX')
+
+INSERT INTO Cliente (id_cliente,nome,nif,email,morada,morada_entrega,plafond,cod_postal_entrega,cod_postal,n_encomendas,valor_total_encomendas) VALUES (1,'João',12,'email@email.com','morada','morada',10,'1234-123','1234-123',10,100);
+-- Input invalido(nif > 100000000 AND nif < 999999999)
+INSERT INTO Cliente (id_cliente,nome,nif,email,morada,morada_entrega,plafond,cod_postal_entrega,cod_postal,n_encomendas,valor_total_encomendas) VALUES (1,'Joao',12345678910,'email@email.com','morada','morada',10,'1234-123','1234-123',10,100);
+-- Input invalido(nif > 100000000 AND nif < 999999999)
+INSERT INTO Cliente (id_cliente,nome,nif,email,morada,morada_entrega,plafond,cod_postal_entrega,cod_postal,n_encomendas,valor_total_encomendas) VALUES (1,'Joao',123456789,'emailemail.com','morada','morada',10,'1234-123','1234-123',10,100);
+-- Input invalido (email xxx@xxx.xxx)
+INSERT INTO Cliente (id_cliente,nome,nif,email,morada,morada_entrega,plafond,cod_postal_entrega,cod_postal,n_encomendas,valor_total_encomendas) VALUES (1,'Joao',123456789,'email@email.com','morada','morada',-1,'1234-123','1234-123',10,100);
+-- Input invalido (plafond >= 0)
+INSERT INTO Cliente (id_cliente,nome,nif,email,morada,morada_entrega,plafond,cod_postal_entrega,cod_postal,n_encomendas,valor_total_encomendas) VALUES (1,'Joao',123456789,'email@email.com','morada','morada',10,'1234-123','1234-123',-1,100);
+-- Input invalido (n_encomendas >= 0)
+INSERT INTO Cliente (id_cliente,nome,nif,email,morada,morada_entrega,plafond,cod_postal_entrega,cod_postal,n_encomendas,valor_total_encomendas) VALUES (1,'Joao',12345678910,'email@email.com','morada','morada',10,'1234-123','1234-123',10,-1);
+-- Input invalido (valor_total_encomendas >=0)
+
+INSERT INTO Encomenda (id_encomenda,id_cliente,data_vencimento_pagamento,data_registo,data_entrega,data_pagamento,morada_entrega,cod_postal_entrega) VALUES (1,1,'2020-01-01','2019-01-01','2020-01-01','2020-01-01','morada','1234-123');
+-- Input invalido (data_vencimento_pagamento > data_registo)
+INSERT INTO Encomenda (id_encomenda,id_cliente,data_vencimento_pagamento,data_registo,data_entrega,data_pagamento,morada_entrega,cod_postal_entrega) VALUES (1,1,'2020-01-01','2020-01-01','2019-01-01','2020-01-01','morada','1234-123');
+-- Input invalido (data_entrega > data_registo)
+INSERT INTO Encomenda (id_encomenda,id_cliente,data_vencimento_pagamento,data_registo,data_entrega,data_pagamento,morada_entrega,cod_postal_entrega) VALUES (1,1,'2020-01-01','2020-01-01','2020-01-01','2019-01-01','morada','1234-123');
+-- Input invalido (data_pagamento > data_registo)
+
+INSERT INTO ProdutoEncomenda (id_encomenda,id_produto,quantidade,preco_unitario,iva,designacao_produto) VALUES (1,1,-1,1,1,'produto');
+-- Input invalido (quantidade > 0)
+INSERT INTO ProdutoEncomenda (id_encomenda,id_produto,quantidade,preco_unitario,iva,designacao_produto) VALUES (1,1,1,-1,1,'produto');
+-- Input invalido (preco_unitario > 0)
+INSERT INTO ProdutoEncomenda (id_encomenda,id_produto,quantidade,preco_unitario,iva,designacao_produto) VALUES (1,1,1,1,-1,'produto');
+-- Input invalido (iva > 0)
+
+INSERT INTO Colheita (id_produto,data,quantidade,id_setor) VALUES (1,'2020-01-01',-1,1);
+-- Input invalido (quantidade > 0)
+
+

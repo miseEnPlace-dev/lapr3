@@ -75,9 +75,9 @@ CREATE TABLE TipoFatorProducao (
 CREATE TABLE Substancia (
   id_substancia number(2),
   substancia    varchar2(50) NOT NULL,
-  id_fornecedor           number(8) NOT NULL, 
-  id_categoria_substancia number(8) NOT NULL, 
-  unidades                varchar2(50) NOT NULL, 
+  id_fornecedor           number(8) NOT NULL,
+  id_categoria_substancia number(8) NOT NULL,
+  unidades                varchar2(50) NOT NULL,
   PRIMARY KEY (id_substancia),
   FOREIGN KEY (id_fornecedor) REFERENCES Fornecedor (id_fornecedor),
   FOREIGN KEY (id_categoria_substancia) REFERENCES CategoriaSubstancia (id_categoria_substancia)
@@ -173,13 +173,13 @@ CREATE TABLE Cliente (
   n_encomendas           number(3) DEFAULT 0 NOT NULL,
   valor_total_encomendas number(10) DEFAULT 0 NOT NULL,
   PRIMARY KEY (id_cliente),
-  CONSTRAINT CHK_Nif    CHECK (nif > 100000000 AND nif < 999999999)
+  CONSTRAINT CHK_Nif    CHECK (nif > 100000000 AND nif < 999999999),
   CONSTRAINT CHK_Email CHECK (email like '%___@___%.__%'),
   CONSTRAINT CHK_Cliente_NonNegativePlafond CHECK (plafond >= 0),
   CONSTRAINT CHK_Cliente_NonNegativeEncomendas CHECK (n_encomendas >= 0),
   CONSTRAINT CHK_Cliente_NonNegativeValorTotal CHECK (valor_total_encomendas >= 0),
   FOREIGN KEY (cod_postal_entrega) REFERENCES Localidade (cod_postal) ON DELETE CASCADE,
-  FOREIGN KEY (cod_postal) REFERENCES Localidade (cod_postal) ON DELETE CASCADE,
+  FOREIGN KEY (cod_postal) REFERENCES Localidade (cod_postal) ON DELETE CASCADE
 );
 
 CREATE TABLE Encomenda (
@@ -292,13 +292,13 @@ CREATE TABLE ProdutoCultura (
 );
 
 CREATE TABLE Fornecedor (
-  id_fornecedor number(8) GENERATED AS IDENTITY, 
-  fornecedor    varchar2(50) NOT NULL, 
+  id_fornecedor number(8) GENERATED AS IDENTITY,
+  fornecedor    varchar2(50) NOT NULL,
   PRIMARY KEY (id_fornecedor)
 );
 
 CREATE TABLE CategoriaSubstancia (
-  id_categoria_substancia number(8) GENERATED AS IDENTITY, 
-  categoria_substancia    varchar2(50) NOT NULL, 
+  id_categoria_substancia number(8) GENERATED AS IDENTITY,
+  categoria_substancia    varchar2(50) NOT NULL,
   PRIMARY KEY (id_categoria_substancia)
 );

@@ -4,9 +4,9 @@ INSERT INTO Localidade (cod_postal,localidade) VALUES ('1234-566','Porto');
 INSERT INTO Localidade (cod_postal,localidade) VALUES ('1234-565','Porto');
 
 -- Clientes
-INSERT INTO Cliente (id_cliente,nome,nif,email,morada,morada_entrega,plafond,cod_postal_entrega,cod_postal) VALUES (1,'Joao','123456789','email@gmail.com','Rua do Joao','Rua do Joao','1000','1234-567','1234-567');
-INSERT INTO Cliente (id_cliente,nome,nif,email,morada,morada_entrega,plafond,cod_postal_entrega,cod_postal) VALUES (2,'Maria','987654321','maria@gmail.com','Rua da Maria','Rua da Maria','1000','1234-566','1234-566');
-INSERT INTO Cliente (id_cliente,nome,nif,email,morada,morada_entrega,plafond,cod_postal_entrega,cod_postal) VALUES (3,'Jose','11111111','jose@gmail.com','Rua do Jose','Rua do Jose','1000','1234-565','1234-565');
+INSERT INTO Cliente (id_cliente,nome,nif,email,morada,morada_entrega,plafond,cod_postal_entrega,cod_postal) VALUES (1,'Joao',123456789,'email@gmail.com','Rua do Joao','Rua do Joao','1000','1234-567','1234-567');
+INSERT INTO Cliente (id_cliente,nome,nif,email,morada,morada_entrega,plafond,cod_postal_entrega,cod_postal) VALUES (2,'Maria',987654321,'maria@gmail.com','Rua da Maria','Rua da Maria','1000','1234-566','1234-566');
+INSERT INTO Cliente (id_cliente,nome,nif,email,morada,morada_entrega,plafond,cod_postal_entrega,cod_postal) VALUES (3,'Jose',111111111,'jose@gmail.com','Rua do Jose','Rua do Jose','1000','1234-565','1234-565');
 
 -- Setores
 INSERT INTO Setor (id_setor,designacao,area) VALUES (1,'Setor 1',200);
@@ -25,10 +25,11 @@ INSERT INTO Produto (id_produto,designacao,preco,id_escalao_iva) VALUES (3,'Lara
 INSERT INTO Produto (id_produto,designacao,preco,id_escalao_iva) VALUES (4,'Cerejeira',10,1);
 
 -- Encomendas
-INSERT INTO Encomenda (id_encomenda,id_cliente,data_vencimento_pagamento,data_registo,data_entrega,data_pagamento,morada_entrega,cod_postal_entrega) VALUES (1,1,CURRENT_DATE,CURRENT_DATE,NULL,NULL,'Rua do Joao','1234-567');
-INSERT INTO Encomenda (id_encomenda,id_cliente,data_vencimento_pagamento,data_registo,data_entrega,data_pagamento,morada_entrega,cod_postal_entrega) VALUES (2,2,CURRENT_DATE,CURRENT_DATE,NULL,NULL,'Rua da Maria','1234-566');
-INSERT INTO Encomenda (id_encomenda,id_cliente,data_vencimento_pagamento,data_registo,data_entrega,data_pagamento,morada_entrega,cod_postal_entrega) VALUES (3,3,CURRENT_DATE,CURRENT_DATE,NULL,NULL,'Rua do Jose','1234-565');
-INSERT INTO Encomenda (id_encomenda,id_cliente,data_vencimento_pagamento,data_registo,data_entrega,data_pagamento,morada_entrega,cod_postal_entrega) VALUES (4,1,CURRENT_DATE,CURRENT_DATE,NULL,NULL,'Rua do Joao','1234-567');
+INSERT INTO Encomenda (id_encomenda,id_cliente,data_vencimento_pagamento,data_registo,data_entrega,data_pagamento,morada_entrega,cod_postal_entrega) VALUES (1,1,'01-Feb-2022','01-Jan-2022',NULL,NULL,'Rua do Joao','1234-567');
+INSERT INTO Encomenda (id_encomenda,id_cliente,data_vencimento_pagamento,data_registo,data_entrega,data_pagamento,morada_entrega,cod_postal_entrega) VALUES (2,2,'12-Feb-2022','02-Feb-2022',NULL,NULL,'Rua da Maria','1234-566');
+INSERT INTO Encomenda (id_encomenda,id_cliente,data_vencimento_pagamento,data_registo,data_entrega,data_pagamento,morada_entrega,cod_postal_entrega) VALUES (3,3,'13-Feb-2022','03-Feb-2022',NULL,NULL,'Rua do Jose','1234-565');
+INSERT INTO Encomenda (id_encomenda,id_cliente,data_vencimento_pagamento,data_registo,data_entrega,data_pagamento,morada_entrega,cod_postal_entrega) VALUES (4,1,'25-Apr-2022','15-Apr-2022',NULL,NULL,'Rua do Joao','1234-567');
+
 
 -- ProdutoEncomenda
 INSERT INTO ProdutoEncomenda (id_encomenda,id_produto,quantidade,preco_unitario,iva,designacao_produto) VALUES (1,1,500,2,13,'Maça');
