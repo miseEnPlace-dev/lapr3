@@ -14,7 +14,7 @@ CREATE OR REPLACE PACKAGE gestao_clientes AS
     cliente_id CLIENTE.id_cliente%TYPE);
 
   FUNCTION fn_risco_cliente(
-    cliente_id CLIENTE.id_cliente%TYPE);
+    cliente_id CLIENTE.id_cliente%TYPE)
     RETURN NUMBER;
 
 END gestao_clientes;

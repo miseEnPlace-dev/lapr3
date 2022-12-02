@@ -1,5 +1,5 @@
-CREATE OR REPLACE PACKAGE BODY fn_GestaoClientes AS
-  FUNCTION registar_cliente (
+CREATE OR REPLACE PACKAGE BODY gestao_clientes AS
+  FUNCTION fn_registarCliente (
     nome CLIENTE.nome%TYPE,
     nif CLIENTE.nif%TYPE,
     email CLIENTE.email%TYPE,
@@ -37,7 +37,7 @@ CREATE OR REPLACE PACKAGE BODY fn_GestaoClientes AS
     WHEN NO_DATA_FOUND THEN
       RAISE_APPLICATION_ERROR(-20002, 'Código postal inexistente.');
       ROLLBACK TO inicio;
-  END registar_cliente;
+  END fn_registarCliente;
 
   PROCEDURE pr_AtualizarEncomendasCliente(cliente_id CLIENTE.id_cliente%TYPE) IS
     total_encomendas NUMBER;
@@ -64,27 +64,25 @@ CREATE OR REPLACE PACKAGE BODY fn_GestaoClientes AS
     WHEN NO_DATA_FOUND THEN
       RAISE_APPLICATION_ERROR(-20001, 'Cliente inexistente.');
       ROLLBACK TO inicio;
-  END atualizar_encomendas_cliente;
+  END pr_AtualizarEncomendasCliente;
 
-  FUNCTION fn_risco_cliente AS (
+  FUNCTION fn_risco_cliente (
     cliente_id CLIENTE.id_cliente%TYPE)
     RETURN NUMBER IS
-    risco NUMBER,
-    n_encomendas_pendentes NUMBER,
+    risco NUMBER;
+    n_encomendas_pendentes NUMBER;
     valor_total_incidentes NUMBER;
 
   BEGIN
 
-  SELECT SUM((preco_unitario * (1 + iva / 100)) * quantidade) FROM produtoEncomenda INNER JOIN encomenda ON produtoEncomenda.id_encomenda = encomenda.id_encomenda WHERE id_cliente = cliente_id AND (data_pagamento > data_vencimento_pagamento OR (data_vencimento_pagamento < SYSDATE AND data_pagamento IS NULL)) INTO valor_total_incidentes;
+  SELECT SUM((preco_unitario * (1 + iva / 100)) * quantidade) INTO valor_total_incidentes FROM produtoEncomenda INNER JOIN encomenda ON produtoEncomenda.id_encomenda = encomenda.id_encomenda WHERE id_cliente = cliente_id AND (data_pagamento > data_vencimento_pagamento OR (data_vencimento_pagamento < SYSDATE AND data_pagamento IS NULL));
 
-  SELECT COUNT(*) FROM Encomenda WHERE id_cliente = cliente_id AND data_pagamento IS NULL INTO n_encomendas_pendentes;
+  SELECT COUNT(*) INTO n_encomendas_pendentes FROM Encomenda WHERE (id_cliente = cliente_id AND data_pagamento IS NULL);
 
   IF n_encomendas_pendentes > 0 THEN
     risco := valor_total_incidentes / n_encomendas_pendentes;
   END IF;
   RETURN risco;
   END fn_risco_cliente;
-
-
 
 END gestao_clientes;
