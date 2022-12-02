@@ -386,7 +386,5 @@ public class GraphAlgorithms {
     }
 
     return mst;
-
   }
-
 }

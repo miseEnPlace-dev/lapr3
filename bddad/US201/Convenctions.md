@@ -1,6 +1,6 @@
 In order to keep things consistent over the development of the data base these are some conventions every member should follow:
 
-- Every data base object name should not have special characters beside '_'
+- Every data base object name should not have special characters beside '\_'
 - SQL specific words should be written in capital case
 
 **Naming Tables**
@@ -14,7 +14,7 @@ In order to keep things consistent over the development of the data base these a
 
 - When naming columns use Snake Case (Ex: 'snake_case')
 - Column names should be specific and unique in his table
-- Use long descriptive names instead of short and unclear abbreviations. 
+- Use long descriptive names instead of short and unclear abbreviations.
 - Name must not be generic (Ex: use 'id_user´ instead of 'id')
 
 **Naming Primary Keys**
@@ -41,5 +41,4 @@ In order to keep things consistent over the development of the data base these a
 
 - Use CamelCase
 - Format: 'fn_Action'
-
-
+- Format: 'pr_Procedure'

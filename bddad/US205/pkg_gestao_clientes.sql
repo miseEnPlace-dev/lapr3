@@ -1,5 +1,5 @@
 CREATE OR REPLACE PACKAGE gestao_clientes AS
-  FUNCTION registar_cliente(
+  FUNCTION fn_RegistarCliente(
       nome IN CLIENTE.nome%TYPE,
       nif IN CLIENTE.nif%TYPE,
       email IN CLIENTE.email%TYPE,
@@ -10,8 +10,7 @@ CREATE OR REPLACE PACKAGE gestao_clientes AS
       plafond IN CLIENTE.plafond%TYPE)
     RETURN CLIENTE.id_cliente%TYPE;
 
-  PROCEDURE atualizar_encomendas_cliente(
+  PROCEDURE pr_AtualizarEncomendasCliente(
     cliente_id IN CLIENTE.id_cliente%TYPE);
-
 
 END gestao_clientes;

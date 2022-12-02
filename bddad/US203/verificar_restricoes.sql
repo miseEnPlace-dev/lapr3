@@ -35,9 +35,9 @@ INSERT INTO TipoCultura (id_tipo_cultura,tipo_cultura) VALUES (999,'aaaaaaaaaaaa
 -- FALHA
 
 -- Cultura (verificaçao de restriçoes)
-INSERT INTO Cultura (id_cultura,cultura,id_tipo_cultura,id_produto) VALUES (NULL,NULL,NULL,NULL);
+INSERT INTO Cultura (id_cultura,cultura,id_tipo_cultura) VALUES (NULL,NULL,NULL);
 -- FALHA
-INSERT INTO Cultura (id_cultura,cultura,id_tipo_cultura,id_produto) VALUES (999,'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',999,999999999);
+INSERT INTO Cultura (id_cultura,cultura,id_tipo_cultura) VALUES (999,'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',999);
 -- FALHA
 
 -- TipoFatorProducao (verificaçao de restrições)
