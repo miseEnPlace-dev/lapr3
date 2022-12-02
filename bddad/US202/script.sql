@@ -161,9 +161,9 @@ CREATE TABLE Cliente (
   valor_total_encomendas number(10) DEFAULT 0 NOT NULL,
   PRIMARY KEY (id_cliente),
   FOREIGN KEY (cod_postal_entrega) REFERENCES Localidade (cod_postal) ON DELETE CASCADE,
-  FOREIGN KEY (cod_postal) REFERENCES Localidade (cod_postal) ON DELETE CASCADE
-  CONSTRAINT chk_email_clt  CHECK (email_Cltu like '%___@___%.__%'),
-  CONSTRAINT chk_nif_clt    CHECK (nif_Cltu > 100000000),
+  FOREIGN KEY (cod_postal) REFERENCES Localidade (cod_postal) ON DELETE CASCADE,
+  CONSTRAINT chk_email_clt  CHECK (email like '%___@___%.__%'),
+  CONSTRAINT chk_nif_clt    CHECK (nif > 100000000 AND nif < 999999999)
 );
 
 CREATE TABLE Encomenda (
