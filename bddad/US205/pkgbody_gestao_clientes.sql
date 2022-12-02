@@ -1,4 +1,4 @@
-CREATE OR REPLACE PACKAGE BODY gestao_clientes AS
+CREATE OR REPLACE PACKAGE BODY fn_GestaoClientes AS
   FUNCTION registar_cliente (
     nome IN CLIENTE.nome%TYPE,
     nif IN CLIENTE.nif%TYPE,
@@ -39,7 +39,7 @@ CREATE OR REPLACE PACKAGE BODY gestao_clientes AS
       ROLLBACK TO inicio;
   END registar_cliente;
 
-  PROCEDURE atualizar_encomendas_cliente(cliente_id IN CLIENTE.id_cliente%TYPE) IS
+  PROCEDURE pr_AtualizarEncomendasCliente(cliente_id IN CLIENTE.id_cliente%TYPE) IS
     total_encomendas NUMBER;
     num_encomendas NUMBER;
     null_id CLIENTE.id_cliente%TYPE;
