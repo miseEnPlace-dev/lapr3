@@ -13,18 +13,18 @@ CREATE OR REPLACE PACKAGE gestao_fatores_producao AS
   RETURN FORNECEDOR.id_fornecedor%TYPE;
 
   FUNCTION fn_RegistarSubstancia(designacao SUBSTANCIA.substancia%TYPE,
-    fornecedor SUBSTANCIA.id_fornecedor%TYPE,
-    categoria_substancia SUBSTANCIA.id_categoria_substancia%TYPE) 
+    forn SUBSTANCIA.id_fornecedor%TYPE,
+    cat_sub SUBSTANCIA.id_categoria_substancia%TYPE) 
   RETURN SUBSTANCIA.id_substancia%TYPE;
 
   FUNCTION fn_RegistarFatorProducao(id_tipo_fator FATORPRODUCAO.id_tipo_fator_producao%TYPE,
     designacao FATORPRODUCAO.nome%TYPE,
-    tipo_formulacao FATORPRODUCAO.id_tipo_formulacao%TYPE) 
+    form FATORPRODUCAO.id_tipo_formulacao%TYPE) 
   RETURN FATORPRODUCAO.id_fator_producao%TYPE;
 
 
-  PROCEDURE pr_RegistarFatorProducaoSubstancia(fator_producao FATORPRODUCAOSUBSTANCIA.id_fator_producao%TYPE,
-    substancia FATORPRODUCAOSUBSTANCIA.id_substancia%TYPE,
+  PROCEDURE pr_RegistarFatorProducaoSubstancia(fat_prod FATORPRODUCAOSUBSTANCIA.id_fator_producao%TYPE,
+    subs FATORPRODUCAOSUBSTANCIA.id_substancia%TYPE,
     quantidade FATORPRODUCAOSUBSTANCIA.quantidade%TYPE,
     unidade FATORPRODUCAOSUBSTANCIA.unidade%TYPE);
 

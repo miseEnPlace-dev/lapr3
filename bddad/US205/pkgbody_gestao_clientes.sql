@@ -76,20 +76,29 @@ CREATE OR REPLACE PACKAGE BODY gestao_clientes AS
 
   risco := 0;
 
-  SELECT SUM((preco_unitario * (1 + iva / 100)) * quantidade) INTO valor_total_incidentes FROM produtoEncomenda INNER JOIN encomenda ON produtoEncomenda.id_encomenda = encomenda.id_encomenda WHERE id_cliente = cliente_id AND (data_pagamento > data_vencimento_pagamento OR (data_vencimento_pagamento < SYSDATE AND data_pagamento IS NULL))
+  SELECT SUM((preco_unitario * (1 + iva / 100)) * quantidade) INTO valor_total_incidentes
+  FROM produtoEncomenda
+  INNER JOIN encomenda ON produtoEncomenda.id_encomenda = encomenda.id_encomenda
+  WHERE id_cliente = cliente_id AND (data_pagamento > data_vencimento_pagamento OR (data_vencimento_pagamento < SYSDATE AND data_pagamento IS NULL))
   GROUP BY id_cliente;
 
 
-  SELECT COUNT(*) INTO n_encomendas_pendentes FROM Encomenda WHERE (id_cliente = cliente_id AND data_pagamento IS NULL);
+  SELECT COUNT(*) INTO n_encomendas_pendentes
+  FROM Encomenda
+  WHERE (id_cliente = cliente_id AND data_pagamento IS NULL);
 
   IF n_encomendas_pendentes > 0 THEN
     risco := valor_total_incidentes / n_encomendas_pendentes;
+  ELSE
+    risco := valor_total_incidentes;
   END IF;
-  EXCEPTION
-    WHEN NO_DATA_FOUND THEN
-      RETURN risco;
 
   RETURN risco;
+
+  EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+      RAISE_APPLICATION_ERROR(-20001, 'Dados insuficientes.');
+
   END fn_risco_cliente;
 
 END gestao_clientes;
