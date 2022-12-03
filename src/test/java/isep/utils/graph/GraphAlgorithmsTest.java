@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -51,7 +52,15 @@ class GraphAlgorithmsTest {
     completeMap.addEdge("Aveiro", "Viseu", 85);
     completeMap.addEdge("Leiria", "Castelo Branco", 170);
     completeMap.addEdge("Lisboa", "Faro", 280);
+
   }
+
+  Comparator<Edge<Integer, Integer>> ceInteger = new Comparator<Edge<Integer, Integer>>() {
+    @Override
+    public int compare(Edge<Integer, Integer> o1, Edge<Integer, Integer> o2) {
+      return o1.getWeight().compareTo(o2.getWeight());
+    }
+  };
 
   private void checkContentEquals(List<String> l1, List<String> l2, String msg) {
     Collections.sort(l1);
@@ -283,7 +292,7 @@ class GraphAlgorithmsTest {
     integerGraphNotDirected.addEdge(3, 5, 14);
     integerGraphNotDirected.addEdge(5, 4, 10);
 
-    Graph<Integer, Integer> result = GraphAlgorithms.kruskall(integerGraphNotDirected, Integer::compare);
+    Graph<Integer, Integer> result = GraphAlgorithms.kruskall(integerGraphNotDirected, ceInteger);
 
     Graph<Integer, Integer> expectedGraph = new AdjacencyMapGraph<Integer, Integer>(false);
     expectedGraph.addVertex(0);

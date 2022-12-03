@@ -1,13 +1,13 @@
-CREATE OR REPLACE PACKAGE BODY fn_GestaoClientes AS
-  FUNCTION registar_cliente (
-    nome IN CLIENTE.nome%TYPE,
-    nif IN CLIENTE.nif%TYPE,
-    email IN CLIENTE.email%TYPE,
-    morada IN CLIENTE.morada%TYPE,
-    morada_entrega IN CLIENTE.morada_entrega%TYPE,
-    postal IN CLIENTE.cod_postal%TYPE,
-    postal_entrega IN CLIENTE.cod_postal_entrega%TYPE,
-    plafond IN CLIENTE.plafond%TYPE)
+CREATE OR REPLACE PACKAGE BODY gestao_clientes AS
+  FUNCTION fn_registarCliente (
+    nome CLIENTE.nome%TYPE,
+    nif CLIENTE.nif%TYPE,
+    email CLIENTE.email%TYPE,
+    morada CLIENTE.morada%TYPE,
+    morada_entrega CLIENTE.morada_entrega%TYPE,
+    postal CLIENTE.cod_postal%TYPE,
+    postal_entrega CLIENTE.cod_postal_entrega%TYPE,
+    plafond CLIENTE.plafond%TYPE)
   RETURN CLIENTE.id_cliente%TYPE AS
     id_cliente CLIENTE.id_cliente%TYPE;
     cod_postal_var CLIENTE.cod_postal%TYPE;
@@ -37,9 +37,9 @@ CREATE OR REPLACE PACKAGE BODY fn_GestaoClientes AS
     WHEN NO_DATA_FOUND THEN
       RAISE_APPLICATION_ERROR(-20002, 'Código postal inexistente.');
       ROLLBACK TO inicio;
-  END registar_cliente;
+  END fn_registarCliente;
 
-  PROCEDURE pr_AtualizarEncomendasCliente(cliente_id IN CLIENTE.id_cliente%TYPE) IS
+  PROCEDURE pr_AtualizarEncomendasCliente(cliente_id CLIENTE.id_cliente%TYPE) IS
     total_encomendas NUMBER;
     num_encomendas NUMBER;
     null_id CLIENTE.id_cliente%TYPE;
@@ -64,5 +64,41 @@ CREATE OR REPLACE PACKAGE BODY fn_GestaoClientes AS
     WHEN NO_DATA_FOUND THEN
       RAISE_APPLICATION_ERROR(-20001, 'Cliente inexistente.');
       ROLLBACK TO inicio;
-  END atualizar_encomendas_cliente;
+  END pr_AtualizarEncomendasCliente;
+
+  FUNCTION fn_risco_cliente (
+    cliente_id CLIENTE.id_cliente%TYPE)
+    RETURN NUMBER IS
+    risco NUMBER;
+    n_encomendas_pendentes NUMBER;
+    valor_total_incidentes NUMBER;
+
+  BEGIN
+
+  risco := 0;
+
+  SELECT SUM((preco_unitario * (1 + iva / 100)) * quantidade) INTO valor_total_incidentes
+  FROM produtoEncomenda
+  INNER JOIN encomenda ON produtoEncomenda.id_encomenda = encomenda.id_encomenda
+  WHERE id_cliente = cliente_id AND (data_pagamento > data_vencimento_pagamento OR (data_vencimento_pagamento < SYSDATE AND data_pagamento IS NULL))
+  GROUP BY id_cliente;
+
+
+  SELECT COUNT(*) INTO n_encomendas_pendentes
+  FROM Encomenda
+  WHERE (id_cliente = cliente_id AND data_pagamento IS NULL);
+
+  IF n_encomendas_pendentes > 0 THEN
+    risco := valor_total_incidentes / n_encomendas_pendentes;
+  ELSE
+    RAISE NO_DATA_FOUND;
+  END IF;
+
+  EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+      RETURN risco := valor_total_incidentes;
+
+  RETURN risco;
+  END fn_risco_cliente;
+
 END gestao_clientes;
