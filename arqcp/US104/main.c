@@ -29,7 +29,7 @@ int main(void) {
       N_OF_SOIL_HUMIDITY_SENSORS != N_OF_PLUVIO_SENSORS ||
       N_OF_AIR_HUMIDITY_SENSORS != N_OF_PLUVIO_SENSORS)
     {
-      printf("Invalid number of sensors.\nMake sure the number of temperature, soil and air sensors are the same and different from 0.\n");
+      printf("Número de sensores inválido.\nVerifique se o número de sensores de temperatura, humidade do solo e ar são iguais e diferentes de 0.\n");
       return -1;
     }
 
@@ -84,10 +84,10 @@ int main(void) {
               } else error_readings_temp[j][i] = 0;
           }
           total_errors = get_total_errors(error_readings_temp[j], NUM_TEMPERATURE_REGISTERS);
-          printf("Temperature > Sensor %d: %d errors\n", j + 1, total_errors);
+          printf("Temperatura > Sensor %d: %d erros\n", j + 1, total_errors);
 
           if(total_errors > MAX_INCORRECT_READS) {
-              printf("Exceeded max errors allowed (%d). Resetting sensor...\n", MAX_INCORRECT_READS);
+              printf("Número máximo de erros permitidos excedido (%d). A reiniciar o sensor...\n", MAX_INCORRECT_READS);
               reset_seed();
           }
         } while (total_errors > MAX_INCORRECT_READS);
@@ -113,10 +113,10 @@ int main(void) {
               } else error_readings_vel[j][i] = 0;
           }
           total_errors = get_total_errors(error_readings_vel[j], NUM_VEL_WIND_REGISTERS);
-          printf("Wind Velocity > Sensor %d: %d errors\n", j + 1, total_errors);
+          printf("Velocidade Vento > Sensor %d: %d erros\n", j + 1, total_errors);
 
           if(total_errors > MAX_INCORRECT_READS) {
-              printf("Exceeded max errors allowed (%d). Resetting sensor...\n", MAX_INCORRECT_READS);
+              printf("Número máximo de erros permitidos excedido (%d). A reiniciar o sensor...\n", MAX_INCORRECT_READS);
               reset_seed();
           }
         } while (total_errors > MAX_INCORRECT_READS);
@@ -142,10 +142,10 @@ int main(void) {
               } else error_readings_dir[j][i] = 0;
           }
           total_errors = get_total_errors(error_readings_dir[j], NUM_DIR_WIND_REGISTERS);
-          printf("Wind Direction > Sensor %d: %d errors\n", j + 1, total_errors);
+          printf("Direção Vento > Sensor %d: %d erros\n", j + 1, total_errors);
 
           if(total_errors > MAX_INCORRECT_READS) {
-              printf("Exceeded max errors allowed (%d). Resetting sensor...\n", MAX_INCORRECT_READS);
+              printf("Número máximo de erros permitidos excedido (%d). A reiniciar o sensor...\n", MAX_INCORRECT_READS);
               reset_seed();
           }
         } while (total_errors > MAX_INCORRECT_READS);
@@ -172,10 +172,10 @@ int main(void) {
               } else error_readings_pluvio[j][i] = 0;
           }
           total_errors = get_total_errors(error_readings_pluvio[j], NUM_PLUVIO_REGISTERS);
-          printf("Pluviosity > Sensor %d: %d errors\n", j + 1, total_errors);
+          printf("Pluviosidade > Sensor %d: %d erros\n", j + 1, total_errors);
 
           if(total_errors > MAX_INCORRECT_READS) {
-              printf("Exceeded max errors allowed (%d). Resetting sensor...\n", MAX_INCORRECT_READS);
+              printf("Número máximo de erros permitidos excedido (%d). A reiniciar o sensor...\n", MAX_INCORRECT_READS);
               reset_seed();
           }
         } while (total_errors > MAX_INCORRECT_READS);
@@ -202,10 +202,10 @@ int main(void) {
               } else error_readings_soil[j][i] = 0;
           }
           total_errors = get_total_errors(error_readings_soil[j], NUM_SOIL_HUMIDITY_REGISTERS);
-          printf("Soil Humidity > Sensor %d: %d errors\n", j + 1, total_errors);
+          printf("Humidade Solo > Sensor %d: %d erros\n", j + 1, total_errors);
 
           if(total_errors > MAX_INCORRECT_READS) {
-              printf("Exceeded max errors allowed (%d). Resetting sensor...\n", MAX_INCORRECT_READS);
+              printf("Número máximo de erros permitidos excedido (%d). A reiniciar o sensor...\n", MAX_INCORRECT_READS);
               reset_seed();
           }
         } while (total_errors > MAX_INCORRECT_READS);
@@ -232,10 +232,10 @@ int main(void) {
               } else error_readings_humd[j][i] = 0;
           }
           total_errors = get_total_errors(error_readings_humd[j], NUM_AIR_HUMIDITY_REGISTERS);
-          printf("Air Humidity > Sensor %d: %d errors\n", j + 1, total_errors);
+          printf("Humidade Ar > Sensor %d: %d erros\n", j + 1, total_errors);
 
           if(total_errors > MAX_INCORRECT_READS) {
-              printf("Exceeded max errors allowed (%d). Resetting sensor...\n", MAX_INCORRECT_READS);
+              printf("Número máximo de erros permitidos excedido (%d). A reiniciar o sensor...\n", MAX_INCORRECT_READS);
               reset_seed();
           }
         } while (total_errors > MAX_INCORRECT_READS);
