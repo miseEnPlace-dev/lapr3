@@ -11,10 +11,10 @@ CREATE OR REPLACE VIEW cliente_view AS
                 WHERE data_pagamento IS NULL OR data_pagamento > data_vencimento_pagamento
                 GROUP BY id_cliente) enc ON enc.id_cliente = c.id_cliente
                 WHERE c.id_cliente = cl.id_cliente) AS nivel,
-      (SELECT NVL(TO_CHAR(MAX(data_vencimento_pagamento)), 'Sem incidentes à data') AS data_ultima_encomenda_nao_paga
+      NVL((SELECT TO_CHAR(MAX(data_vencimento_pagamento)) AS data_ultima_encomenda_nao_paga
       FROM encomenda
       WHERE (data_vencimento_pagamento < data_pagamento OR (data_vencimento_pagamento < sysdate AND data_pagamento IS NULL)) AND encomenda.id_cliente = cl.id_cliente
-      GROUP BY id_cliente) AS data_ultimo_incidente,
+      GROUP BY id_cliente), 'Sem incidentes à data') AS data_ultimo_incidente,
       NVL((SELECT SUM((preco_unitario * (1 + iva / 100)) * quantidade) AS valor_pendente
       FROM produtoEncomenda pe, encomenda e
       WHERE pe.id_encomenda = e.id_encomenda AND e.id_cliente = cl.id_cliente AND
