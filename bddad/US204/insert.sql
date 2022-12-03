@@ -64,13 +64,13 @@ INSERT INTO TipoRega (id_tipo_rega,id_tipo_tubagem) VALUES (3,3);
 INSERT INTO TipoRega (id_tipo_rega,id_tipo_tubagem) VALUES (4,4);
 
 -- Rega
-INSERT INTO Rega (id_setor,data,id_tipo_rega) VALUES (1,CURRENT_DATE,1);
-INSERT INTO Rega (id_setor,data,id_tipo_rega) VALUES (2,CURRENT_DATE,2);
-INSERT INTO Rega (id_setor,data,id_tipo_rega) VALUES (3,CURRENT_DATE,3);
-INSERT INTO Rega (id_setor,data,id_tipo_rega) VALUES (1,CURRENT_DATE,4);
+INSERT INTO Rega (id_setor,data,id_tipo_rega) VALUES (1,'10-Jan-2020',1);
+INSERT INTO Rega (id_setor,data,id_tipo_rega) VALUES (2,'10-Feb-2020',2);
+INSERT INTO Rega (id_setor,data,id_tipo_rega) VALUES (3,'10-Feb-2021',3);
+INSERT INTO Rega (id_setor,data,id_tipo_rega) VALUES (1,'10-Feb-2022',4);
 
 -- PlanoRega
-INSERT INTO PlanoRega (id_setor,data_inicio,tempo,periodicidade,id_tipo_rega,data_fim) VALUES (1,CURRENT_DATE,1,1,1,Null);
+INSERT INTO PlanoRega (id_setor,data_inicio,tempo,periodicidade,id_tipo_rega,data_fim) VALUES (1,'10-Jan-2022',1,1,1,Null);
 
 -- TipoEdificio
 INSERT INTO TipoEdificio (id_tipo_edificio,tipo_edificio) VALUES (1,'Armazem');
@@ -114,8 +114,8 @@ INSERT INTO FatorProducao (id_fator_producao,id_tipo_fator_producao,nome,id_tipo
 INSERT INTO FatorProducao (id_fator_producao,id_tipo_fator_producao,nome,id_tipo_formulacao) VALUES (2,2,'Adubo 1',2);
 
 -- FatorProducaoSubstancia
-INSERT INTO FatorProducaoSubstancia (id_fator_producao,id_substancia,quantidade,unidades) VALUES (1,1,60,'kg');
-INSERT INTO FatorProducaoSubstancia (id_fator_producao,id_substancia,quantidade,unidades) VALUES (1,2,20,'kg');
+INSERT INTO FatorProducaoSubstancia (id_fator_producao,id_substancia,quantidade,unidade) VALUES (1,1,60,'kg');
+INSERT INTO FatorProducaoSubstancia (id_fator_producao,id_substancia,quantidade,unidade) VALUES (1,2,20,'kg');
 
 -- TipoSensor
 INSERT INTO TipoSensor (id_tipo_sensor,tipo_sensor) VALUES (1,'TS');
@@ -134,30 +134,30 @@ INSERT INTO Sensor (id_sensor,identificador,id_tipo_sensor,valor_referencia) VAL
 INSERT INTO Sensor (id_sensor,identificador,id_tipo_sensor,valor_referencia) VALUES (6,'PL',6,10);
 
 -- MedicaoSensor
-INSERT INTO MedicaoSensor (id_sensor,id_setor,medicao,data_hora) VALUES (1,1,20,CURRENT_DATE);
-INSERT INTO MedicaoSensor (id_sensor,id_setor,medicao,data_hora) VALUES (2,1,60,CURRENT_DATE);
-INSERT INTO MedicaoSensor (id_sensor,id_setor,medicao,data_hora) VALUES (3,1,10,CURRENT_DATE);
-INSERT INTO MedicaoSensor (id_sensor,id_setor,medicao,data_hora) VALUES (4,1,10,CURRENT_DATE);
-INSERT INTO MedicaoSensor (id_sensor,id_setor,medicao,data_hora) VALUES (5,1,80,CURRENT_DATE);
-INSERT INTO MedicaoSensor (id_sensor,id_setor,medicao,data_hora) VALUES (6,1,5,CURRENT_DATE);
+INSERT INTO MedicaoSensor (id_sensor,id_setor,medicao,data_hora) VALUES (1,1,20,'01-Jan-2020 12:00:00');
+INSERT INTO MedicaoSensor (id_sensor,id_setor,medicao,data_hora) VALUES (2,1,60,'01-Jan-2020 12:00:00');
+INSERT INTO MedicaoSensor (id_sensor,id_setor,medicao,data_hora) VALUES (3,1,10, '01-Jan-2020 12:00:00');
+INSERT INTO MedicaoSensor (id_sensor,id_setor,medicao,data_hora) VALUES (4,1,10, '01-Jan-2020 12:00:00');
+INSERT INTO MedicaoSensor (id_sensor,id_setor,medicao,data_hora) VALUES (5,1,80, '01-Jan-2020 12:00:00');
+INSERT INTO MedicaoSensor (id_sensor,id_setor,medicao,data_hora) VALUES (6,1,5, '01-Jan-2020 12:00:00');
 
 -- Plantacao
-INSERT INTO Plantacao (id_setor,id_cultura,data_inicio) VALUES (1,1,CURRENT_DATE);
-INSERT INTO Plantacao (id_setor,id_cultura,data_inicio) VALUES (2,2,CURRENT_DATE);
-INSERT INTO Plantacao (id_setor,id_cultura,data_inicio) VALUES (3,3,CURRENT_DATE);
+INSERT INTO Plantacao (id_setor,id_cultura,data_inicio) VALUES (1,1,'01-Jan-2021');
+INSERT INTO Plantacao (id_setor,id_cultura,data_inicio) VALUES (2,2,'01-Jan-2021');
+INSERT INTO Plantacao (id_setor,id_cultura,data_inicio) VALUES (3,3,'01-Jan-2021');
 
 -- Colheita
-INSERT INTO Colheita (id_produto,data,quantidade,id_setor) VALUES (1,CURRENT_DATE,10,1);
-INSERT INTO Colheita (id_produto,data,quantidade,id_setor) VALUES (2,CURRENT_DATE,10,2);
-INSERT INTO Colheita (id_produto,data,quantidade,id_setor) VALUES (3,CURRENT_DATE,10,3);
+INSERT INTO Colheita (id_produto,data,quantidade,id_setor) VALUES (1,'01-Feb-2021',10,1);
+INSERT INTO Colheita (id_produto,data,quantidade,id_setor) VALUES (2,'01-Feb-2021',10,2);
+INSERT INTO Colheita (id_produto,data,quantidade,id_setor) VALUES (3,'01-Feb-2021',10,3);
 
 -- TipoAplicacaoFatorProducao
 INSERT INTO TipoAplicacaoFatorProducao (id_tipo_aplicacao_fator_producao,tipo_aplicacao_fator_producao) VALUES (1,'Foliar');
 INSERT INTO TipoAplicacaoFatorProducao (id_tipo_aplicacao_fator_producao,tipo_aplicacao_fator_producao) VALUES (2,'Solo');
 
 -- AplicacaoFatorProducao
-INSERT INTO AplicacaoFatorProducao (id_setor,id_fator_producao,data,id_tipo_aplicacao_fator_producao) VALUES (1,1,CURRENT_DATE,1);
-INSERT INTO AplicacaoFatorProducao (id_setor,id_fator_producao,data,id_tipo_aplicacao_fator_producao) VALUES (2,2,CURRENT_DATE,2);
+INSERT INTO AplicacaoFatorProducao (id_setor,id_fator_producao,data,id_tipo_aplicacao_fator_producao) VALUES (1,1,'01-Feb-2021',1);
+INSERT INTO AplicacaoFatorProducao (id_setor,id_fator_producao,data,id_tipo_aplicacao_fator_producao) VALUES (2,2,'01-Feb-2021',2);
 
 -- Visualisacao de dados
 DECLARE
