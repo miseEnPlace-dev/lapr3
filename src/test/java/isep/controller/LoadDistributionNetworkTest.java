@@ -1,14 +1,11 @@
 package isep.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Map;
-
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-
 import isep.mock.DistancesDataMock;
 import isep.mock.EntityStoreMock;
 import isep.model.DistributionNetwork;
@@ -22,9 +19,11 @@ public class LoadDistributionNetworkTest {
   @BeforeAll
   public static void setup() throws FileNotFoundException {
     entityStore = new EntityStoreMock().mockEntityStoreFromSampleFile();
-    List<Map<String, String>> distancesData = new DistancesDataMock().mockDistancesDataFromSampleFile();
+    List<Map<String, String>> distancesData =
+        new DistancesDataMock().mockDistancesDataFromSampleFile();
 
-    loadDistributionNetworkController = new LoadDistributionNetworkController(entityStore, distancesData);
+    loadDistributionNetworkController =
+        new LoadDistributionNetworkController(entityStore, distancesData);
   }
 
   @Test
@@ -52,5 +51,20 @@ public class LoadDistributionNetworkTest {
 
     assertEquals(network.getDistanceBetweenConnectedEntities(ct7, ct2),
         network.getDistanceBetweenConnectedEntities(ct2, ct7));
+  }
+
+  @Test
+  public void testLoadDistributionNetworkWithBigFile() throws FileNotFoundException {
+    entityStore = new EntityStoreMock().mockEntityStoreWithBigFile();
+    List<Map<String, String>> distancesData =
+        new DistancesDataMock().mockDistancesDataWithBigFile();
+
+    loadDistributionNetworkController =
+        new LoadDistributionNetworkController(entityStore, distancesData);
+
+    DistributionNetwork network = loadDistributionNetworkController.loadDistributionNetwork();
+
+    assertEquals(323, network.getNumberOfEntities());
+    assertEquals(783, network.getNumberOfRelations());
   }
 }
