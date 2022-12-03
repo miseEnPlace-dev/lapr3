@@ -42,7 +42,7 @@ int main(void)
   data[AIR_HUMIDITY_SENSORS_INDEX] = air_humidity_sensors;
 
   char base_temperatures[NUM_TEMPERATURE_REGISTERS];
-  int temperatures[NUM_TEMPERATURE_REGISTERS];
+  int temperatures[N_OF_TEMP_SENSORS][NUM_TEMPERATURE_REGISTERS];
   for (int j = 0; j < N_OF_TEMP_SENSORS; j++)
   {
     generate_base_temp_values(base_temperatures, NUM_TEMPERATURE_REGISTERS);
@@ -52,12 +52,12 @@ int main(void)
     {
       last_temp_read = sens_temp(last_temp_read, pcg32_random_r());
       char base_temp_read = (i == 0 ? TEMP_BASE_VALUE : base_temperatures[i - 1]);
-      temperatures[i] = (int)((last_temp_read + base_temp_read) / 2);
+      temperatures[j][i] = (int)((last_temp_read + base_temp_read) / 2);
     }
-    temp_sensors[j] = temperatures;
+    temp_sensors[j] = temperatures[j];
   }
 
-  int vel_wind[NUM_VEL_WIND_REGISTERS];
+  int vel_wind[N_OF_VELOCITY_SENSORS][NUM_VEL_WIND_REGISTERS];
   unsigned char last_read = pcg32_random_r() % 30;
   for (int j = 0; j < N_OF_VELOCITY_SENSORS; j++)
   {
@@ -66,12 +66,12 @@ int main(void)
     for (int i = 0; i < NUM_VEL_WIND_REGISTERS; i++)
     {
       last_read = sens_velc_vento(last_read, pcg32_random_r());
-      vel_wind[i] = (int)last_read;
+      vel_wind[j][i] = (int)last_read;
     }
-    vel_wind_sensors[j] = vel_wind;
+    vel_wind_sensors[j] = vel_wind[j];
   }
 
-  int dir_wind[NUM_DIR_WIND_REGISTERS];
+  int dir_wind[N_OF_DIRECTION_SENSORS][NUM_DIR_WIND_REGISTERS];
   unsigned short last_read_wind = pcg32_random_r() % 360;
   for (int j = 0; j < N_OF_DIRECTION_SENSORS; j++)
   {
@@ -79,12 +79,12 @@ int main(void)
     for (int i = 0; i < NUM_DIR_WIND_REGISTERS; i++)
     {
       last_read_wind = sens_dir_vento(last_read_wind, pcg32_random_r());
-      dir_wind[i] = (int)last_read_wind;
+      dir_wind[j][i] = (int)last_read_wind;
     }
-    dir_wind_sensors[j] = dir_wind;
+    dir_wind_sensors[j] = dir_wind[j];
   }
 
-  int pluvio[NUM_PLUVIO_REGISTERS];
+  int pluvio[NUM_PLUVIO_REGISTERS][NUM_PLUVIO_REGISTERS];
   unsigned char last_temp_read = temperatures[(TEMPERATURES_SENSOR_INTERVAL / PLUVIO_SENSOR_INTERVAL)];
   for (int j = 0; j < N_OF_PLUVIO_SENSORS; j++)
   {
@@ -93,12 +93,12 @@ int main(void)
     {
       last_temp_read = temperatures[i * (TEMPERATURES_SENSOR_INTERVAL / PLUVIO_SENSOR_INTERVAL)];
       last_read = sens_pluvio(last_read, last_temp_read, pcg32_random_r());
-      pluvio[i] = (int)last_read;
+      pluvio[j][i] = (int)last_read;
     }
-    pluvio_sensors[j] = pluvio;
+    pluvio_sensors[j] = pluvio[j];
   }
 
-  int soil_humidity[NUM_SOIL_HUMIDITY_REGISTERS];
+  int soil_humidity[N_OF_SOIL_HUMIDITY_SENSORS][NUM_SOIL_HUMIDITY_REGISTERS];
   unsigned char last_pluvio_read = pluvio[(NUM_PLUVIO_REGISTERS / NUM_SOIL_HUMIDITY_REGISTERS)];
   for (int j = 0; j < N_OF_SOIL_HUMIDITY_SENSORS; j++)
   {
@@ -107,12 +107,12 @@ int main(void)
     {
       last_pluvio_read = pluvio[i * (NUM_PLUVIO_REGISTERS / NUM_SOIL_HUMIDITY_REGISTERS)];
       last_read = sens_humd_solo(last_read, last_pluvio_read, pcg32_random_r());
-      soil_humidity[i] = (int)last_read;
+      soil_humidity[j][i] = (int)last_read;
     }
-    soil_humidity_sensors[j] = soil_humidity;
+    soil_humidity_sensors[j] = soil_humidity[j];
   }
 
-  int air_humidity[NUM_AIR_HUMIDITY_REGISTERS];
+  int air_humidity[N_OF_AIR_HUMIDITY_SENSORS][NUM_AIR_HUMIDITY_REGISTERS];
   last_pluvio_read = pluvio[(NUM_PLUVIO_REGISTERS / NUM_SOIL_HUMIDITY_REGISTERS)];
   for (int j = 0; j < N_OF_AIR_HUMIDITY_SENSORS; j++)
   {
@@ -121,9 +121,9 @@ int main(void)
     {
       last_pluvio_read = pluvio[i * (NUM_PLUVIO_REGISTERS / NUM_SOIL_HUMIDITY_REGISTERS)];
       last_read = sens_humd_atm(last_read, last_pluvio_read, pcg32_random_r());
-      air_humidity[i] = (int)last_read;
+      air_humidity[j][i] = (int)last_read;
     }
-    air_humidity_sensors[j] = air_humidity;
+    air_humidity_sensors[j] = air_humidity[j];
   }
 
   printf("-- Leituras dos sensores --\n\n");
