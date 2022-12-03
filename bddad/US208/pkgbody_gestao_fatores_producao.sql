@@ -152,7 +152,7 @@ CREATE OR REPLACE PACKAGE BODY gestao_fatores_producao AS
     WHEN categoria_substancia_inexistente THEN
       RAISE_APPLICATION_ERROR(-20001, 'Categoria Substancia inexistente.');
     WHEN OTHERS THEN
-    RAISE_APPLICATION_ERROR(-20005, 'Erro ao registar entrega.');
+    RAISE_APPLICATION_ERROR(-20005, 'Erro ao registar substancia.');
       ROLLBACK TO inicio;
 
   END fn_RegistarSubstancia;
@@ -209,7 +209,7 @@ CREATE OR REPLACE PACKAGE BODY gestao_fatores_producao AS
     WHEN tipo_formulacao_inexistente THEN
       RAISE_APPLICATION_ERROR(-20001, 'Tipo Formulação inexistente.');
     WHEN OTHERS THEN
-    RAISE_APPLICATION_ERROR(-20005, 'Erro ao registar entrega.');
+    RAISE_APPLICATION_ERROR(-20005, 'Erro ao registar fator producao.');
       ROLLBACK TO inicio;
 
   END fn_RegistarFatorProducao;
@@ -262,7 +262,7 @@ CREATE OR REPLACE PACKAGE BODY gestao_fatores_producao AS
     WHEN quantidade_invalida THEN
       RAISE_APPLICATION_ERROR(-20001, 'Quantidade inválida. Deve ser positiva.');
     WHEN OTHERS THEN
-    RAISE_APPLICATION_ERROR(-20005, 'Erro ao registar entrega.');
+    RAISE_APPLICATION_ERROR(-20005, 'Erro ao registar fator producao substancia.');
       ROLLBACK TO inicio;
 
   END pr_RegistarFatorProducaoSubstancia;
