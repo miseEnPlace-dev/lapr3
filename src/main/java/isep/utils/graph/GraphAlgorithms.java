@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Queue;
 import java.util.function.BinaryOperator;
 
+import isep.utils.MergeSort;
+
 /**
  *
  * @author DEI-ISEP
@@ -359,7 +361,7 @@ public class GraphAlgorithms {
    * @param ce  comparator between elements of type E
    * @return the minimum distance graph
    */
-  public static <V, E> AdjacencyMapGraph<V, E> kruskall(Graph<V, E> g, Comparator<E> ce) {
+  public static <V, E> AdjacencyMapGraph<V, E> kruskall(Graph<V, E> g, Comparator<Edge<V, E>> ce) {
     AdjacencyMapGraph<V, E> mst = new AdjacencyMapGraph<>(false);
 
     List<Edge<V, E>> edges = new ArrayList<>();
@@ -370,12 +372,7 @@ public class GraphAlgorithms {
     for (Edge<V, E> e : g.edges())
       edges.add(e);
 
-    edges.sort(new Comparator<Edge<V, E>>() {
-      @Override
-      public int compare(Edge<V, E> e1, Edge<V, E> e2) {
-        return ce.compare(e1.getWeight(), e2.getWeight());
-      }
-    });
+    edges = new MergeSort<Edge<V, E>>().sort(edges, ce);
 
     for (Edge<V, E> e : edges) {
       V vOrig = e.getVOrig();
