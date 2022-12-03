@@ -53,8 +53,7 @@ CREATE OR REPLACE PACKAGE BODY gestao_clientes AS
     INNER JOIN encomenda ON produtoEncomenda.id_encomenda = encomenda.id_encomenda
     WHERE
       id_cliente = cliente_id
-      AND data_registo >= trunc(sysdate, 'yyyy') - interval '1' year
-      AND data_registo <  trunc(sysdate, 'yyyy');
+      AND data_registo >= sysdate - 365;
 
     UPDATE Cliente SET valor_total_encomendas = total_encomendas, n_encomendas = num_encomendas WHERE id_cliente = cliente_id;
 
