@@ -93,7 +93,7 @@ int main(void)
     dir_wind_sensors[j] = dir_wind[j];
   }
 
-  int pluvio[NUM_PLUVIO_REGISTERS][NUM_PLUVIO_REGISTERS];
+  int pluvio[N_OF_PLUVIO_SENSORS][NUM_PLUVIO_REGISTERS];
   unsigned char last_temp_read = temperatures[N_OF_TEMP_SENSORS - 1][(TEMPERATURES_SENSOR_INTERVAL / PLUVIO_SENSOR_INTERVAL)];
   for (int j = 0; j < N_OF_PLUVIO_SENSORS; j++)
   {
