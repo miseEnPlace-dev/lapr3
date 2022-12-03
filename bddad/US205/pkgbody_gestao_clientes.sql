@@ -53,8 +53,7 @@ CREATE OR REPLACE PACKAGE BODY gestao_clientes AS
     INNER JOIN encomenda ON produtoEncomenda.id_encomenda = encomenda.id_encomenda
     WHERE
       id_cliente = cliente_id
-      AND data_registo >= trunc(sysdate, 'yyyy') - interval '1' year
-      AND data_registo <  trunc(sysdate, 'yyyy');
+      AND data_registo >= sysdate - 365;
 
     UPDATE Cliente SET valor_total_encomendas = total_encomendas, n_encomendas = num_encomendas WHERE id_cliente = cliente_id;
 
@@ -80,7 +79,7 @@ CREATE OR REPLACE PACKAGE BODY gestao_clientes AS
   SELECT SUM((preco_unitario * (1 + iva / 100)) * quantidade) INTO valor_total_incidentes
   FROM produtoEncomenda
   INNER JOIN encomenda ON produtoEncomenda.id_encomenda = encomenda.id_encomenda
-  WHERE id_cliente = cliente_id AND (data_pagamento > data_vencimento_pagamento OR (data_vencimento_pagamento < SYSDATE AND data_pagamento IS NULL))
+  WHERE id_cliente = cliente_id AND (data_pagamento > data_vencimento_pagamento OR (data_vencimento_pagamento > SYSDATE - 365 AND data_pagamento IS NULL))
   GROUP BY id_cliente;
 
 
@@ -91,14 +90,15 @@ CREATE OR REPLACE PACKAGE BODY gestao_clientes AS
   IF n_encomendas_pendentes > 0 THEN
     risco := valor_total_incidentes / n_encomendas_pendentes;
   ELSE
-    RAISE NO_DATA_FOUND;
+    risco := valor_total_incidentes;
   END IF;
+
+  RETURN risco;
 
   EXCEPTION
     WHEN NO_DATA_FOUND THEN
-      RETURN risco := valor_total_incidentes;
+      RAISE_APPLICATION_ERROR(-20001, 'Dados insuficientes.');
 
-  RETURN risco;
   END fn_risco_cliente;
 
 END gestao_clientes;
