@@ -26,6 +26,8 @@ DROP TABLE TipoEdificio CASCADE CONSTRAINTS PURGE;
 DROP TABLE AplicacaoFatorProducao CASCADE CONSTRAINTS PURGE;
 DROP TABLE TipoAplicacaoFatorProducao CASCADE CONSTRAINTS PURGE;
 DROP TABLE ProdutoCultura CASCADE CONSTRAINTS PURGE;
+DROP TABLE Fornecedor CASCADE CONSTRAINTS PURGE;
+DROP TABLE CategoriaSubstancia CASCADE CONSTRAINTS PURGE;
 
 CREATE TABLE Setor (
   id_setor   number(10),
@@ -72,10 +74,27 @@ CREATE TABLE TipoFatorProducao (
   PRIMARY KEY (id_tipo_fator_producao)
 );
 
+CREATE TABLE Fornecedor (
+  id_fornecedor number(8),
+  fornecedor    varchar2(50) NOT NULL,
+  PRIMARY KEY (id_fornecedor)
+);
+
+CREATE TABLE CategoriaSubstancia (
+  id_categoria_substancia number(8),
+  categoria_substancia    varchar2(50) NOT NULL,
+  PRIMARY KEY (id_categoria_substancia)
+);
+
+
 CREATE TABLE Substancia (
   id_substancia number(2),
   substancia    varchar2(50) NOT NULL,
-  PRIMARY KEY (id_substancia)
+  id_fornecedor           number(8) NOT NULL,
+  id_categoria_substancia number(8) NOT NULL,
+  PRIMARY KEY (id_substancia),
+  FOREIGN KEY (id_fornecedor) REFERENCES Fornecedor (id_fornecedor),
+  FOREIGN KEY (id_categoria_substancia) REFERENCES CategoriaSubstancia (id_categoria_substancia)
 );
 
 CREATE TABLE TipoFormulacao (
@@ -97,9 +116,9 @@ CREATE TABLE FatorProducao (
 CREATE TABLE FatorProducaoSubstancia (
   id_fator_producao number(2) NOT NULL,
   id_substancia     number(2) NOT NULL,
-  percentagem       number(3) NOT NULL,
-  CONSTRAINT CHK_FatorProducaoSubstancia_PositivePercentagem CHECK (percentagem > 0),
-  CONSTRAINT CHK_FatorProducaoSubstancia_Percentagem CHECK (percentagem <= 100),
+  quantidade        number(3) NOT NULL,
+  unidade           varchar2(50) NOT NULL,
+  CONSTRAINT CHK_FatorProducaoSubstancia_PositiveQuantidade CHECK (quantidade > 0),
   PRIMARY KEY (id_fator_producao, id_substancia),
   FOREIGN KEY (id_substancia) REFERENCES Substancia (id_substancia) ON DELETE CASCADE,
   FOREIGN KEY (id_fator_producao) REFERENCES FatorProducao (id_fator_producao) ON DELETE CASCADE
@@ -168,13 +187,13 @@ CREATE TABLE Cliente (
   n_encomendas           number(3) DEFAULT 0 NOT NULL,
   valor_total_encomendas number(10) DEFAULT 0 NOT NULL,
   PRIMARY KEY (id_cliente),
+  CONSTRAINT CHK_Nif    CHECK (nif > 100000000 AND nif < 999999999),
+  CONSTRAINT CHK_Email CHECK (email like '%___@___%.__%'),
   CONSTRAINT CHK_Cliente_NonNegativePlafond CHECK (plafond >= 0),
   CONSTRAINT CHK_Cliente_NonNegativeEncomendas CHECK (n_encomendas >= 0),
   CONSTRAINT CHK_Cliente_NonNegativeValorTotal CHECK (valor_total_encomendas >= 0),
   FOREIGN KEY (cod_postal_entrega) REFERENCES Localidade (cod_postal) ON DELETE CASCADE,
-  FOREIGN KEY (cod_postal) REFERENCES Localidade (cod_postal) ON DELETE CASCADE,
-  CONSTRAINT chk_email_clt  CHECK (email like '%___@___%.__%'),
-  CONSTRAINT chk_nif_clt    CHECK (nif > 100000000 AND nif < 999999999)
+  FOREIGN KEY (cod_postal) REFERENCES Localidade (cod_postal) ON DELETE CASCADE
 );
 
 CREATE TABLE Encomenda (

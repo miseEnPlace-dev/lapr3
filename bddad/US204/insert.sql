@@ -4,9 +4,9 @@ INSERT INTO Localidade (cod_postal,localidade) VALUES ('1234-566','Porto');
 INSERT INTO Localidade (cod_postal,localidade) VALUES ('1234-565','Porto');
 
 -- Clientes
-INSERT INTO Cliente (id_cliente,nome,nif,email,morada,morada_entrega,plafond,cod_postal_entrega,cod_postal) VALUES (1,'Joao','123456789','email@gmail.com','Rua do Joao','Rua do Joao','1000','1234-567','1234-567');
-INSERT INTO Cliente (id_cliente,nome,nif,email,morada,morada_entrega,plafond,cod_postal_entrega,cod_postal) VALUES (2,'Maria','987654321','maria@gmail.com','Rua da Maria','Rua da Maria','1000','1234-566','1234-566');
-INSERT INTO Cliente (id_cliente,nome,nif,email,morada,morada_entrega,plafond,cod_postal_entrega,cod_postal) VALUES (3,'Jose','11111111','jose@gmail.com','Rua do Jose','Rua do Jose','1000','1234-565','1234-565');
+INSERT INTO Cliente (id_cliente,nome,nif,email,morada,morada_entrega,plafond,cod_postal_entrega,cod_postal) VALUES (1,'Joao',123456789,'email@gmail.com','Rua do Joao','Rua do Joao','1000','1234-567','1234-567');
+INSERT INTO Cliente (id_cliente,nome,nif,email,morada,morada_entrega,plafond,cod_postal_entrega,cod_postal) VALUES (2,'Maria',987654321,'maria@gmail.com','Rua da Maria','Rua da Maria','1000','1234-566','1234-566');
+INSERT INTO Cliente (id_cliente,nome,nif,email,morada,morada_entrega,plafond,cod_postal_entrega,cod_postal) VALUES (3,'Jose',111111111,'jose@gmail.com','Rua do Jose','Rua do Jose','1000','1234-565','1234-565');
 
 -- Setores
 INSERT INTO Setor (id_setor,designacao,area) VALUES (1,'Setor 1',200);
@@ -25,10 +25,11 @@ INSERT INTO Produto (id_produto,designacao,preco,id_escalao_iva) VALUES (3,'Lara
 INSERT INTO Produto (id_produto,designacao,preco,id_escalao_iva) VALUES (4,'Cerejeira',10,1);
 
 -- Encomendas
-INSERT INTO Encomenda (id_encomenda,id_cliente,data_vencimento_pagamento,data_registo,data_entrega,data_pagamento,morada_entrega,cod_postal_entrega) VALUES (1,1,CURRENT_DATE,CURRENT_DATE,NULL,NULL,'Rua do Joao','1234-567');
-INSERT INTO Encomenda (id_encomenda,id_cliente,data_vencimento_pagamento,data_registo,data_entrega,data_pagamento,morada_entrega,cod_postal_entrega) VALUES (2,2,CURRENT_DATE,CURRENT_DATE,NULL,NULL,'Rua da Maria','1234-566');
-INSERT INTO Encomenda (id_encomenda,id_cliente,data_vencimento_pagamento,data_registo,data_entrega,data_pagamento,morada_entrega,cod_postal_entrega) VALUES (3,3,CURRENT_DATE,CURRENT_DATE,NULL,NULL,'Rua do Jose','1234-565');
-INSERT INTO Encomenda (id_encomenda,id_cliente,data_vencimento_pagamento,data_registo,data_entrega,data_pagamento,morada_entrega,cod_postal_entrega) VALUES (4,1,CURRENT_DATE,CURRENT_DATE,NULL,NULL,'Rua do Joao','1234-567');
+INSERT INTO Encomenda (id_encomenda,id_cliente,data_vencimento_pagamento,data_registo,data_entrega,data_pagamento,morada_entrega,cod_postal_entrega) VALUES (1,1,'01-Feb-2022','01-Jan-2022',NULL,NULL,'Rua do Joao','1234-567');
+INSERT INTO Encomenda (id_encomenda,id_cliente,data_vencimento_pagamento,data_registo,data_entrega,data_pagamento,morada_entrega,cod_postal_entrega) VALUES (2,2,'12-Feb-2022','02-Feb-2022',NULL,NULL,'Rua da Maria','1234-566');
+INSERT INTO Encomenda (id_encomenda,id_cliente,data_vencimento_pagamento,data_registo,data_entrega,data_pagamento,morada_entrega,cod_postal_entrega) VALUES (3,3,'13-Feb-2022','03-Feb-2022',NULL,NULL,'Rua do Jose','1234-565');
+INSERT INTO Encomenda (id_encomenda,id_cliente,data_vencimento_pagamento,data_registo,data_entrega,data_pagamento,morada_entrega,cod_postal_entrega) VALUES (4,1,'25-Apr-2022','15-Apr-2022',NULL,NULL,'Rua do Joao','1234-567');
+
 
 -- ProdutoEncomenda
 INSERT INTO ProdutoEncomenda (id_encomenda,id_produto,quantidade,preco_unitario,iva,designacao_produto) VALUES (1,1,500,2,13,'Maça');
@@ -81,12 +82,23 @@ INSERT INTO TipoEdificio (id_tipo_edificio,tipo_edificio) VALUES (4,'Sistema de 
 INSERT INTO Edificio (id_edificio,id_tipo_edificio) VALUES (1,1);
 INSERT INTO Edificio (id_edificio,id_tipo_edificio) VALUES (2,2);
 
+-- Fornecedor
+INSERT INTO Fornecedor (id_fornecedor,fornecedor) VALUES (1,'Alberto');
+INSERT INTO Fornecedor (id_fornecedor,fornecedor) VALUES (2,'Joaquim');
+
+-- CategoriaSubstancia
+INSERT INTO CategoriaSubstancia (id_categoria_substancia,categoria_substancia) VALUES (1,'Materia Organica 1');
+INSERT INTO CategoriaSubstancia (id_categoria_substancia,categoria_substancia) VALUES (2,'Materia Organica 1');
+INSERT INTO CategoriaSubstancia (id_categoria_substancia,categoria_substancia) VALUES (3,'Materia Organica 1');
+INSERT INTO CategoriaSubstancia (id_categoria_substancia,categoria_substancia) VALUES (4,'Materia Organica 1');
+INSERT INTO CategoriaSubstancia (id_categoria_substancia,categoria_substancia) VALUES (5,'Materia Organica 1');
+
 -- Substancia
-INSERT INTO Substancia (id_substancia,substancia) VALUES (1,'Azoto orgânico');
-INSERT INTO Substancia (id_substancia,substancia) VALUES (2,'Pentóxido de fósforo');
-INSERT INTO Substancia (id_substancia,substancia) VALUES (3,'Oxido de Potássio');
-INSERT INTO Substancia (id_substancia,substancia) VALUES (4,'Oxido de Cálcio');
-INSERT INTO Substancia (id_substancia,substancia) VALUES (5,'Oxido de Magnésio');
+INSERT INTO Substancia (id_substancia,substancia,id_fornecedor,id_categoria_substancia) VALUES (1,'Azoto orgânico',1,1);
+INSERT INTO Substancia (id_substancia,substancia,id_fornecedor,id_categoria_substancia) VALUES (2,'Pentóxido de fósforo',1,2);
+INSERT INTO Substancia (id_substancia,substancia,id_fornecedor,id_categoria_substancia) VALUES (3,'Oxido de Potássio',1,3);
+INSERT INTO Substancia (id_substancia,substancia,id_fornecedor,id_categoria_substancia) VALUES (4,'Oxido de Cálcio',1,4);
+INSERT INTO Substancia (id_substancia,substancia,id_fornecedor,id_categoria_substancia) VALUES (5,'Oxido de Magnésio',1,5);
 
 --TipoFatorProducao
 INSERT INTO TipoFatorProducao (id_tipo_fator_producao,tipo_fator_producao) VALUES (1,'Fertilizante');
@@ -102,8 +114,8 @@ INSERT INTO FatorProducao (id_fator_producao,id_tipo_fator_producao,nome,id_tipo
 INSERT INTO FatorProducao (id_fator_producao,id_tipo_fator_producao,nome,id_tipo_formulacao) VALUES (2,2,'Adubo 1',2);
 
 -- FatorProducaoSubstancia
-INSERT INTO FatorProducaoSubstancia (id_fator_producao,id_substancia,percentagem) VALUES (1,1,60);
-INSERT INTO FatorProducaoSubstancia (id_fator_producao,id_substancia,percentagem) VALUES (1,2,20);
+INSERT INTO FatorProducaoSubstancia (id_fator_producao,id_substancia,quantidade,unidades) VALUES (1,1,60,'kg');
+INSERT INTO FatorProducaoSubstancia (id_fator_producao,id_substancia,quantidade,unidades) VALUES (1,2,20,'kg');
 
 -- TipoSensor
 INSERT INTO TipoSensor (id_tipo_sensor,tipo_sensor) VALUES (1,'TS');
