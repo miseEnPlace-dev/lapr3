@@ -10,6 +10,10 @@ void reset_seed() {
     inc = get_value_from_dev_random();
 }
 
-char limit(short value) {
-  return 0;
+int get_total_errors(char *arr, int size) {
+    int total = 0;
+    for (int i = 0; i < size; i++)
+        if (arr[i] == 1)
+            total++;
+    return total;
 }
