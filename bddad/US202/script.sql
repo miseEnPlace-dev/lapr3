@@ -117,7 +117,7 @@ CREATE TABLE FatorProducaoSubstancia (
   id_fator_producao number(2) NOT NULL,
   id_substancia     number(2) NOT NULL,
   quantidade        number(3) NOT NULL,
-  unidades          varchar2(50) NOT NULL,
+  unidade           varchar2(50) NOT NULL,
   CONSTRAINT CHK_FatorProducaoSubstancia_PositiveQuantidade CHECK (quantidade > 0),
   PRIMARY KEY (id_fator_producao, id_substancia),
   FOREIGN KEY (id_substancia) REFERENCES Substancia (id_substancia) ON DELETE CASCADE,
