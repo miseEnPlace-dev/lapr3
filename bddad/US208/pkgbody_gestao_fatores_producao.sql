@@ -29,6 +29,57 @@ CREATE OR REPLACE PACKAGE BODY gestao_fatores_producao AS
 
 
 
+  FUNCTION fn_RegistarCategoriaSubstancia(designacao CATEGORIASUBSTANCIA.categoria_substancia%TYPE) 
+  RETURN CATEGORIASUBSTANCIA.id_categoria_substancia%TYPE AS
+    new_id CATEGORIASUBSTANCIA.id_categoria_substancia%TYPE;
+
+  BEGIN
+    SAVEPOINT inicio;
+
+    SELECT MAX(id_categoria_substancia) INTO new_id 
+    FROM CATEGORIASUBSTANCIA;
+    IF new_id IS NULL THEN
+      new_id := 0;
+    END IF;
+
+    new_id := new_id + 1;
+
+    INSERT INTO CATEGORIASUBSTANCIA(id_categoria_substancia, categoria_substancia)
+    VAlUES (new_id, designacao);
+
+    DBMS_OUTPUT.PUT_LINE('CATEGORIA SUBSTANCIA ' || new_id || ' registado com sucesso.');
+
+    RETURN new_id;
+
+  END fn_RegistarCategoriaSubstancia;
+
+
+
+  FUNCTION fn_RegistarFornecedor(designacao FORNECEDOR.fornecedor%TYPE) 
+  RETURN FORNECEDOR.id_fornecedor%TYPE AS
+    new_id FORNECEDOR.id_fornecedor%TYPE;
+
+  BEGIN
+    SAVEPOINT inicio;
+
+    SELECT MAX(id_fornecedor) INTO new_id 
+    FROM FORNECEDOR;
+    IF new_id IS NULL THEN
+      new_id := 0;
+    END IF;
+
+    new_id := new_id + 1;
+
+    INSERT INTO FORNECEDOR(id_fornecedor, fornecedor)
+    VAlUES (new_id, designacao);
+
+    DBMS_OUTPUT.PUT_LINE('FORNECEDOR ' || new_id || ' registado com sucesso.');
+
+    RETURN new_id;
+
+  END fn_RegistarFornecedor;
+
+
   FUNCTION fn_RegistarTipoFormulacao(designacao TIPOFORMULACAO.tipo_formulacao%TYPE) 
   RETURN TIPOFORMULACAO.id_tipo_formulacao%TYPE AS
     new_id TIPOFORMULACAO.id_tipo_formulacao%TYPE;
@@ -54,14 +105,31 @@ CREATE OR REPLACE PACKAGE BODY gestao_fatores_producao AS
   END fn_RegistarTipoFormulacao;
 
 
-
-
-  FUNCTION fn_RegistarSubstancia(designacao SUBSTANCIA.substancia%TYPE) 
+  FUNCTION fn_RegistarSubstancia(designacao SUBSTANCIA.substancia%TYPE,
+    fornecedor SUBSTANCIA.id_fornecedor%TYPE,
+    categoria_substancia SUBSTANCIA.id_categoria_substancia%TYPE)  
   RETURN SUBSTANCIA.id_substancia%TYPE AS
     new_id SUBSTANCIA.id_substancia%TYPE;
+    flag NUMBER;
 
   BEGIN
     SAVEPOINT inicio;
+
+    /* check if tipo fornecedor is already registered */
+    SELECT COUNT(*) INTO flag 
+    FROM FORNECEDOR
+    WHERE id_fornecedor = fornecedor;
+    IF flag = 0 THEN
+      RAISE fornecedor_inexistente;
+    END IF;
+
+    /* check if tipo categoria de substancia is already registered */
+    SELECT COUNT(*) INTO flag 
+    FROM CATEGORIASUBSTANCIA
+    WHERE id_categoria_substancia = categoria_substancia;
+    IF flag = 0 THEN
+      RAISE categoria_substancia_inexistente;
+    END IF;
 
     SELECT MAX(id_substancia) INTO new_id 
     FROM SUBSTANCIA;
@@ -71,12 +139,21 @@ CREATE OR REPLACE PACKAGE BODY gestao_fatores_producao AS
 
     new_id := new_id + 1;
 
-    INSERT INTO SUBSTANCIA(id_substancia, substancia)
-    VAlUES (new_id, designacao);
+    INSERT INTO SUBSTANCIA(id_substancia, substancia, id_fornecedor, id_categoria_substancia)
+    VAlUES (new_id, designacao, fornecedor, categoria_substancia);
 
     DBMS_OUTPUT.PUT_LINE('SUBSTANCIA ' || new_id || ' registado com sucesso.');
 
     RETURN new_id;
+
+    EXCEPTION
+    WHEN fornecedor_inexistente THEN
+      RAISE_APPLICATION_ERROR(-20001, 'Fornecedor inexistente.');
+    WHEN categoria_substancia_inexistente THEN
+      RAISE_APPLICATION_ERROR(-20001, 'Categoria Substancia inexistente.');
+    WHEN OTHERS THEN
+    RAISE_APPLICATION_ERROR(-20005, 'Erro ao registar entrega.');
+      ROLLBACK TO inicio;
 
   END fn_RegistarSubstancia;
 
@@ -142,7 +219,8 @@ CREATE OR REPLACE PACKAGE BODY gestao_fatores_producao AS
 
   PROCEDURE pr_RegistarFatorProducaoSubstancia(fator_producao FATORPRODUCAOSUBSTANCIA.id_fator_producao%TYPE,
     substancia FATORPRODUCAOSUBSTANCIA.id_substancia%TYPE,
-    percentagem FATORPRODUCAOSUBSTANCIA.percentagem%TYPE) AS
+    quantidade FATORPRODUCAOSUBSTANCIA.quantidade%TYPE,
+    unidade FATORPRODUCAOSUBSTANCIA.unidade%TYPE) AS
     flag NUMBER;
 
   BEGIN
@@ -165,13 +243,13 @@ CREATE OR REPLACE PACKAGE BODY gestao_fatores_producao AS
       RAISE substancia_inexistente;
     END IF;
 
-    /* check if percentagem is valid */
-    if percentagem <= 0 OR percentagem > 100 THEN
-      RAISE percentagem_invalida;
+    /* check if quantidade is valid */
+    if quantidade <= 0 THEN
+      RAISE quantidade_invalida;
     END IF;
 
-    INSERT INTO FATORPRODUCAOSUBSTANCIA(id_fator_producao, id_substancia, percentagem)
-    VAlUES (fator_producao, substancia, percentagem);
+    INSERT INTO FATORPRODUCAOSUBSTANCIA(id_fator_producao, id_substancia, quantidade, unidade)
+    VAlUES (fator_producao, substancia, quantidade, unidade);
 
     DBMS_OUTPUT.PUT_LINE('FATOR PRODUCAO - SUBSTANCIA: registado com sucesso.');
 
@@ -181,8 +259,8 @@ CREATE OR REPLACE PACKAGE BODY gestao_fatores_producao AS
       RAISE_APPLICATION_ERROR(-20001, 'Fator de Produção inexistente.');
     WHEN substancia_inexistente THEN
       RAISE_APPLICATION_ERROR(-20001, 'Substância inexistente.');
-    WHEN percentagem_invalida THEN
-      RAISE_APPLICATION_ERROR(-20001, 'Percentagem inválida.');
+    WHEN quantidade_invalida THEN
+      RAISE_APPLICATION_ERROR(-20001, 'Quantidade inválida. Deve ser positiva.');
     WHEN OTHERS THEN
     RAISE_APPLICATION_ERROR(-20005, 'Erro ao registar entrega.');
       ROLLBACK TO inicio;
