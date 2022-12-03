@@ -91,14 +91,15 @@ CREATE OR REPLACE PACKAGE BODY gestao_clientes AS
   IF n_encomendas_pendentes > 0 THEN
     risco := valor_total_incidentes / n_encomendas_pendentes;
   ELSE
-    RAISE NO_DATA_FOUND;
+    risco := valor_total_incidentes;
   END IF;
+
+  RETURN risco;
 
   EXCEPTION
     WHEN NO_DATA_FOUND THEN
-      RETURN risco := valor_total_incidentes;
+      RAISE_APPLICATION_ERROR(-20001, 'Dados insuficientes.');
 
-  RETURN risco;
   END fn_risco_cliente;
 
 END gestao_clientes;
