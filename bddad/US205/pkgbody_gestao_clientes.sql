@@ -79,7 +79,7 @@ CREATE OR REPLACE PACKAGE BODY gestao_clientes AS
   SELECT SUM((preco_unitario * (1 + iva / 100)) * quantidade) INTO valor_total_incidentes
   FROM produtoEncomenda
   INNER JOIN encomenda ON produtoEncomenda.id_encomenda = encomenda.id_encomenda
-  WHERE id_cliente = cliente_id AND (data_pagamento > data_vencimento_pagamento OR (data_vencimento_pagamento < SYSDATE AND data_pagamento IS NULL))
+  WHERE id_cliente = cliente_id AND (data_pagamento > data_vencimento_pagamento OR (data_vencimento_pagamento > SYSDATE - 365 AND data_pagamento IS NULL))
   GROUP BY id_cliente;
 
 
