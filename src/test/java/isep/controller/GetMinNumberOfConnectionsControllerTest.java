@@ -36,8 +36,7 @@ public class GetMinNumberOfConnectionsControllerTest {
 
     controller = new GetMinNumberOfConnectionsController(distributionNetwork);
 
-    assertEquals(5, controller.getMinimumNumOfConnections());
-
+    assertEquals(4, controller.getMinimumNumOfConnections());
   }
 
   @Test
@@ -74,8 +73,7 @@ public class GetMinNumberOfConnectionsControllerTest {
 
     controller = new GetMinNumberOfConnectionsController(distributionNetwork);
 
-    assertEquals(6, controller.getMinimumNumOfConnections());
-
+    assertEquals(28, controller.getMinimumNumOfConnections());
   }
 
 }
