@@ -158,7 +158,8 @@ int main(void)
   set_sensor_summary_register(data[SOIL_HUMIDITY_SENSORS_INDEX], N_OF_SOIL_HUMIDITY_SENSORS, NUM_SOIL_HUMIDITY_REGISTERS, result + SOIL_HUMIDITY_SENSORS_INDEX);
   set_sensor_summary_register(data[AIR_HUMIDITY_SENSORS_INDEX], N_OF_AIR_HUMIDITY_SENSORS, NUM_AIR_HUMIDITY_REGISTERS, result + AIR_HUMIDITY_SENSORS_INDEX);
 
-  printf("        | Temperature | Wind Vel.   | Dir. Wind   | Pluvio.     | Soil Hum.   | Air Hum.    |");
+  printf("\n  ---   | %11s | %11s | %11s | %11s | %11s | %11s |\n", "Temperature", "Wind Vel.", "Dir. Wind", "Pluvio.", "Soil Hum.", "Air Hum.");
+  printf("--------+-------------+-------------+-------------+-------------+-------------+-------------+");
 
   printf("\nMin     |");
   for (int i = 0; i < NUM_OF_SENSORS; i++)
