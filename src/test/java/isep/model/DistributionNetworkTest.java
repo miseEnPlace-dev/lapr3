@@ -286,17 +286,4 @@ public class DistributionNetworkTest {
     assertTrue(e1.isHub());
   }
 
-  /*
-   * @Test
-   * public void testDefineHubsWithSmallTestFile() throws FileNotFoundException,
-   * InvalidNumberOfHubsException {
-   * DistributionNetwork network = new
-   * DistributionNetworkMock().mockEntityStoreWithBigFile();
-   *
-   * List<Enterprise> expected = new ArrayList<>();
-   * List<Enterprise> actual = network.defineHubs(2);
-   *
-   * assertEquals(expected, actual);
-   * }
-   */
 }

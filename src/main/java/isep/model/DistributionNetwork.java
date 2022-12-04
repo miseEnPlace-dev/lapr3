@@ -106,13 +106,12 @@ public class DistributionNetwork {
     if (numberOfHubs <= 0)
       throw new InvalidNumberOfHubsException();
 
-    List<Map.Entry<Enterprise, Integer>> list = new ArrayList<>();
-
-    if (!this.isConnected())
+      
+      if (!this.isConnected())
       return null;
-
+      
+    List<Map.Entry<Enterprise, Integer>> list = new ArrayList<>();
     List<Enterprise> enterprises = this.getEnterprises();
-    List<Entity> entities = this.getEntities();
 
     for (int i = 0; i < enterprises.size(); i++) {
       Enterprise e1 = enterprises.get(i);
@@ -120,7 +119,7 @@ public class DistributionNetwork {
       // if e1 was a Hub before unMakes it
       e1.unMakeHub();
 
-      int average = this.getAveragePathDistanceBetweenGroupOfEntities(e1, entities);
+      int average = this.getAveragePathDistanceBetweenGroupOfEntities(e1);
 
       list.add(new AbstractMap.SimpleEntry<Enterprise, Integer>(e1, average));
     }
@@ -151,7 +150,7 @@ public class DistributionNetwork {
     return result;
   }
 
-  public int getAveragePathDistanceBetweenGroupOfEntities(Entity e1, List<Entity> entities) {
+  public int getAveragePathDistanceBetweenGroupOfEntities(Entity e1) {
     
     ArrayList<Integer> distances = new ArrayList<>();
     GraphAlgorithms.shortestPaths(network, e1, Integer::compareTo, Integer::sum, 0, new ArrayList<>(), distances);
