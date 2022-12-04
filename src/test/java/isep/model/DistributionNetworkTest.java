@@ -286,4 +286,21 @@ public class DistributionNetworkTest {
     assertTrue(e1.isHub());
   }
 
+
+  @Test
+  public void testAverageMinPath() throws InvalidNumberOfHubsException {
+    DistributionNetwork network = new DistributionNetwork();
+    Enterprise e1 = new Enterprise("e1", 1, 1, "l1");
+    Producer p1 = new Producer("p1", 2, 2, "l2");
+    Producer p2 = new Producer("p2", 2, 2, "l2");
+    network.addRelation(e1, p1, 100);
+    network.addRelation(e1, p2, 300);
+
+    assertEquals(400/3, network.getAveragePathDistanceBetweenGroupOfEntities(e1));
+  }
+
+
+  
+
+
 }
