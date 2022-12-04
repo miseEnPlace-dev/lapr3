@@ -148,17 +148,17 @@ public class FindNearestHubTest {
   public void testWithBigFile() throws FileNotFoundException, InvalidNumberOfHubsException {
     System.out.println("testWithBigFile");
 
-    // System.out.println(">> Loading big file...");
+    System.out.println(">> Loading big file...");
     loadDistributionNetwork(ENTITIES_BIG_FILE_PATH, DISTANCES_BIG_FILE_PATH);
-    // System.out.println(">> Big file loaded!");
+    System.out.println(">> Big file loaded!");
     findNearestHubController = new FindNearestHubController(distributionNetwork);
 
-    // System.out.println(">> Defining hubs...");
+    System.out.println(">> Defining hubs...");
     defineHubsController = new DefineHubsController(distributionNetwork);
-    // defineHubsController.defineHubs(1);
-    // System.out.println(">> Hubs defined!");
+    defineHubsController.defineHubs(1);
+    System.out.println(">> Hubs defined!");
 
-    // Enterprise hub = distributionNetwork.getHubs().get(0);
+    Enterprise hub = distributionNetwork.getHubs().get(0);
 
     Map<Entity, Enterprise> expected = new HashMap<>();
     Iterator<Entity> iterator = entityStore.getEntities();
@@ -166,12 +166,12 @@ public class FindNearestHubTest {
       Entity entity = iterator.next();
 
       if (!(entity instanceof Producer))
-        expected.put((Entity) entity, null);
+        expected.put((Entity) entity, hub);
     }
 
-    // System.out.println(">> Finding nearest hub...");
+    System.out.println(">> Finding nearest hub...");
     Map<Entity, Enterprise> actual = findNearestHubController.findNearestHub();
-    // System.out.println(">> Nearest hub found!");
+    System.out.println(">> Nearest hub found!");
     assertEquals(expected, actual);
   }
 
