@@ -55,14 +55,22 @@ CREATE OR REPLACE PACKAGE BODY gestao_clientes AS
       id_cliente = cliente_id
       AND data_registo >= sysdate - 365;
 
+    IF (total_encomendas IS NULL or total_encomendas = 0) AND (num_encomendas = 0 OR num_encomendas IS NULL) THEN
+      DBMS_OUTPUT.PUT_LINE('Cliente ' || cliente_id || ' nao foi atualizado.');
+      ROLLBACK TO fim;
+    END IF;
+
     UPDATE Cliente SET valor_total_encomendas = total_encomendas, n_encomendas = num_encomendas WHERE id_cliente = cliente_id;
 
     DBMS_OUTPUT.PUT_LINE('Cliente ' || cliente_id || ' atualizado com sucesso.');
 
     EXCEPTION
-    WHEN NO_DATA_FOUND THEN
-      RAISE_APPLICATION_ERROR(-20001, 'Cliente inexistente.');
-      ROLLBACK TO inicio;
+      WHEN NO_DATA_FOUND THEN
+        RAISE_APPLICATION_ERROR(-20002, 'Cliente inexistente.');
+        ROLLBACK TO inicio;
+    ROLLBACK TO inicio;
+
+    SAVEPOINT fim;
   END pr_AtualizarEncomendasCliente;
 
   FUNCTION fn_risco_cliente (
