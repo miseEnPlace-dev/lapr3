@@ -154,9 +154,9 @@ int main(void)
 
   const int LINES = NUM_OF_SENSORS;
 	const int COLUMNS = 3;
-	double result[LINES][COLUMNS];
+	int result[LINES][COLUMNS];
 	
-  set_sensor_summary_register(temperatures, N_OF_TEMP_SENSORS, NUM_TEMPERATURE_REGISTERS, result);
+  set_sensor_summary_register(temperatures, N_OF_TEMP_SENSORS, NUM_TEMPERATURE_REGISTERS, *result);
   set_sensor_summary_register(vel_wind, N_OF_VELOCITY_SENSORS, NUM_VEL_WIND_REGISTERS, *(result + 1));
   set_sensor_summary_register(dir_wind, N_OF_DIRECTION_SENSORS, NUM_DIR_WIND_REGISTERS, *(result + 2));
   set_sensor_summary_register(pluvio, N_OF_PLUVIO_SENSORS, NUM_PLUVIO_REGISTERS, *(result + 3));
@@ -166,16 +166,16 @@ int main(void)
 
   printf("        | Temperature | Wind Vel.   | Dir. Wind   | Pluvio.     | Soil Hum.   | Air Hum.    |");
   printf("\nMin     |");
-  for(int i = 0; i<COLUMNS; i++){
-    printf(" %11f |", **(result + i));
+  for(int i = 0; i<LINES; i++){
+    printf(" %11d |", *(*(result + 0) + i));
   }
   printf("\nMax     |");
-  for(int i = 0; i<COLUMNS; i++){
-    printf(" %11f |", **(result + COLUMNS + i));
+  for(int i = 0; i<LINES; i++){
+    printf(" %11d |", *(*(result + 1) + i));
   }
   printf("\nAverage |");
-  for(int i = 0; i<COLUMNS; i++){
-    printf(" %11f |", **(result + (2*COLUMNS) + i));
+  for(int i = 0; i<LINES; i++){
+    printf(" %11d |", *(*(result + 2) + i));
   }
 
   return 0;

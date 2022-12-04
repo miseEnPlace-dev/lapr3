@@ -1,11 +1,15 @@
-void set_sensor_summary_register(int **ptr, int num_sensors, int num_registers, double *res){
+#include <stdio.h>
+
+void set_sensor_summary_register(int **ptr, int num_sensors, int num_registers, int *res){
     int sum = 0; 
     int count = 0;
-    int max = **ptr; 
-    int min = **ptr;
+    int max = 0xFFFFFFFF; 
+    int min = 0x7FFFFFFF;
     for(int i = 0; i<num_sensors; i++){
-        int *ptr2 = *(ptr + i);
+        int *ptr2 = (ptr + i);
+        printf("-%d-\n", i);
         for(int j = 0; j<num_registers; j++){
+            printf("%d\n", *(ptr2 + j));
             sum += *(ptr2 + j);
             count++;
             if(*(ptr2 + j) < min)
@@ -14,7 +18,7 @@ void set_sensor_summary_register(int **ptr, int num_sensors, int num_registers, 
                 max = *(ptr2 + j);
         }
     }
-    *res = (double)sum/(double)count;
-    *(res + 1) = (double) min;
-    *(res + 2) = (double) max;
+    *res = sum/count;
+    *(res + 1) =  min;
+    *(res + 2) =  max;
 }
