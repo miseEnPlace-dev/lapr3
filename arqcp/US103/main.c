@@ -26,12 +26,9 @@ int main(void)
   state = get_value_from_dev_random();
   inc = get_value_from_dev_random();
 
-  if (N_OF_TEMP_SENSORS == 0 ||
-      N_OF_TEMP_SENSORS != N_OF_PLUVIO_SENSORS ||
-      N_OF_SOIL_HUMIDITY_SENSORS != N_OF_PLUVIO_SENSORS ||
-      N_OF_AIR_HUMIDITY_SENSORS != N_OF_PLUVIO_SENSORS)
+  if (N_OF_TEMP_SENSORS == 0 || N_OF_PLUVIO_SENSORS == 0)
   {
-    printf("Invalid number of sensors.\nMake sure the number of temperature, soil and air sensors are the same and different from 0.\n");
+    printf("Invalid sensor configuration\nMake sure you have atleast one temperature and one pluvio sensor.\n");
     return -1;
   }
 
@@ -101,7 +98,7 @@ int main(void)
     last_read = pcg32_random_r() % 5;
     for (int i = 0; i < NUM_PLUVIO_REGISTERS; i++)
     {
-      last_temp_read = temperatures[j][i * (TEMPERATURES_SENSOR_INTERVAL / PLUVIO_SENSOR_INTERVAL)];
+      last_temp_read = temperatures[0][i * (TEMPERATURES_SENSOR_INTERVAL / PLUVIO_SENSOR_INTERVAL)];
       last_read = sens_pluvio(last_read, last_temp_read, pcg32_random_r());
       pluvio[j][i] = (int)last_read;
     }
@@ -115,7 +112,7 @@ int main(void)
     last_read = 10;
     for (int i = 0; i < NUM_SOIL_HUMIDITY_REGISTERS; i++)
     {
-      last_pluvio_read = pluvio[j][i * (NUM_PLUVIO_REGISTERS / NUM_SOIL_HUMIDITY_REGISTERS)];
+      last_pluvio_read = pluvio[0][i * (NUM_PLUVIO_REGISTERS / NUM_SOIL_HUMIDITY_REGISTERS)];
       last_read = sens_humd_solo(last_read, last_pluvio_read, pcg32_random_r());
       soil_humidity[j][i] = (int)last_read;
     }
@@ -129,7 +126,7 @@ int main(void)
     last_read = 10;
     for (int i = 0; i < NUM_AIR_HUMIDITY_REGISTERS; i++)
     {
-      last_pluvio_read = pluvio[j][i * (NUM_PLUVIO_REGISTERS / NUM_SOIL_HUMIDITY_REGISTERS)];
+      last_pluvio_read = pluvio[0][i * (NUM_PLUVIO_REGISTERS / NUM_SOIL_HUMIDITY_REGISTERS)];
       last_read = sens_humd_atm(last_read, last_pluvio_read, pcg32_random_r());
       air_humidity[j][i] = (int)last_read;
     }
@@ -149,34 +146,32 @@ int main(void)
   printf("\n");
   print_result(data[AIR_HUMIDITY_SENSORS_INDEX], NUM_AIR_HUMIDITY_REGISTERS, "Humidade do Ar", "%", N_OF_AIR_HUMIDITY_SENSORS);
 
+  // US103
 
-  // US103 
+  char const COLUMNS = 3;
+  int result[NUM_OF_SENSORS][COLUMNS];
 
-  const int LINES = NUM_OF_SENSORS;
-	const int COLUMNS = 3;
-	int result[LINES][COLUMNS];
-	
-  set_sensor_summary_register(temperatures, N_OF_TEMP_SENSORS, NUM_TEMPERATURE_REGISTERS, *result);
-  set_sensor_summary_register(vel_wind, N_OF_VELOCITY_SENSORS, NUM_VEL_WIND_REGISTERS, *(result + 1));
-  set_sensor_summary_register(dir_wind, N_OF_DIRECTION_SENSORS, NUM_DIR_WIND_REGISTERS, *(result + 2));
-  set_sensor_summary_register(pluvio, N_OF_PLUVIO_SENSORS, NUM_PLUVIO_REGISTERS, *(result + 3));
-  set_sensor_summary_register(soil_humidity, N_OF_SOIL_HUMIDITY_SENSORS, NUM_SOIL_HUMIDITY_REGISTERS, *(result + 4));
-  set_sensor_summary_register(air_humidity, N_OF_AIR_HUMIDITY_SENSORS, NUM_AIR_HUMIDITY_REGISTERS, *(result + 5));
-
+  set_sensor_summary_register(data[TEMPERATURE_SENSORS_INDEX], N_OF_TEMP_SENSORS, NUM_TEMPERATURE_REGISTERS, result[TEMPERATURE_SENSORS_INDEX]);
+  set_sensor_summary_register(data[VELOCITY_SENSORS_INDEX], N_OF_VELOCITY_SENSORS, NUM_VEL_WIND_REGISTERS, result[VELOCITY_SENSORS_INDEX]);
+  set_sensor_summary_register(data[DIR_WIND_SENSORS_INDEX], N_OF_DIRECTION_SENSORS, NUM_DIR_WIND_REGISTERS, result[DIR_WIND_SENSORS_INDEX]);
+  set_sensor_summary_register(data[PLUVIO_SENSORS_INDEX], N_OF_PLUVIO_SENSORS, NUM_PLUVIO_REGISTERS, result[PLUVIO_SENSORS_INDEX]);
+  set_sensor_summary_register(data[SOIL_HUMIDITY_SENSORS_INDEX], N_OF_SOIL_HUMIDITY_SENSORS, NUM_SOIL_HUMIDITY_REGISTERS, result[SOIL_HUMIDITY_SENSORS_INDEX]);
+  set_sensor_summary_register(data[AIR_HUMIDITY_SENSORS_INDEX], N_OF_AIR_HUMIDITY_SENSORS, NUM_AIR_HUMIDITY_REGISTERS, result[AIR_HUMIDITY_SENSORS_INDEX]);
 
   printf("        | Temperature | Wind Vel.   | Dir. Wind   | Pluvio.     | Soil Hum.   | Air Hum.    |");
-  printf("\nMin     |");
-  for(int i = 0; i<LINES; i++){
-    printf(" %11d |", *(*(result + 0) + i));
-  }
-  printf("\nMax     |");
-  for(int i = 0; i<LINES; i++){
-    printf(" %11d |", *(*(result + 1) + i));
-  }
-  printf("\nAverage |");
-  for(int i = 0; i<LINES; i++){
-    printf(" %11d |", *(*(result + 2) + i));
-  }
 
+  printf("\nMin     |");
+  for (int i = 0; i < NUM_OF_SENSORS; i++)
+    printf(" %11d |", *result[i]);
+
+  printf("\nMax     |");
+  for (int i = 0; i < NUM_OF_SENSORS; i++)
+    printf(" %11d |", *(result[i] + 1));
+
+  printf("\nAverage |");
+  for (int i = 0; i < NUM_OF_SENSORS; i++)
+    printf(" %11d |", *(result[i] + 2));
+
+  printf("\n");
   return 0;
 }
