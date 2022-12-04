@@ -10,7 +10,7 @@ valor_total_incidentes2 NUMBER;
 valor_total_incidentes3 NUMBER;
 data_ultimo_incidente1 TIMESTAMP;
 data_ultimo_incidente2 TIMESTAMP;
-data_ultimo_incidente3 TIMESTAMP;
+data_ultimo_incidente3 varchar2(50);
 
 BEGIN
 DELETE FROM encomenda;
@@ -36,7 +36,7 @@ INSERT INTO localidade VALUES ('4400-001', 'Porto');
 
   INSERT INTO Encomenda (id_encomenda,id_cliente,data_vencimento_pagamento,data_registo,data_entrega,data_pagamento,morada_entrega,cod_postal_entrega) VALUES (4,1,'10-Jan-2022','10-Jan-2020','20-Jan-2020','11-Jan-2022','Rua do João de Entrega','4400-001');
 
-  INSERT INTO Encomenda (id_encomenda,id_cliente,data_vencimento_pagamento,data_registo,data_entrega,data_pagamento,morada_entrega,cod_postal_entrega) VALUES (5,1,'10-Jan-2022','15-Jan-2020','20-Jan-2020',NULL,'Rua do João de Entrega','4400-001');
+  INSERT INTO Encomenda (id_encomenda,id_cliente,data_vencimento_pagamento,data_registo,data_entrega,data_pagamento,morada_entrega,cod_postal_entrega) VALUES (5,1,'11-Jan-2022','15-Jan-2020','20-Jan-2020',NULL,'Rua do João de Entrega','4400-001');
 
   INSERT INTO Encomenda (id_encomenda,id_cliente,data_vencimento_pagamento,data_registo,data_entrega,data_pagamento,morada_entrega,cod_postal_entrega) VALUES (2,2,'20-Jan-2022','10-Jan-2020','20-Jan-2020',NULL,'Rua da Maria de Entrega','4400-001');
 
@@ -56,17 +56,31 @@ INSERT INTO localidade VALUES ('4400-001', 'Porto');
   FROM Cliente_View
   WHERE id_cliente = id_cliente2;
 
-  DBMS_OUTPUT.PUT_LINE('Cliente 1: ' || data_ultimo_incidente1 || ' ' || n_encomendas_pendentes1 || ' ' || valor_total_incidentes1);
+  SELECT NumEncomendasPendentes,valor_total_incidentes,data_ultimo_incidente INTO n_encomendas_pendentes3, valor_total_incidentes3, data_ultimo_incidente3
+  FROM Cliente_View
+  WHERE id_cliente = id_cliente3;
+
+  DBMS_OUTPUT.PUT_LINE('Cliente 1: ' || data_ultimo_incidente1);
 
   DBMS_OUTPUT.PUT_LINE(chr(13)||chr(10));
 
-  DBMS_OUTPUT.PUT_LINE('Cliente 2: ' || data_ultimo_incidente2 || ' ' || n_encomendas_pendentes2 || ' ' || valor_total_incidentes2);
+  DBMS_OUTPUT.PUT_LINE('Cliente 2: ' || data_ultimo_incidente2);
+
+  DBMS_OUTPUT.PUT_LINE(chr(13)||chr(10));
+
+  DBMS_OUTPUT.PUT_LINE('Cliente 3: ' || data_ultimo_incidente3);
+
+  DBMS_OUTPUT.PUT_LINE(chr(13)||chr(10));
 
   DBMS_OUTPUT.PUT_LINE('Encomendas Pendentes do Cliente 1: ' || n_encomendas_pendentes1);
 
   DBMS_OUTPUT.PUT_LINE(chr(13)||chr(10));
 
   DBMS_OUTPUT.PUT_LINE('Encomendas Pendentes do Cliente 2: ' || n_encomendas_pendentes2);
+
+  DBMS_OUTPUT.PUT_LINE(chr(13)||chr(10));
+
+  DBMS_OUTPUT.PUT_LINE('Encomendas Pendentes do Cliente 3: ' || n_encomendas_pendentes3);
 
   DBMS_OUTPUT.PUT_LINE(chr(13)||chr(10));
 
@@ -78,6 +92,10 @@ INSERT INTO localidade VALUES ('4400-001', 'Porto');
 
   DBMS_OUTPUT.PUT_LINE(chr(13)||chr(10));
 
+  DBMS_OUTPUT.PUT_LINE('Valor Total Incidentes do Cliente 3: ' || valor_total_incidentes3);
+
+  DBMS_OUTPUT.PUT_LINE(chr(13)||chr(10));
+
   DBMS_OUTPUT.PUT_LINE('Risco do cliente 1: ' || gestao_clientes.fn_risco_cliente(id_cliente1));
 
   DBMS_OUTPUT.PUT_LINE(chr(13)||chr(10));
@@ -86,8 +104,7 @@ INSERT INTO localidade VALUES ('4400-001', 'Porto');
 
   DBMS_OUTPUT.PUT_LINE(chr(13)||chr(10));
 
+  DBMS_OUTPUT.PUT_LINE('Risco do cliente 3: ' || gestao_clientes.fn_risco_cliente(id_cliente3));
+
+
   END;
-
-
-
-

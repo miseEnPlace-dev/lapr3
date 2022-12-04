@@ -71,15 +71,16 @@ CREATE OR REPLACE PACKAGE BODY gestao_clientes AS
     risco NUMBER;
     n_encomendas_pendentes NUMBER;
     valor_total_incidentes NUMBER;
-    data_ultimo_incidente TIMESTAMP;
+    data_ultimo_incidente varchar2(50);
 
   BEGIN
 
   risco := 0;
 
-  SELECT NumEncomendasPendentes,valor_total_incidentes,data_ultimo_incidente FROM Cliente_View
-  WHERE id_cliente = cliente_id
-  INTO n_encomendas_pendentes, valor_total_incidentes, data_ultimo_incidente;
+  SELECT NumEncomendasPendentes,valor_total_incidentes,data_ultimo_incidente
+  INTO n_encomendas_pendentes, valor_total_incidentes, data_ultimo_incidente
+  FROM Cliente_View
+  WHERE id_cliente = cliente_id;
 
   IF n_encomendas_pendentes > 0 THEN
     risco := valor_total_incidentes / n_encomendas_pendentes;
@@ -87,12 +88,13 @@ CREATE OR REPLACE PACKAGE BODY gestao_clientes AS
     risco := valor_total_incidentes;
   END IF;
 
+  IF ((n_encomendas_pendentes = 0 OR n_encomendas_pendentes IS NULL) AND (valor_total_incidentes = 0 OR valor_total_incidentes IS NULL) AND data_ultimo_incidente = 'Sem incidentes à data') THEN
+     DBMS_OUTPUT.PUT_LINE('Sem dados para o cliente ' || cliente_id);
+     DBMS_OUTPUT.PUT_LINE(chr(13)||chr(10));
+     risco := 0;
+  END IF;
+
   RETURN risco;
-
-  EXCEPTION
-    WHEN NO_DATA_FOUND THEN
-      RAISE_APPLICATION_ERROR(-20001, 'Dados insuficientes.');
-
   END fn_risco_cliente;
 
 END gestao_clientes;
