@@ -41,43 +41,47 @@ BEGIN
 
   DBMS_OUTPUT.PUT_LINE(chr(13)||chr(10));
 
-  gestao_encomendas.listar_encomendas();
+  gestao_encomendas.pr_listar_encomendas();
 
   DBMS_OUTPUT.PUT_LINE(chr(13)||chr(10));
 
-  id_encomenda1 := gestao_encomendas.registar_encomenda(id_cliente1, lista_produtos, SYSDATE - 2);
+  id_encomenda1 := gestao_encomendas.fn_registar_encomenda(id_cliente1, lista_produtos, SYSDATE - 2);
 
   DBMS_OUTPUT.PUT_LINE(chr(13)||chr(10));
 
   lista_produtos(id_banana) := 1;
 
-  id_encomenda2 := gestao_encomendas.registar_encomenda(id_cliente2, lista_produtos, 'Rua da Maria de Entrega Alternativa', '4400-001', SYSDATE - 3);
+  id_encomenda2 := gestao_encomendas.fn_registar_encomenda(id_cliente2, lista_produtos, 'Rua da Maria de Entrega Alternativa', '4400-001', SYSDATE - 3);
 
   DBMS_OUTPUT.PUT_LINE(chr(13)||chr(10));
 
-  gestao_encomendas.listar_encomendas();
+  gestao_encomendas.pr_listar_encomendas();
 
   DBMS_OUTPUT.PUT_LINE(chr(13)||chr(10));
 
-  gestao_encomendas.registar_pagamento(id_encomenda1, SYSDATE);
+  gestao_encomendas.pr_registar_pagamento(id_encomenda1, SYSDATE);
 
   DBMS_OUTPUT.PUT_LINE(chr(13)||chr(10));
 
-  gestao_encomendas.listar_encomendas();
+  gestao_encomendas.pr_listar_encomendas();
 
   DBMS_OUTPUT.PUT_LINE(chr(13)||chr(10));
 
-  gestao_encomendas.listar_encomendas_pagas();
+  gestao_encomendas.pr_listar_encomendas_pagas();
 
   DBMS_OUTPUT.PUT_LINE(chr(13)||chr(10));
 
-  gestao_encomendas.listar_encomendas_entregues();
+  gestao_encomendas.pr_listar_encomendas_entregues();
 
   DBMS_OUTPUT.PUT_LINE(chr(13)||chr(10));
 
-  gestao_encomendas.registar_entrega(id_encomenda2, SYSDATE);
+  gestao_encomendas.pr_registar_entrega(id_encomenda1, SYSDATE);
 
   DBMS_OUTPUT.PUT_LINE(chr(13)||chr(10));
 
-  gestao_encomendas.listar_encomendas();
+  gestao_encomendas.pr_listar_encomendas();
+
+  DBMS_OUTPUT.PUT_LINE(chr(13)||chr(10));
+
+  gestao_encomendas.pr_listar_encomendas_entregues();
 END;
