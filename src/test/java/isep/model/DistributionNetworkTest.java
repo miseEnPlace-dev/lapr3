@@ -352,5 +352,47 @@ public class DistributionNetworkTest {
     assertEquals(expected.get(2), actual.get(2));
   }
 
+  @Test
+  public void testGetHubs() throws InvalidNumberOfHubsException {
+    DistributionNetwork network = new DistributionNetwork();
+    Enterprise e1 = new Enterprise("e1", 1, 1, "l1");
+    e1.makeHub();
+    Enterprise e2 = new Enterprise("e2", 2, 2, "l2");
+    Enterprise e3 = new Enterprise("e3", 3, 3, "l3");
+    e3.makeHub();
+
+    network.addRelation(e1, e2, 100);
+    network.addRelation(e3, e2, 300);
+
+    List<Enterprise> expected = new ArrayList<>();
+    expected.add(e1);
+    expected.add(e3);
+
+    List<Enterprise> actual = network.getHubs();
+
+
+    assertEquals(expected.size(), actual.size());
+    assertEquals(expected.get(0), actual.get(0));
+    assertEquals(expected.get(1), actual.get(1));
+  }
+
+  @Test
+  public void testGetHubsWithNoHubs() throws InvalidNumberOfHubsException {
+    DistributionNetwork network = new DistributionNetwork();
+    Enterprise e1 = new Enterprise("e1", 1, 1, "l1");
+    Enterprise e2 = new Enterprise("e2", 2, 2, "l2");
+    Enterprise e3 = new Enterprise("e3", 3, 3, "l3");
+
+    network.addRelation(e1, e2, 100);
+    network.addRelation(e3, e2, 300);
+
+    assertEquals(0, network.getHubs().size());
+  }
+
+  @Test
+  public void testGetHubsEmptyNetwork() throws InvalidNumberOfHubsException {
+    assertEquals(0, new DistributionNetwork().getHubs().size());
+  }
+
 
 }
