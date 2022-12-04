@@ -37,6 +37,7 @@ public class LoadDistributionNetworkController {
       }
     }
 
+    System.out.println("Distribution network loaded with success!");
     return distributionNetwork;
   }
 }

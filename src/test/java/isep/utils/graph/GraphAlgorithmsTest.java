@@ -252,7 +252,7 @@ class GraphAlgorithmsTest {
    * Vila Real/Braga - Porto - Aveiro - Coimbra - Lisboa - Faro -> 5 connections
    */
   @Test
-  public void test1() {
+  public void testShortestPathBetweenFarthestNodes() {
     LinkedList<String> shortestPath = GraphAlgorithms.shortestPathBetweenFarthestNodes(completeMap, Integer::compare,
         Integer::sum, 0);
     int shortestPathConnections = shortestPath.size() - 1;
