@@ -13,7 +13,7 @@ CREATE OR REPLACE PACKAGE gestao_clientes AS
   PROCEDURE pr_AtualizarEncomendasCliente(
     cliente_id CLIENTE.id_cliente%TYPE);
 
-  FUNCTION fn_risco_cliente(
+  FUNCTION fn_RiscoCliente(
     cliente_id CLIENTE.id_cliente%TYPE)
     RETURN NUMBER;
 

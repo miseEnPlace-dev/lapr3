@@ -7,11 +7,15 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
 import isep.shared.exceptions.InvalidNumberOfHubsException;
+import isep.utils.graph.AdjacencyMapGraph;
+import isep.utils.graph.AdjacencyMapGraphTest;
+import isep.utils.graph.Graph;
 
 public class DistributionNetworkTest {
   @Test
@@ -285,5 +289,158 @@ public class DistributionNetworkTest {
     assertEquals(expected.get(0), actual.get(0));
     assertTrue(e1.isHub());
   }
+
+
+  @Test
+  public void testAverageMinPath(){
+    DistributionNetwork network = new DistributionNetwork();
+    Enterprise e1 = new Enterprise("e1", 1, 1, "l1");
+    Producer p1 = new Producer("p1", 2, 2, "l2");
+    Producer p2 = new Producer("p2", 2, 2, "l2");
+    network.addRelation(e1, p1, 100);
+    network.addRelation(e1, p2, 300);
+
+    assertEquals(400/3, network.getAveragePathDistanceBetweenGroupOfEntities(e1));
+  }
+
+
+  @Test
+  public void testIsConnectedForConnectedGraph(){
+    DistributionNetwork network = new DistributionNetwork();
+    Enterprise e1 = new Enterprise("e1", 1, 1, "l1");
+    Producer p1 = new Producer("p1", 2, 2, "l2");
+    Producer p2 = new Producer("p2", 2, 2, "l2");
+    network.addRelation(e1, p1, 100);
+    network.addRelation(e1, p2, 300);
+
+    assertEquals(true, network.isConnected());
+  }
+
+  @Test
+  public void testIsConnectedForNonConnectedGraph(){
+    DistributionNetwork network = new DistributionNetwork();
+    Enterprise e1 = new Enterprise("e1", 1, 1, "l1");
+    Producer p1 = new Producer("p1", 2, 2, "l2");
+    Producer p2 = new Producer("p2", 2, 2, "l2");
+    Producer p3 = new Producer("p3", 3, 3, "l3");
+    network.addRelation(e1, p1, 100);
+    network.addRelation(p2, p3, 100);
+
+    assertEquals(false, network.isConnected());
+  }
+
+  @Test
+  public void testGetHubs(){
+    DistributionNetwork network = new DistributionNetwork();
+    Enterprise e1 = new Enterprise("e1", 1, 1, "l1");
+    e1.makeHub();
+    Enterprise e2 = new Enterprise("e2", 2, 2, "l2");
+    Enterprise e3 = new Enterprise("e3", 3, 3, "l3");
+    e3.makeHub();
+
+    network.addRelation(e1, e2, 100);
+    network.addRelation(e3, e2, 300);
+
+    List<Enterprise> expected = new ArrayList<>();
+    expected.add(e1);
+    expected.add(e3);
+
+    List<Enterprise> actual = network.getHubs();
+
+
+    assertEquals(expected.size(), actual.size());
+    assertEquals(expected.get(0), actual.get(0));
+    assertEquals(expected.get(1), actual.get(1));
+  }
+
+  @Test
+  public void testGetHubsWithNoHubs(){
+    DistributionNetwork network = new DistributionNetwork();
+    Enterprise e1 = new Enterprise("e1", 1, 1, "l1");
+    Enterprise e2 = new Enterprise("e2", 2, 2, "l2");
+    Enterprise e3 = new Enterprise("e3", 3, 3, "l3");
+
+    network.addRelation(e1, e2, 100);
+    network.addRelation(e3, e2, 300);
+
+    assertEquals(0, network.getHubs().size());
+  }
+
+  @Test
+  public void testGetHubsEmptyNetwork(){
+    assertEquals(0, new DistributionNetwork().getHubs().size());
+  }
+
+  @Test
+  public void testGetClients(){
+    DistributionNetwork network = new DistributionNetwork();
+    Enterprise e1 = new Enterprise("e1", 1, 1, "l1");
+    Client e2 = new Client("e2", 2, 2, "l2");
+    Enterprise e3 = new Enterprise("e3", 3, 3, "l3");
+    Client e4 = new Client("e4", 4, 4, "l4");
+
+    network.addRelation(e1, e2, 100);
+    network.addRelation(e3, e4, 300);
+
+    List<Client> expected = new ArrayList<>();
+    expected.add(e2);
+    expected.add(e4);
+
+    List<Client> actual = network.getClients();
+
+    assertEquals(expected.size(), actual.size());
+    assertEquals(expected.get(0), actual.get(0));
+    assertEquals(expected.get(1), actual.get(1));
+  }
+
+  @Test
+  public void testGetClientsWithNoClients(){
+    DistributionNetwork network = new DistributionNetwork();
+    Enterprise e1 = new Enterprise("e1", 1, 1, "l1");
+    Enterprise e2 = new Enterprise("e2", 2, 2, "l2");
+    Enterprise e3 = new Enterprise("e3", 3, 3, "l3");
+
+    network.addRelation(e1, e2, 100);
+    network.addRelation(e3, e2, 300);
+
+    assertEquals(0, network.getClients().size());
+  }
+
+  @Test
+  public void testGetClientsEmptyNetwork(){
+    assertEquals(0, new DistributionNetwork().getClients().size());
+  }
+
+
+  @Test
+  public void testGetMinimumShortestPathNetwork(){
+    DistributionNetwork network = new DistributionNetwork();
+    Enterprise e1 = new Enterprise("e1", 1, 1, "l1");
+    Enterprise e2 = new Enterprise("e2", 2, 2, "l2");
+    Enterprise e3 = new Enterprise("e3", 3, 3, "l3");
+    Enterprise e4 = new Enterprise("e4", 4, 4, "l4");
+    Enterprise e5 = new Enterprise("e5", 5, 5, "l5");
+    Enterprise e6 = new Enterprise("e6", 6, 6, "l6");
+
+    network.addRelation(e1, e2, 100);
+    network.addRelation(e3, e2, 300);
+    network.addRelation(e3, e4, 200);
+    network.addRelation(e1, e5, 500);
+    network.addRelation(e2, e6, 600);
+    network.addRelation(e6, e3, 400);
+
+    Graph expected = new AdjacencyMapGraph<>(false);
+    expected.addEdge(e1, e2, 100);
+    expected.addEdge(e3, e4, 200);
+    expected.addEdge(e3, e2, 300);
+    expected.addEdge(e6, e3, 400);
+    expected.addEdge(e1, e5, 500);
+
+    Graph actual = network.getMinimumShortestPathNetwork();
+
+    assertEquals(expected.edges().size(), actual.edges().size());
+    assertTrue(expected.edges().containsAll(actual.edges()));
+  }
+
 
 }

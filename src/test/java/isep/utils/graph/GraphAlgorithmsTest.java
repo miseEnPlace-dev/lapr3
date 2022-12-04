@@ -260,6 +260,25 @@ class GraphAlgorithmsTest {
   }
 
   /**
+   * Tests the minEdges method.
+   */
+  @Test
+  public void testMinEdges() {
+    int[][] shortestPaths = GraphAlgorithms.minEdges(completeMap, Integer::compare, Integer::sum, 0);
+
+    int max = shortestPaths[0][0];
+
+    for (int i = 0; i < shortestPaths.length; i++) {
+      for (int j = 0; j < shortestPaths[i].length; j++) {
+        if (shortestPaths[i][j] > max)
+          max = shortestPaths[i][j];
+      }
+    }
+
+    assertEquals(5, max);
+  }
+
+  /**
    * Test of minimumSpanningTree method, of class GraphAlgorithms, with
    * notDirected graph.
    */

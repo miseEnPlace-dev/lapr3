@@ -384,4 +384,42 @@ public class GraphAlgorithms {
 
     return mst;
   }
+
+  /**
+   * Calculates the minimum number of edges between all pairs of vertices in a graph using Floyd-Warshall's algorithm.
+   *
+   * @param <V>   vertex type
+   * @param <E>   edge type
+   * @param g     initial graph
+   * @param ce    comparator between elements of type E
+   * @param sum   sum two elements of type E
+   * @param zero  neutral element of the sum in elements of type E
+   * @return      the minimum number of edges between all pairs of vertices in a graph
+   */
+  public static <V, E> int[][] minEdges(Graph<V, E> g, Comparator<E> ce, BinaryOperator<E> sum, E zero) {
+    int numVerts = g.numVertices();
+    int[][] minEdges = new int[numVerts][numVerts];
+
+    for (int i = 0; i < numVerts; i++)
+      for (int j = 0; j < numVerts; j++)
+        minEdges[i][j] = -1;
+
+    for (int i = 0; i < numVerts; i++)
+      minEdges[i][i] = 0;
+
+    for (Edge<V, E> e : g.edges()) {
+      int vOrig = g.key(e.getVOrig());
+      int vDest = g.key(e.getVDest());
+      minEdges[vOrig][vDest] = 1;
+    }
+
+    for (int k = 0; k < numVerts; k++)
+      for (int i = 0; i < numVerts; i++)
+        for (int j = 0; j < numVerts; j++)
+          if (minEdges[i][k] != -1 && minEdges[k][j] != -1)
+            if (minEdges[i][j] == -1 || minEdges[i][j] > minEdges[i][k] + minEdges[k][j])
+              minEdges[i][j] = minEdges[i][k] + minEdges[k][j];
+
+    return minEdges;
+  }
 }
