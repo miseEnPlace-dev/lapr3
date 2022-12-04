@@ -8,6 +8,7 @@ import isep.utils.CSVReader;
 public class EntityStoreMock {
   private final String MOCK_FILE_PATH = "src/test/resources/entitiesSample.csv";
   private final String BIG_FILE_PATH = "data/big/clientes-produtores_big.csv";
+  private final String SMALL_FILE_PATH = "data/small/clientes-produtores_small.csv";
 
   public EntityStore mockEntityStoreFromSampleFile() throws FileNotFoundException {
     CSVReader reader = new CSVReader(MOCK_FILE_PATH);
@@ -43,6 +44,14 @@ public class EntityStoreMock {
 
   public EntityStore mockEntityStoreWithBigFile() throws FileNotFoundException {
     CSVReader reader = new CSVReader(BIG_FILE_PATH);
+    EntityStore store = new EntityStore();
+    store.addEntitiesFromList(reader.read());
+
+    return store;
+  }
+
+  public EntityStore mockEntityStoreWithSmallFile() throws FileNotFoundException {
+    CSVReader reader = new CSVReader(SMALL_FILE_PATH);
     EntityStore store = new EntityStore();
     store.addEntitiesFromList(reader.read());
 
