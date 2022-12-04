@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -323,6 +324,32 @@ public class DistributionNetworkTest {
     network.addRelation(p2, p3, 100);
 
     assertEquals(false, network.isConnected());
+  }
+
+  
+  @Test
+  public void testShortestPathFarestNodes() throws InvalidNumberOfHubsException {
+    DistributionNetwork network = new DistributionNetwork();
+    Enterprise e1 = new Enterprise("e1", 1, 1, "l1");
+    Producer p1 = new Producer("p1", 2, 2, "l2");
+    Producer p2 = new Producer("p2", 2, 2, "l2");
+    Producer p3 = new Producer("p3", 3, 3, "l3");
+    network.addRelation(e1, p1, 100);
+    network.addRelation(p1, p2, 100);
+    network.addRelation(p2, p3, 100);
+
+    LinkedList<Entity> expected = new LinkedList<>();
+    expected.add(e1);
+    expected.add(p1);
+    expected.add(p2);
+    expected.add(e1);
+
+    LinkedList<Entity> actual = network.shortestPathBetweenFarthestNodes();
+
+    assertEquals(expected.size(), actual.size());
+    assertEquals(expected.get(0), actual.get(0));
+    assertEquals(expected.get(1), actual.get(1));
+    assertEquals(expected.get(2), actual.get(2));
   }
 
 
