@@ -1,5 +1,5 @@
 CREATE OR REPLACE PACKAGE BODY gestao_clientes AS
-  FUNCTION fn_registarCliente (
+  FUNCTION fn_RegistarCliente (
     nome CLIENTE.nome%TYPE,
     nif CLIENTE.nif%TYPE,
     email CLIENTE.email%TYPE,
@@ -9,7 +9,7 @@ CREATE OR REPLACE PACKAGE BODY gestao_clientes AS
     postal_entrega CLIENTE.cod_postal_entrega%TYPE,
     plafond CLIENTE.plafond%TYPE)
   RETURN CLIENTE.id_cliente%TYPE AS
-    id_cliente CLIENTE.id_cliente%TYPE;
+    cliente_id CLIENTE.id_cliente%TYPE;
     cod_postal_var CLIENTE.cod_postal%TYPE;
     cod_postal_entrega_var CLIENTE.cod_postal_entrega%TYPE;
   BEGIN
@@ -19,7 +19,18 @@ CREATE OR REPLACE PACKAGE BODY gestao_clientes AS
 
     SELECT cod_postal INTO cod_postal_entrega_var FROM Localidade WHERE COD_POSTAL LIKE postal_entrega;
 
-    INSERT INTO cliente (nome, nif, email, morada, morada_entrega, plafond, cod_postal_entrega, cod_postal) VALUES (
+    -- get last id of cliente
+    SELECT MAX(id_cliente) INTO cliente_id FROM Cliente;
+
+    -- if null start in 1
+    IF cliente_id IS NULL THEN
+      cliente_id := 1;
+    ELSE
+      cliente_id := cliente_id + 1;
+    END IF;
+
+    INSERT INTO CLIENTE (id_cliente,nome, nif, email, morada, morada_entrega, plafond, cod_postal_entrega, cod_postal) VALUES (
+      cliente_id,
       nome,
       nif,
       email,
@@ -27,12 +38,12 @@ CREATE OR REPLACE PACKAGE BODY gestao_clientes AS
       morada_entrega,
       plafond,
       postal_entrega,
-      postal) RETURNING id_cliente INTO id_cliente;
+      postal);
 
-    DBMS_OUTPUT.PUT_LINE('Cliente ' || id_cliente || ' registado com sucesso.');
+    DBMS_OUTPUT.PUT_LINE('Cliente ' || cliente_id || ' registado com sucesso.');
 
     COMMIT;
-    RETURN id_cliente;
+    RETURN cliente_id;
   EXCEPTION
     WHEN NO_DATA_FOUND THEN
       RAISE_APPLICATION_ERROR(-20002, 'Código postal inexistente.');
@@ -46,7 +57,7 @@ CREATE OR REPLACE PACKAGE BODY gestao_clientes AS
   BEGIN
     SAVEPOINT inicio;
 
-    SELECT id_cliente INTO null_id FROM cliente WHERE id_cliente = cliente_id;
+    SELECT id_cliente INTO null_id FROM CLIENTE WHERE id_cliente = cliente_id;
 
     SELECT SUM((preco_unitario * (1 + iva / 100)) * quantidade), COUNT(*) INTO total_encomendas, num_encomendas
     FROM produtoEncomenda
@@ -60,7 +71,7 @@ CREATE OR REPLACE PACKAGE BODY gestao_clientes AS
       ROLLBACK TO fim;
     END IF;
 
-    UPDATE Cliente SET valor_total_encomendas = total_encomendas, n_encomendas = num_encomendas WHERE id_cliente = cliente_id;
+    UPDATE CLIENTE SET valor_total_encomendas = total_encomendas, n_encomendas = num_encomendas WHERE id_cliente = cliente_id;
 
     DBMS_OUTPUT.PUT_LINE('Cliente ' || cliente_id || ' atualizado com sucesso.');
 
@@ -73,7 +84,7 @@ CREATE OR REPLACE PACKAGE BODY gestao_clientes AS
     SAVEPOINT fim;
   END pr_AtualizarEncomendasCliente;
 
-  FUNCTION fn_risco_cliente (
+  FUNCTION fn_RiscoCliente (
     cliente_id CLIENTE.id_cliente%TYPE)
     RETURN NUMBER IS
     risco NUMBER;
@@ -103,6 +114,6 @@ CREATE OR REPLACE PACKAGE BODY gestao_clientes AS
   END IF;
 
   RETURN risco;
-  END fn_risco_cliente;
+  END fn_RiscoCliente;
 
 END gestao_clientes;
