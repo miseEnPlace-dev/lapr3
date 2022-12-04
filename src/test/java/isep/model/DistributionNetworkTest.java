@@ -13,6 +13,9 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 import isep.shared.exceptions.InvalidNumberOfHubsException;
+import isep.utils.graph.AdjacencyMapGraph;
+import isep.utils.graph.AdjacencyMapGraphTest;
+import isep.utils.graph.Graph;
 
 public class DistributionNetworkTest {
   @Test
@@ -432,6 +435,37 @@ public class DistributionNetworkTest {
   @Test
   public void testGetClientsEmptyNetwork(){
     assertEquals(0, new DistributionNetwork().getClients().size());
+  }
+
+
+  @Test
+  public void testGetMinimumShortestPathNetwork(){
+    DistributionNetwork network = new DistributionNetwork();
+    Enterprise e1 = new Enterprise("e1", 1, 1, "l1");
+    Enterprise e2 = new Enterprise("e2", 2, 2, "l2");
+    Enterprise e3 = new Enterprise("e3", 3, 3, "l3");
+    Enterprise e4 = new Enterprise("e4", 4, 4, "l4");
+    Enterprise e5 = new Enterprise("e5", 5, 5, "l5");
+    Enterprise e6 = new Enterprise("e6", 6, 6, "l6");
+
+    network.addRelation(e1, e2, 100);
+    network.addRelation(e3, e2, 300);
+    network.addRelation(e3, e4, 200);
+    network.addRelation(e1, e5, 500);
+    network.addRelation(e2, e6, 600);
+    network.addRelation(e6, e3, 400);
+
+    Graph expected = new AdjacencyMapGraph<>(false);
+    expected.addEdge(e1, e2, 100);
+    expected.addEdge(e3, e4, 200);
+    expected.addEdge(e3, e2, 300);
+    expected.addEdge(e6, e3, 400);
+    expected.addEdge(e1, e5, 500);
+
+    Graph actual = network.getMinimumShortestPathNetwork();
+
+    assertEquals(expected.edges().size(), actual.edges().size());
+    assertTrue(expected.edges().containsAll(actual.edges()));
   }
 
 
