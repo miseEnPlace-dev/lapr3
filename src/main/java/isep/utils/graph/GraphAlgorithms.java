@@ -384,4 +384,40 @@ public class GraphAlgorithms {
 
     return mst;
   }
+
+  /**
+   * Calculates the minimum distance between all pairs of vertices in a graph using Floyd-Warshall's algorithm.
+   * @param g graph
+   * @param ce comparator between elements of type E
+   * @param sum sum two elements of type E
+   * @param zero neutral element of the sum in elements of type E
+   * @return the minimum distance between all pairs of vertices
+   */
+  public static <V, E> E[][] floydWarshall(Graph<V, E> g, Comparator<E> ce, BinaryOperator<E> sum, E zero) {
+    int numVerts = g.numVertices();
+
+    @SuppressWarnings("unchecked")
+    E[][] dist = (E[][]) new Object[numVerts][numVerts];
+
+    for (int i = 0; i < numVerts; i++)
+      for (int j = 0; j < numVerts; j++)
+        dist[i][j] = null;
+
+    for (Edge<V, E> e : g.edges()) {
+      int vOrig = g.key(e.getVOrig());
+      int vDest = g.key(e.getVDest());
+      dist[vOrig][vDest] = e.getWeight();
+    }
+
+    for (int k = 0; k < numVerts; k++)
+      for (int i = 0; i < numVerts; i++)
+        for (int j = 0; j < numVerts; j++)
+          if (dist[i][k] != null && dist[k][j] != null) {
+            E newDist = sum.apply(dist[i][k], dist[k][j]);
+            if (dist[i][j] == null || ce.compare(newDist, dist[i][j]) < 0)
+              dist[i][j] = newDist;
+          }
+
+    return dist;
+  }
 }
