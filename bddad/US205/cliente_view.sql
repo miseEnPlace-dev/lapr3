@@ -20,11 +20,23 @@ CREATE OR REPLACE VIEW cliente_view AS
       WHERE pe.id_encomenda = e.id_encomenda AND e.id_cliente = cl.id_cliente AND
             (e.data_entrega IS NOT NULL AND e.data_pagamento IS NULL)
       GROUP BY id_cliente
-      ),'0') AS ValorPendente,
+      ),'0') AS ValorPendenteEntregue,
       NVL((SELECT SUM((preco_unitario * (1 + iva / 100)) * quantidade) AS valor_pendente
       FROM produtoEncomenda pe, encomenda e
       WHERE pe.id_encomenda = e.id_encomenda AND e.id_cliente = cl.id_cliente AND
             (e.data_pagamento > sysdate - 365)
       GROUP BY id_cliente
-      ), '0') AS VolumePago
+      ), '0') AS VolumePago,
+      NVL((SELECT COUNT(*) AS valor_pendente
+      FROM produtoEncomenda pe, encomenda e
+      WHERE pe.id_encomenda = e.id_encomenda AND e.id_cliente = cl.id_cliente AND
+            (e.data_pagamento IS NULL )
+      GROUP BY id_cliente
+      ), '0') AS NumEncomendasPendentes,
+      (SELECT SUM((preco_unitario * (1 + iva / 100)) * quantidade) AS valor_pendente
+      FROM produtoEncomenda pe, encomenda e
+      WHERE pe.id_encomenda = e.id_encomenda AND e.id_cliente = cl.id_cliente AND
+            data_vencimento_pagamento > SYSDATE - 365 AND (data_vencimento_pagamento < data_pagamento OR (data_vencimento_pagamento < SYSDATE AND data_pagamento IS NULL))
+      GROUP BY id_cliente) AS valor_total_incidentes
+
   FROM Cliente cl;
