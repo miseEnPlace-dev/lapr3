@@ -6,7 +6,6 @@ import java.util.List;
 import isep.utils.graph.AdjacencyMapGraph;
 
 public class NetworkGraph<V, E> extends AdjacencyMapGraph<V, E> {
-
   public NetworkGraph(boolean directed) {
     super(directed);
   }

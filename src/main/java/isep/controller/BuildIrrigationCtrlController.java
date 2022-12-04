@@ -4,8 +4,9 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+
 import javax.naming.NameNotFoundException;
-import isep.model.Company;
+
 import isep.model.IrrigationController;
 import isep.model.IrrigationPlan;
 import isep.model.mapper.IrrigationPlanMapper;
