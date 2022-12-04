@@ -8,7 +8,7 @@ CREATE OR REPLACE PACKAGE gestao_setores AS
   RETURN TIPOCULTURA.id_tipo_cultura%TYPE;
   
   FUNCTION fn_RegistarCultura(cultura_param CULTURA.cultura%TYPE,
-    id_tipo_cultura CULTURA.id_tipo_cultura%TYPE)
+    id_t_cultura CULTURA.id_tipo_cultura%TYPE)
   RETURN CULTURA.id_cultura%TYPE;
 
   PROCEDURE pr_RegistarPlantacao(id_set PLANTACAO.id_setor%TYPE,

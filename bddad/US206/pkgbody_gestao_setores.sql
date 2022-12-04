@@ -57,7 +57,7 @@ CREATE OR REPLACE PACKAGE BODY gestao_setores AS
 
 
   FUNCTION fn_RegistarCultura(cultura_param CULTURA.cultura%TYPE,
-    id_tipo_cultura CULTURA.id_tipo_cultura%TYPE)
+    id_t_cultura CULTURA.id_tipo_cultura%TYPE)
     RETURN CULTURA.id_cultura%TYPE AS
     new_id CULTURA.id_cultura%TYPE;
     flag NUMBER;
@@ -77,14 +77,14 @@ CREATE OR REPLACE PACKAGE BODY gestao_setores AS
     /* check if culture type is already registered */
     SELECT COUNT(*) INTO flag 
     FROM TIPOCULTURA
-    WHERE id_tipo_cultura = id_tipo_cultura;
+    WHERE id_tipo_cultura = id_t_cultura;
     IF flag = 0 THEN
       RAISE tipo_cultura_inexistente;
     END IF;
 
 
     INSERT INTO CULTURA(id_cultura, cultura, id_tipo_cultura)
-    VAlUES (new_id, cultura_param, id_tipo_cultura);
+    VAlUES (new_id, cultura_param, id_t_cultura);
 
     DBMS_OUTPUT.PUT_LINE('CULTURA ' || new_id || ' registado com sucesso.');
 
@@ -94,7 +94,7 @@ CREATE OR REPLACE PACKAGE BODY gestao_setores AS
     WHEN tipo_cultura_inexistente THEN
       RAISE_APPLICATION_ERROR(-20001, 'Tipo cultura inexistente.');
     WHEN OTHERS THEN
-      RAISE_APPLICATION_ERROR(-20005, 'Erro ao registar entrega.');
+      RAISE_APPLICATION_ERROR(-20005, 'Erro ao registar cultura.');
       ROLLBACK TO inicio;
   END fn_RegistarCultura;
 
@@ -318,7 +318,7 @@ CREATE OR REPLACE PACKAGE BODY gestao_setores AS
       WHEN cultura_inexistente THEN
         RAISE_APPLICATION_ERROR(-20001, 'Cultura inexistente.');
       WHEN OTHERS THEN
-      RAISE_APPLICATION_ERROR(-20005, 'Erro ao registar fator producao substancia.');
+      RAISE_APPLICATION_ERROR(-20005, 'Erro ao registar plantacao.');
         ROLLBACK TO inicio;
 
     END pr_RegistarPlantacao;
