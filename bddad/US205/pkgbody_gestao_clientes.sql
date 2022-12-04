@@ -71,21 +71,15 @@ CREATE OR REPLACE PACKAGE BODY gestao_clientes AS
     risco NUMBER;
     n_encomendas_pendentes NUMBER;
     valor_total_incidentes NUMBER;
+    data_ultimo_incidente TIMESTAMP;
 
   BEGIN
 
   risco := 0;
 
-  SELECT SUM((preco_unitario * (1 + iva / 100)) * quantidade) INTO valor_total_incidentes
-  FROM produtoEncomenda
-  INNER JOIN encomenda ON produtoEncomenda.id_encomenda = encomenda.id_encomenda
-  WHERE id_cliente = cliente_id AND (data_pagamento > data_vencimento_pagamento OR (data_vencimento_pagamento > SYSDATE - 365 AND data_pagamento IS NULL))
-  GROUP BY id_cliente;
-
-
-  SELECT COUNT(*) INTO n_encomendas_pendentes
-  FROM Encomenda
-  WHERE (id_cliente = cliente_id AND data_pagamento IS NULL);
+  SELECT NumEncomendasPendentes,valor_total_incidentes,data_ultimo_incidente FROM Cliente_View
+  WHERE id_cliente = cliente_id
+  INTO n_encomendas_pendentes, valor_total_incidentes, data_ultimo_incidente;
 
   IF n_encomendas_pendentes > 0 THEN
     risco := valor_total_incidentes / n_encomendas_pendentes;
