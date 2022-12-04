@@ -1,31 +1,25 @@
 package isep.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import isep.mock.DistancesDataMock;
-import isep.mock.EntityStoreMock;
 import isep.model.DistributionNetwork;
 import isep.model.Enterprise;
 import isep.model.Entity;
 import isep.model.Producer;
-import isep.model.Role;
 import isep.model.store.EntityStore;
 import isep.shared.exceptions.InvalidNumberOfHubsException;
 import isep.utils.CSVReader;
 
 /**
  * Tests for the FindNearestHub class.
- * 
+ *
  * @author Tomás Russo <1211288@isep.ipp.pt>
  */
 public class FindNearestHubTest {

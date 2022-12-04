@@ -32,6 +32,26 @@ class Enterprise {
 
 class Producer {}
 
+class AgriculturalParcel {
+  -designation: String
+  -area: int
+  -Cultivation: Cultivation
+
+  +getDesignation(): String
+  +getArea(): int
+  +getCultivation(): Cultivation
+  +equals(): boolean
+}
+
+class Cultivation {
+  -designation: String
+  -isPermanent: boolean
+
+  +getDesignation(): String
+  +isPermanent(): boolean
+  +equals(): boolean
+}
+
 Client <|-- Entity
 Enterprise <|-- Entity
 Producer <|-- Entity
@@ -50,8 +70,90 @@ class Company {
 
 class EntityStore {}
 
+class AgriculturalParcelStore {}
+
+class CultivationStore {}
+
+class IrrigationPlan {
+   -hours: List<Hour>
+   -parcelIrrigations: List<ParcelIrrigationWrapper>
+   -creationDate: Calendar
+   -planDuration: int
+
+  -isExceeded(): boolean
+
+  +getHours(): List<Hour>
+  +getParcelIrrigations(): List<ParcelIrrigationWrapper>
+  +getCreationDate(): Calendar
+  +getPlanDuration(): int
+  +getIrrigationStatus(date): CurrentIrrigationWrapper
+  +equals(): boolean
+}
+
+class IrrigationController {
+   -plan: IrrigationPlan
+
+   +getPlan(): IrrigationPlan
+   +currentIrrigation(date): CurrentIrrigationWrapper
+}
+
+class CurrentIrrigationWrapper {
+  -parcel: AgriculturalParcel
+  -irrigationDuration: int
+
+  +getParcel(): AgriculturalParcel
+  +getIrrigationDuration(): int
+}
+
+class ParcelIrrigationWrapper {
+   - parcel: AgriculturalParcel
+   - duration: int
+   - regularity: Regularity
+
+   +getParcel(): AgriculturalParcel
+   +getDuration(): int
+   +getRegularity(): Regularity
+   +equals(): boolean
+}
+
+abstract Regularity {
+   +check(day): boolean
+   +equals(): boolean
+}
+
+class RegularityFactory {
+   +getRegularity(name): Regularity
+}
+
+class RegularityAll {}
+class RegularityOdd {}
+class RegularityEven {}
+
+Regularity <|-- RegularityAll
+Regularity <|-- RegularityOdd
+Regularity <|-- RegularityEven
+
+RegularityFactory --> "creates" Regularity
+
+ParcelIrrigationWrapper "1" o-- "1" Regularity
+
 EntityStore "1" o-- "*" Entity
 
+AgriculturalParcelStore "1" o-- "*" AgriculturalParcel
+CultivationStore "1" o-- "*" Cultivation
+
+AgriculturalParcel "1" o-- "1" Cultivation
+IrrigationController "1" o-- "1" IrrigationPlan
+
+IrrigationPlan "1" o-- "*" ParcelIrrigationWrapper
+
+ParcelIrrigationWrapper "1" o-- "1" AgriculturalParcel
+CurrentIrrigationWrapper "1" o-- "1" AgriculturalParcel
+
+IrrigationPlan <.. CurrentIrrigationWrapper
+
 Company "1" o-- "1" EntityStore
+Company "1" o-- "1" AgriculturalParcelStore
+Company "1" o-- "1" CultivationStore
 
 @enduml

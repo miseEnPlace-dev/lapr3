@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test;
 
 import isep.shared.exceptions.InvalidNumberOfHubsException;
 
-
 public class DistributionNetworkTest {
   @Test
   public void testAddRelation() {
@@ -245,10 +244,9 @@ public class DistributionNetworkTest {
     assertEquals(expected.size(), actual.size());
     assertEquals(expected.get(0), actual.get(0));
     assertEquals(expected.get(1), actual.get(1));
-    assertEquals(true, e3.isHub());
-    assertEquals(true, e1.isHub());
-    assertEquals(false, e2.isHub());
-
+    assertTrue(e3.isHub());
+    assertTrue(e1.isHub());
+    assertFalse(e2.isHub());
   }
 
   @Test
@@ -285,6 +283,20 @@ public class DistributionNetworkTest {
 
     assertEquals(expected.size(), actual.size());
     assertEquals(expected.get(0), actual.get(0));
-    assertEquals(true, e1.isHub());
+    assertTrue(e1.isHub());
   }
+
+  /*
+   * @Test
+   * public void testDefineHubsWithSmallTestFile() throws FileNotFoundException,
+   * InvalidNumberOfHubsException {
+   * DistributionNetwork network = new
+   * DistributionNetworkMock().mockEntityStoreWithBigFile();
+   *
+   * List<Enterprise> expected = new ArrayList<>();
+   * List<Enterprise> actual = network.defineHubs(2);
+   *
+   * assertEquals(expected, actual);
+   * }
+   */
 }

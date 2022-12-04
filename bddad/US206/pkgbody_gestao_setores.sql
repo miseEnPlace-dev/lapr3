@@ -148,7 +148,7 @@ CREATE OR REPLACE PACKAGE BODY gestao_setores AS
     IF setores%NOTFOUND THEN
       DBMS_OUTPUT.PUT_LINE('Não existem setores entregues.');
     ELSE
-      DBMS_OUTPUT.PUT_LINE('Setores Ordem Alfabética:');
+      DBMS_OUTPUT.PUT_LINE('Setores Ordem Tamanho Crescente:');
       DBMS_OUTPUT.PUT_LINE('');
 
       LOOP
@@ -181,7 +181,7 @@ CREATE OR REPLACE PACKAGE BODY gestao_setores AS
     IF setores%NOTFOUND THEN
       DBMS_OUTPUT.PUT_LINE('Não existem setores entregues.');
     ELSE
-      DBMS_OUTPUT.PUT_LINE('Setores Ordem Alfabética:');
+      DBMS_OUTPUT.PUT_LINE('Setores Ordem Tamanho Decrescente:');
       DBMS_OUTPUT.PUT_LINE('');
 
       LOOP
@@ -222,7 +222,7 @@ CREATE OR REPLACE PACKAGE BODY gestao_setores AS
     IF setores%NOTFOUND THEN
       DBMS_OUTPUT.PUT_LINE('Não existem setores entregues.');
     ELSE
-      DBMS_OUTPUT.PUT_LINE('Setores Ordem Alfabética:');
+      DBMS_OUTPUT.PUT_LINE('Setores Ordem Alfabética Tipo Cultura:');
       DBMS_OUTPUT.PUT_LINE('');
 
       LOOP
@@ -263,7 +263,7 @@ CREATE OR REPLACE PACKAGE BODY gestao_setores AS
     IF setores%NOTFOUND THEN
       DBMS_OUTPUT.PUT_LINE('Não existem setores entregues.');
     ELSE
-      DBMS_OUTPUT.PUT_LINE('Setores Ordem Alfabética:');
+      DBMS_OUTPUT.PUT_LINE('Setores Ordem Alfabética Cultura:');
       DBMS_OUTPUT.PUT_LINE('');
 
       LOOP
@@ -280,6 +280,48 @@ CREATE OR REPLACE PACKAGE BODY gestao_setores AS
   END pr_ListarSetoresOrdemCultura;
 
 
+
+  PROCEDURE pr_RegistarPlantacao(id_set PLANTACAO.id_setor%TYPE,
+    id_cult PLANTACAO.id_cultura%TYPE,
+    data_i PLANTACAO.data_inicio%TYPE) AS
+      flag NUMBER;
+
+    BEGIN
+      SAVEPOINT inicio;
+
+
+      /* check if tipo fator producao is already registered */
+      SELECT COUNT(*) INTO flag 
+      FROM SETOR
+      WHERE id_setor = id_set;
+      IF flag = 0 THEN
+        RAISE setor_inexistente;
+      END IF;
+
+      /* check if tipo fator producao is already registered */
+      SELECT COUNT(*) INTO flag 
+      FROM CULTURA
+      WHERE id_cultura = id_cult;
+      IF flag = 0 THEN
+        RAISE cultura_inexistente;
+      END IF;
+
+      INSERT INTO PLANTACAO(id_setor, id_cultura, data_inicio)
+      VAlUES (id_set, id_cult, data_i);
+
+      DBMS_OUTPUT.PUT_LINE('PLANTACAO registado com sucesso.');
+
+
+      EXCEPTION
+      WHEN setor_inexistente THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Setor inexistente.');
+      WHEN cultura_inexistente THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Cultura inexistente.');
+      WHEN OTHERS THEN
+      RAISE_APPLICATION_ERROR(-20005, 'Erro ao registar fator producao substancia.');
+        ROLLBACK TO inicio;
+
+    END pr_RegistarPlantacao;
 
 
 END gestao_setores;

@@ -5,6 +5,7 @@
 #include "random.h"
 #include "generate_base_values.h"
 #include "print_result.h"
+#include "set_sensor_summary_register.h"
 
 #define SEC_IN_DAY 86400
 
@@ -145,5 +146,33 @@ int main(void)
   printf("\n");
   print_result(data[AIR_HUMIDITY_SENSORS_INDEX], NUM_AIR_HUMIDITY_REGISTERS, "Humidade do Ar", "%", N_OF_AIR_HUMIDITY_SENSORS);
 
+  // US103
+
+  char const COLUMNS = 3;
+  int result[NUM_OF_SENSORS][COLUMNS];
+
+  set_sensor_summary_register(data[TEMPERATURE_SENSORS_INDEX], N_OF_TEMP_SENSORS, NUM_TEMPERATURE_REGISTERS, result + TEMPERATURE_SENSORS_INDEX);
+  set_sensor_summary_register(data[VELOCITY_SENSORS_INDEX], N_OF_VELOCITY_SENSORS, NUM_VEL_WIND_REGISTERS, result + VELOCITY_SENSORS_INDEX);
+  set_sensor_summary_register(data[DIR_WIND_SENSORS_INDEX], N_OF_DIRECTION_SENSORS, NUM_DIR_WIND_REGISTERS, result + DIR_WIND_SENSORS_INDEX);
+  set_sensor_summary_register(data[PLUVIO_SENSORS_INDEX], N_OF_PLUVIO_SENSORS, NUM_PLUVIO_REGISTERS, result + PLUVIO_SENSORS_INDEX);
+  set_sensor_summary_register(data[SOIL_HUMIDITY_SENSORS_INDEX], N_OF_SOIL_HUMIDITY_SENSORS, NUM_SOIL_HUMIDITY_REGISTERS, result + SOIL_HUMIDITY_SENSORS_INDEX);
+  set_sensor_summary_register(data[AIR_HUMIDITY_SENSORS_INDEX], N_OF_AIR_HUMIDITY_SENSORS, NUM_AIR_HUMIDITY_REGISTERS, result + AIR_HUMIDITY_SENSORS_INDEX);
+
+  printf("\n  ---   | %11s | %11s | %11s | %11s | %11s | %11s |\n", "Temperature", "Wind Vel.", "Dir. Wind", "Pluvio.", "Soil Hum.", "Air Hum.");
+  printf("--------+-------------+-------------+-------------+-------------+-------------+-------------+");
+
+  printf("\nMin     |");
+  for (int i = 0; i < NUM_OF_SENSORS; i++)
+    printf(" %11d |", **(result + i));
+
+  printf("\nMax     |");
+  for (int i = 0; i < NUM_OF_SENSORS; i++)
+    printf(" %11d |", *(*(result + i) + 1));
+
+  printf("\nAverage |");
+  for (int i = 0; i < NUM_OF_SENSORS; i++)
+    printf(" %11d |", *(*(result + i) + 2));
+
+  printf("\n");
   return 0;
 }

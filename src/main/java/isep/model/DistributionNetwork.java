@@ -6,7 +6,6 @@ import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
 import isep.shared.exceptions.InvalidNumberOfHubsException;
 import isep.utils.MergeSort;
 import isep.utils.graph.AdjacencyMapGraph;
@@ -18,8 +17,8 @@ public class DistributionNetwork {
 
   /**
    *
-   * @param e1       First entity
-   * @param e2       Second entity
+   * @param e1 First entity
+   * @param e2 Second entity
    * @param distance Distance between them (in meters)
    * @return True if the relation was added successfully, false otherwise
    */
@@ -30,8 +29,7 @@ public class DistributionNetwork {
   /**
    * @param e1 entity 1
    * @param e2 entity 2
-   * @return Integer - If e1 and e2 are directed connected, returns distance
-   *         between, null otherwise
+   * @return Integer - If e1 and e2 are directed connected, returns distance between, null otherwise
    */
   public Integer getDistanceBetweenConnectedEntities(Entity e1, Entity e2) {
     if (network.edge(e1, e2) != null)
@@ -41,8 +39,7 @@ public class DistributionNetwork {
 
   /**
    *
-   * @return The number of entities that have a minimum of one relation
-   *         represented in the network
+   * @return The number of entities that have a minimum of one relation represented in the network
    */
   public int getNumberOfEntities() {
     return network.numVertices();
@@ -93,6 +90,10 @@ public class DistributionNetwork {
     return GraphAlgorithms.isConnected(network);
   }
 
+  public LinkedList<Entity> shortestPathBetweenFarthestNodes() {
+    return GraphAlgorithms.shortestPathBetweenFarthestNodes(network, Integer::compare, Integer::sum, 0);
+  }
+
   public List<Enterprise> defineHubs(int numberOfHubs) throws InvalidNumberOfHubsException {
     if (numberOfHubs <= 0)
       throw new InvalidNumberOfHubsException();
@@ -116,12 +117,13 @@ public class DistributionNetwork {
       list.add(new AbstractMap.SimpleEntry<Enterprise, Integer>(e1, average));
     }
 
-    final Comparator<Map.Entry<Enterprise, Integer>> cmp = new Comparator<Map.Entry<Enterprise, Integer>>() {
-      @Override
-      public int compare(Map.Entry<Enterprise, Integer> o1, Map.Entry<Enterprise, Integer> o2) {
-        return (int) (o1.getValue() - o2.getValue());
-      }
-    };
+    final Comparator<Map.Entry<Enterprise, Integer>> cmp =
+        new Comparator<Map.Entry<Enterprise, Integer>>() {
+          @Override
+          public int compare(Map.Entry<Enterprise, Integer> o1, Map.Entry<Enterprise, Integer> o2) {
+            return (int) (o1.getValue() - o2.getValue());
+          }
+        };
 
     // order list
     list = new MergeSort<Map.Entry<Enterprise, Integer>>().sort(list, cmp);
@@ -138,6 +140,7 @@ public class DistributionNetwork {
         break;
       }
     }
+
     return result;
   }
 
