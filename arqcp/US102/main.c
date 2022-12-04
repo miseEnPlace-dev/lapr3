@@ -25,12 +25,9 @@ int main(void)
   state = get_value_from_dev_random();
   inc = get_value_from_dev_random();
 
-  if (N_OF_TEMP_SENSORS == 0 ||
-      N_OF_TEMP_SENSORS != N_OF_PLUVIO_SENSORS ||
-      N_OF_SOIL_HUMIDITY_SENSORS != N_OF_PLUVIO_SENSORS ||
-      N_OF_AIR_HUMIDITY_SENSORS != N_OF_PLUVIO_SENSORS)
+  if (N_OF_TEMP_SENSORS == 0 || N_OF_PLUVIO_SENSORS == 0)
   {
-    printf("Invalid number of sensors.\nMake sure the number of temperature, soil and air sensors are the same and different from 0.\n");
+    printf("Invalid sensor configuration\nMake sure you have atleast one temperature and one pluvio sensor.\n");
     return -1;
   }
 
@@ -100,7 +97,7 @@ int main(void)
     last_read = pcg32_random_r() % 5;
     for (int i = 0; i < NUM_PLUVIO_REGISTERS; i++)
     {
-      last_temp_read = temperatures[j][i * (TEMPERATURES_SENSOR_INTERVAL / PLUVIO_SENSOR_INTERVAL)];
+      last_temp_read = temperatures[0][i * (TEMPERATURES_SENSOR_INTERVAL / PLUVIO_SENSOR_INTERVAL)];
       last_read = sens_pluvio(last_read, last_temp_read, pcg32_random_r());
       pluvio[j][i] = (int)last_read;
     }
@@ -114,7 +111,7 @@ int main(void)
     last_read = 10;
     for (int i = 0; i < NUM_SOIL_HUMIDITY_REGISTERS; i++)
     {
-      last_pluvio_read = pluvio[j][i * (NUM_PLUVIO_REGISTERS / NUM_SOIL_HUMIDITY_REGISTERS)];
+      last_pluvio_read = pluvio[0][i * (NUM_PLUVIO_REGISTERS / NUM_SOIL_HUMIDITY_REGISTERS)];
       last_read = sens_humd_solo(last_read, last_pluvio_read, pcg32_random_r());
       soil_humidity[j][i] = (int)last_read;
     }
@@ -128,7 +125,7 @@ int main(void)
     last_read = 10;
     for (int i = 0; i < NUM_AIR_HUMIDITY_REGISTERS; i++)
     {
-      last_pluvio_read = pluvio[j][i * (NUM_PLUVIO_REGISTERS / NUM_SOIL_HUMIDITY_REGISTERS)];
+      last_pluvio_read = pluvio[0][i * (NUM_PLUVIO_REGISTERS / NUM_SOIL_HUMIDITY_REGISTERS)];
       last_read = sens_humd_atm(last_read, last_pluvio_read, pcg32_random_r());
       air_humidity[j][i] = (int)last_read;
     }
