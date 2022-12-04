@@ -289,7 +289,7 @@ public class DistributionNetworkTest {
 
 
   @Test
-  public void testAverageMinPath() throws InvalidNumberOfHubsException {
+  public void testAverageMinPath(){
     DistributionNetwork network = new DistributionNetwork();
     Enterprise e1 = new Enterprise("e1", 1, 1, "l1");
     Producer p1 = new Producer("p1", 2, 2, "l2");
@@ -302,7 +302,7 @@ public class DistributionNetworkTest {
 
 
   @Test
-  public void testIsConnectedForConnectedGraph() throws InvalidNumberOfHubsException {
+  public void testIsConnectedForConnectedGraph(){
     DistributionNetwork network = new DistributionNetwork();
     Enterprise e1 = new Enterprise("e1", 1, 1, "l1");
     Producer p1 = new Producer("p1", 2, 2, "l2");
@@ -314,7 +314,7 @@ public class DistributionNetworkTest {
   }
 
   @Test
-  public void testIsConnectedForNonConnectedGraph() throws InvalidNumberOfHubsException {
+  public void testIsConnectedForNonConnectedGraph(){
     DistributionNetwork network = new DistributionNetwork();
     Enterprise e1 = new Enterprise("e1", 1, 1, "l1");
     Producer p1 = new Producer("p1", 2, 2, "l2");
@@ -328,7 +328,7 @@ public class DistributionNetworkTest {
 
   
   @Test
-  public void testShortestPathFarestNodes() throws InvalidNumberOfHubsException {
+  public void testShortestPathFarestNodes(){
     DistributionNetwork network = new DistributionNetwork();
     Enterprise e1 = new Enterprise("e1", 1, 1, "l1");
     Producer p1 = new Producer("p1", 2, 2, "l2");
@@ -353,7 +353,7 @@ public class DistributionNetworkTest {
   }
 
   @Test
-  public void testGetHubs() throws InvalidNumberOfHubsException {
+  public void testGetHubs(){
     DistributionNetwork network = new DistributionNetwork();
     Enterprise e1 = new Enterprise("e1", 1, 1, "l1");
     e1.makeHub();
@@ -377,7 +377,7 @@ public class DistributionNetworkTest {
   }
 
   @Test
-  public void testGetHubsWithNoHubs() throws InvalidNumberOfHubsException {
+  public void testGetHubsWithNoHubs(){
     DistributionNetwork network = new DistributionNetwork();
     Enterprise e1 = new Enterprise("e1", 1, 1, "l1");
     Enterprise e2 = new Enterprise("e2", 2, 2, "l2");
@@ -390,8 +390,48 @@ public class DistributionNetworkTest {
   }
 
   @Test
-  public void testGetHubsEmptyNetwork() throws InvalidNumberOfHubsException {
+  public void testGetHubsEmptyNetwork(){
     assertEquals(0, new DistributionNetwork().getHubs().size());
+  }
+
+  @Test
+  public void testGetClients(){
+    DistributionNetwork network = new DistributionNetwork();
+    Enterprise e1 = new Enterprise("e1", 1, 1, "l1");
+    Client e2 = new Client("e2", 2, 2, "l2");
+    Enterprise e3 = new Enterprise("e3", 3, 3, "l3");
+    Client e4 = new Client("e4", 4, 4, "l4");
+
+    network.addRelation(e1, e2, 100);
+    network.addRelation(e3, e4, 300);
+
+    List<Client> expected = new ArrayList<>();
+    expected.add(e2);
+    expected.add(e4);
+
+    List<Client> actual = network.getClients();
+
+    assertEquals(expected.size(), actual.size());
+    assertEquals(expected.get(0), actual.get(0));
+    assertEquals(expected.get(1), actual.get(1));
+  }
+
+  @Test
+  public void testGetClientsWithNoClients(){
+    DistributionNetwork network = new DistributionNetwork();
+    Enterprise e1 = new Enterprise("e1", 1, 1, "l1");
+    Enterprise e2 = new Enterprise("e2", 2, 2, "l2");
+    Enterprise e3 = new Enterprise("e3", 3, 3, "l3");
+
+    network.addRelation(e1, e2, 100);
+    network.addRelation(e3, e2, 300);
+
+    assertEquals(0, network.getClients().size());
+  }
+
+  @Test
+  public void testGetClientsEmptyNetwork(){
+    assertEquals(0, new DistributionNetwork().getClients().size());
   }
 
 
