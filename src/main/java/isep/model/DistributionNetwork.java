@@ -152,14 +152,14 @@ public class DistributionNetwork {
   }
 
   public int getAveragePathDistanceBetweenGroupOfEntities(Entity e1, List<Entity> entities) {
-    int count = 0;
+    
+    ArrayList<Integer> distances = new ArrayList<>();
+    GraphAlgorithms.shortestPaths(network, e1, Integer::compareTo, Integer::sum, 0, new ArrayList<>(), distances);
+    
     int sum = 0;
-
-    // sums the shortest path size to from e1 to all entities
-    // count paths between e1 and all entities
-    for (int i = 0; i < entities.size(); i++) {
-      sum += this.shortestPathDistance(e1, entities.get(i));
-      count++;
+    int count = distances.size();
+    for (int i = 0; i < count; i++) {
+      sum += distances.get(i);
     }
 
     return sum / count;
