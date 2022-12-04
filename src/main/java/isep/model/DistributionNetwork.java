@@ -180,13 +180,15 @@ public class DistributionNetwork {
     if (hubs.size() == 1)
       return hubs.get(0);
 
+    ArrayList<Integer> distancesToOtherVertices = this.shortestPathsDistances(entity);
+
     Enterprise nearestHub = hubs.get(0);
-    int minDistance = this.shortestPathDistance(entity, hubs.get(0));
+    int minDistance = distancesToOtherVertices.get(network.key(hubs.get(0)));
 
     // If there is more than one hub, find the nearest one
     for (int i = 1; i < hubs.size(); i++) {
       Enterprise hub = hubs.get(i);
-      int distance = this.shortestPathDistance(entity, hub);
+      int distance = distancesToOtherVertices.get(network.key(hub));
 
       if (distance < minDistance) {
         minDistance = distance;
