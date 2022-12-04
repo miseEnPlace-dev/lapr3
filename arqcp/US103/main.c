@@ -162,15 +162,15 @@ int main(void)
 
   printf("\nMin     |");
   for (int i = 0; i < NUM_OF_SENSORS; i++)
-    printf(" %11d |", *result[i]);
+    printf(" %11d |", **(result + i));
 
   printf("\nMax     |");
   for (int i = 0; i < NUM_OF_SENSORS; i++)
-    printf(" %11d |", *(result[i] + 1));
+    printf(" %11d |", *(*(result + i) + 1));
 
   printf("\nAverage |");
   for (int i = 0; i < NUM_OF_SENSORS; i++)
-    printf(" %11d |", *(result[i] + 2));
+    printf(" %11d |", *(*(result + i) + 2));
 
   printf("\n");
   return 0;

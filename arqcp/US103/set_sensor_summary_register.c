@@ -8,7 +8,7 @@ void set_sensor_summary_register(int **ptr, int num_sensors, int num_registers, 
 
   for (int i = 0; i < num_sensors; i++)
   {
-    int *ptr2 = ptr[i];
+    int *ptr2 = *(ptr + i);
     for (int j = 0; j < num_registers; j++)
     {
       sum += *(ptr2 + j);
