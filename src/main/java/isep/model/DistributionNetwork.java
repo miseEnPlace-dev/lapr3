@@ -98,18 +98,18 @@ public class DistributionNetwork {
     return GraphAlgorithms.isConnected(network);
   }
 
-  public LinkedList<Entity> shortestPathBetweenFarthestNodes() {
-    return GraphAlgorithms.shortestPathBetweenFarthestNodes(network, Integer::compare, Integer::sum, 0);
+  public int[][] shortestPathsBetweenAllNodes() {
+    return GraphAlgorithms.minEdges(network, Integer::compare, Integer::sum, 0);
   }
 
   public List<Enterprise> defineHubs(int numberOfHubs) throws InvalidNumberOfHubsException {
     if (numberOfHubs <= 0)
       throw new InvalidNumberOfHubsException();
 
-      
+
       if (!this.isConnected())
       return null;
-      
+
     List<Map.Entry<Enterprise, Integer>> list = new ArrayList<>();
     List<Enterprise> enterprises = this.getEnterprises();
 
@@ -151,10 +151,10 @@ public class DistributionNetwork {
   }
 
   public int getAveragePathDistanceBetweenGroupOfEntities(Entity e1) {
-    
+
     ArrayList<Integer> distances = new ArrayList<>();
     GraphAlgorithms.shortestPaths(network, e1, Integer::compareTo, Integer::sum, 0, new ArrayList<>(), distances);
-    
+
     int sum = 0;
     int count = distances.size();
     for (int i = 0; i < count; i++) {

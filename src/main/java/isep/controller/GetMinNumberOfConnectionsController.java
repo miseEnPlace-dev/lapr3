@@ -28,8 +28,18 @@ public class GetMinNumberOfConnectionsController {
     if (!distributionNetwork.isConnected())
       throw new IllegalArgumentException("Distribution network is not connected");
 
-    LinkedList<Entity> shortestPath = distributionNetwork.shortestPathBetweenFarthestNodes();
-    return shortestPath.size() - 1;
+    int[][] shortestPaths = distributionNetwork.shortestPathsBetweenAllNodes();
+
+    int max = shortestPaths[0][0];
+
+    for (int i = 0; i < shortestPaths.length; i++) {
+      for (int j = 0; j < shortestPaths[i].length; j++) {
+        if (shortestPaths[i][j] > max)
+          max = shortestPaths[i][j];
+      }
+    }
+
+    return max;
   }
 
   public boolean isConnected() {
