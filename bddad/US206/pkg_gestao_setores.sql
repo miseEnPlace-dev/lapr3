@@ -11,6 +11,10 @@ CREATE OR REPLACE PACKAGE gestao_setores AS
     id_tipo_cultura CULTURA.id_tipo_cultura%TYPE)
   RETURN CULTURA.id_cultura%TYPE;
 
+  PROCEDURE pr_RegistarPlantacao(id_set PLANTACAO.id_setor%TYPE,
+    id_cult PLANTACAO.id_cultura%TYPE,
+    data_i PLANTACAO.data_inicio%TYPE);
+
   PROCEDURE pr_ListarSetoresOrdemAlfabetica;
   PROCEDURE pr_ListarSetoresTamanhoCrescente;
   PROCEDURE pr_ListarSetoresTamanhoDecrescente;
@@ -19,5 +23,7 @@ CREATE OR REPLACE PACKAGE gestao_setores AS
 
 
   tipo_cultura_inexistente EXCEPTION;
+  setor_inexistente EXCEPTION;
+  cultura_inexistente EXCEPTION;
 
 END gestao_setores;
