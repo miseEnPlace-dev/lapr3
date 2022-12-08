@@ -4,6 +4,7 @@ typedef struct
 {
   unsigned short id;
   unsigned char sensor_type;
+  char *name;               // nome do sensor
   unsigned short max_limit; // limites do sensor
   unsigned short min_limit;
   unsigned long frequency;     // frequency de leituras (em segundos)

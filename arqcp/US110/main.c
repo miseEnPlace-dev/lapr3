@@ -49,6 +49,8 @@ int main(void)
   Sensor soil_humidity_sensors[N_OF_SOIL_HUMIDITY_SENSORS];
   Sensor air_humidity_sensors[N_OF_AIR_HUMIDITY_SENSORS];
 
+  int n_of_sensors[NUM_OF_SENSORS] = {N_OF_TEMP_SENSORS, N_OF_VELOCITY_SENSORS, N_OF_DIRECTION_SENSORS, N_OF_PLUVIO_SENSORS, N_OF_SOIL_HUMIDITY_SENSORS, N_OF_AIR_HUMIDITY_SENSORS};
+
   data[TEMPERATURE_SENSORS_INDEX] = temp_sensors;
   data[VELOCITY_SENSORS_INDEX] = vel_wind_sensors;
   data[DIR_WIND_SENSORS_INDEX] = dir_wind_sensors;
@@ -78,6 +80,7 @@ int main(void)
   {
     Sensor temperature_sensor;
     temperature_sensor.id = 0; // TODO: generate id
+    temperature_sensor.name = "Temperatura";
     temperature_sensor.sensor_type = TEMPERATURE_SENSOR_TYPE;
     temperature_sensor.max_limit = UPPER_LIMIT_TEMPERATURE;
     temperature_sensor.min_limit = LOWER_LIMIT_TEMPERATURE;
@@ -87,7 +90,7 @@ int main(void)
 
     generate_base_temp_values(base_temperatures, NUM_TEMPERATURE_REGISTERS);
     int total_errors = 0;
-    unsigned short *temperatures = (unsigned short *)malloc(sizeof(unsigned short) * NUM_TEMPERATURE_REGISTERS);
+    unsigned short *temperatures = (unsigned short *)malloc(sizeof(unsigned short) * NUM_TEMPERATURE_REGISTERS); // ! Memory leak
 
     do
     {
@@ -98,7 +101,7 @@ int main(void)
         char base_temp_read = (i == 0 ? TEMP_BASE_VALUE : base_temperatures[i - 1]);
         temperatures[i] = (unsigned short)(last_temp_read + base_temp_read) / 2;
 
-        if (temperatures[i] > UPPER_LIMIT_TEMPERATURE || temperatures[i] < LOWER_LIMIT_TEMPERATURE)
+        if (temperatures[i] > temperature_sensor.max_limit || temperatures[i] < temperature_sensor.min_limit)
           error_readings_temp[j][i] = 1;
         else
           error_readings_temp[j][i] = 0;
@@ -123,7 +126,8 @@ int main(void)
   {
     int total_errors = 0;
     Sensor vel_wind_sensor;
-    vel_wind_sensor.id = 0; // TODO: generate id
+    vel_wind_sensor.id = 1; // TODO: generate id
+    vel_wind_sensor.name = "Velocidade do Vento";
     vel_wind_sensor.sensor_type = VELOCITY_SENSOR_TYPE;
     vel_wind_sensor.max_limit = UPPER_LIMIT_VELOCITY;
     vel_wind_sensor.min_limit = LOWER_LIMIT_VELOCITY;
@@ -132,17 +136,17 @@ int main(void)
     vel_wind_sensor.units = "km/h";
 
     unsigned char last_read = pcg32_random_r() % 30;
-    unsigned short *vel_wind = (unsigned short *)malloc(sizeof(unsigned short) * NUM_VEL_WIND_REGISTERS);
+    unsigned short *vel_wind = (unsigned short *)malloc(sizeof(unsigned short) * NUM_VEL_WIND_REGISTERS); // ! Memory leak
 
     do
     {
-      last_read = pcg32_random_r() % 30;
+      last_read = pcg32_random_r() % 30; // TODO change to constants
       for (int i = 0; i < NUM_VEL_WIND_REGISTERS; i++)
       {
         last_read = sens_velc_vento(last_read, pcg32_random_r());
         vel_wind[i] = last_read;
 
-        if (vel_wind[i] > UPPER_LIMIT_VELOCITY || vel_wind[i] < LOWER_LIMIT_VELOCITY)
+        if (vel_wind[i] > vel_wind_sensor.max_limit || vel_wind[i] < vel_wind_sensor.min_limit)
           error_readings_vel[j][i] = 1;
         else
           error_readings_vel[j][i] = 0;
@@ -163,12 +167,13 @@ int main(void)
   }
 
   char error_readings_dir[N_OF_DIRECTION_SENSORS][NUM_DIR_WIND_REGISTERS];
-  unsigned short last_read_wind = pcg32_random_r() % 360;
+  unsigned short last_read_wind = pcg32_random_r() % 360; // TODO change to consntant
 
   for (int j = 0; j < N_OF_DIRECTION_SENSORS; j++)
   {
     Sensor dir_wind_sensor;
-    dir_wind_sensor.id = 1; // TODO: generate id
+    dir_wind_sensor.id = 2; // TODO: generate id
+    dir_wind_sensor.name = "Direção do Vento";
     dir_wind_sensor.sensor_type = DIRECTION_SENSOR_TYPE;
     dir_wind_sensor.max_limit = UPPER_LIMIT_DIR_WIND;
     dir_wind_sensor.min_limit = LOWER_LIMIT_DIR_WIND;
@@ -181,13 +186,13 @@ int main(void)
 
     do
     {
-      last_read_wind = pcg32_random_r() % 360;
+      last_read_wind = pcg32_random_r() % 360; // TODO Change to constant
       for (int i = 0; i < NUM_DIR_WIND_REGISTERS; i++)
       {
         last_read_wind = sens_dir_vento(last_read_wind, pcg32_random_r());
         dir_wind[i] = last_read_wind;
 
-        if (dir_wind[i] > UPPER_LIMIT_DIR_WIND || dir_wind[i] < LOWER_LIMIT_DIR_WIND)
+        if (dir_wind[i] > dir_wind_sensor.max_limit || dir_wind[i] < dir_wind_sensor.min_limit)
           error_readings_dir[j][i] = 1;
         else
           error_readings_dir[j][i] = 0;
@@ -213,7 +218,8 @@ int main(void)
   for (int j = 0; j < N_OF_PLUVIO_SENSORS; j++)
   {
     Sensor pluvio_sensor;
-    pluvio_sensor.id = 2; // TODO: generate id
+    pluvio_sensor.id = 3; // TODO: generate id
+    pluvio_sensor.name = "Pluviosidade";
     pluvio_sensor.sensor_type = PLUVIO_SENSOR_TYPE;
     pluvio_sensor.max_limit = UPPER_LIMIT_PLUVIO;
     pluvio_sensor.min_limit = LOWER_LIMIT_PLUVIO;
@@ -223,7 +229,7 @@ int main(void)
 
     int total_errors = 0;
 
-    unsigned short *pluvio = (unsigned short *)malloc(sizeof(unsigned short) * NUM_PLUVIO_REGISTERS);
+    unsigned short *pluvio = (unsigned short *)malloc(sizeof(unsigned short) * NUM_PLUVIO_REGISTERS); // ! Memory leak
     do
     {
       unsigned short last_read = pcg32_random_r() % 5; // TODO change to constant
@@ -234,7 +240,7 @@ int main(void)
         last_read = (unsigned short)sens_pluvio(last_read, last_temp_read, pcg32_random_r());
         pluvio[i] = last_read;
 
-        if (pluvio[i] > UPPER_LIMIT_PLUVIO || pluvio[i] < LOWER_LIMIT_PLUVIO)
+        if (pluvio[i] > pluvio_sensor.max_limit || pluvio[i] < pluvio_sensor.min_limit)
           error_readings_pluvio[j][i] = 1;
         else
           error_readings_pluvio[j][i] = 0;
@@ -260,15 +266,16 @@ int main(void)
   for (int j = 0; j < N_OF_SOIL_HUMIDITY_SENSORS; j++)
   {
     Sensor soil_humidity_sensor;
-    soil_humidity_sensor.id = 2; // TODO: generate id
+    soil_humidity_sensor.id = 4; // TODO: generate id
+    soil_humidity_sensor.name = "Humidade do Solo";
     soil_humidity_sensor.sensor_type = SOIL_HUMIDITY_SENSOR_TYPE;
     soil_humidity_sensor.max_limit = UPPER_LIMIT_SOIL_HUMIDITY;
     soil_humidity_sensor.min_limit = LOWER_LIMIT_SOIL_HUMIDITY;
     soil_humidity_sensor.frequency = SOIL_HUMIDITY_SENSOR_INTERVAL;
-    soil_humidity_sensor.readings_size = N_OF_SOIL_HUMIDITY_SENSORS;
+    soil_humidity_sensor.readings_size = NUM_SOIL_HUMIDITY_REGISTERS;
     soil_humidity_sensor.units = "%";
 
-    unsigned short *soil_humidity = (unsigned short *)malloc(sizeof(unsigned short) * NUM_SOIL_HUMIDITY_REGISTERS);
+    unsigned short *soil_humidity = (unsigned short *)malloc(sizeof(unsigned short) * NUM_SOIL_HUMIDITY_REGISTERS); // ! Memory leak
     int total_errors = 0;
     unsigned short last_read = 10;
 
@@ -280,7 +287,7 @@ int main(void)
         last_read = sens_humd_solo(last_read, last_pluvio_read, pcg32_random_r());
         soil_humidity[i] = (unsigned short)last_read;
 
-        if (soil_humidity[i] > UPPER_LIMIT_SOIL_HUMIDITY || soil_humidity[i] < LOWER_LIMIT_SOIL_HUMIDITY)
+        if (soil_humidity[i] > soil_humidity_sensor.max_limit || soil_humidity[i] < soil_humidity_sensor.min_limit)
           error_readings_soil[j][i] = 1;
         else
           error_readings_soil[j][i] = 0;
@@ -306,15 +313,15 @@ int main(void)
   for (int j = 0; j < N_OF_AIR_HUMIDITY_SENSORS; j++)
   {
     Sensor air_humidity_sensor;
-    air_humidity_sensor.id = 2; // TODO: generate id
+    air_humidity_sensor.id = 5; // TODO: generate id
     air_humidity_sensor.sensor_type = AIR_HUMIDITY_SENSOR_TYPE;
     air_humidity_sensor.max_limit = UPPER_LIMIT_AIR_HUMIDITY;
     air_humidity_sensor.min_limit = LOWER_LIMIT_AIR_HUMIDITY;
     air_humidity_sensor.frequency = AIR_HUMIDITY_SENSOR_INTERVAL;
-    air_humidity_sensor.readings_size = N_OF_AIR_HUMIDITY_SENSORS;
+    air_humidity_sensor.readings_size = NUM_AIR_HUMIDITY_REGISTERS;
     air_humidity_sensor.units = "%";
 
-    unsigned short *air_humidity = (unsigned short *)malloc(sizeof(unsigned short) * NUM_AIR_HUMIDITY_REGISTERS);
+    unsigned short *air_humidity = (unsigned short *)malloc(sizeof(unsigned short) * NUM_AIR_HUMIDITY_REGISTERS); // ! Memory leak
     int total_errors = 0;
     unsigned short last_read = 10;
 
@@ -326,7 +333,7 @@ int main(void)
         last_read = sens_humd_atm(last_read, last_pluvio_read, pcg32_random_r());
         air_humidity[i] = (unsigned short)last_read;
 
-        if (air_humidity[i] > UPPER_LIMIT_AIR_HUMIDITY || air_humidity[i] < LOWER_LIMIT_AIR_HUMIDITY)
+        if (air_humidity[i] > air_humidity_sensor.max_limit || air_humidity[i] < air_humidity_sensor.min_limit)
           error_readings_humd[j][i] = 1;
         else
           error_readings_humd[j][i] = 0;
@@ -347,17 +354,14 @@ int main(void)
   }
 
   printf("\n-- Leituras dos sensores --\n\n");
-  print_result(data[TEMPERATURE_SENSORS_INDEX], NUM_TEMPERATURE_REGISTERS, "Temperatura", "ºC", N_OF_TEMP_SENSORS, errors[TEMPERATURE_SENSORS_INDEX]);
+  print_signed_result(data[TEMPERATURE_SENSORS_INDEX], NUM_TEMPERATURE_REGISTERS, "Temperatura", "ºC", N_OF_TEMP_SENSORS, errors[TEMPERATURE_SENSORS_INDEX]);
   printf("\n");
-  print_result(data[VELOCITY_SENSORS_INDEX], NUM_VEL_WIND_REGISTERS, "Velocidade do Vento", "km/h", N_OF_VELOCITY_SENSORS, errors[VELOCITY_SENSORS_INDEX]);
-  printf("\n");
-  print_result(data[DIR_WIND_SENSORS_INDEX], NUM_DIR_WIND_REGISTERS, "Direção do Vento", "º", N_OF_DIRECTION_SENSORS, errors[DIR_WIND_SENSORS_INDEX]);
-  printf("\n");
-  print_result(data[PLUVIO_SENSORS_INDEX], NUM_PLUVIO_REGISTERS, "Pluviosidade", "mm", N_OF_PLUVIO_SENSORS, errors[PLUVIO_SENSORS_INDEX]);
-  printf("\n");
-  print_result(data[SOIL_HUMIDITY_SENSORS_INDEX], NUM_SOIL_HUMIDITY_REGISTERS, "Humidade do Solo", "%", N_OF_SOIL_HUMIDITY_SENSORS, errors[SOIL_HUMIDITY_SENSORS_INDEX]);
-  printf("\n");
-  print_result(data[AIR_HUMIDITY_SENSORS_INDEX], NUM_AIR_HUMIDITY_REGISTERS, "Humidade do Ar", "%", N_OF_AIR_HUMIDITY_SENSORS, errors[AIR_HUMIDITY_SENSORS_INDEX]);
+
+  for (int i = 1; i < NUM_OF_SENSORS; i++)
+  {
+    print_result(data[i], data[i]->readings_size, data[i]->name, data[i]->units, n_of_sensors[i], errors[i]);
+    printf("\n");
+  }
 
   return 0;
 }
