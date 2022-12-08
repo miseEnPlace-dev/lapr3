@@ -178,7 +178,7 @@ int main(void)
     dir_wind_sensor.max_limit = UPPER_LIMIT_DIR_WIND;
     dir_wind_sensor.min_limit = LOWER_LIMIT_DIR_WIND;
     dir_wind_sensor.frequency = DIRECTION_SENSOR_INTERVAL;
-    dir_wind_sensor.readings_size = N_OF_DIRECTION_SENSORS;
+    dir_wind_sensor.readings_size = NUM_DIR_WIND_REGISTERS;
     dir_wind_sensor.units = "º";
 
     int total_errors = 0;
@@ -360,7 +360,8 @@ int main(void)
   for (int i = 1; i < NUM_OF_SENSORS; i++)
   {
     print_result(data[i], data[i]->readings_size, data[i]->name, data[i]->units, n_of_sensors[i], errors[i]);
-    printf("\n");
+    if (i < NUM_OF_SENSORS - 1) // fix to avoid printing extra new line in last iteration
+      printf("\n");
   }
 
   return 0;
