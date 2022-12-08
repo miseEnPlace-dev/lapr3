@@ -88,14 +88,14 @@ int main(void)
     temperature_sensor.readings_size = NUM_TEMPERATURE_REGISTERS;
     temperature_sensor.units = "ºC";
 
-    generate_base_temp_values(base_temperatures, NUM_TEMPERATURE_REGISTERS);
+    generate_base_temp_values(base_temperatures, temperature_sensor.readings_size);
     int total_errors = 0;
-    unsigned short *temperatures = (unsigned short *)malloc(sizeof(unsigned short) * NUM_TEMPERATURE_REGISTERS); // ! Memory leak
+    unsigned short *temperatures = (unsigned short *)malloc(sizeof(unsigned short) * temperature_sensor.readings_size);
 
     do
     {
       char last_temp_read = TEMP_BASE_VALUE;
-      for (int i = 0; i < NUM_TEMPERATURE_REGISTERS; i++)
+      for (int i = 0; i < temperature_sensor.readings_size; i++)
       {
         last_temp_read = sens_temp(last_temp_read, pcg32_random_r());
         char base_temp_read = (i == 0 ? TEMP_BASE_VALUE : base_temperatures[i - 1]);
@@ -106,7 +106,7 @@ int main(void)
         else
           error_readings_temp[j][i] = 0;
       }
-      total_errors = get_total_errors(error_readings_temp[j], NUM_TEMPERATURE_REGISTERS);
+      total_errors = get_total_errors(error_readings_temp[j], temperature_sensor.readings_size);
       printf("Temperatura > Sensor %d: %d erros\n", j + 1, total_errors);
 
       if (total_errors > MAX_INCORRECT_READS)
@@ -122,7 +122,7 @@ int main(void)
   }
 
   char error_readings_vel[N_OF_VELOCITY_SENSORS][NUM_VEL_WIND_REGISTERS];
-  for (int j = 0; j < N_OF_VELOCITY_SENSORS; j++)
+  for (int j = 0; j < n_of_sensors[VELOCITY_SENSORS_INDEX]; j++)
   {
     int total_errors = 0;
     Sensor vel_wind_sensor;
@@ -136,12 +136,12 @@ int main(void)
     vel_wind_sensor.units = "km/h";
 
     unsigned char last_read = pcg32_random_r() % 30;
-    unsigned short *vel_wind = (unsigned short *)malloc(sizeof(unsigned short) * NUM_VEL_WIND_REGISTERS); // ! Memory leak
+    unsigned short *vel_wind = (unsigned short *)malloc(sizeof(unsigned short) * vel_wind_sensor.readings_size);
 
     do
     {
       last_read = pcg32_random_r() % 30; // TODO change to constants
-      for (int i = 0; i < NUM_VEL_WIND_REGISTERS; i++)
+      for (int i = 0; i < vel_wind_sensor.readings_size; i++)
       {
         last_read = sens_velc_vento(last_read, pcg32_random_r());
         vel_wind[i] = last_read;
@@ -182,12 +182,12 @@ int main(void)
     dir_wind_sensor.units = "º";
 
     int total_errors = 0;
-    unsigned short dir_wind[NUM_DIR_WIND_REGISTERS];
+    unsigned short *dir_wind = (unsigned short *)malloc(sizeof(unsigned short) * dir_wind_sensor.readings_size);
 
     do
     {
       last_read_wind = pcg32_random_r() % 360; // TODO Change to constant
-      for (int i = 0; i < NUM_DIR_WIND_REGISTERS; i++)
+      for (int i = 0; i < dir_wind_sensor.readings_size; i++)
       {
         last_read_wind = sens_dir_vento(last_read_wind, pcg32_random_r());
         dir_wind[i] = last_read_wind;
@@ -224,17 +224,17 @@ int main(void)
     pluvio_sensor.max_limit = UPPER_LIMIT_PLUVIO;
     pluvio_sensor.min_limit = LOWER_LIMIT_PLUVIO;
     pluvio_sensor.frequency = PLUVIO_SENSOR_INTERVAL;
-    pluvio_sensor.readings_size = N_OF_PLUVIO_SENSORS;
+    pluvio_sensor.readings_size = NUM_PLUVIO_REGISTERS;
     pluvio_sensor.units = "mm";
 
     int total_errors = 0;
 
-    unsigned short *pluvio = (unsigned short *)malloc(sizeof(unsigned short) * NUM_PLUVIO_REGISTERS); // ! Memory leak
+    unsigned short *pluvio = (unsigned short *)malloc(sizeof(unsigned short) * pluvio_sensor.readings_size);
     do
     {
       unsigned short last_read = pcg32_random_r() % 5; // TODO change to constant
 
-      for (int i = 0; i < NUM_PLUVIO_REGISTERS; i++)
+      for (int i = 0; i < pluvio_sensor.readings_size; i++)
       {
         last_temp_read = temp_sensors[0].readings[i * (TEMPERATURES_SENSOR_INTERVAL / PLUVIO_SENSOR_INTERVAL)];
         last_read = (unsigned short)sens_pluvio(last_read, last_temp_read, pcg32_random_r());
@@ -275,13 +275,13 @@ int main(void)
     soil_humidity_sensor.readings_size = NUM_SOIL_HUMIDITY_REGISTERS;
     soil_humidity_sensor.units = "%";
 
-    unsigned short *soil_humidity = (unsigned short *)malloc(sizeof(unsigned short) * NUM_SOIL_HUMIDITY_REGISTERS); // ! Memory leak
+    unsigned short *soil_humidity = (unsigned short *)malloc(sizeof(unsigned short) * soil_humidity_sensor.readings_size);
     int total_errors = 0;
     unsigned short last_read = 10;
 
     do
     {
-      for (int i = 0; i < NUM_SOIL_HUMIDITY_REGISTERS; i++)
+      for (int i = 0; i < soil_humidity_sensor.readings_size; i++)
       {
         last_pluvio_read = pluvio_sensors[0].readings[i * (NUM_PLUVIO_REGISTERS / NUM_SOIL_HUMIDITY_REGISTERS)];
         last_read = sens_humd_solo(last_read, last_pluvio_read, pcg32_random_r());
@@ -321,13 +321,13 @@ int main(void)
     air_humidity_sensor.readings_size = NUM_AIR_HUMIDITY_REGISTERS;
     air_humidity_sensor.units = "%";
 
-    unsigned short *air_humidity = (unsigned short *)malloc(sizeof(unsigned short) * NUM_AIR_HUMIDITY_REGISTERS); // ! Memory leak
+    unsigned short *air_humidity = (unsigned short *)malloc(sizeof(unsigned short) * air_humidity_sensor.readings_size);
     int total_errors = 0;
     unsigned short last_read = 10;
 
     do
     {
-      for (int i = 0; i < NUM_AIR_HUMIDITY_REGISTERS; i++)
+      for (int i = 0; i < air_humidity_sensor.readings_size; i++)
       {
         last_pluvio_read = pluvio_sensors[0].readings[i * (NUM_PLUVIO_REGISTERS / NUM_SOIL_HUMIDITY_REGISTERS)];
         last_read = sens_humd_atm(last_read, last_pluvio_read, pcg32_random_r());
