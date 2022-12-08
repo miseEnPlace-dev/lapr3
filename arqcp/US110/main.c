@@ -74,12 +74,8 @@ int main(void)
   errors[SOIL_HUMIDITY_SENSORS_INDEX] = error_soil_humidity_sensors;
   errors[AIR_HUMIDITY_SENSORS_INDEX] = error_air_humidity_sensors;
 
-  char error_readings_temp[N_OF_TEMP_SENSORS][NUM_TEMPERATURE_REGISTERS];
-  char base_temperatures[NUM_TEMPERATURE_REGISTERS];
-  for (int j = 0; j < N_OF_TEMP_SENSORS; j++)
-  {
     Sensor temperature_sensor;
-    temperature_sensor.id = 0; // TODO: generate id
+    temperature_sensor.id = -1; // TODO: generate id
     temperature_sensor.name = "Temperatura";
     temperature_sensor.sensor_type = TEMPERATURE_SENSOR_TYPE;
     temperature_sensor.max_limit = UPPER_LIMIT_TEMPERATURE;
@@ -87,6 +83,64 @@ int main(void)
     temperature_sensor.frequency = TEMPERATURES_SENSOR_INTERVAL;
     temperature_sensor.readings_size = NUM_TEMPERATURE_REGISTERS;
     temperature_sensor.units = "ºC";
+
+    Sensor vel_wind_sensor;
+    vel_wind_sensor.id = -1; // TODO: generate id
+    vel_wind_sensor.name = "Velocidade do Vento";
+    vel_wind_sensor.sensor_type = VELOCITY_SENSOR_TYPE;
+    vel_wind_sensor.max_limit = UPPER_LIMIT_VELOCITY;
+    vel_wind_sensor.min_limit = LOWER_LIMIT_VELOCITY;
+    vel_wind_sensor.frequency = VELOCITY_SENSOR_INTERVAL;
+    vel_wind_sensor.readings_size = NUM_VEL_WIND_REGISTERS;
+    vel_wind_sensor.units = "km/h";
+
+    Sensor dir_wind_sensor;
+    dir_wind_sensor.id = -1; // TODO: generate id
+    dir_wind_sensor.name = "Direção do Vento";
+    dir_wind_sensor.sensor_type = DIRECTION_SENSOR_TYPE;
+    dir_wind_sensor.max_limit = UPPER_LIMIT_DIR_WIND;
+    dir_wind_sensor.min_limit = LOWER_LIMIT_DIR_WIND;
+    dir_wind_sensor.frequency = DIRECTION_SENSOR_INTERVAL;
+    dir_wind_sensor.readings_size = NUM_DIR_WIND_REGISTERS;
+    dir_wind_sensor.units = "º";
+
+    Sensor pluvio_sensor;
+    pluvio_sensor.id = -1; // TODO: generate id
+    pluvio_sensor.name = "Pluviosidade";
+    pluvio_sensor.sensor_type = PLUVIO_SENSOR_TYPE;
+    pluvio_sensor.max_limit = UPPER_LIMIT_PLUVIO;
+    pluvio_sensor.min_limit = LOWER_LIMIT_PLUVIO;
+    pluvio_sensor.frequency = PLUVIO_SENSOR_INTERVAL;
+    pluvio_sensor.readings_size = NUM_PLUVIO_REGISTERS;
+    pluvio_sensor.units = "mm";
+
+    Sensor soil_humidity_sensor;
+    soil_humidity_sensor.id = -1; // TODO: generate id
+    soil_humidity_sensor.name = "Humidade do Solo";
+    soil_humidity_sensor.sensor_type = SOIL_HUMIDITY_SENSOR_TYPE;
+    soil_humidity_sensor.max_limit = UPPER_LIMIT_SOIL_HUMIDITY;
+    soil_humidity_sensor.min_limit = LOWER_LIMIT_SOIL_HUMIDITY;
+    soil_humidity_sensor.frequency = SOIL_HUMIDITY_SENSOR_INTERVAL;
+    soil_humidity_sensor.readings_size = NUM_SOIL_HUMIDITY_REGISTERS;
+    soil_humidity_sensor.units = "%";
+
+    Sensor air_humidity_sensor;
+    air_humidity_sensor.id = -1; // TODO: generate id
+    air_humidity_sensor.name = "Humidade do Ar";
+    air_humidity_sensor.sensor_type = AIR_HUMIDITY_SENSOR_TYPE;
+    air_humidity_sensor.max_limit = UPPER_LIMIT_AIR_HUMIDITY;
+    air_humidity_sensor.min_limit = LOWER_LIMIT_AIR_HUMIDITY;
+    air_humidity_sensor.frequency = AIR_HUMIDITY_SENSOR_INTERVAL;
+    air_humidity_sensor.readings_size = NUM_AIR_HUMIDITY_REGISTERS;
+    air_humidity_sensor.units = "%";
+
+    char error_readings_temp[N_OF_TEMP_SENSORS][temperature_sensor.readings_size];
+    char base_temperatures[temperature_sensor.readings_size];
+
+  for (int j = 0; j < N_OF_TEMP_SENSORS; j++)
+  {
+    temperature_sensor.id = j; // TODO: generate id
+
 
     generate_base_temp_values(base_temperatures, temperature_sensor.readings_size);
     int total_errors = 0;
@@ -121,19 +175,14 @@ int main(void)
     error_temp_sensors[j] = error_readings_temp[j];
   }
 
-  char error_readings_vel[N_OF_VELOCITY_SENSORS][NUM_VEL_WIND_REGISTERS];
+  char error_readings_vel[N_OF_VELOCITY_SENSORS][vel_wind_sensor.readings_size];
+
   for (int j = 0; j < n_of_sensors[VELOCITY_SENSORS_INDEX]; j++)
   {
     int total_errors = 0;
-    Sensor vel_wind_sensor;
-    vel_wind_sensor.id = 1; // TODO: generate id
-    vel_wind_sensor.name = "Velocidade do Vento";
-    vel_wind_sensor.sensor_type = VELOCITY_SENSOR_TYPE;
-    vel_wind_sensor.max_limit = UPPER_LIMIT_VELOCITY;
-    vel_wind_sensor.min_limit = LOWER_LIMIT_VELOCITY;
-    vel_wind_sensor.frequency = VELOCITY_SENSOR_INTERVAL;
-    vel_wind_sensor.readings_size = NUM_VEL_WIND_REGISTERS;
-    vel_wind_sensor.units = "km/h";
+
+    vel_wind_sensor.id = j; // TODO: generate id
+
 
     unsigned char last_read = pcg32_random_r() % 30;
     unsigned short *vel_wind = (unsigned short *)malloc(sizeof(unsigned short) * vel_wind_sensor.readings_size);
@@ -166,20 +215,15 @@ int main(void)
     error_vel_wind_sensors[j] = error_readings_vel[j];
   }
 
-  char error_readings_dir[N_OF_DIRECTION_SENSORS][NUM_DIR_WIND_REGISTERS];
   unsigned short last_read_wind = pcg32_random_r() % 360; // TODO change to consntant
+
+  char error_readings_dir[N_OF_DIRECTION_SENSORS][dir_wind_sensor.readings_size];
 
   for (int j = 0; j < N_OF_DIRECTION_SENSORS; j++)
   {
-    Sensor dir_wind_sensor;
-    dir_wind_sensor.id = 2; // TODO: generate id
-    dir_wind_sensor.name = "Direção do Vento";
-    dir_wind_sensor.sensor_type = DIRECTION_SENSOR_TYPE;
-    dir_wind_sensor.max_limit = UPPER_LIMIT_DIR_WIND;
-    dir_wind_sensor.min_limit = LOWER_LIMIT_DIR_WIND;
-    dir_wind_sensor.frequency = DIRECTION_SENSOR_INTERVAL;
-    dir_wind_sensor.readings_size = NUM_DIR_WIND_REGISTERS;
-    dir_wind_sensor.units = "º";
+
+    dir_wind_sensor.id = j; // TODO: generate id
+
 
     int total_errors = 0;
     unsigned short *dir_wind = (unsigned short *)malloc(sizeof(unsigned short) * dir_wind_sensor.readings_size);
@@ -212,20 +256,14 @@ int main(void)
     error_dir_wind_sensors[j] = error_readings_dir[j];
   }
 
-  char error_readings_pluvio[N_OF_PLUVIO_SENSORS][NUM_PLUVIO_REGISTERS];
-  unsigned char last_temp_read = temp_sensors[0].readings[TEMPERATURES_SENSOR_INTERVAL / PLUVIO_SENSOR_INTERVAL];
+  char error_readings_pluvio[N_OF_PLUVIO_SENSORS][pluvio_sensor.readings_size];
 
   for (int j = 0; j < N_OF_PLUVIO_SENSORS; j++)
   {
-    Sensor pluvio_sensor;
-    pluvio_sensor.id = 3; // TODO: generate id
-    pluvio_sensor.name = "Pluviosidade";
-    pluvio_sensor.sensor_type = PLUVIO_SENSOR_TYPE;
-    pluvio_sensor.max_limit = UPPER_LIMIT_PLUVIO;
-    pluvio_sensor.min_limit = LOWER_LIMIT_PLUVIO;
-    pluvio_sensor.frequency = PLUVIO_SENSOR_INTERVAL;
-    pluvio_sensor.readings_size = NUM_PLUVIO_REGISTERS;
-    pluvio_sensor.units = "mm";
+
+    pluvio_sensor.id = j; // TODO: generate id
+
+    unsigned char last_temp_read = temp_sensors[0].readings[TEMPERATURES_SENSOR_INTERVAL / PLUVIO_SENSOR_INTERVAL];
 
     int total_errors = 0;
 
@@ -245,7 +283,7 @@ int main(void)
         else
           error_readings_pluvio[j][i] = 0;
       }
-      total_errors = get_total_errors(error_readings_pluvio[j], NUM_PLUVIO_REGISTERS);
+      total_errors = get_total_errors(error_readings_pluvio[j], pluvio_sensor.readings_size);
       printf("Pluviosidade > Sensor %d: %d erros\n", j + 1, total_errors);
 
       if (total_errors > MAX_INCORRECT_READS)
@@ -260,20 +298,14 @@ int main(void)
     error_pluvio_sensors[j] = error_readings_pluvio[j];
   }
 
-  char error_readings_soil[N_OF_SOIL_HUMIDITY_SENSORS][NUM_SOIL_HUMIDITY_REGISTERS];
-  unsigned char last_pluvio_read = pluvio_sensors[0].readings[(NUM_PLUVIO_REGISTERS / NUM_SOIL_HUMIDITY_REGISTERS)];
+    char error_readings_soil[N_OF_SOIL_HUMIDITY_SENSORS][soil_humidity_sensor.readings_size];
 
   for (int j = 0; j < N_OF_SOIL_HUMIDITY_SENSORS; j++)
   {
-    Sensor soil_humidity_sensor;
-    soil_humidity_sensor.id = 4; // TODO: generate id
-    soil_humidity_sensor.name = "Humidade do Solo";
-    soil_humidity_sensor.sensor_type = SOIL_HUMIDITY_SENSOR_TYPE;
-    soil_humidity_sensor.max_limit = UPPER_LIMIT_SOIL_HUMIDITY;
-    soil_humidity_sensor.min_limit = LOWER_LIMIT_SOIL_HUMIDITY;
-    soil_humidity_sensor.frequency = SOIL_HUMIDITY_SENSOR_INTERVAL;
-    soil_humidity_sensor.readings_size = NUM_SOIL_HUMIDITY_REGISTERS;
-    soil_humidity_sensor.units = "%";
+
+    soil_humidity_sensor.id = j; // TODO: generate id
+
+    unsigned char last_pluvio_read = pluvio_sensors[0].readings[(pluvio_sensor.readings_size / soil_humidity_sensor.readings_size)];
 
     unsigned short *soil_humidity = (unsigned short *)malloc(sizeof(unsigned short) * soil_humidity_sensor.readings_size);
     int total_errors = 0;
@@ -283,7 +315,7 @@ int main(void)
     {
       for (int i = 0; i < soil_humidity_sensor.readings_size; i++)
       {
-        last_pluvio_read = pluvio_sensors[0].readings[i * (NUM_PLUVIO_REGISTERS / NUM_SOIL_HUMIDITY_REGISTERS)];
+        last_pluvio_read = pluvio_sensors[0].readings[i * (pluvio_sensor.readings_size / soil_humidity_sensor.readings_size)];
         last_read = sens_humd_solo(last_read, last_pluvio_read, pcg32_random_r());
         soil_humidity[i] = (unsigned short)last_read;
 
@@ -292,7 +324,7 @@ int main(void)
         else
           error_readings_soil[j][i] = 0;
       }
-      total_errors = get_total_errors(error_readings_soil[j], NUM_SOIL_HUMIDITY_REGISTERS);
+      total_errors = get_total_errors(error_readings_soil[j], soil_humidity_sensor.readings_size);
       printf("Humidade Solo > Sensor %d: %d erros\n", j + 1, total_errors);
 
       if (total_errors > MAX_INCORRECT_READS)
@@ -307,19 +339,14 @@ int main(void)
     error_soil_humidity_sensors[j] = error_readings_soil[j];
   }
 
-  char error_readings_humd[N_OF_AIR_HUMIDITY_SENSORS][NUM_AIR_HUMIDITY_REGISTERS];
-  last_pluvio_read = pluvio_sensors[0].readings[(NUM_PLUVIO_REGISTERS / NUM_SOIL_HUMIDITY_REGISTERS)];
+  char error_readings_humd[N_OF_AIR_HUMIDITY_SENSORS][air_humidity_sensor.readings_size];
 
   for (int j = 0; j < N_OF_AIR_HUMIDITY_SENSORS; j++)
   {
-    Sensor air_humidity_sensor;
-    air_humidity_sensor.id = 5; // TODO: generate id
-    air_humidity_sensor.sensor_type = AIR_HUMIDITY_SENSOR_TYPE;
-    air_humidity_sensor.max_limit = UPPER_LIMIT_AIR_HUMIDITY;
-    air_humidity_sensor.min_limit = LOWER_LIMIT_AIR_HUMIDITY;
-    air_humidity_sensor.frequency = AIR_HUMIDITY_SENSOR_INTERVAL;
-    air_humidity_sensor.readings_size = NUM_AIR_HUMIDITY_REGISTERS;
-    air_humidity_sensor.units = "%";
+
+    air_humidity_sensor.id = j; // TODO: generate id
+
+    unsigned char last_pluvio_read = pluvio_sensors[0].readings[(pluvio_sensor.readings_size / soil_humidity_sensor.readings_size)];
 
     unsigned short *air_humidity = (unsigned short *)malloc(sizeof(unsigned short) * air_humidity_sensor.readings_size);
     int total_errors = 0;
@@ -329,7 +356,7 @@ int main(void)
     {
       for (int i = 0; i < air_humidity_sensor.readings_size; i++)
       {
-        last_pluvio_read = pluvio_sensors[0].readings[i * (NUM_PLUVIO_REGISTERS / NUM_SOIL_HUMIDITY_REGISTERS)];
+        last_pluvio_read = pluvio_sensors[0].readings[i * (pluvio_sensor.readings_size / soil_humidity_sensor.readings_size)];
         last_read = sens_humd_atm(last_read, last_pluvio_read, pcg32_random_r());
         air_humidity[i] = (unsigned short)last_read;
 
