@@ -200,7 +200,7 @@ int main(void)
         else
           error_readings_vel[j][i] = 0;
       }
-      total_errors = get_total_errors(error_readings_vel[j], NUM_VEL_WIND_REGISTERS);
+      total_errors = get_total_errors(error_readings_vel[j], vel_wind_sensor.readings_size);
       printf("Velocidade Vento > Sensor %d: %d erros\n", j + 1, total_errors);
 
       if (total_errors > MAX_INCORRECT_READS)
@@ -241,7 +241,7 @@ int main(void)
         else
           error_readings_dir[j][i] = 0;
       }
-      total_errors = get_total_errors(error_readings_dir[j], NUM_DIR_WIND_REGISTERS);
+      total_errors = get_total_errors(error_readings_dir[j], dir_wind_sensor.readings_size);
       printf("Direção Vento > Sensor %d: %d erros\n", j + 1, total_errors);
 
       if (total_errors > MAX_INCORRECT_READS)
@@ -263,7 +263,7 @@ int main(void)
 
     pluvio_sensor.id = j; // TODO: generate id
 
-    unsigned char last_temp_read = temp_sensors[0].readings[TEMPERATURES_SENSOR_INTERVAL / PLUVIO_SENSOR_INTERVAL];
+    unsigned char last_temp_read = temp_sensors[0].readings[temperature_sensor.frequency / pluvio_sensor.frequency];
 
     int total_errors = 0;
 
@@ -274,7 +274,7 @@ int main(void)
 
       for (int i = 0; i < pluvio_sensor.readings_size; i++)
       {
-        last_temp_read = temp_sensors[0].readings[i * (TEMPERATURES_SENSOR_INTERVAL / PLUVIO_SENSOR_INTERVAL)];
+        last_temp_read = temp_sensors[0].readings[i * (temperature_sensor.frequency / pluvio_sensor.frequency)];
         last_read = (unsigned short)sens_pluvio(last_read, last_temp_read, pcg32_random_r());
         pluvio[i] = last_read;
 
@@ -365,7 +365,7 @@ int main(void)
         else
           error_readings_humd[j][i] = 0;
       }
-      total_errors = get_total_errors(error_readings_humd[j], NUM_AIR_HUMIDITY_REGISTERS);
+      total_errors = get_total_errors(error_readings_humd[j], air_humidity_sensor.readings_size);
       printf("Humidade Ar > Sensor %d: %d erros\n", j + 1, total_errors);
 
       if (total_errors > MAX_INCORRECT_READS)
@@ -381,7 +381,7 @@ int main(void)
   }
 
   printf("\n-- Leituras dos sensores --\n\n");
-  print_signed_result(data[TEMPERATURE_SENSORS_INDEX], NUM_TEMPERATURE_REGISTERS, "Temperatura", "ºC", N_OF_TEMP_SENSORS, errors[TEMPERATURE_SENSORS_INDEX]);
+  print_signed_result(data[TEMPERATURE_SENSORS_INDEX], temperature_sensor.readings_size, "Temperatura", "ºC", N_OF_TEMP_SENSORS, errors[TEMPERATURE_SENSORS_INDEX]);
   printf("\n");
 
   for (int i = 1; i < NUM_OF_SENSORS; i++)
