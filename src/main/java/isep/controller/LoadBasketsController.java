@@ -3,6 +3,7 @@ package isep.controller;
 import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Map;
+import isep.model.mapper.BasketsMapper;
 import isep.utils.CSVReader;
 
 /**
@@ -10,10 +11,10 @@ import isep.utils.CSVReader;
  *
  * @author Ricardo Moreira <1211285@isep.ipp.pt>
  */
-public class LoadHampersController {
-  public String filename;
+public class LoadBasketsController {
+  private String filename;
 
-  public LoadHampersController(String filename) {
+  public LoadBasketsController(String filename) {
     this.filename = filename;
   }
 
@@ -22,13 +23,7 @@ public class LoadHampersController {
     return csvreader.read();
   }
 
-  public void loadHampers(List<Map<String, String>> data) {
-    // map has a variable number of products
-
-    for (Map<String, String> map : data) {
-
-    }
-
-
+  public Map<Integer, Map<String, Map<Integer, Double>>> mapBaskets(List<Map<String, String>> data) {
+    return BasketsMapper.toPlan(data);
   }
 }
