@@ -308,7 +308,7 @@ CREATE TABLE ProdutoCultura (
 
 CREATE TABLE Logs (
   id_log                          number(10) NOT NULL,
-  username                        varchar2(30) NOT NULL,
+  utilizador                      varchar2(30) NOT NULL,
   tipo_alteracao                  varchar2(6) NOT NULL,
   data_alteracao                  timestamp(0) NOT NULL,
   tabela                          varchar2(30) NOT NULL,
