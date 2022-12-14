@@ -28,6 +28,7 @@ DROP TABLE TipoAplicacaoFatorProducao CASCADE CONSTRAINTS PURGE;
 DROP TABLE ProdutoCultura CASCADE CONSTRAINTS PURGE;
 DROP TABLE Fornecedor CASCADE CONSTRAINTS PURGE;
 DROP TABLE CategoriaSubstancia CASCADE CONSTRAINTS PURGE;
+DROP TABLE Logs CASCADE CONSTRAINTS PURGE;
 
 CREATE TABLE Setor (
   id_setor   number(10),
@@ -303,4 +304,12 @@ CREATE TABLE ProdutoCultura (
   PRIMARY KEY (id_cultura, id_produto),
   FOREIGN KEY (id_cultura) REFERENCES Cultura (id_cultura) ON DELETE CASCADE,
   FOREIGN KEY (id_produto) REFERENCES Produto (id_produto) ON DELETE CASCADE
+);
+
+CREATE TABLE Logs (
+  id_log                          number(10) NOT NULL,
+  tipo                            varchar2(6) NOT NULL,
+  data                            timestamp(0) NOT NULL,
+  tabela                          varchar2(30) NOT NULL,
+  PRIMARY KEY (id_log)
 );
