@@ -21,6 +21,8 @@
 
       DBMS_OUTPUT.PUT_LINE('TIPO FATOR PRODUCAO ' || new_id || ' registado com sucesso.');
 
+      registar_logs.pr_RegistarInsert(USER, sysdate,'TipoFatorProducao');
+
       RETURN new_id;
 
       EXCEPTION
@@ -54,6 +56,8 @@
 
       DBMS_OUTPUT.PUT_LINE('CATEGORIA SUBSTANCIA ' || new_id || ' registado com sucesso.');
 
+      registar_logs.pr_RegistarInsert(USER, sysdate,'CategoriaSubstancia');
+
       RETURN new_id;
 
       EXCEPTION
@@ -85,6 +89,8 @@
 
       DBMS_OUTPUT.PUT_LINE('FORNECEDOR ' || new_id || ' registado com sucesso.');
 
+      registar_logs.pr_RegistarInsert(USER, sysdate,'Fornecedor');
+
       RETURN new_id;
 
       EXCEPTION
@@ -114,6 +120,8 @@
       VAlUES (new_id, designacao);
 
       DBMS_OUTPUT.PUT_LINE('TIPO FORMULACAO ' || new_id || ' registado com sucesso.');
+
+      registar_logs.pr_RegistarInsert(USER, sysdate,'TipoFormulacao');
 
       RETURN new_id;
 
@@ -163,6 +171,8 @@
       VAlUES (new_id, designacao, forn, cat_sub);
 
       DBMS_OUTPUT.PUT_LINE('SUBSTANCIA ' || new_id || ' registado com sucesso.');
+
+      registar_logs.pr_RegistarInsert(USER, sysdate,'Substancia');
 
       RETURN new_id;
 
@@ -221,6 +231,8 @@
 
       DBMS_OUTPUT.PUT_LINE('FATOR PRODUCAO ' || new_id || ' registado com sucesso.');
 
+      registar_logs.pr_RegistarInsert(USER, sysdate,'FatorProducao');
+
       RETURN new_id;
 
       EXCEPTION
@@ -273,6 +285,7 @@
 
       DBMS_OUTPUT.PUT_LINE('FATOR PRODUCAO - SUBSTANCIA: registado com sucesso.');
 
+      registar_logs.pr_RegistarInsert(USER, sysdate,'FatorProducaoSubstancia');
 
       EXCEPTION
       WHEN fator_producao_inexistente THEN
