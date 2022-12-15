@@ -39,6 +39,8 @@ CREATE OR REPLACE PACKAGE BODY gestao_encomendas AS
     INSERT INTO encomenda (id_encomenda, id_cliente, data_vencimento_pagamento, data_registo, morada_entrega, cod_postal_entrega)
     VALUES (encomenda_id, id_cliente, data_registo + 30, data_registo, morada_entrega, cod_postal_entrega);
 
+    registar_logs.pr_RegistarInsert(USER, sysdate,'Encomenda');
+
     valor_encomenda := 0;
 
     produto_id := lista_produtos.FIRST;
@@ -60,6 +62,8 @@ CREATE OR REPLACE PACKAGE BODY gestao_encomendas AS
 
       INSERT INTO produtoencomenda (id_encomenda, id_produto, quantidade, preco_unitario, iva, designacao_produto)
       VALUES (encomenda_id, produto_id, lista_produtos(produto_id), preco_produto, iva_produto, designacao_produto);
+
+      registar_logs.pr_RegistarInsert(USER, sysdate,'ProdutoEncomenda');
 
       produto_id := lista_produtos.NEXT(produto_id);
     END LOOP;
@@ -132,6 +136,8 @@ CREATE OR REPLACE PACKAGE BODY gestao_encomendas AS
     INSERT INTO encomenda (id_encomenda, id_cliente, data_vencimento_pagamento, data_registo, morada_entrega, cod_postal_entrega)
     VALUES (encomenda_id, id_cliente, data_registo + 30, data_registo, morada_entrega, cod_postal_entrega);
 
+    registar_logs.pr_RegistarInsert(USER, sysdate,'Encomenda');
+
     valor_encomenda := 0;
 
     produto_id := lista_produtos.FIRST;
@@ -153,6 +159,8 @@ CREATE OR REPLACE PACKAGE BODY gestao_encomendas AS
 
       INSERT INTO produtoencomenda (id_encomenda, id_produto, quantidade, preco_unitario, iva, designacao_produto)
       VALUES (encomenda_id, produto_id, lista_produtos(produto_id), preco_produto, iva_produto, designacao_produto);
+
+      registar_logs.pr_RegistarInsert(USER, sysdate,'ProdutoEncomenda');
 
       produto_id := lista_produtos.NEXT(produto_id);
     END LOOP;
@@ -211,6 +219,8 @@ CREATE OR REPLACE PACKAGE BODY gestao_encomendas AS
 
     DBMS_OUTPUT.PUT_LINE('Entrega da encomenda ' || encomenda_id || ' registada com sucesso.');
 
+    registar_logs.pr_RegistarUpdate(USER, sysdate,'Encomenda');
+
     COMMIT;
   EXCEPTION
     WHEN encomenda_inexistente THEN
@@ -246,6 +256,8 @@ CREATE OR REPLACE PACKAGE BODY gestao_encomendas AS
     WHERE id_encomenda = encomenda_id;
 
     DBMS_OUTPUT.PUT_LINE('Pagamento da encomenda ' || encomenda_id || ' registado com sucesso.');
+
+    registar_logs.pr_RegistarUpdate(USER, sysdate,'Encomenda');
 
     COMMIT;
   EXCEPTION
