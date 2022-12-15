@@ -22,6 +22,8 @@ CREATE OR REPLACE PACKAGE BODY gestao_setores AS
 
     DBMS_OUTPUT.PUT_LINE('SETOR ' || new_id || ' registado com sucesso.');
 
+    registar_logs.pr_RegistarInsert(USER, sysdate,'SETOR');
+
     RETURN new_id;
 
   END fn_RegistarSetor;
@@ -48,6 +50,8 @@ CREATE OR REPLACE PACKAGE BODY gestao_setores AS
     VAlUES (new_id, tipo_cultura);
 
     DBMS_OUTPUT.PUT_LINE('TIPOCULTURA ' || new_id || ' registado com sucesso.');
+
+    registar_logs.pr_RegistarInsert(USER, sysdate,'TIPOCULTURA');
 
     RETURN new_id;
 
@@ -87,6 +91,8 @@ CREATE OR REPLACE PACKAGE BODY gestao_setores AS
     VAlUES (new_id, cultura_param, id_t_cultura);
 
     DBMS_OUTPUT.PUT_LINE('CULTURA ' || new_id || ' registado com sucesso.');
+
+    registar_logs.pr_RegistarInsert(USER, sysdate,'CULTURA');
 
     RETURN new_id;
 
@@ -311,6 +317,7 @@ CREATE OR REPLACE PACKAGE BODY gestao_setores AS
 
       DBMS_OUTPUT.PUT_LINE('PLANTACAO registado com sucesso.');
 
+      registar_logs.pr_RegistarInsert(USER, sysdate,'PLANTACAO');
 
       EXCEPTION
       WHEN setor_inexistente THEN
