@@ -42,6 +42,9 @@ CREATE OR REPLACE PACKAGE BODY gestao_clientes AS
 
     DBMS_OUTPUT.PUT_LINE('Cliente ' || cliente_id || ' registado com sucesso.');
 
+    registar_logs.pr_RegistarInsert(USER, sysdate,'CLIENTE');
+
+
     COMMIT;
     RETURN cliente_id;
   EXCEPTION
@@ -74,6 +77,8 @@ CREATE OR REPLACE PACKAGE BODY gestao_clientes AS
     UPDATE CLIENTE SET valor_total_encomendas = total_encomendas, n_encomendas = num_encomendas WHERE id_cliente = cliente_id;
 
     DBMS_OUTPUT.PUT_LINE('Cliente ' || cliente_id || ' atualizado com sucesso.');
+
+    registar_logs.pr_RegistarUpdate(USER, sysdate,'CLIENTE');
 
     EXCEPTION
       WHEN NO_DATA_FOUND THEN
