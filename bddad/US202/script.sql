@@ -305,12 +305,3 @@ CREATE TABLE ProdutoCultura (
   FOREIGN KEY (id_cultura) REFERENCES Cultura (id_cultura) ON DELETE CASCADE,
   FOREIGN KEY (id_produto) REFERENCES Produto (id_produto) ON DELETE CASCADE
 );
-
-CREATE TABLE Logs (
-  id_log                          number(10) NOT NULL,
-  utilizador                      varchar2(30) NOT NULL,
-  tipo_alteracao                  varchar2(6) NOT NULL,
-  data_alteracao                  timestamp(0) NOT NULL,
-  tabela                          varchar2(30) NOT NULL,
-  PRIMARY KEY (id_log)
-);
