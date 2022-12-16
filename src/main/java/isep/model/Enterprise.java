@@ -1,6 +1,6 @@
 package isep.model;
 
-public class Enterprise extends Entity {
+public class Enterprise extends Client {
   private boolean isHub;
 
   public Enterprise(String id, double latitude, double longitude, String localizationId) {
