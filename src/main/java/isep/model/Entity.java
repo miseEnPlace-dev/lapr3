@@ -1,17 +1,20 @@
 package isep.model;
 
+import java.util.HashMap;
+
 public abstract class Entity {
   private String id;
   private double latitude;
   private double longitude;
   private String localizationId;
+  private DailyData dailyData;
 
   public Entity(String id, double latitude, double longitude, String localizationId) {
     validateId(id);
     validateLatitude(latitude);
     validateLongitude(longitude);
     validateLocalizationId(localizationId);
-
+    this.dailyData = new DailyData();
   }
 
   private void validateId(String id) {
@@ -73,5 +76,23 @@ public abstract class Entity {
   public String toString() {
     return "Entity [id=" + id + ", latitude=" + latitude + ", longitude=" + longitude + ", localizationId="
         + localizationId;
+  }
+
+
+  public void addDayData(Integer day, HashMap<Product, Integer> products){
+    this.dailyData.addDayData(day, products);
+  }
+  
+  public void addProductInfoToDayData(Integer day, Product product, Integer quantity){
+    this.dailyData.addProductInfoToDayData(day, product, quantity);
+  }
+
+
+  public HashMap<Product, Integer> getDayData(Integer day){
+    return this.dailyData.getDayData(day);
+  }
+
+  public Integer getQuantityOfProductForDay(Integer day, Product product){
+    return this.dailyData.getQuantityOfProductForDay(day, product);
   }
 }
