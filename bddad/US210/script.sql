@@ -243,10 +243,12 @@ CREATE TABLE MedicaoSensor (
 );
 
 CREATE TABLE Rega (
+  id_rega    number(10) NOT NULL,
   id_setor     number(10) NOT NULL,
-  data         timestamp(0) NOT NULL,
   id_tipo_rega number(2) NOT NULL,
-  PRIMARY KEY (id_setor, data, id_tipo_rega),
+  data_prevista_rega timestamp(0),
+  data_rega timestamp(0),
+  PRIMARY KEY (id_rega),
   FOREIGN KEY (id_tipo_rega) REFERENCES TipoRega (id_tipo_rega) ON DELETE CASCADE,
   FOREIGN KEY (id_setor) REFERENCES Setor (id_setor) ON DELETE CASCADE
 );
@@ -293,8 +295,8 @@ CREATE TABLE TipoAplicacao (
 CREATE TABLE Aplicacao (
   id_aplicacao number(10),
   id_setor number(10) NOT NULL,
-  data_prevista_aplicacao timestamp(0) NOT NULL,
-  data_aplicacao timestamp(0) NOT NULL,
+  data_prevista_aplicacao timestamp(0),
+  data_aplicacao timestamp(0),
   id_tipo_aplicacao number(3) NOT NULL,
   PRIMARY KEY (id_aplicacao),
   FOREIGN KEY (id_setor) REFERENCES Setor (id_setor) ON DELETE CASCADE,
@@ -308,7 +310,7 @@ CREATE TABLE FatorProducaoAplicacao (
   PRIMARY KEY (id_aplicacao, id_fator_producao),
   FOREIGN KEY (id_aplicacao) REFERENCES Aplicacao (id_aplicacao) ON DELETE CASCADE,
   FOREIGN KEY (id_fator_producao) REFERENCES FatorProducao (id_fator_producao) ON DELETE CASCADE
-)
+);
 
 CREATE TABLE RestricaoAplicacao (
   id_setor number(10) NOT NULL,
