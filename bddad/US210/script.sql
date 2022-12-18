@@ -253,24 +253,25 @@ CREATE TABLE Rega (
   FOREIGN KEY (id_setor) REFERENCES Setor (id_setor) ON DELETE CASCADE
 );
 
+CREATE TABLE Plantacao (
+  id_plantacao number(10) NOT NULL,
+  id_setor    number(10) NOT NULL,
+  id_cultura  number(8) NOT NULL,
+  data_inicio timestamp(0) NOT NULL,
+  PRIMARY KEY (id_plantacao),
+  FOREIGN KEY (id_setor) REFERENCES Setor (id_setor) ON DELETE CASCADE,
+  FOREIGN KEY (id_cultura) REFERENCES Cultura (id_cultura) ON DELETE CASCADE
+);
+
 CREATE TABLE Colheita (
   id_produto number(8) NOT NULL,
   data       timestamp(0) NOT NULL,
   quantidade number(8) NOT NULL,
-  id_setor   number(10) NOT NULL,
+  id_plantacao   number(10) NOT NULL,
   PRIMARY KEY (id_produto, data),
   CONSTRAINT CHK_Colheita_PositiveQuantidade CHECK (quantidade > 0),
   FOREIGN KEY (id_produto) REFERENCES Produto (id_produto) ON DELETE CASCADE,
-  FOREIGN KEY (id_setor) REFERENCES Setor (id_setor) ON DELETE CASCADE
-);
-
-CREATE TABLE Plantacao (
-  id_setor    number(10) NOT NULL,
-  id_cultura  number(8) NOT NULL,
-  data_inicio timestamp(0) NOT NULL,
-  PRIMARY KEY (id_setor, id_cultura, data_inicio),
-  FOREIGN KEY (id_setor) REFERENCES Setor (id_setor) ON DELETE CASCADE,
-  FOREIGN KEY (id_cultura) REFERENCES Cultura (id_cultura) ON DELETE CASCADE
+  FOREIGN KEY (id_plantacao) REFERENCES Plantacao (id_plantacao) ON DELETE CASCADE
 );
 
 CREATE TABLE TipoEdificio (
