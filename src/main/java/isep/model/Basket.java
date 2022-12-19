@@ -37,7 +37,7 @@ public class Basket {
     this.received = received;
   }
 
-  public void setHub(Enterprise enterprise) throws InvalidHubException {
+  private void setHub(Enterprise enterprise) throws InvalidHubException {
     if (enterprise == null)
       throw new IllegalArgumentException("Null hub is Invalid!");
     if (!enterprise.isHub())
@@ -45,10 +45,9 @@ public class Basket {
     this.hub = enterprise;
   }
 
-  public void setClient(Client client) {
+  private void setClient(Client client) {
     if (client == null)
       throw new IllegalArgumentException("Null client is Invalid!");
     this.client = client;
   }
-
 }
