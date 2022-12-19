@@ -106,8 +106,7 @@ public class DistributionNetwork {
     if (numberOfHubs <= 0)
       throw new InvalidNumberOfHubsException();
 
-
-      if (!this.isConnected())
+    if (!this.isConnected())
       return null;
 
     List<Map.Entry<Enterprise, Integer>> list = new ArrayList<>();
@@ -196,5 +195,32 @@ public class DistributionNetwork {
     }
 
     return nearestHub;
+  }
+
+  public List<Producer> getNNearestProducers(Enterprise hub, int n) {
+    List<Producer> producers = network.getEntitiesWithClass(Producer.class);
+    List<Producer> result = new ArrayList<>();
+
+    ArrayList<Integer> distancesToOtherVertices = this.shortestPathsDistances(hub);
+
+    for (int i = 0; i < n; i++) {
+      Producer nearestProducer = producers.get(0);
+      int minDistance = distancesToOtherVertices.get(network.key(producers.get(0)));
+
+      for (int j = 1; j < producers.size(); j++) {
+        Producer producer = producers.get(j);
+        int distance = distancesToOtherVertices.get(network.key(producer));
+
+        if (distance < minDistance) {
+          minDistance = distance;
+          nearestProducer = producer;
+        }
+      }
+
+      result.add(nearestProducer);
+      producers.remove(nearestProducer);
+    }
+
+    return result;
   }
 }
