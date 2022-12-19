@@ -199,6 +199,10 @@ public class DistributionNetwork {
 
   public List<Producer> getNNearestProducers(Enterprise hub, int n) {
     List<Producer> producers = network.getEntitiesWithClass(Producer.class);
+
+    if (producers.size() < n)
+      return null;
+
     List<Producer> result = new ArrayList<>();
 
     ArrayList<Integer> distancesToOtherVertices = this.shortestPathsDistances(hub);
