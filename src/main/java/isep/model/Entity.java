@@ -2,7 +2,9 @@ package isep.model;
 
 import java.util.HashMap;
 
-public abstract class Entity {
+import isep.utils.HaversineCalculator;
+
+public abstract class Entity implements VertexHeuristic<Entity> {
   private String id;
   private double latitude;
   private double longitude;
@@ -15,6 +17,19 @@ public abstract class Entity {
     validateLongitude(longitude);
     validateLocalizationId(localizationId);
     this.dailyData = new DailyData();
+  }
+
+  /**
+   * Calculates the distance between two entities using the Haversine formula
+   * This method is used in the A* algorithm
+   * 
+   * @param target The entity to which the distance will be calculated
+   * @return The distance between the two entities, in meters
+   */
+  @Override
+  public int getHeuristicValue(Entity target) {
+    return (int) (HaversineCalculator.getDistanceBetweenTwoCoordinates(this.latitude, this.longitude,
+        target.latitude, target.longitude) * 1000);
   }
 
   private void validateId(String id) {
@@ -78,21 +93,32 @@ public abstract class Entity {
         + localizationId;
   }
 
+  @Override
+  public boolean equals(Object obj) {
+    if (obj == null)
+      return false;
+    if (obj == this)
+      return true;
+    if (!(obj instanceof Entity))
+      return false;
 
-  public void addDayData(Integer day, HashMap<Product, Integer> products){
+    Entity entity = (Entity) obj;
+    return this.id.equals(entity.id);
+  }
+
+  public void addDayData(Integer day, HashMap<Product, Integer> products) {
     this.dailyData.addDayData(day, products);
   }
-  
-  public void addProductInfoToDayData(Integer day, Product product, Integer quantity){
+
+  public void addProductInfoToDayData(Integer day, Product product, Integer quantity) {
     this.dailyData.addProductInfoToDayData(day, product, quantity);
   }
 
-
-  public HashMap<Product, Integer> getDayData(Integer day){
+  public HashMap<Product, Integer> getDayData(Integer day) {
     return this.dailyData.getDayData(day);
   }
 
-  public Integer getQuantityOfProductForDay(Integer day, Product product){
+  public Integer getQuantityOfProductForDay(Integer day, Product product) {
     return this.dailyData.getQuantityOfProductForDay(day, product);
   }
 }
