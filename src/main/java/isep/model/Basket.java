@@ -50,4 +50,8 @@ public class Basket {
       throw new IllegalArgumentException("Null client is Invalid!");
     this.client = client;
   }
+
+  public Client getClient() {
+    return this.client;
+  }
 }
