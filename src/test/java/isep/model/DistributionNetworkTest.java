@@ -7,14 +7,12 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
 import isep.shared.exceptions.InvalidNumberOfHubsException;
 import isep.utils.graph.AdjacencyMapGraph;
-import isep.utils.graph.AdjacencyMapGraphTest;
 import isep.utils.graph.Graph;
 
 public class DistributionNetworkTest {
