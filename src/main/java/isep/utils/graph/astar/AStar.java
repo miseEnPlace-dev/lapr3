@@ -71,10 +71,6 @@ public class AStar {
         // Neighbour discovered, but total cost via current node is lower?
         // --> Update costs and predecessor
         else if (totalCostFromStart < neighbourWrapper.getTotalCostFromStart()) {
-          // The position in the TreeSet won't change automatically;
-          // we have to remove and reinsert the node.
-          // Because TreeSet uses compareTo() to identity a node to remove,
-          // we have to remove it *before* we change the cost!
           queue.remove(neighbourWrapper);
 
           neighbourWrapper.setTotalCostFromStart(totalCostFromStart);
