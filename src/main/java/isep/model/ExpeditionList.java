@@ -37,4 +37,21 @@ public class ExpeditionList {
   public int getNumberOfBaskets() {
     return this.baskets.size();
   }
+
+  public void generateExpeditionList(int n, DistributionNetwork network) {
+    // for each client of basket in baskets get the nearest hub
+    // for each hub get the n nearest producers
+    // for each producer get the products that are in the basket
+    // for each product get the quantity that is in the basket
+    // get producer that gave the product to the basket
+    // create expedition
+
+    for (Basket basket : this.baskets) {
+      Enterprise hub = network.getNearestHub(basket.getClient());
+      List<Producer> producers = network.getNNearestProducers(hub, n);
+      for (Producer producer : producers) {
+        // TO DO
+      }
+    }
+  }
 }
