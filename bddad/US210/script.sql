@@ -31,6 +31,7 @@ DROP TABLE CategoriaSubstancia CASCADE CONSTRAINTS PURGE;
 DROP TABLE Logs CASCADE CONSTRAINTS PURGE;
 DROP TABLE RestricaoAplicacao CASCADE CONSTRAINTS PURGE;
 DROP TABLE FatorProducaoAplicacao CASCADE CONSTRAINTS PURGE;
+DROP TABLE TipoAlteracao CASCADE CONSTRAINTS PURGE;
 
 CREATE TABLE Setor (
   id_setor   number(10),
@@ -242,32 +243,35 @@ CREATE TABLE MedicaoSensor (
 );
 
 CREATE TABLE Rega (
+  id_rega    number(10) NOT NULL,
   id_setor     number(10) NOT NULL,
-  data         timestamp(0) NOT NULL,
   id_tipo_rega number(2) NOT NULL,
-  PRIMARY KEY (id_setor, data, id_tipo_rega),
+  data_prevista_rega timestamp(0),
+  data_rega timestamp(0),
+  PRIMARY KEY (id_rega),
   FOREIGN KEY (id_tipo_rega) REFERENCES TipoRega (id_tipo_rega) ON DELETE CASCADE,
   FOREIGN KEY (id_setor) REFERENCES Setor (id_setor) ON DELETE CASCADE
+);
+
+CREATE TABLE Plantacao (
+  id_plantacao number(10) NOT NULL,
+  id_setor    number(10) NOT NULL,
+  id_cultura  number(8) NOT NULL,
+  data_inicio timestamp(0) NOT NULL,
+  PRIMARY KEY (id_plantacao),
+  FOREIGN KEY (id_setor) REFERENCES Setor (id_setor) ON DELETE CASCADE,
+  FOREIGN KEY (id_cultura) REFERENCES Cultura (id_cultura) ON DELETE CASCADE
 );
 
 CREATE TABLE Colheita (
   id_produto number(8) NOT NULL,
   data       timestamp(0) NOT NULL,
   quantidade number(8) NOT NULL,
-  id_setor   number(10) NOT NULL,
+  id_plantacao   number(10) NOT NULL,
   PRIMARY KEY (id_produto, data),
   CONSTRAINT CHK_Colheita_PositiveQuantidade CHECK (quantidade > 0),
   FOREIGN KEY (id_produto) REFERENCES Produto (id_produto) ON DELETE CASCADE,
-  FOREIGN KEY (id_setor) REFERENCES Setor (id_setor) ON DELETE CASCADE
-);
-
-CREATE TABLE Plantacao (
-  id_setor    number(10) NOT NULL,
-  id_cultura  number(8) NOT NULL,
-  data_inicio timestamp(0) NOT NULL,
-  PRIMARY KEY (id_setor, id_cultura, data_inicio),
-  FOREIGN KEY (id_setor) REFERENCES Setor (id_setor) ON DELETE CASCADE,
-  FOREIGN KEY (id_cultura) REFERENCES Cultura (id_cultura) ON DELETE CASCADE
+  FOREIGN KEY (id_plantacao) REFERENCES Plantacao (id_plantacao) ON DELETE CASCADE
 );
 
 CREATE TABLE TipoEdificio (
@@ -292,8 +296,8 @@ CREATE TABLE TipoAplicacao (
 CREATE TABLE Aplicacao (
   id_aplicacao number(10),
   id_setor number(10) NOT NULL,
-  data_prevista_aplicacao timestamp(0) NOT NULL,
-  data_aplicacao timestamp(0) NOT NULL,
+  data_prevista_aplicacao timestamp(0),
+  data_aplicacao timestamp(0),
   id_tipo_aplicacao number(3) NOT NULL,
   PRIMARY KEY (id_aplicacao),
   FOREIGN KEY (id_setor) REFERENCES Setor (id_setor) ON DELETE CASCADE,
@@ -307,7 +311,7 @@ CREATE TABLE FatorProducaoAplicacao (
   PRIMARY KEY (id_aplicacao, id_fator_producao),
   FOREIGN KEY (id_aplicacao) REFERENCES Aplicacao (id_aplicacao) ON DELETE CASCADE,
   FOREIGN KEY (id_fator_producao) REFERENCES FatorProducao (id_fator_producao) ON DELETE CASCADE
-)
+);
 
 CREATE TABLE RestricaoAplicacao (
   id_setor number(10) NOT NULL,
@@ -327,11 +331,18 @@ CREATE TABLE ProdutoCultura (
   FOREIGN KEY (id_produto) REFERENCES Produto (id_produto) ON DELETE CASCADE
 );
 
+CREATE TABLE TipoAlteracao (
+  id_tipo_alteracao number(10),
+  tipo_alteracao varchar2(30) NOT NULL,
+  PRIMARY KEY (id_tipo_alteracao)
+);
+
 CREATE TABLE Logs (
   id_log number(10) NOT NULL,
   utilizador varchar2(30) NOT NULL,
-  tipo_alteracao varchar2(6) NOT NULL,
+  id_tipo_alteracao number(10) NOT NULL,
   data_alteracao timestamp(0) NOT NULL,
   tabela varchar2(30) NOT NULL,
-  PRIMARY KEY (id_log)
+  PRIMARY KEY (id_log),
+  FOREIGN KEY (id_tipo_alteracao) REFERENCES TipoAlteracao (id_tipo_alteracao) ON DELETE CASCADE
 );

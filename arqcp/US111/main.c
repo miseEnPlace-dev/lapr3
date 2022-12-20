@@ -8,6 +8,7 @@
 #include "random.h"
 #include "sensores.h"
 #include "sensor.h"
+#include "dynamic_sensors.h"
 
 #define SEC_IN_DAY 86400
 

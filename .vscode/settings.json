@@ -2,5 +2,6 @@
   "java.configuration.updateBuildConfiguration": "automatic",
   "files.associations": {
     "*.s": "c"
-  }
+  },
+  "cSpell.words": ["Haversine"]
 }
