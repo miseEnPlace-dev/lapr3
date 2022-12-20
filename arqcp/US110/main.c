@@ -42,14 +42,21 @@ int main(void)
 
   Sensor *data[NUM_OF_SENSORS];
 
-  Sensor temp_sensors[N_OF_TEMP_SENSORS];
-  Sensor vel_wind_sensors[N_OF_VELOCITY_SENSORS];
-  Sensor dir_wind_sensors[N_OF_DIRECTION_SENSORS];
-  Sensor pluvio_sensors[N_OF_PLUVIO_SENSORS];
-  Sensor soil_humidity_sensors[N_OF_SOIL_HUMIDITY_SENSORS];
-  Sensor air_humidity_sensors[N_OF_AIR_HUMIDITY_SENSORS];
+  const char n_temp_sensors = N_OF_TEMP_SENSORS;                   // TODO: get this value from input (file or user)
+  const char n_velocity_sensors = N_OF_VELOCITY_SENSORS;           // TODO: get this value from input (file or user)
+  const char n_direction_sensors = N_OF_DIRECTION_SENSORS;         // TODO: get this value from input (file or user)
+  const char n_pluvio_sensors = N_OF_PLUVIO_SENSORS;               // TODO: get this value from input (file or user)
+  const char n_soil_humidity_sensors = N_OF_SOIL_HUMIDITY_SENSORS; // TODO: get this value from input (file or user)
+  const char n_air_humidity_sensors = N_OF_AIR_HUMIDITY_SENSORS;   // TODO: get this value from input (file or user)
 
-  int n_of_sensors[NUM_OF_SENSORS] = {N_OF_TEMP_SENSORS, N_OF_VELOCITY_SENSORS, N_OF_DIRECTION_SENSORS, N_OF_PLUVIO_SENSORS, N_OF_SOIL_HUMIDITY_SENSORS, N_OF_AIR_HUMIDITY_SENSORS};
+  Sensor *temp_sensors = (Sensor *)malloc(n_temp_sensors * sizeof(Sensor));
+  Sensor *vel_wind_sensors = (Sensor *)malloc(n_velocity_sensors * sizeof(Sensor));
+  Sensor *dir_wind_sensors = (Sensor *)malloc(n_direction_sensors * sizeof(Sensor));
+  Sensor *pluvio_sensors = (Sensor *)malloc(n_pluvio_sensors * sizeof(Sensor));
+  Sensor *soil_humidity_sensors = (Sensor *)malloc(n_soil_humidity_sensors * sizeof(Sensor));
+  Sensor *air_humidity_sensors = (Sensor *)malloc(n_air_humidity_sensors * sizeof(Sensor));
+
+  int n_of_sensors[NUM_OF_SENSORS] = {n_temp_sensors, N_OF_VELOCITY_SENSORS, N_OF_DIRECTION_SENSORS, N_OF_PLUVIO_SENSORS, N_OF_SOIL_HUMIDITY_SENSORS, N_OF_AIR_HUMIDITY_SENSORS};
 
   data[TEMPERATURE_SENSORS_INDEX] = temp_sensors;
   data[VELOCITY_SENSORS_INDEX] = vel_wind_sensors;
@@ -60,12 +67,12 @@ int main(void)
 
   char **errors[NUM_OF_SENSORS];
 
-  char *error_temp_sensors[N_OF_TEMP_SENSORS];
-  char *error_vel_wind_sensors[N_OF_VELOCITY_SENSORS];
-  char *error_dir_wind_sensors[N_OF_DIRECTION_SENSORS];
-  char *error_pluvio_sensors[N_OF_PLUVIO_SENSORS];
-  char *error_soil_humidity_sensors[N_OF_SOIL_HUMIDITY_SENSORS];
-  char *error_air_humidity_sensors[N_OF_AIR_HUMIDITY_SENSORS];
+  char *error_temp_sensors[n_temp_sensors];
+  char *error_vel_wind_sensors[n_velocity_sensors];
+  char *error_dir_wind_sensors[n_direction_sensors];
+  char *error_pluvio_sensors[n_pluvio_sensors];
+  char *error_soil_humidity_sensors[n_soil_humidity_sensors];
+  char *error_air_humidity_sensors[n_air_humidity_sensors];
 
   errors[TEMPERATURE_SENSORS_INDEX] = error_temp_sensors;
   errors[VELOCITY_SENSORS_INDEX] = error_vel_wind_sensors;
@@ -134,10 +141,10 @@ int main(void)
   air_humidity_sensor.readings_size = NUM_AIR_HUMIDITY_REGISTERS;
   air_humidity_sensor.units = "%";
 
-  char error_readings_temp[N_OF_TEMP_SENSORS][temperature_sensor.readings_size];
+  char error_readings_temp[n_temp_sensors][temperature_sensor.readings_size];
   char base_temperatures[temperature_sensor.readings_size];
 
-  for (int j = 0; j < N_OF_TEMP_SENSORS; j++)
+  for (int j = 0; j < n_temp_sensors; j++)
   {
     temperature_sensor.id = j; // TODO: generate id
 
@@ -174,9 +181,9 @@ int main(void)
     error_temp_sensors[j] = error_readings_temp[j];
   }
 
-  char error_readings_vel[N_OF_VELOCITY_SENSORS][vel_wind_sensor.readings_size];
+  char error_readings_vel[n_velocity_sensors][vel_wind_sensor.readings_size];
 
-  for (int j = 0; j < n_of_sensors[VELOCITY_SENSORS_INDEX]; j++)
+  for (int j = 0; j < n_velocity_sensors; j++)
   {
     int total_errors = 0;
 
@@ -257,7 +264,6 @@ int main(void)
 
   for (int j = 0; j < N_OF_PLUVIO_SENSORS; j++)
   {
-
     pluvio_sensor.id = j; // TODO: generate id
 
     unsigned char last_temp_read = temp_sensors[0].readings[temperature_sensor.frequency / pluvio_sensor.frequency];
@@ -378,7 +384,7 @@ int main(void)
   }
 
   printf("\n-- Leituras dos sensores --\n\n");
-  print_signed_result(data[TEMPERATURE_SENSORS_INDEX], temperature_sensor.readings_size, "Temperatura", "ºC", N_OF_TEMP_SENSORS, errors[TEMPERATURE_SENSORS_INDEX]);
+  print_signed_result(data[TEMPERATURE_SENSORS_INDEX], temperature_sensor.readings_size, "Temperatura", "ºC", n_temp_sensors, errors[TEMPERATURE_SENSORS_INDEX]);
   printf("\n");
 
   for (int i = 1; i < NUM_OF_SENSORS; i++)

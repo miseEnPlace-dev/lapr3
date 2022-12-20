@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "sensor.h"
 
@@ -10,7 +11,10 @@ void print_result(Sensor *arr, int size, char *name, char *units, int n_of_senso
     printf("\nSensor %d:\n", j + 1);
     for (int i = 0; i < size; i++)
       printf("Leitura: %u%s %s\n", arr[j].readings[i], units, errors[j][i] == 1 ? "(Erro)" : "");
+    free(arr[j].readings);
   }
+
+  free(arr);
 }
 
 void print_signed_result(Sensor *arr, int size, char *name, char *units, int n_of_sensors, char **errors)
@@ -21,5 +25,7 @@ void print_signed_result(Sensor *arr, int size, char *name, char *units, int n_o
     printf("\nSensor %d:\n", j + 1);
     for (int i = 0; i < size; i++)
       printf("Leitura: %d%s %s\n", (char)arr[j].readings[i], units, errors[j][i] == 1 ? "(Erro)" : "");
+    free(arr[j].readings);
   }
+  free(arr);
 }
