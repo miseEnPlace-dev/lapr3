@@ -1,30 +1,24 @@
 CREATE OR REPLACE PACKAGE BODY operacoes_nao_realizadas AS
 
-  PROCEDURE cancel_operacao(id_operacao Operacao.id_operacao%TYPE) IS
-  data_prevista Operacao.data_prevista%TYPE;
-  data_realizada Operacao.data_realizada%TYPE;
+  PROCEDURE cancel_operacao(operacao_id Operacao.id_operacao%TYPE) IS
+  data_prevista_op Operacao.data_prevista_operacao%TYPE;
+  data_op Operacao.data_operacao%TYPE;
 
   BEGIN
 
-      SELECT data_prevista, data_realizada
-      INTO data_prevista, data_realizada
+  IF(EXISTS(
+      SELECT *
       FROM Operacao
-      WHERE id_operacao = id_operacao;
-
-      IF data_prevista IS NOT NULL THEN
-        IF data_realizada IS NULL THEN
-          DELETE FROM Operacao
-          WHERE id_operacao = id_operacao;
-        ELSE
-          RAISE_APPLICATION_ERROR(-20001, 'Operação já realizada');
-        END IF;
-      END IF;
+      WHERE id_operacao = operacao_id
+      AND data_prevista_operacao IS NOT NULL AND data_operacao IS NULL;
+  )) THEN
+    UPDATE Operacao
+    SET data_prevista_operacao = NULL
+    WHERE id_operacao = operacao_id;
+  ELSE
+    RAISE_APPLICATION_ERROR(-20001, 'Operação já realizada');
+  END IF;
 
   END cancel_operacao;
-
-  PROCEDURE atualizar_operacao(id_operacao Operacao.id_operacao%TYPE) IS
-  data_prevista Operacao.data_prevista%TYPE;
-  data_realizada Operacao.data_realizada%TYPE;
-
 
 END operacoes_nao_realizadas;
