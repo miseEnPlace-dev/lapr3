@@ -1,39 +1,30 @@
 CREATE OR REPLACE PACKAGE BODY operacoes_nao_realizadas AS
 
-  PROCEDURE cancel_operacao IS
-    CURSOR all_operacoes IS
-      SELECT id_operacao, data_inicio, data_fim, valor, estado, sensor
-      FROM OPERACOES
-      WHERE estado = 'Nao realizada'
-      ORDER BY data_inicio;
-    operacao_id OPERACOES.id_operacao%TYPE;
-    data_inicio OPERACOES.data_inicio%TYPE;
-    data_fim OPERACOES.data_fim%TYPE;
-    estado OPERACOES.estado%TYPE;
-    valor OPERACOES.valor%TYPE;
-    sensor OPERACOES.sensor%TYPE;
+  PROCEDURE cancel_operacao(id_operacao Operacao.id_operacao%TYPE) IS
+  data_prevista Operacao.data_prevista%TYPE;
+  data_realizada Operacao.data_realizada%TYPE;
 
   BEGIN
 
-    OPEN all_operacoes;
-    FETCH all_operacoes INTO operacao_id, data_inicio, data_fim, valor, estado, sensor;
+      SELECT data_prevista, data_realizada
+      INTO data_prevista, data_realizada
+      FROM Operacao
+      WHERE id_operacao = id_operacao;
 
-    IF all_operacoes%ROWCOUNT = 0 THEN
-      DBMS_OUTPUT.PUT_LINE('Não existem operações não realizadas.');
-    ELSE
-      DBMS_OUTPUT.PUT_LINE('Operações não realizadas:');
-      DBMS_OUTPUT.PUT_LINE('');
-
-      LOOP
-        EXIT WHEN all_operacoes%NOTFOUND;
-
-        DBMS_OUTPUT.PUT_LINE('----');
-        DBMS_OUTPUT.PUT_LINE('Operação id: ' || operacao_id  ' entre ' || TO_CHAR(data_inicio, 'DD/MM/YYYY') || ' e ' || TO_CHAR(data_fim, 'DD/MM/YYYY') || ' com o valor ' || valor || ' e o estado ' || estado || '.');
-
-        FETCH all_operacoes INTO operacao_id, data_inicio, data_fim, valor, estado, sensor;
-      END LOOP;
-    END IF;
-
-    CLOSE all_operacoes;
+      IF data_prevista IS NOT NULL THEN
+        IF data_realizada IS NULL THEN
+          DELETE FROM Operacao
+          WHERE id_operacao = id_operacao;
+        ELSE
+          RAISE_APPLICATION_ERROR(-20001, 'Operação já realizada');
+        END IF;
+      END IF;
 
   END cancel_operacao;
+
+  PROCEDURE atualizar_operacao(id_operacao Operacao.id_operacao%TYPE) IS
+  data_prevista Operacao.data_prevista%TYPE;
+  data_realizada Operacao.data_realizada%TYPE;
+
+
+END operacoes_nao_realizadas;
