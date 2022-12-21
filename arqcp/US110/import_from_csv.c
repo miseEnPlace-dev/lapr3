@@ -1,12 +1,15 @@
 #include <stdio.h>
 #include <string.h>
 #include "import_from_csv.h"
+#include "sensor.h"
+#include "shared.h"
 
 #define BUFFER_SIZE 1024
 
-void import_from_csv(char *filename, sensor_n *sensors )
+unsigned int* import_from_csv(char *filename, Sensor *sensors )
 {
-  char buf(BUFFER_SIZE);
+  unsigned int n_sensors[NUM_OF_SENSORS];
+  char buf[BUFFER_SIZE];
 
   FILE *fp = fopen(filename, "r");
 
@@ -19,11 +22,19 @@ void import_from_csv(char *filename, sensor_n *sensors )
   while (fgets(buf, BUFFER_SIZE, fp) != NULL)
   {
     char *token = strtok(buf, ",");
-    strcpy(sensors->name, token);
-    token = strtok(NULL, ",");
-    sensors->number_sensors = atoi(token);
+    int i = 0;
+
+      n_sensors[i] = atoi(token);
+      token = strtok(NULL, ",");
+      i++;
+
+      token = strtok(NULL, ",");
+      sensors[i].frequency = atoi(token);
+
+
   }
 
   fclose(fp);
 
 }
+

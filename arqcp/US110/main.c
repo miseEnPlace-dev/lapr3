@@ -9,6 +9,7 @@
 #include "sensores.h"
 #include "sensor.h"
 #include "shared.h"
+#include "import_from_csv.h"
 
 uint64_t state = 0;
 uint64_t inc = 0;
