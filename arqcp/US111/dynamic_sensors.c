@@ -1,12 +1,11 @@
 #include "sensor.h"
+#include "sensores.h"
 
-enum { A = 1, B = 2 };
-
-void add_sensor(Sensor s) {
+void add_sensor(Sensor s, Sensor **data) {
 
 }
 
-void remove_sensor() {}
+void remove_sensor(Sensor *s, Sensor **data) {}
 
 void adjust_sensor_freq(Sensor *s) {}
 
