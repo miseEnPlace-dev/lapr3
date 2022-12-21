@@ -1,13 +1,14 @@
 package isep.model;
 
 import java.util.HashMap;
+import java.util.TreeMap;
 
 public class DailyData {
 
-  private HashMap<Integer, HashMap<Product, Integer>> dailyData;
+  private TreeMap<Integer, HashMap<Product, Integer>> dailyData;
 
   public DailyData() {
-    this.dailyData = new HashMap<>();
+    this.dailyData = new TreeMap<>();
   }
 
   /**
