@@ -39,6 +39,7 @@ int main(void)
   Sensor *soil_humidity_sensors = (Sensor *)malloc(n_soil_humidity_sensors * sizeof(Sensor));
   Sensor *air_humidity_sensors = (Sensor *)malloc(n_air_humidity_sensors * sizeof(Sensor));
 
+  // TODO: char n_if
   int n_of_sensors[NUM_OF_SENSORS] = {n_temp_sensors, N_OF_VELOCITY_SENSORS, N_OF_DIRECTION_SENSORS, N_OF_PLUVIO_SENSORS, N_OF_SOIL_HUMIDITY_SENSORS, N_OF_AIR_HUMIDITY_SENSORS};
 
   data[TEMPERATURE_SENSOR_TYPE] = temp_sensors;
