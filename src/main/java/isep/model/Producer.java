@@ -33,4 +33,8 @@ public class Producer extends Entity {
     return this.stock.getDayData(day);
   }
 
+  public DailyData getStockUntilDate(Integer day){
+    return this.stock.getDailyDataUntilDate(day);
+  }
+
 }

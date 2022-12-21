@@ -1,6 +1,7 @@
 package isep.model;
 
 import java.util.HashMap;
+import java.util.SortedMap;
 import java.util.TreeMap;
 
 public class DailyData {
@@ -9,6 +10,11 @@ public class DailyData {
 
   public DailyData() {
     this.dailyData = new TreeMap<>();
+  }
+
+  public void setData(SortedMap<Integer, HashMap<Product, Integer>> dailyData){
+    if(dailyData == null)
+      throw new IllegalArgumentException("Data cannot be null");
   }
 
   /**
@@ -58,6 +64,12 @@ public class DailyData {
    */
   public Integer getQuantityOfProductForDay(Integer day, Product product) {
     return this.dailyData.get(day).get(product) != null ? this.dailyData.get(day).get(product) : 0;
+  }
+
+  public DailyData getDailyDataUntilDate(Integer day){
+    DailyData result = new DailyData();
+    result.setData(this.dailyData.subMap(0, day));
+    return result;
   }
 
 }
