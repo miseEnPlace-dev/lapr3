@@ -5,6 +5,6 @@
 
 void reset_seed();
 
-int get_total_errors(Sensor s);
+int get_total_errors(unsigned char const *arr, int size);
 
 #endif

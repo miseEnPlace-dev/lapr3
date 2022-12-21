@@ -11,11 +11,10 @@ void reset_seed() {
     inc = get_value_from_dev_random();
 }
 
-int get_total_errors(Sensor s) {
+int get_total_errors(unsigned char const *arr, int size) {
     int total = 0;
-    // TODO
-    /* for (int i = 0; i < size; i++) */
-    /*     if (arr[i] == 1) */
-    /*         total++; */
+    for (int i = 0; i < size; i++)
+        if (arr[i] == 1)
+            total++;
     return total;
 }
