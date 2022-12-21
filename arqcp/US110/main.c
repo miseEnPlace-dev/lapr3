@@ -203,13 +203,12 @@ int main(void)
     error_vel_wind_sensors[j] = error_readings_vel[j];
   }
 
-  unsigned short last_read_wind = pcg32_random_r() % 360; // TODO change to consntant
+  unsigned short last_read_wind = pcg32_random_r() % 360; // TODO change to constant
 
   char error_readings_dir[N_OF_DIRECTION_SENSORS][dir_wind_sensor.readings_size];
 
   for (int j = 0; j < N_OF_DIRECTION_SENSORS; j++)
   {
-
     dir_wind_sensor.id = j; // TODO: generate id
 
     int total_errors = 0;
@@ -288,7 +287,6 @@ int main(void)
 
   for (int j = 0; j < N_OF_SOIL_HUMIDITY_SENSORS; j++)
   {
-
     soil_humidity_sensor.id = j; // TODO: generate id
 
     unsigned char last_pluvio_read = pluvio_sensors[0].readings[(pluvio_sensor.readings_size / soil_humidity_sensor.readings_size)];
@@ -329,7 +327,6 @@ int main(void)
 
   for (int j = 0; j < N_OF_AIR_HUMIDITY_SENSORS; j++)
   {
-
     air_humidity_sensor.id = j; // TODO: generate id
 
     unsigned char last_pluvio_read = pluvio_sensors[0].readings[(pluvio_sensor.readings_size / soil_humidity_sensor.readings_size)];

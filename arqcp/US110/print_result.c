@@ -27,5 +27,6 @@ void print_signed_result(Sensor *arr, int size, char *name, char *units, int n_o
       printf("Leitura: %d%s %s\n", (char)arr[j].readings[i], units, errors[j][i] == 1 ? "(Erro)" : "");
     free(arr[j].readings);
   }
+
   free(arr);
 }
