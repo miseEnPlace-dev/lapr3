@@ -2,7 +2,7 @@
 #define IMPORT_FROM_CSV_H
 
 typedef struct {
-    char name[50];
+
     int number_sensors;
 } sensor_n;
 
