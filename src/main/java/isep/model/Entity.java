@@ -78,21 +78,25 @@ public abstract class Entity {
         + localizationId;
   }
 
-
-  public void addDayData(Integer day, HashMap<Product, Integer> products){
-    this.dailyData.addDayData(day, products);
-  }
-  
-  public void addProductInfoToDayData(Integer day, Product product, Integer quantity){
-    this.dailyData.addProductInfoToDayData(day, product, quantity);
+  public void setDailyData(DailyData dailyData){
+    if(dailyData == null)
+      throw new IllegalArgumentException("Daily Data cannot be null!");
+    this.dailyData = dailyData;
   }
 
+  public DailyData getDailyData(){
+    return this.dailyData;
+  }
+
+  public void setDayData(Integer day, HashMap<Product, Integer> dayData){
+    if(day <= 0)
+      throw new IllegalArgumentException("Day must be a positive number!");
+    if(dayData == null)
+      throw new IllegalArgumentException("Day data cannot be null!");
+    this.dailyData.addDayData(day, dayData);
+  }
 
   public HashMap<Product, Integer> getDayData(Integer day){
     return this.dailyData.getDayData(day);
-  }
-
-  public Integer getQuantityOfProductForDay(Integer day, Product product){
-    return this.dailyData.getQuantityOfProductForDay(day, product);
   }
 }
