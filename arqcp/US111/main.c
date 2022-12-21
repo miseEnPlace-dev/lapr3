@@ -8,7 +8,6 @@
 #include "random.h"
 #include "sensores.h"
 #include "sensor.h"
-#include "dynamic_sensors.h"
 #include "shared.h"
 
 uint64_t state = 0;
@@ -26,12 +25,12 @@ int main(void)
 
   Sensor *data[NUM_OF_SENSORS];
 
-  const char n_temp_sensors = N_OF_TEMP_SENSORS;                   // TODO: get this value from input (file or user)
-  const char n_velocity_sensors = N_OF_VELOCITY_SENSORS;           // TODO: get this value from input (file or user)
-  const char n_direction_sensors = N_OF_DIRECTION_SENSORS;         // TODO: get this value from input (file or user)
-  const char n_pluvio_sensors = N_OF_PLUVIO_SENSORS;               // TODO: get this value from input (file or user)
-  const char n_soil_humidity_sensors = N_OF_SOIL_HUMIDITY_SENSORS; // TODO: get this value from input (file or user)
-  const char n_air_humidity_sensors = N_OF_AIR_HUMIDITY_SENSORS;   // TODO: get this value from input (file or user)
+  const unsigned char n_temp_sensors = N_OF_TEMP_SENSORS;                   // TODO: get this value from input (file or user)
+  const unsigned char n_velocity_sensors = N_OF_VELOCITY_SENSORS;           // TODO: get this value from input (file or user)
+  const unsigned char n_direction_sensors = N_OF_DIRECTION_SENSORS;         // TODO: get this value from input (file or user)
+  const unsigned char n_pluvio_sensors = N_OF_PLUVIO_SENSORS;               // TODO: get this value from input (file or user)
+  const unsigned char n_soil_humidity_sensors = N_OF_SOIL_HUMIDITY_SENSORS; // TODO: get this value from input (file or user)
+  const unsigned char n_air_humidity_sensors = N_OF_AIR_HUMIDITY_SENSORS;   // TODO: get this value from input (file or user)
 
   Sensor *temp_sensors = (Sensor *)malloc(n_temp_sensors * sizeof(Sensor));
   Sensor *vel_wind_sensors = (Sensor *)malloc(n_velocity_sensors * sizeof(Sensor));
@@ -40,14 +39,15 @@ int main(void)
   Sensor *soil_humidity_sensors = (Sensor *)malloc(n_soil_humidity_sensors * sizeof(Sensor));
   Sensor *air_humidity_sensors = (Sensor *)malloc(n_air_humidity_sensors * sizeof(Sensor));
 
+  // TODO: char n_if
   int n_of_sensors[NUM_OF_SENSORS] = {n_temp_sensors, N_OF_VELOCITY_SENSORS, N_OF_DIRECTION_SENSORS, N_OF_PLUVIO_SENSORS, N_OF_SOIL_HUMIDITY_SENSORS, N_OF_AIR_HUMIDITY_SENSORS};
 
-  data[TEMPERATURE_SENSORS_INDEX] = temp_sensors;
-  data[VELOCITY_SENSORS_INDEX] = vel_wind_sensors;
-  data[DIR_WIND_SENSORS_INDEX] = dir_wind_sensors;
-  data[PLUVIO_SENSORS_INDEX] = pluvio_sensors;
-  data[SOIL_HUMIDITY_SENSORS_INDEX] = soil_humidity_sensors;
-  data[AIR_HUMIDITY_SENSORS_INDEX] = air_humidity_sensors;
+  data[TEMPERATURE_SENSOR_TYPE] = temp_sensors;
+  data[VELOCITY_SENSOR_TYPE] = vel_wind_sensors;
+  data[DIR_WIND_SENSOR_TYPE] = dir_wind_sensors;
+  data[PLUVIO_SENSOR_TYPE] = pluvio_sensors;
+  data[SOIL_HUMIDITY_SENSOR_TYPE] = soil_humidity_sensors;
+  data[AIR_HUMIDITY_SENSOR_TYPE] = air_humidity_sensors;
 
   char **errors[NUM_OF_SENSORS];
 
@@ -58,12 +58,12 @@ int main(void)
   char *error_soil_humidity_sensors[n_soil_humidity_sensors];
   char *error_air_humidity_sensors[n_air_humidity_sensors];
 
-  errors[TEMPERATURE_SENSORS_INDEX] = error_temp_sensors;
-  errors[VELOCITY_SENSORS_INDEX] = error_vel_wind_sensors;
-  errors[DIR_WIND_SENSORS_INDEX] = error_dir_wind_sensors;
-  errors[PLUVIO_SENSORS_INDEX] = error_pluvio_sensors;
-  errors[SOIL_HUMIDITY_SENSORS_INDEX] = error_soil_humidity_sensors;
-  errors[AIR_HUMIDITY_SENSORS_INDEX] = error_air_humidity_sensors;
+  errors[TEMPERATURE_SENSOR_TYPE] = error_temp_sensors;
+  errors[VELOCITY_SENSOR_TYPE] = error_vel_wind_sensors;
+  errors[DIR_WIND_SENSOR_TYPE] = error_dir_wind_sensors;
+  errors[PLUVIO_SENSOR_TYPE] = error_pluvio_sensors;
+  errors[SOIL_HUMIDITY_SENSOR_TYPE] = error_soil_humidity_sensors;
+  errors[AIR_HUMIDITY_SENSOR_TYPE] = error_air_humidity_sensors;
 
   Sensor temperature_sensor;
   temperature_sensor.id = -1; // TODO: generate id
@@ -88,7 +88,7 @@ int main(void)
   Sensor dir_wind_sensor;
   dir_wind_sensor.id = -1; // TODO: generate id
   dir_wind_sensor.name = "Direção do Vento";
-  dir_wind_sensor.sensor_type = DIRECTION_SENSOR_TYPE;
+  dir_wind_sensor.sensor_type = DIR_WIND_SENSOR_TYPE;
   dir_wind_sensor.max_limit = UPPER_LIMIT_DIR_WIND;
   dir_wind_sensor.min_limit = LOWER_LIMIT_DIR_WIND;
   dir_wind_sensor.frequency = DIRECTION_SENSOR_INTERVAL;
@@ -150,7 +150,7 @@ int main(void)
         else
           error_readings_temp[j][i] = 0;
       }
-      total_errors = get_total_errors(error_readings_temp[j], temperature_sensor.readings_size);
+      total_errors = get_total_errors(temperature_sensor);
       printf("Temperatura > Sensor %d: %d erros\n", j + 1, total_errors);
 
       if (total_errors > MAX_INCORRECT_READS)
@@ -189,7 +189,7 @@ int main(void)
         else
           error_readings_vel[j][i] = 0;
       }
-      total_errors = get_total_errors(error_readings_vel[j], vel_wind_sensor.readings_size);
+      total_errors = get_total_errors(vel_wind_sensor);
       printf("Velocidade Vento > Sensor %d: %d erros\n", j + 1, total_errors);
 
       if (total_errors > MAX_INCORRECT_READS)
@@ -229,7 +229,7 @@ int main(void)
         else
           error_readings_dir[j][i] = 0;
       }
-      total_errors = get_total_errors(error_readings_dir[j], dir_wind_sensor.readings_size);
+      total_errors = get_total_errors(dir_wind_sensor);
       printf("Direção Vento > Sensor %d: %d erros\n", j + 1, total_errors);
 
       if (total_errors > MAX_INCORRECT_READS)
@@ -270,7 +270,7 @@ int main(void)
         else
           error_readings_pluvio[j][i] = 0;
       }
-      total_errors = get_total_errors(error_readings_pluvio[j], pluvio_sensor.readings_size);
+      total_errors = get_total_errors(pluvio_sensor);
       printf("Pluviosidade > Sensor %d: %d erros\n", j + 1, total_errors);
 
       if (total_errors > MAX_INCORRECT_READS)
@@ -311,7 +311,7 @@ int main(void)
         else
           error_readings_soil[j][i] = 0;
       }
-      total_errors = get_total_errors(error_readings_soil[j], soil_humidity_sensor.readings_size);
+      total_errors = get_total_errors(soil_humidity_sensor);
       printf("Humidade Solo > Sensor %d: %d erros\n", j + 1, total_errors);
 
       if (total_errors > MAX_INCORRECT_READS)
@@ -352,7 +352,7 @@ int main(void)
         else
           error_readings_humd[j][i] = 0;
       }
-      total_errors = get_total_errors(error_readings_humd[j], air_humidity_sensor.readings_size);
+      total_errors = get_total_errors(air_humidity_sensor);
       printf("Humidade Ar > Sensor %d: %d erros\n", j + 1, total_errors);
 
       if (total_errors > MAX_INCORRECT_READS)
@@ -368,7 +368,7 @@ int main(void)
   }
 
   printf("\n-- Leituras dos sensores --\n\n");
-  print_signed_result(data[TEMPERATURE_SENSORS_INDEX], temperature_sensor.readings_size, "Temperatura", "ºC", n_temp_sensors, errors[TEMPERATURE_SENSORS_INDEX]);
+  print_signed_result(data[TEMPERATURE_SENSOR_TYPE], temperature_sensor.readings_size, "Temperatura", "ºC", n_temp_sensors, errors[TEMPERATURE_SENSOR_TYPE]);
   printf("\n");
 
   for (int i = 1; i < NUM_OF_SENSORS; i++)
