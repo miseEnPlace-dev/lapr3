@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ExpeditionList {
-
   private List<Basket> baskets;
   private int day;
 
@@ -14,9 +13,9 @@ public class ExpeditionList {
   }
 
   private void setDay(int day) {
-    if (day > 0) {
+    if (day > 0)
       throw new IllegalArgumentException("Day must be positive number");
-    }
+
     this.day = day;
   }
 
@@ -27,6 +26,7 @@ public class ExpeditionList {
   public void addBasket(Basket basket) {
     if (basket == null)
       throw new IllegalArgumentException("Basket cannot be null");
+
     this.baskets.add(basket);
   }
 

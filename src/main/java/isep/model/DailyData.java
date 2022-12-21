@@ -5,22 +5,21 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 public class DailyData {
-
   private TreeMap<Integer, HashMap<Product, Integer>> dailyData;
 
   public DailyData() {
     this.dailyData = new TreeMap<>();
   }
 
-  public void setData(SortedMap<Integer, HashMap<Product, Integer>> dailyData){
-    if(dailyData == null)
+  public void setData(SortedMap<Integer, HashMap<Product, Integer>> dailyData) {
+    if (dailyData == null)
       throw new IllegalArgumentException("Data cannot be null");
   }
 
   /**
    * @param day      - day to add data
    * @param products - product/quantity data
-   * 
+   *
    *                 Adds the products/quantity data to a specif day
    */
   public void addDayData(Integer day, HashMap<Product, Integer> products) {
@@ -31,7 +30,7 @@ public class DailyData {
    * @param day      - day to add data
    * @param product  - product adding
    * @param quantity - quantity of product adding
-   * 
+   *
    *                 Adds a single product/quantity to a specif day
    */
   public void addProductInfoToDayData(Integer day, Product product, Integer quantity) {
@@ -46,7 +45,7 @@ public class DailyData {
   /**
    * @param day - day to get data from
    * @return HashMap<Product, Integer>
-   * 
+   *
    *         Returns a map with the products and quantities registered
    *         in that dailyData for a specif day
    */
@@ -58,7 +57,7 @@ public class DailyData {
    * @param day     - day to get data from
    * @param product - product to get data from
    * @return Integer
-   * 
+   *
    *         Returns the quantity of a product registered
    *         in that dailyData for a specif day
    */
@@ -66,10 +65,10 @@ public class DailyData {
     return this.dailyData.get(day).get(product) != null ? this.dailyData.get(day).get(product) : 0;
   }
 
-  public DailyData getDailyDataUntilDate(Integer day){
+  public DailyData getDailyDataUntilDate(Integer day) {
     DailyData result = new DailyData();
     result.setData(this.dailyData.subMap(0, day));
+
     return result;
   }
-
 }
