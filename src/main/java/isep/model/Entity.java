@@ -7,7 +7,7 @@ public abstract class Entity {
   private double latitude;
   private double longitude;
   private String localizationId;
-  private DailyData dailyData;
+  protected DailyData dailyData;
 
   public Entity(String id, double latitude, double longitude, String localizationId) {
     validateId(id);
