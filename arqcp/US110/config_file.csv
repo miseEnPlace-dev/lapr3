@@ -1,0 +1,6 @@
+temperature_sensor,3
+vel_wind_sensor,3
+dir_wind_sensor,3
+air_humidity_sensor,3
+soil_humidity_sensor,3
+pluvio_sensor,3
