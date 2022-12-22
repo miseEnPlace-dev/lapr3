@@ -56,7 +56,4 @@ public class Basket {
     this.client = client;
   }
 
-  public Client getClient() {
-    return this.client;
-  }
 }

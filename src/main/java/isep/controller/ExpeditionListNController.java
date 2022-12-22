@@ -6,7 +6,8 @@ import isep.model.ExpeditionList;
 public class ExpeditionListNController {
 
   /*
-   * Class that generates an expedition list for a given network
+   * Class that generates an expedition list for a given network and day with N
+   * producers
    *
    * @author André Barros <1211299@isep.ipp.pt>
    */
@@ -39,13 +40,6 @@ public class ExpeditionListNController {
     if (network == null)
       throw new IllegalArgumentException("Network is null");
     this.network = network;
-  }
-
-  /*
-   * Generate expedition list for a given network
-   */
-  public void getGenerateExpeditionList(int n) {
-    expeditionList.generateExpeditionList(n, this.network);
   }
 
 }
