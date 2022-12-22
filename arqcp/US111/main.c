@@ -73,7 +73,7 @@ int main(void)
     int total_errors = 0;
 
     do { // retry on excess of errors
-      unsigned short last_read = pcg32_random_r() % 30; // TODO change to constants
+      unsigned short last_read = pcg32_random_r() % VELC_BASE_VALUE;
 
       for (int i = 0; i < current_sensor.readings_size; i++) {
         // generate readings
@@ -103,7 +103,7 @@ int main(void)
     int total_errors = 0;
 
     do { // retry on excess of errors
-      unsigned short last_read = pcg32_random_r() % 360; // TODO Change to constant
+      unsigned short last_read = pcg32_random_r() % DIR_BASE_VALUE;
 
       for (int i = 0; i < current_sensor.readings_size; i++) {
         // generate readings
@@ -133,7 +133,7 @@ int main(void)
     int total_errors = 0;
 
     do { // retry on excess of errors
-      unsigned short last_read = pcg32_random_r() % 5; // TODO change to constant
+      unsigned short last_read = pcg32_random_r() % PLUVIO_BASE_VALUE;
 
       for (int i = 0; i < current_sensor.readings_size; i++) {
         // generate readings
@@ -166,7 +166,7 @@ int main(void)
     int total_errors = 0;
 
     do { // retry on excess of errors
-      unsigned short last_read = 10;
+      unsigned short last_read = SOIL_BASE_VALUE;
 
       for (int i = 0; i < current_sensor.readings_size; i++) {
         // generate readings
@@ -199,7 +199,7 @@ int main(void)
     int total_errors = 0;
 
     do { // retry on excess of errors
-      unsigned short last_read = 10;    // TODO change to constant
+      unsigned short last_read = AIR_BASE_VALUE;
 
       for (int i = 0; i < current_sensor.readings_size; i++) {
         // generate readings

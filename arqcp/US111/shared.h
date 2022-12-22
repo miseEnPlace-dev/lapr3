@@ -35,7 +35,13 @@ enum sensor_types {
 // shared.c
 extern const char TEMP_SENSOR_MAX_VARIATION;
 extern const char TEMP_BASE_VALUE;
+extern const char TEMP_VARIATION;
 extern const char VELC_SENSOR_MAX_VARIATION;
+extern const char VELC_BASE_VALUE;
+extern const short DIR_BASE_VALUE;
+extern const char PLUVIO_BASE_VALUE;
+extern const char SOIL_BASE_VALUE;
+extern const char AIR_BASE_VALUE;
 extern const char PLUV_CONTRIB_HUMD;
 extern const char SOIL_HUMD_SENSOR_MAX_VARIATION;
 extern const char SOIL_HUMD_SENSOR_RAINING_MAX_VARIATION;
