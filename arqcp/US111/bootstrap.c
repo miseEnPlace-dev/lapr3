@@ -19,6 +19,7 @@ void deallocate(Sensor **data, unsigned int const *n_sensors) {
             free(data[i][j].readings);
             free(data[i][j].errors);
         }
+        free(data[i]);
     }
 
     free(data);

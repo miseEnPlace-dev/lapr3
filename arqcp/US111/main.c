@@ -18,7 +18,7 @@ int main(void)
 {
   reset_seed();
 
-  // this array will come from import_config()
+  // this array will come from import_from_csv()
   unsigned int n_sensors[NUM_OF_SENSOR_TYPES] = {2, 2, 2, 2, 2, 2};
 
   if (n_sensors[TEMPERATURE_SENSOR_TYPE] == 0 || n_sensors[PLUVIO_SENSOR_TYPE] == 0) {
@@ -234,6 +234,8 @@ int main(void)
     if (i < NUM_OF_SENSOR_TYPES - 1) // fix to avoid printing extra new line in last iteration
       printf("\n");
   }
+
+  deallocate(data, n_sensors);
 
   return 0;
 }

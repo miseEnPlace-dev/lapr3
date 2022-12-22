@@ -3,7 +3,7 @@
 
 #include "sensor.h"
 Sensor **bootstrap(unsigned int const *n_sensors);
-void deallocate(Sensor *data, unsigned int const *n_sensors);
+void deallocate(Sensor **data, unsigned int const *n_sensors);
 Sensor bootstrap_temperature();
 Sensor bootstrap_wind_vel();
 Sensor bootstrap_wind_dir();
