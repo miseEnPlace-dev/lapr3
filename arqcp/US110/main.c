@@ -20,8 +20,8 @@ int main(void)
   reset_seed();
 
   // this array will come from import_from_csv()
-  //unsigned int *n_sensors = import_from_csv(, ;
-  unsigned int n_sensors[NUM_OF_SENSOR_TYPES] = {2,2,2,2,2,2};
+  // unsigned int *n_sensors = import_from_csv("config_file.csv");
+  unsigned int n_sensors[NUM_OF_SENSOR_TYPES] = {2, 2, 2, 2, 2, 2};
 
   if (n_sensors[TEMPERATURE_SENSOR_TYPE] == 0 || n_sensors[PLUVIO_SENSOR_TYPE] == 0) {
     printf("Número de sensores inválido.\nVerifique se o número de sensores de temperatura e de pluviosidade são diferentes de 0.\n");
@@ -35,7 +35,7 @@ int main(void)
   // Temperature sensors
   for (int j = 0; j < n_sensors[TEMPERATURE_SENSOR_TYPE]; j++) { // for every temperature sensor                                                                
     // bootstrap sensor
-    Sensor current_sensor = bootstrap_temperature();
+    Sensor current_sensor = bootstrap_temperature(TEMPERATURES_SENSOR_INTERVAL);    // <-- AQUI
     current_sensor.id = count++;
 
     char base_temperatures[current_sensor.readings_size];
@@ -69,7 +69,7 @@ int main(void)
 
   // Wind velocity sensors
   for (int j = 0; j < n_sensors[WIND_VELOCITY_SENSOR_TYPE]; j++) { // for every sensor
-    Sensor current_sensor = bootstrap_wind_vel();
+    Sensor current_sensor = bootstrap_wind_vel(WIND_VELOCITY_SENSOR_INTERVAL);      // <-- AQUI também
     current_sensor.id = count++;
 
     int total_errors = 0;
@@ -99,7 +99,7 @@ int main(void)
 
   // Wind direction sensors
   for (int j = 0; j < n_sensors[WIND_DIRECTION_SENSOR_TYPE]; j++) {
-    Sensor current_sensor = bootstrap_wind_dir();
+    Sensor current_sensor = bootstrap_wind_dir(WIND_DIRECTION_SENSOR_INTERVAL);     // <-- AQUI
     current_sensor.id = count++;
 
     int total_errors = 0;
@@ -129,7 +129,7 @@ int main(void)
 
   // Pluviosity sensors
   for (int j = 0; j < n_sensors[PLUVIO_SENSOR_TYPE]; j++) { // for every sensor
-    Sensor current_sensor = bootstrap_pluvio();
+    Sensor current_sensor = bootstrap_pluvio(PLUVIO_SENSOR_INTERVAL);       // <-- AQUI
     current_sensor.id = count++;
 
     int total_errors = 0;
@@ -162,7 +162,7 @@ int main(void)
 
   // Soil humidity sensors
   for (int j = 0; j < n_sensors[SOIL_HUMIDITY_SENSOR_TYPE]; j++) {
-    Sensor current_sensor = bootstrap_soil_humidity();
+    Sensor current_sensor = bootstrap_soil_humidity(SOIL_HUMIDITY_SENSOR_INTERVAL);     // <-- AQUI
     current_sensor.id = count++;
 
     int total_errors = 0;
@@ -195,7 +195,7 @@ int main(void)
 
   // Air humidity sensors
   for (int j = 0; j < n_sensors[AIR_HUMIDITY_SENSOR_TYPE]; j++) {
-    Sensor current_sensor = bootstrap_air_humidity();
+    Sensor current_sensor = bootstrap_air_humidity(AIR_HUMIDITY_SENSOR_INTERVAL);       // <-- e AQUI também
     current_sensor.id = count++;
 
     int total_errors = 0;

@@ -12,6 +12,9 @@
  * Para passares a frequência dos sensores, vais ter de retorná-los
  * de alguma forma para o main e depois passas a frequência para
  * cada função bootstrap_tipo_sensor(<FREQUÊNCIA>).
+ *
+ * Já preparei as funções para aceitarem a frequência, depois é
+ * só alterar o argumento.
  */
 unsigned int* import_from_csv(char *filename, Sensor *sensors)
 {
