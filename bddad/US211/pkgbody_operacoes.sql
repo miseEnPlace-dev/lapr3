@@ -19,6 +19,8 @@ CREATE OR REPLACE PACKAGE BODY operacoes AS
     END IF;
     END IF;
 
+    DBMS_OUTPUT.PUT_LINE('Operação cancelada com sucesso');
+
   END cancel_operacao;
 
   PROCEDURE atualizar_operacao_datas(operacao_id Operacao.id_operacao%TYPE, data_nova TIMESTAMP) IS
@@ -30,7 +32,7 @@ CREATE OR REPLACE PACKAGE BODY operacoes AS
     FROM Operacao
     WHERE id_operacao = operacao_id;
 
-    IF data_prevista IS NOT NULL AND data_op IS NOT NULL THEN
+    IF data_prevista IS NOT NULL AND data_op IS NULL THEN
       RAISE_APPLICATION_ERROR(-20001, 'Operação já realizada');
     ELSE IF data_prevista IS NOT NULL AND data_op IS NULL THEN
       UPDATE Operacao
@@ -38,6 +40,8 @@ CREATE OR REPLACE PACKAGE BODY operacoes AS
       WHERE id_operacao = operacao_id;
     END IF;
     END IF;
+
+    DBMS_OUTPUT.PUT_LINE('Operação atualizada com sucesso');
 
   END atualizar_operacao_datas;
 
