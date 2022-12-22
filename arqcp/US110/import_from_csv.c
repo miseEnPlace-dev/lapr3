@@ -36,4 +36,6 @@ void read_file(char *filename, unsigned int *n_sensors, unsigned int *f_sensors)
       f_sensors[i] = atoi(token);
       i++;
   }
+
+  fclose(fp);
 }
