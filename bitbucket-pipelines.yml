@@ -32,5 +32,5 @@ pipelines:
             - cd arqcp
             - chmod +x test.sh
             - ./test.sh
-            - sudo apt update && sudo apt install cppcheck
+            - apt update && apt install cppcheck
             - cppcheck .
