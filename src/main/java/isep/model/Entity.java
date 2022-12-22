@@ -1,6 +1,7 @@
 package isep.model;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public abstract class Entity {
   private String id;
@@ -78,25 +79,25 @@ public abstract class Entity {
         + localizationId;
   }
 
-  public void setDailyData(DailyData dailyData){
-    if(dailyData == null)
+  public void setDailyData(DailyData dailyData) {
+    if (dailyData == null)
       throw new IllegalArgumentException("Daily Data cannot be null!");
     this.dailyData = dailyData;
   }
 
-  public DailyData getDailyData(){
+  public DailyData getDailyData() {
     return this.dailyData;
   }
 
-  public void setDayData(Integer day, HashMap<Product, Integer> dayData){
-    if(day <= 0)
+  public void setDayData(Integer day, HashMap<Product, Integer> dayData) {
+    if (day <= 0)
       throw new IllegalArgumentException("Day must be a positive number!");
-    if(dayData == null)
+    if (dayData == null)
       throw new IllegalArgumentException("Day data cannot be null!");
     this.dailyData.addDayData(day, dayData);
   }
 
-  public HashMap<Product, Integer> getDayData(Integer day){
+  public Map<Product, Integer> getDayData(Integer day) {
     return this.dailyData.getDayData(day);
   }
 }
