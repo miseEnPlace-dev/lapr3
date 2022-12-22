@@ -11,6 +11,7 @@ import isep.utils.MergeSort;
 import isep.utils.graph.AdjacencyMapGraph;
 import isep.utils.graph.Edge;
 import isep.utils.graph.GraphAlgorithms;
+import isep.utils.graph.astar.AStar;
 
 public class DistributionNetwork {
   private NetworkGraph<Entity, Integer> network = new NetworkGraph<>(false);
@@ -106,8 +107,7 @@ public class DistributionNetwork {
     if (numberOfHubs <= 0)
       throw new InvalidNumberOfHubsException();
 
-
-      if (!this.isConnected())
+    if (!this.isConnected())
       return null;
 
     List<Map.Entry<Enterprise, Integer>> list = new ArrayList<>();
@@ -197,4 +197,45 @@ public class DistributionNetwork {
 
     return nearestHub;
   }
+
+  public int getWeightOfPath(List<Entity> entities) {
+    int weight = 0;
+    for (int i = 0; i < entities.size() - 1; i++) {
+      weight += this.getDistanceBetweenConnectedEntities(entities.get(i), entities.get(i + 1));
+    }
+    return weight;
+  }
+
+  // public List<Entity> getShortestPathBetweenEntities(List<Entity> entities) {
+  // List<Entity> shortestPath = new ArrayList<>();
+  // Entity currentEntity = null;
+
+  // currentEntity = entities.get(0);
+  // shortestPath.add(currentEntity);
+
+  // while (currentEntity != null) {
+
+  // }
+
+  // // For each producer/hub, find the nearest producer/hub
+  // for (Entity entity : entities) {
+  // // Rotice total
+  // int minWeight = Integer.MAX_VALUE;
+  // Entity nearestEntity = null;
+
+  // for (Entity nextEntity : entities) {
+  // if (entity.equals(nextEntity))
+  // continue;
+
+  // List<Entity> path = AStar.findShortestPath(this.network, entity, nextEntity);
+  // int pathWeight = getWeightOfPath(path);
+
+  // if (pathWeight < minWeight) {
+  // minWeight = pathWeight;
+  // nearestEntity = nextEntity;
+  // }
+  // }
+
+  // }
+  // }
 }
