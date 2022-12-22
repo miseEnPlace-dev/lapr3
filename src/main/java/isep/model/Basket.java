@@ -22,18 +22,21 @@ public class Basket {
   private void setOrdered(HashMap<Product, Integer> ordered) throws InvalidOrderException {
     if (ordered == null)
       throw new IllegalArgumentException("Null ordered map is Invalid!");
+
     Integer sum = 0;
-    for (Integer qnt : ordered.values()) {
+    for (Integer qnt : ordered.values())
       sum += qnt;
-    }
+
     if (sum == 0)
       throw new InvalidOrderException();
+
     this.ordered = ordered;
   }
 
   private void setReceived(HashMap<Producer, HashMap<Product, Integer>> received) {
     if (received == null)
       throw new IllegalArgumentException("Null received map is Invalid!");
+
     this.received = received;
   }
 
@@ -42,12 +45,14 @@ public class Basket {
       throw new IllegalArgumentException("Null hub is Invalid!");
     if (!enterprise.isHub())
       throw new InvalidHubException();
+
     this.hub = enterprise;
   }
 
   private void setClient(Client client) {
     if (client == null)
       throw new IllegalArgumentException("Null client is Invalid!");
+
     this.client = client;
   }
 
