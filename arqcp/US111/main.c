@@ -238,9 +238,11 @@ int main(void)
   for (int i = 1; i < NUM_OF_SENSOR_TYPES; i++)
   {
     print_result(data[i], n_sensors[i]);
-    if (i < NUM_OF_SENSOR_TYPES - 1) // fix to avoid printing extra new line in last iteration
-      printf("\n");
+    // if (i < NUM_OF_SENSOR_TYPES - 1) //// fix to avoid printing extra new line in last iteration
+    printf("\n");
   }
+
+  print_small(data, n_sensors);
 
   deallocate(data, n_sensors);
 
