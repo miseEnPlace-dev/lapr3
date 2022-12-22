@@ -29,6 +29,7 @@ pipelines:
           name: Test C Code
           image: gcc:10.2
           script:
+            - cd arqcp
             - chmod +x test.sh
             - ./test.sh
             - cppcheck .
