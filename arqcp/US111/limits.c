@@ -23,7 +23,7 @@ int get_total_errors(Sensor s) {
 }
 
 unsigned char exceeded_limits_signed(unsigned int index, Sensor s) {
-    if ((char)s.readings[index] > s.max_limit || (char)s.readings[index] < s.min_limit)
+    if ((char)s.readings[index] > (char)s.max_limit || (char)s.readings[index] < (char)s.min_limit)
         return 1;
     return 0;
 }
