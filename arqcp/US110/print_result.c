@@ -12,11 +12,7 @@ void print_result(Sensor *arr, unsigned int size)
     printf("\nSensor %d:\n", j + 1);
     for (int i = 0; i < arr[j].readings_size; i++)
       printf("Leitura: %u%s %s\n", arr[j].readings[i], arr[j].units, arr[j].errors[i] == 1 ? "(Erro)" : "");
-    free(arr[j].readings);
-    free(arr[j].errors);
   }
-
-  free(arr);
 }
 
 void print_signed_result(Sensor *arr, unsigned int size)
@@ -28,8 +24,5 @@ void print_signed_result(Sensor *arr, unsigned int size)
     printf("\nSensor %d:\n", j + 1);
     for (int i = 0; i < arr[j].readings_size; i++)
       printf("Leitura: %d%s %s\n", (char)arr[j].readings[i], arr[j].units, arr[j].errors[i] == 1 ? "(Erro)" : "");
-    free(arr[j].readings);
-    free(arr[j].errors);
   }
-  free(arr);
 }

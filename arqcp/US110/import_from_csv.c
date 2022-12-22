@@ -1,14 +1,14 @@
 #include <stdio.h>
 #include <string.h>
-#include "import_from_csv.h"
+//#include "import_from_csv.h"
 #include "sensor.h"
 #include "shared.h"
 
 #define BUFFER_SIZE 1024
 
-unsigned int* import_from_csv(char *filename, Sensor *sensors )
+unsigned int* import_from_csv(char *filename, Sensor *sensors)
 {
-  unsigned int n_sensors[NUM_OF_SENSORS];
+  unsigned int n_sensors[NUM_OF_SENSOR_TYPES];
   char buf[BUFFER_SIZE];
 
   FILE *fp = fopen(filename, "r");
