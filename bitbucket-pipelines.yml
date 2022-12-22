@@ -11,7 +11,7 @@ pipelines:
   default:
     - parallel:
       - step:
-          name: Build and Test
+          name: Build and Test Java App
           caches:
             - maven
           script:
@@ -20,8 +20,15 @@ pipelines:
               # Collect checkstyle results, if any, and convert to Bitbucket Code Insights.
             - pipe: atlassian/checkstyle-report:0.3.0
       - step:
-          name: Security Scan
+          name: Security Scan Java App
           script:
             # Run a security scan for sensitive data.
             # See more security tools at https://bitbucket.org/product/features/pipelines/integrations?&category=security
             - pipe: atlassian/git-secrets-scan:0.5.1
+      - step:
+          name: Test C Code
+          image: gcc:10.2
+          script:
+            - chmod +x test.sh
+            - ./test.sh
+            - cppcheck .
