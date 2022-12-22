@@ -9,7 +9,7 @@ public abstract class Entity implements VertexHeuristic<Entity> {
   private double latitude;
   private double longitude;
   private String localizationId;
-  private DailyData dailyData;
+  protected DailyData dailyData;
 
   public Entity(String id, double latitude, double longitude, String localizationId) {
     validateId(id);
@@ -120,5 +120,23 @@ public abstract class Entity implements VertexHeuristic<Entity> {
 
   public Integer getQuantityOfProductForDay(Integer day, Product product) {
     return this.dailyData.getQuantityOfProductForDay(day, product);
+  }
+
+  public void setDailyData(DailyData dailyData) {
+    if (dailyData == null)
+      throw new IllegalArgumentException("Daily Data cannot be null!");
+    this.dailyData = dailyData;
+  }
+
+  public DailyData getDailyData() {
+    return this.dailyData;
+  }
+
+  public void setDayData(Integer day, HashMap<Product, Integer> dayData) {
+    if (day <= 0)
+      throw new IllegalArgumentException("Day must be a positive number!");
+    if (dayData == null)
+      throw new IllegalArgumentException("Day data cannot be null!");
+    this.dailyData.addDayData(day, dayData);
   }
 }

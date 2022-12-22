@@ -238,4 +238,34 @@ public class DistributionNetwork {
 
   // }
   // }
+  public List<Producer> getNNearestProducers(Enterprise hub, int n) {
+    List<Producer> producers = network.getEntitiesWithClass(Producer.class);
+
+    if (producers.size() < n)
+      return null;
+
+    List<Producer> result = new ArrayList<>();
+
+    ArrayList<Integer> distancesToOtherVertices = this.shortestPathsDistances(hub);
+
+    for (int i = 0; i < n; i++) {
+      Producer nearestProducer = producers.get(0);
+      int minDistance = distancesToOtherVertices.get(network.key(producers.get(0)));
+
+      for (int j = 1; j < producers.size(); j++) {
+        Producer producer = producers.get(j);
+        int distance = distancesToOtherVertices.get(network.key(producer));
+
+        if (distance < minDistance) {
+          minDistance = distance;
+          nearestProducer = producer;
+        }
+      }
+
+      result.add(nearestProducer);
+      producers.remove(nearestProducer);
+    }
+
+    return result;
+  }
 }

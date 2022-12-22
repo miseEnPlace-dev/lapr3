@@ -288,9 +288,8 @@ public class DistributionNetworkTest {
     assertTrue(e1.isHub());
   }
 
-
   @Test
-  public void testAverageMinPath(){
+  public void testAverageMinPath() {
     DistributionNetwork network = new DistributionNetwork();
     Enterprise e1 = new Enterprise("e1", 1, 1, "l1");
     Producer p1 = new Producer("p1", 2, 2, "l2");
@@ -298,12 +297,11 @@ public class DistributionNetworkTest {
     network.addRelation(e1, p1, 100);
     network.addRelation(e1, p2, 300);
 
-    assertEquals(400/3, network.getAveragePathDistanceBetweenGroupOfEntities(e1));
+    assertEquals(400 / 3, network.getAveragePathDistanceBetweenGroupOfEntities(e1));
   }
 
-
   @Test
-  public void testIsConnectedForConnectedGraph(){
+  public void testIsConnectedForConnectedGraph() {
     DistributionNetwork network = new DistributionNetwork();
     Enterprise e1 = new Enterprise("e1", 1, 1, "l1");
     Producer p1 = new Producer("p1", 2, 2, "l2");
@@ -315,7 +313,7 @@ public class DistributionNetworkTest {
   }
 
   @Test
-  public void testIsConnectedForNonConnectedGraph(){
+  public void testIsConnectedForNonConnectedGraph() {
     DistributionNetwork network = new DistributionNetwork();
     Enterprise e1 = new Enterprise("e1", 1, 1, "l1");
     Producer p1 = new Producer("p1", 2, 2, "l2");
@@ -328,7 +326,7 @@ public class DistributionNetworkTest {
   }
 
   @Test
-  public void testGetHubs(){
+  public void testGetHubs() {
     DistributionNetwork network = new DistributionNetwork();
     Enterprise e1 = new Enterprise("e1", 1, 1, "l1");
     e1.makeHub();
@@ -345,14 +343,13 @@ public class DistributionNetworkTest {
 
     List<Enterprise> actual = network.getHubs();
 
-
     assertEquals(expected.size(), actual.size());
     assertEquals(expected.get(0), actual.get(0));
     assertEquals(expected.get(1), actual.get(1));
   }
 
   @Test
-  public void testGetHubsWithNoHubs(){
+  public void testGetHubsWithNoHubs() {
     DistributionNetwork network = new DistributionNetwork();
     Enterprise e1 = new Enterprise("e1", 1, 1, "l1");
     Enterprise e2 = new Enterprise("e2", 2, 2, "l2");
@@ -365,12 +362,12 @@ public class DistributionNetworkTest {
   }
 
   @Test
-  public void testGetHubsEmptyNetwork(){
+  public void testGetHubsEmptyNetwork() {
     assertEquals(0, new DistributionNetwork().getHubs().size());
   }
 
   @Test
-  public void testGetClients(){
+  public void testGetClients() {
     DistributionNetwork network = new DistributionNetwork();
     Enterprise e1 = new Enterprise("e1", 1, 1, "l1");
     Client e2 = new Client("e2", 2, 2, "l2");
@@ -392,7 +389,7 @@ public class DistributionNetworkTest {
   }
 
   @Test
-  public void testGetClientsWithNoClients(){
+  public void testGetClientsWithNoClients() {
     DistributionNetwork network = new DistributionNetwork();
     Enterprise e1 = new Enterprise("e1", 1, 1, "l1");
     Enterprise e2 = new Enterprise("e2", 2, 2, "l2");
@@ -405,13 +402,12 @@ public class DistributionNetworkTest {
   }
 
   @Test
-  public void testGetClientsEmptyNetwork(){
+  public void testGetClientsEmptyNetwork() {
     assertEquals(0, new DistributionNetwork().getClients().size());
   }
 
-
   @Test
-  public void testGetMinimumShortestPathNetwork(){
+  public void testGetMinimumShortestPathNetwork() {
     DistributionNetwork network = new DistributionNetwork();
     Enterprise e1 = new Enterprise("e1", 1, 1, "l1");
     Enterprise e2 = new Enterprise("e2", 2, 2, "l2");
@@ -440,5 +436,68 @@ public class DistributionNetworkTest {
     assertTrue(expected.edges().containsAll(actual.edges()));
   }
 
+  @Test
+  public void testGetNNearestProducers() {
+    DistributionNetwork network = new DistributionNetwork();
+    Enterprise e1 = new Enterprise("e1", 1, 1, "l1");
+    Client c1 = new Client("c1", 2, 2, "l2");
+    Producer p1 = new Producer("p1", 3, 3, "l3");
+    Producer p2 = new Producer("p2", 4, 4, "l4");
+    Producer p3 = new Producer("p3", 5, 5, "l5");
 
+    network.addRelation(e1, c1, 100);
+    network.addRelation(e1, p1, 50);
+    network.addRelation(e1, p2, 200);
+    network.addRelation(e1, p3, 150);
+
+    List<Producer> expected = new ArrayList<>();
+    expected.add(p1);
+
+    List<Producer> actual = network.getNNearestProducers(e1, 1);
+
+    assertEquals(expected.size(), actual.size());
+    assertEquals(expected.get(0), actual.get(0));
+
+  }
+
+  @Test
+  public void testGetNNearestProducersWithNoProducers() {
+    DistributionNetwork network = new DistributionNetwork();
+    Enterprise e1 = new Enterprise("e1", 1, 1, "l1");
+    Client c1 = new Client("c1", 2, 2, "l2");
+
+    network.addRelation(e1, c1, 100);
+
+    assertNull(network.getNNearestProducers(e1, 1));
+  }
+
+  @Test
+  public void testGetNNearestProducersEmptyNetwork() {
+    assertNull(new DistributionNetwork().getNNearestProducers(new Enterprise("e1", 1, 1, "l1"), 1));
+  }
+
+  @Test
+  public void testGetNNearestProducersWithMoreProducersThanN() {
+    DistributionNetwork network = new DistributionNetwork();
+    Enterprise e1 = new Enterprise("e1", 1, 1, "l1");
+    Client c1 = new Client("c1", 2, 2, "l2");
+    Producer p1 = new Producer("p1", 3, 3, "l3");
+    Producer p2 = new Producer("p2", 4, 4, "l4");
+    Producer p3 = new Producer("p3", 5, 5, "l5");
+
+    network.addRelation(e1, c1, 100);
+    network.addRelation(e1, p1, 50);
+    network.addRelation(e1, p2, 200);
+    network.addRelation(e1, p3, 150);
+
+    List<Producer> expected = new ArrayList<>();
+    expected.add(p1);
+    expected.add(p3);
+
+    List<Producer> actual = network.getNNearestProducers(e1, 2);
+
+    assertEquals(expected.size(), actual.size());
+    assertEquals(expected.get(0), actual.get(0)); // p1
+    assertEquals(expected.get(1), actual.get(1)); // p3
+  }
 }

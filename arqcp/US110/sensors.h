@@ -1,8 +1,6 @@
 #ifndef SENSORS_H
 #define SENSORS_H
 
-extern int ***matrix;
-
 #include <stdint.h>
 uint32_t pcg32_random_r();
 uint64_t get_value_from_dev_random();
