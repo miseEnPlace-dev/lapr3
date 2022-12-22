@@ -7,6 +7,12 @@ for d in ./*/; do
   if [ -f $d"Makefile" ] && [[ $ALLOWED_FOLDERS =~ $(basename $d) ]]; then
     cd $d
     make &> /dev/null
+    if [ $? -ne 0 ]; then
+      echo "Error compiling $d"
+      flag=1
+      cd ..
+      continue
+    fi
     output=$(valgrind -s ./prog 2>&1)
     if echo $output | grep -q "definitely lost"; then
       echo "Memory leak detected in $d"
