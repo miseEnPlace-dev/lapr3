@@ -38,4 +38,25 @@ public class ExpeditionList {
     return this.baskets.size();
   }
 
+  public List<Producer> getProducers() {
+    List<Producer> producers = new ArrayList<>();
+    for (Basket basket : this.baskets) {
+      for (Producer producer : basket.getProducers()) {
+        if (!producers.contains(producer)) {
+          producers.add(producer);
+        }
+      }
+    }
+    return producers;
+  }
+
+  public List<Enterprise> getHubs() {
+    List<Enterprise> hubs = new ArrayList<>();
+    for (Basket basket : this.baskets) {
+      if (!hubs.contains(basket.getHub())) {
+        hubs.add(basket.getHub());
+      }
+    }
+    return hubs;
+  }
 }
