@@ -18,5 +18,6 @@ done
 if [ $flag -eq 1 ]; then
   exit 1
 fi
+echo "No memory leaks found in $ALLOWED_FOLDERS"
 exit 0
 
