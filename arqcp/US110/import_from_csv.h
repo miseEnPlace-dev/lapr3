@@ -1,11 +1,7 @@
 #ifndef IMPORT_FROM_CSV_H
 #define IMPORT_FROM_CSV_H
+#include "sensor.h"
 
-typedef struct {
-
-    int number_sensors;
-} sensor_n;
-
-void import_from_csv(char *filename, sensor_n *sensors);
+unsigned int *read_file(char *filename, Sensor **sensors);
 
 #endif
