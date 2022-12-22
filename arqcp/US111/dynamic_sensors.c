@@ -1,5 +1,5 @@
 #include "sensor.h"
-#include "sensores.h"
+#include "sensors.h"
 
 void add_sensor(Sensor s, Sensor **data) {
 
