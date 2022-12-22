@@ -1,6 +1,8 @@
 package isep.model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import isep.shared.exceptions.InvalidHubException;
 import isep.shared.exceptions.InvalidOrderException;
@@ -49,5 +51,21 @@ public class Basket {
     if (client == null)
       throw new IllegalArgumentException("Null client is Invalid!");
     this.client = client;
+  }
+
+  public Enterprise getHub() {
+    return hub;
+  }
+
+  public List<Producer> getProducers() {
+    List<Producer> producers = new ArrayList<>();
+
+    for (Producer producer : received.keySet()) {
+      if (producers.contains(producer))
+        continue;
+      producers.add(producer);
+    }
+
+    return producers;
   }
 }
