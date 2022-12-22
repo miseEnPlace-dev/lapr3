@@ -7,44 +7,33 @@
 
 #define BUFFER_SIZE 1024
 
-/**
- * Infelizmente não vais conseguir passar os sensores para aqui.
- * Para passares a frequência dos sensores, vais ter de retorná-los
- * de alguma forma para o main e depois passas a frequência para
- * cada função bootstrap_tipo_sensor(<FREQUÊNCIA>).
- *
- * Já preparei as funções para aceitarem a frequência, depois é
- * só alterar o argumento.
- */
-unsigned int* import_from_csv(char *filename, Sensor *sensors)
+// Reads the file and stores the number of sensors and frequency in the arrays
+void read_file(char *filename, unsigned int *n_sensors, unsigned int *f_sensors)
 {
-  unsigned int n_sensors[NUM_OF_SENSOR_TYPES];
   char buf[BUFFER_SIZE];
 
   FILE *fp = fopen(filename, "r");
-
   if (fp == NULL)
   {
     printf("Error opening file!");
     exit(1);
   }
 
-  while (fgets(buf, BUFFER_SIZE, fp) != NULL)
+  // Read each line of the file
+  int i = 0;
+  while (fgets(buf, BUFFER_SIZE, fp) != NULL && i < NUM_OF_SENSOR_TYPES)
   {
-    char *token = strtok(buf, ",");
-    int i = 0;
 
+      // Parse the line using strtok()
+      char *token = strtok(buf, ",");
+      token = strtok(NULL, ",");
+
+      // Convert the second column to an unsigned int and store it in the array
       n_sensors[i] = atoi(token);
+
+      // Convert the third column to an unsigned int and store it in the array
       token = strtok(NULL, ",");
+      f_sensors[i] = atoi(token);
       i++;
-
-      token = strtok(NULL, ",");
-      sensors[i].frequency = atoi(token);
-
-
   }
-
-  fclose(fp);
-
 }
-

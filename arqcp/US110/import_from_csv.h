@@ -2,6 +2,6 @@
 #define IMPORT_FROM_CSV_H
 #include "sensor.h"
 
-unsigned int *read_file(char *filename, Sensor **sensors);
+void read_file(char *filename, unsigned int *n_sensors, unsigned int *f_sensors);
 
 #endif
