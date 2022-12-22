@@ -10,6 +10,7 @@
 #include "sensor.h"
 #include "shared.h"
 #include "bootstrap.h"
+#include "import_from_csv.h"
 
 uint64_t state = 0;
 uint64_t inc = 0;
@@ -19,7 +20,8 @@ int main(void)
   reset_seed();
 
   // this array will come from import_from_csv()
-  unsigned int n_sensors[NUM_OF_SENSOR_TYPES] = {2, 2, 2, 2, 2, 2};
+  //unsigned int *n_sensors = import_from_csv(, ;
+  unsigned int n_sensors[NUM_OF_SENSOR_TYPES] = {2,2,2,2,2,2};
 
   if (n_sensors[TEMPERATURE_SENSOR_TYPE] == 0 || n_sensors[PLUVIO_SENSOR_TYPE] == 0) {
     printf("Número de sensores inválido.\nVerifique se o número de sensores de temperatura e de pluviosidade são diferentes de 0.\n");
