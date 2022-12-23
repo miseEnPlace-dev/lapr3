@@ -206,38 +206,6 @@ public class DistributionNetwork {
     return weight;
   }
 
-  // public List<Entity> getShortestPathBetweenEntities(List<Entity> entities) {
-  // List<Entity> shortestPath = new ArrayList<>();
-  // Entity currentEntity = null;
-
-  // currentEntity = entities.get(0);
-  // shortestPath.add(currentEntity);
-
-  // while (currentEntity != null) {
-
-  // }
-
-  // // For each producer/hub, find the nearest producer/hub
-  // for (Entity entity : entities) {
-  // // Rotice total
-  // int minWeight = Integer.MAX_VALUE;
-  // Entity nearestEntity = null;
-
-  // for (Entity nextEntity : entities) {
-  // if (entity.equals(nextEntity))
-  // continue;
-
-  // List<Entity> path = AStar.findShortestPath(this.network, entity, nextEntity);
-  // int pathWeight = getWeightOfPath(path);
-
-  // if (pathWeight < minWeight) {
-  // minWeight = pathWeight;
-  // nearestEntity = nextEntity;
-  // }
-  // }
-
-  // }
-  // }
   public List<Producer> getNNearestProducers(Enterprise hub, int n) {
     List<Producer> producers = network.getEntitiesWithClass(Producer.class);
 
@@ -267,5 +235,17 @@ public class DistributionNetwork {
     }
 
     return result;
+  }
+
+  /**
+   * Get the shortest path between two entities of the network.
+   * 
+   * @param entity1 First entity
+   * @param entity2 Second entity
+   * @return A {@code List} of entities representing the shortest path between
+   *         both entities
+   */
+  public List<Entity> getShortestPathUsingAStar(Entity entity1, Entity entity2) {
+    return AStar.findShortestPath(this.network, entity1, entity2);
   }
 }
