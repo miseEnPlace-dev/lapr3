@@ -32,13 +32,14 @@ CREATE OR REPLACE PACKAGE BODY operacoes AS
     FROM Operacao
     WHERE id_operacao = operacao_id;
 
-    IF data_prevista IS NOT NULL AND data_op IS NULL THEN
+    IF data_prevista IS NOT NULL AND data_op IS NOT NULL THEN
       RAISE_APPLICATION_ERROR(-20001, 'Operação já realizada');
-    ELSE IF data_prevista IS NOT NULL AND data_op IS NULL THEN
+    ELSIF data_prevista IS NOT NULL AND data_op IS NULL THEN
       UPDATE Operacao
       SET data_prevista_operacao = data_nova
       WHERE id_operacao = operacao_id;
-    END IF;
+    ELSE
+      RAISE_APPLICATION_ERROR(-20001, 'Operação não encontrada');
     END IF;
 
     DBMS_OUTPUT.PUT_LINE('Operação atualizada com sucesso');
@@ -54,13 +55,13 @@ CREATE OR REPLACE PACKAGE BODY operacoes AS
     FROM Operacao
     WHERE id_operacao = operacao_id;
 
-    IF data_prevista IS NOT NULL AND data_op IS NULL THEN
+    IF data_prevista IS NOT NULL AND data_op IS NOT NULL THEN
       RAISE_APPLICATION_ERROR(-20001, 'Operação já realizada');
     ELSE IF data_prevista IS NOT NULL AND data_op IS NULL THEN
       FOR i IN 1..lista_produtos.COUNT LOOP
         UPDATE Colheita
         SET quantidade = lista_produtos(i)
-        WHERE id_operacao = operacao_id;
+        WHERE id_produto IN (SELECT id_operacao FROM Operacao WHERE id_operacao = operacao_id) AND id_produto = i;
       END LOOP;
     END IF;
     END IF;
