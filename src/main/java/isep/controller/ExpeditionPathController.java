@@ -5,6 +5,7 @@ import java.util.List;
 
 import isep.model.DistributionNetwork;
 import isep.model.ExpeditionList;
+import isep.model.ExpeditionPath;
 import isep.model.Entity;
 
 /**
@@ -13,14 +14,14 @@ import isep.model.Entity;
  * 
  * @author Tomás Russo <1211288@isep.ipp.pt>
  */
-public class ShortestExpeditionPathController {
+public class ExpeditionPathController {
   private DistributionNetwork distributionNetwork;
   private ExpeditionList expeditionList;
 
   /**
    * Constructor for ShortestExpeditionPathController.
    */
-  public ShortestExpeditionPathController(DistributionNetwork distributionNetwork, ExpeditionList expeditionList) {
+  public ExpeditionPathController(DistributionNetwork distributionNetwork, ExpeditionList expeditionList) {
     this.distributionNetwork = distributionNetwork;
     this.expeditionList = expeditionList;
   }
@@ -28,17 +29,9 @@ public class ShortestExpeditionPathController {
   /**
    * Finds the shortest expedition path for the given daily expedition list.
    * 
-   * @return A list of entities representing the shortest expedition path.
+   * @return An ExpeditionPath object containing the shortest path.
    */
-  public List<Entity> findShortestExpeditionPath() {
-    // Declare return list
-    List<Entity> shortestPath = new ArrayList<>();
-
-    // Get all producers and hubs in the expedition list
-    List<Entity> producersAndHubs = new ArrayList<>();
-    producersAndHubs.addAll(this.expeditionList.getProducers());
-    producersAndHubs.addAll(this.expeditionList.getHubs());
-
-    return shortestPath;
+  public ExpeditionPath findExpeditionPath() {
+    return new ExpeditionPath(distributionNetwork, expeditionList);
   }
 }
