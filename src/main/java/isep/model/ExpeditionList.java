@@ -13,7 +13,7 @@ public class ExpeditionList {
   }
 
   private void setDay(int day) {
-    if (day > 0)
+    if (day < 0)
       throw new IllegalArgumentException("Day must be positive number");
 
     this.day = day;
@@ -38,6 +38,11 @@ public class ExpeditionList {
     return this.baskets.size();
   }
 
+  /**
+   * Get all producers contained in the ExpeditionList.
+   * 
+   * @return A {@code List} of all Producers
+   */
   public List<Producer> getProducers() {
     List<Producer> producers = new ArrayList<>();
     for (Basket basket : this.baskets) {
@@ -50,6 +55,11 @@ public class ExpeditionList {
     return producers;
   }
 
+  /**
+   * Get all hubs contained in the ExpeditionList.
+   * 
+   * @return A {@code List} of all hubs (Enterprises)
+   */
   public List<Enterprise> getHubs() {
     List<Enterprise> hubs = new ArrayList<>();
     for (Basket basket : this.baskets) {
