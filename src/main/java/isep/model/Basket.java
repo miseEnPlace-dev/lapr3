@@ -3,17 +3,18 @@ package isep.model;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import isep.shared.exceptions.InvalidHubException;
 import isep.shared.exceptions.InvalidOrderException;
 
 public class Basket {
-  private HashMap<Product, Integer> ordered;
-  private HashMap<Producer, HashMap<Product, Integer>> received;
+  private Map<Product, Integer> ordered;
+  private Map<Producer, Map<Product, Integer>> received;
   private Enterprise hub;
   private Client client;
 
-  public Basket(HashMap<Product, Integer> ordered, HashMap<Producer, HashMap<Product, Integer>> received,
+  public Basket(Map<Product, Integer> ordered, Map<Producer, Map<Product, Integer>> received,
       Enterprise hub, Client client) throws InvalidOrderException, InvalidHubException {
     setOrdered(ordered);
     setReceived(received);
@@ -21,7 +22,7 @@ public class Basket {
     setClient(client);
   }
 
-  private void setOrdered(HashMap<Product, Integer> ordered) throws InvalidOrderException {
+  private void setOrdered(Map<Product, Integer> ordered) throws InvalidOrderException {
     if (ordered == null)
       throw new IllegalArgumentException("Null ordered map is Invalid!");
 
@@ -35,7 +36,7 @@ public class Basket {
     this.ordered = ordered;
   }
 
-  private void setReceived(HashMap<Producer, HashMap<Product, Integer>> received) {
+  private void setReceived(Map<Producer, Map<Product, Integer>> received) {
     if (received == null)
       throw new IllegalArgumentException("Null received map is Invalid!");
 
