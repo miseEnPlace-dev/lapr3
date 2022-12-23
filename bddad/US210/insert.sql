@@ -153,14 +153,29 @@ INSERT INTO MedicaoSensor (id_sensor,id_setor,medicao,data_hora) VALUES (6,1,5, 
 
 -- Plantacao
 INSERT INTO Plantacao (id_plantacao,id_setor,id_cultura,data_inicio) VALUES (1,1,1,'01-Jan-2021');
-INSERT INTO Plantacao (id_setor,id_setor,id_cultura,data_inicio) VALUES (2,2,2,'01-Feb-2021');
-INSERT INTO Plantacao (id_setor,id_setor,id_cultura,data_inicio) VALUES (3,3,3,'01-Apr-2021');
+INSERT INTO Plantacao (id_plantacao,id_setor,id_cultura,data_inicio) VALUES (2,2,2,'01-Feb-2021');
+INSERT INTO Plantacao (id_plantacao,id_setor,id_cultura,data_inicio) VALUES (3,3,3,'01-Apr-2021');
 
 -- Colheita
 INSERT INTO Colheita (id_operacao,id_produto,quantidade,id_plantacao) VALUES (1,1,10,1);
 INSERT INTO Colheita (id_operacao,id_produto,quantidade,id_plantacao) VALUES (2,2,10,2);
 INSERT INTO Colheita (id_operacao,id_produto,quantidade,id_plantacao) VALUES (3,3,10,3);
-INSERT INTO Colheita (id_operacao,id_produto,quantidade,id_plantacao) VALUES (4,4,10,4);
+
+-- TipoAplicacao
+INSERT INTO TipoAplicacao (id_tipo_aplicacao,tipo_aplicacao) VALUES (1,'Foliar');
+INSERT INTO TipoAplicacao (id_tipo_aplicacao,tipo_aplicacao) VALUES (2,'Solo');
+
+-- Aplicacao
+INSERT INTO Aplicacao (id_operacao,id_setor,id_tipo_aplicacao) VALUES (1,1,1);
+INSERT INTO Aplicacao (id_operacao,id_setor,id_tipo_aplicacao) VALUES (2,2,2);
+
+-- RestricaoAplicacao
+INSERT INTO RestricaoAplicacao (id_setor,data_inicio,data_fim,id_tipo_fator_producao) VALUES (1,'01-Jan-2021','01-Feb-2021',1);
+INSERT INTO RestricaoAplicacao (id_setor,data_inicio,data_fim,id_tipo_fator_producao) VALUES (2,'01-Feb-2021','01-Mar-2021',2);
+
+-- FatorProducaoAplicacao
+INSERT INTO FatorProducaoAplicacao (id_operacao,id_fator_producao,quantidade) VALUES (1,1,100);
+INSERT INTO FatorProducaoAplicacao (id_operacao,id_fator_producao,quantidade) VALUES (2,2,100);
 
 -- Visualisacao de dados
 DECLARE
