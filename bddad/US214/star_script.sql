@@ -12,7 +12,7 @@ CREATE TABLE Cliente (
 CREATE TABLE Produto (
   id_produto NUMBER(10) NOT NULL,
   tipo VARCHAR2(50) NOT NULL,
-  preco NUMBER(10) NOT NULL,
+  designacao VARCHAR2(50) NOT NULL,
   PRIMARY KEY (id_produto)
 );
 
