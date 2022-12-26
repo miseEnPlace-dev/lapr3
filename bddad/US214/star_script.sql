@@ -3,7 +3,7 @@
 -- Dimension tables --
 CREATE TABLE Cliente (
   id_cliente NUMBER(10,0) NOT NULL,
-  nome VARCHAR(50,0) NOT NULL,
+  nome VARCHAR2(50,0) NOT NULL,
   nif NUMBER(9,0) NOT NULL,
   PRIMARY KEY (id_cliente),
   CONSTRAINT CHK_Nif    CHECK (nif > 100000000 AND nif < 999999999)
@@ -11,14 +11,14 @@ CREATE TABLE Cliente (
 
 CREATE TABLE Produto (
   id_produto NUMBER(10,0) NOT NULL,
-  tipo VARCHAR(50,0) NOT NULL,
+  tipo VARCHAR2(25,0) NOT NULL,
   preco NUMBER(10,2) NOT NULL,
   PRIMARY KEY (id_produto)
 );
 
 CREATE TABLE Setor (
   id_setor NUMBER(10,0) NOT NULL,
-  nome VARCHAR(50,0) NOT NULL,
+  nome VARCHAR2(50,0) NOT NULL,
   PRIMARY KEY (id_setor)
 );
 
