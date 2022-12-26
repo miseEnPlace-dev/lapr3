@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import isep.utils.graph.astar.AStar;
+
 /**
  * Expedition Path class. Holds information about US310:
  * - expedition path (entities list)
@@ -15,10 +17,26 @@ import java.util.Map;
  * @author Tomás Russo <1211288@isep.ipp.pt>
  */
 public class ExpeditionPath {
+  class Stop {
+    public Entity entity;
+    public Integer basketsDelivered;
+
+    public Stop(Enterprise hub, int basketsDelivered) {
+      this.entity = hub;
+      this.basketsDelivered = basketsDelivered;
+    }
+
+    public Stop(Producer producer) {
+      this.entity = producer;
+      this.basketsDelivered = null;
+    }
+  }
+
   private DistributionNetwork distributionNetwork;
   private ExpeditionList expeditionList;
-  private List<Entity> path;
+  private List<Stop> path;
   private Map<Enterprise, Integer> deliveredBaskets;
+  private Map<Enterprise, List<Producer>> hubsSuppliers;
   private int totalDistance;
 
   /**
@@ -30,6 +48,9 @@ public class ExpeditionPath {
   public ExpeditionPath(DistributionNetwork distributionNetwork, ExpeditionList expeditionList) {
     this.distributionNetwork = distributionNetwork;
     this.expeditionList = expeditionList;
+    this.path = new ArrayList<>();
+    setDeliveredBaskets();
+    setHubsSuppliers();
     buildPath();
   }
 
@@ -37,76 +58,116 @@ public class ExpeditionPath {
    * Builds the shortest path.
    */
   private void buildPath() {
-    path = new ArrayList<>();
+    List<Entity> entitiesPath = new ArrayList<>();
 
     // Get all producers in the expedition list
     List<Producer> producers = expeditionList.getProducers();
 
-    // Pop (get and remove) first producer from the list
-    Entity currentEntity = producers.get(0);
-    producers.remove(currentEntity);
+    Entity start = producers.get(0);
+    producers.remove(0);
 
-    // Find the shortest path between all producers
-    while (!producers.isEmpty()) {
-      int minDistance = Integer.MAX_VALUE;
-      Producer minProducer = null;
-      List<Entity> minPath = null;
+    entitiesPath.addAll(distributionNetwork.getShortestPathUsingAStar(start, producers));
 
-      // Iterate over all other producers, in order to find the nearest one
-      for (int i = 0; i < producers.size(); i++) {
-        List<Entity> shortestPath = distributionNetwork.getShortestPathUsingAStar(currentEntity, producers.get(i));
-        int distance = distributionNetwork.getWeightOfPath(shortestPath);
-
-        if (distance < minDistance) {
-          minDistance = distance;
-          minProducer = producers.get(i);
-          minPath = shortestPath;
-          minPath.remove(minPath.size() - 1);
-        }
-      }
-
-      currentEntity = minProducer;
-      path.addAll(minPath);
-      producers.remove(currentEntity);
-    }
+    List<Enterprise> hubsSupplied = generateStopsForProducers(entitiesPath);
 
     // Get all hubs in the expedition list
     List<Enterprise> hubs = expeditionList.getHubs();
+    hubs.removeAll(hubsSupplied);
 
-    // Find the shortest path between all hubs
-    while (!hubs.isEmpty()) {
-      int minDistance = Integer.MAX_VALUE;
-      Enterprise minHub = null;
-      List<Entity> minPath = null;
+    start = entitiesPath.get(entitiesPath.size() - 1);
+    entitiesPath.clear();
 
-      // Iterate over all other hubs, in order to find the nearest one
-      for (int i = 0; i < hubs.size(); i++) {
-        List<Entity> shortestPath = distributionNetwork.getShortestPathUsingAStar(currentEntity, hubs.get(i));
-        int distance = distributionNetwork.getWeightOfPath(shortestPath);
+    entitiesPath.addAll(distributionNetwork.getShortestPathUsingAStar(start, hubs));
+    entitiesPath.remove(0);
 
-        if (distance < minDistance) {
-          minDistance = distance;
-          minHub = hubs.get(i);
-          minPath = shortestPath;
-          minPath.remove(minPath.size() - 1);
-        }
-      }
-
-      currentEntity = minHub;
-      path.addAll(minPath);
-      hubs.remove(currentEntity);
-    }
-
-    path.add(currentEntity);
+    generateStopsForHubs(entitiesPath, hubsSupplied);
 
     setTotalDistance();
+  }
+
+  /**
+   * Generates the {@code List} of Stops for Producers. Checks for hubs that can
+   * already be supplied, and returns them.
+   * 
+   * @param entities The path
+   * @return A {@code List} of Hubs that were already supplied.
+   */
+  private List<Enterprise> generateStopsForProducers(List<Entity> entities) {
+    List<Entity> visitedEntities = new ArrayList<>();
+    List<Enterprise> suppliedHubs = new ArrayList<>();
+
+    visitedEntities.add(entities.get(0));
+    // First stop is guaranteed to be a Producer
+    path.add(new Stop((Producer) entities.get(0)));
+
+    int size = entities.size();
+    for (int i = 1; i < size; i++) {
+      Entity stop = entities.get(i);
+      if (stop.getClass() == Enterprise.class) {
+        List<Producer> suppliers = hubsSuppliers.get(stop);
+        if (suppliers != null && visitedEntities.containsAll(suppliers)) {
+          path.add(new Stop((Enterprise) stop, getNumberOfBasketsDeliveredAtHub((Enterprise) stop)));
+          suppliedHubs.add((Enterprise) stop);
+        } else {
+          path.add(new Stop((Enterprise) stop, 0));
+        }
+      } else {
+        path.add(new Stop((Producer) stop));
+      }
+    }
+
+    return suppliedHubs;
+  }
+
+  /**
+   * Generates the {@code List} of Stops for Hubs. It checks for already supplied
+   * hubs, and puts their delivered baskets to 0.
+   * 
+   * @param entities     The path
+   * @param suppliedHubs A {@code List} of the already supplied hubs
+   */
+  private void generateStopsForHubs(List<Entity> entities, List<Enterprise> suppliedHubs) {
+    for (Entity stop : entities) {
+      if (stop.getClass() == Enterprise.class) {
+        if (!suppliedHubs.contains((Enterprise) stop) && getNumberOfBasketsDeliveredAtHub((Enterprise) stop) != -1) {
+          path.add(new Stop((Enterprise) stop, getNumberOfBasketsDeliveredAtHub((Enterprise) stop)));
+          suppliedHubs.add((Enterprise) stop);
+        } else {
+          path.add(new Stop((Enterprise) stop, 0));
+        }
+      } else {
+        path.add(new Stop((Producer) stop));
+      }
+    }
+  }
+
+  /**
+   * Sets the delivered baskets.
+   */
+  private void setDeliveredBaskets() {
+    this.deliveredBaskets = this.expeditionList.getBasketsDeliveredAtHubs();
+  }
+
+  /**
+   * Sets the hubs suppliers
+   */
+  private void setHubsSuppliers() {
+    this.hubsSuppliers = this.expeditionList.getProducersThatSupplyHubs();
+  }
+
+  private List<Entity> convertStopListToEntityList() {
+    List<Entity> list = new ArrayList<>();
+    for (Stop stop : path) {
+      list.add(stop.entity);
+    }
+    return list;
   }
 
   /**
    * Sets the totalDistance attribute.
    */
   private void setTotalDistance() {
-    this.totalDistance = this.distributionNetwork.getWeightOfPath(path);
+    this.totalDistance = this.distributionNetwork.getWeightOfPath(convertStopListToEntityList());
   }
 
   /**
@@ -136,13 +197,10 @@ public class ExpeditionPath {
    * 
    * @param entity1 First entity
    * @param entity2 Second entity
-   * @return The distance between entity1 and entity2, or {@code -1} if any of
-   *         both entities does not exist in path
+   * @return The distance between entity1 and entity2
    */
-  public int getDistanceBetweenEntities(Entity entity1, Entity entity2) {
-    if (path.contains(entity1) && path.contains(entity2))
-      return this.distributionNetwork.getDistanceBetweenConnectedEntities(entity1, entity2);
-    return -1;
+  private int getDistanceBetweenEntities(Entity entity1, Entity entity2) {
+    return this.distributionNetwork.getDistanceBetweenConnectedEntities(entity1, entity2);
   }
 
   /**
@@ -155,8 +213,9 @@ public class ExpeditionPath {
     Map<Map.Entry<Entity, Entity>, Integer> map = new HashMap<>();
 
     for (int i = 0; i < path.size() - 1; i++) {
-      int distance = this.distributionNetwork.getDistanceBetweenConnectedEntities(path.get(i), path.get(i + 1));
-      map.put(Map.entry(path.get(i), path.get(i + 1)), distance);
+      int distance = this.distributionNetwork.getDistanceBetweenConnectedEntities(path.get(i).entity,
+          path.get(i + 1).entity);
+      map.put(Map.entry(path.get(i).entity, path.get(i + 1).entity), distance);
     }
 
     return map;
@@ -166,14 +225,35 @@ public class ExpeditionPath {
    * Prints the expedition path.
    */
   public void printPath() {
-    System.out.println("Expedition path for day " + this.expeditionList.getDay() + ":");
+    System.out.println("Expedition path for day " + this.expeditionList.getDay() + ":\n----------");
     for (int i = 0; i < path.size(); i++) {
-      String str = ">> Stop " + (i + 1) + ": ";
-      if (path.get(i).getClass() == Producer.class)
-        str = str.concat("Producer " + path.get(i).getId());
+      String str = ">> Stop " + (i + 1) + " - ";
+      if (path.get(i).entity.getClass() == Producer.class)
+        str = str.concat("Producer " + path.get(i).entity.getId());
       else
-        str = str.concat("Hub " + path.get(i).getId());
+        str = str
+            .concat("Hub " + path.get(i).entity.getId() + " ("
+                + (getNumberOfBasketsDeliveredAtHub((Enterprise) path.get(i).entity) == -1
+                    ? "No baskets to deliver here"
+                    : path.get(i).basketsDelivered
+                        + " basket(s) delivered in this stop (Total: " + path.get(i).basketsDelivered + "/"
+                        + getNumberOfBasketsDeliveredAtHub((Enterprise) path.get(i).entity) + ")")
+                + ")");
       System.out.println(str);
+      if (i != path.size() - 1) {
+        int distance = getDistanceBetweenEntities(path.get(i).entity, path.get(i + 1).entity);
+        System.out.println("   : " + distance + "m");
+      }
     }
+    System.out.println("----------\nTotal distance: " + getTotalDistance() + "m");
+  }
+
+  /**
+   * Get the entities list of the path.
+   * 
+   * @return A {@code List} of all entities of the path.
+   */
+  public List<Entity> getPathList() {
+    return convertStopListToEntityList();
   }
 }
