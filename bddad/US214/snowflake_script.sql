@@ -9,22 +9,22 @@ CREATE TABLE Cliente (
   CONSTRAINT CHK_Nif    CHECK (nif > 100000000 AND nif < 999999999)
 );
 
-CREATE TABLE NomeProduto (
-  nome VARCHAR2(50) NOT NULL,
-  PRIMARY KEY (nome)
+CREATE TABLE DesignacaoProduto (
+  designacao VARCHAR2(50) NOT NULL,
+  PRIMARY KEY (designacao)
 );
 
 CREATE TABLE TipoProduto (
-  tipo VARCHAR2(25) NOT NULL,
+  tipo VARCHAR2(50) NOT NULL,
   PRIMARY KEY (tipo)
 );
 
 CREATE TABLE Produto (
   id_produto NUMBER(10) NOT NULL,
+  tipo VARCHAR2(50) NOT NULL,
   designacao VARCHAR2(50) NOT NULL,
-  tipo VARCHAR2(25) NOT NULL,
   PRIMARY KEY (id_produto),
-  FOREIGN KEY (designacao) REFERENCES NomeProduto (nome),
+  FOREIGN KEY (designacao) REFERENCES DesignacaoProduto (designacao),
   FOREIGN KEY (tipo) REFERENCES TipoProduto (tipo)
 );
 
