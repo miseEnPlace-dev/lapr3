@@ -1,5 +1,13 @@
 -- Star data model --
 
+-- DROP TABLES --
+DROP TABLE Cliente CASCADE CONSTRAINTS PURGE;
+DROP TABLE Produto CASCADE CONSTRAINTS PURGE;
+DROP TABLE Setor CASCADE CONSTRAINTS PURGE;
+DROP TABLE Tempo CASCADE CONSTRAINTS PURGE;
+DROP TABLE Venda CASCADE CONSTRAINTS PURGE;
+DROP TABLE Producao CASCADE CONSTRAINTS PURGE;
+
 -- Dimension tables --
 CREATE TABLE Cliente (
   id_cliente NUMBER(10) NOT NULL,
@@ -57,7 +65,7 @@ CREATE TABLE Producao (
   CONSTRAINT FK_Producao_Produto    FOREIGN KEY (id_produto) REFERENCES Produto (id_produto),
   CONSTRAINT FK_Producao_Setor    FOREIGN KEY (id_setor) REFERENCES Setor (id_setor),
   CONSTRAINT FK_Producao_Tempo    FOREIGN KEY (id_tempo) REFERENCES Tempo (id_tempo),
-  CONSTRAINT CHK_Quantidade    CHECK (quantidade > 0)
+  CONSTRAINT CHK_Quantidade_Prod   CHECK (quantidade > 0)
 );
 
 
