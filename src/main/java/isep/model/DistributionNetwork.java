@@ -238,14 +238,26 @@ public class DistributionNetwork {
   }
 
   /**
-   * Get the shortest path between two entities of the network.
+   * Get the shortest path between a start entity and a list of target entities.
    * 
-   * @param entity1 First entity
-   * @param entity2 Second entity
+   * @param start   The start entity
+   * @param targets A {@code List} of target entities
    * @return A {@code List} of entities representing the shortest path between
    *         both entities
    */
-  public List<Entity> getShortestPathUsingAStar(Entity entity1, Entity entity2) {
-    return AStar.findShortestPath(this.network, entity1, entity2);
+  public List<Entity> getShortestPathUsingAStar(Entity start, List<? extends Entity> targets) {
+    return AStar.findShortestPath(this.network, start, targets);
+  }
+
+  /**
+   * Get the shortest path between two entities of the network.
+   * 
+   * @param start  The start entity
+   * @param target The target entity
+   * @return A {@code List} of entities representing the shortest path between
+   *         both entities
+   */
+  public List<Entity> getShortestPathUsingAStar(Entity start, Entity target) {
+    return AStar.findShortestPath(this.network, start, target);
   }
 }
