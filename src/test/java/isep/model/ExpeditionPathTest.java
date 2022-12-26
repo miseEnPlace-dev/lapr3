@@ -1,7 +1,11 @@
 package isep.model;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -28,6 +32,14 @@ public class ExpeditionPathTest {
   private Basket dAliceBasket;
   private Basket dManuelaBasket;
   private Basket dLuisaBasket;
+  private Producer srManuelPorto;
+  private Producer srFernandoLisboa;
+  private Producer srJoseFaro;
+  private Producer srAntonioGuarda;
+  private Enterprise hubAveiro;
+  private Enterprise hubCoimbra;
+  private Enterprise hubLeiria;
+  private Enterprise hubViseu;
 
   @BeforeAll
   public void setUp() throws FileNotFoundException, InvalidNumberOfHubsException, InvalidProductNameException,
@@ -39,13 +51,13 @@ public class ExpeditionPathTest {
     Product batataVermelha = new Product("Batata Vermelha");
 
     // Porto coordinates
-    Producer srManuelPorto = new Producer("SR_MANUEL_PORTO", 41.14961, -8.61099, "OPO");
+    srManuelPorto = new Producer("SR_MANUEL_PORTO", 41.14961, -8.61099, "OPO");
     // Lisbon coordinates
-    Producer srFernandoLisboa = new Producer("SR_FERNANDO_LISBOA", 38.72225, -9.13934, "LIS");
+    srFernandoLisboa = new Producer("SR_FERNANDO_LISBOA", 38.72225, -9.13934, "LIS");
     // Faro coordinates
-    Producer srJoseFaro = new Producer("SR_JOSE_FARO", 37.01987, -7.93206, "FAO");
+    srJoseFaro = new Producer("SR_JOSE_FARO", 37.01987, -7.93206, "FAO");
     // Guarda coordinates
-    Producer srAntonioGuarda = new Producer("SR_ANTONIO_GUARDA", 40.53726, -7.26337, "GUA");
+    srAntonioGuarda = new Producer("SR_ANTONIO_GUARDA", 40.53726, -7.26337, "GUA");
 
     // Braga coordinates
     Client dAliceBraga = new Client("D_ALICE_BRAGA", 41.54545, -8.42653, "BGZ");
@@ -55,13 +67,13 @@ public class ExpeditionPathTest {
     Client dLuisaVReal = new Client("D_LUISA_VREAL", 41.30045, -7.74482, "VRL");
 
     // Aveiro coordinates
-    Enterprise hubAveiro = new Enterprise("HUB_AVEIRO", 40.64427, -8.64554, "AVE");
+    hubAveiro = new Enterprise("HUB_AVEIRO", 40.64427, -8.64554, "AVE");
     // Coimbra coordinates
-    Enterprise hubCoimbra = new Enterprise("HUB_COIMBRA", 40.20331, -8.41025, "COI");
+    hubCoimbra = new Enterprise("HUB_COIMBRA", 40.20331, -8.41025, "COI");
     // Leiria coordinates
-    Enterprise hubLeiria = new Enterprise("HUB_LEIRIA", 39.74383, -8.80777, "LEI");
+    hubLeiria = new Enterprise("HUB_LEIRIA", 39.74383, -8.80777, "LEI");
     // Viseu coordinates
-    Enterprise hubViseu = new Enterprise("HUB_VISEU", 40.65716, -7.90907, "VIS");
+    hubViseu = new Enterprise("HUB_VISEU", 40.65716, -7.90907, "VIS");
 
     this.distributionNetwork.addRelation(srManuelPorto, hubAveiro, 75);
     this.distributionNetwork.addRelation(srManuelPorto, dAliceBraga, 60);
@@ -96,45 +108,47 @@ public class ExpeditionPathTest {
     srManuelAndFernandoReceivedProducts.put(srManuelPorto, srManuelOrderedProducts);
     srManuelAndFernandoReceivedProducts.put(srFernandoLisboa, srFernandoOrderedProducts);
 
-    dAliceBasket = new Basket(srManuelOrderedProducts, srManuelReceivedProducts, hubLeiria, dAliceBraga);
+    dAliceBasket = new Basket(srManuelOrderedProducts, srManuelReceivedProducts, hubAveiro, dAliceBraga);
     dManuelaBasket = new Basket(srFernandoOrderedProducts, srFernandoReceivedProducts, hubViseu, dManuelaCBranco);
-    dLuisaBasket = new Basket(srManuelAndFernandoOrderedProducts, srManuelAndFernandoReceivedProducts, hubCoimbra,
+    dLuisaBasket = new Basket(srManuelAndFernandoOrderedProducts, srManuelAndFernandoReceivedProducts, hubAveiro,
         dLuisaVReal);
   }
 
   @Test
   public void testWithDAliceBasket() {
-    // NESTE TESTE, COM A OTIMIZACAO DOS HUBS, O RESULTADO SERIA:
-    // Expedition path for day 1:
-    // >> Stop 1: Producer SR_MANUEL_PORTO
-    // >> Stop 2: Hub HUB_AVEIRO
-    // >> Stop 3: Hub HUB_LEIRIA
-    // >> Stop 4: Producer SR_FERNANDO_LISBOA
-    // >> Stop 5: Hub HUB_COIMBRA
-    // >> Stop 6: Hub HUB_AVEIRO
-    // >> Stop 7: Hub HUB_VISEU
-
-    // EM VEZ DE
-
-    // Expedition path for day 1:
-    // >> Stop 1: Producer SR_MANUEL_PORTO
-    // >> Stop 2: Hub HUB_AVEIRO
-    // >> Stop 3: Hub HUB_LEIRIA
-    // >> Stop 4: Producer SR_FERNANDO_LISBOA
-    // >> Stop 5: Hub HUB_LEIRIA
-    // >> Stop 6: Hub HUB_COIMBRA
-    // >> Stop 7: Hub HUB_AVEIRO
-    // >> Stop 8: Hub HUB_VISEU
-
     this.expeditionList = new ExpeditionList(1);
-    this.expeditionList.addBasket(dLuisaBasket);
-    this.expeditionList.addBasket(dManuelaBasket);
     this.expeditionList.addBasket(dAliceBasket);
 
     ExpeditionPathController expeditionPathController = new ExpeditionPathController(this.distributionNetwork,
         this.expeditionList);
     ExpeditionPath path = expeditionPathController.findExpeditionPath();
 
+    List<Entity> expected = new ArrayList<>();
+    expected.add(srManuelPorto);
+    expected.add(hubAveiro);
+
     path.printPath();
+    assertEquals(expected, path.getPathList());
+    assertEquals(75, path.getTotalDistance());
+  }
+
+  @Test
+  public void testWithDManuelaBasket() {
+    this.expeditionList = new ExpeditionList(1);
+    this.expeditionList.addBasket(dManuelaBasket);
+
+    ExpeditionPathController expeditionPathController = new ExpeditionPathController(this.distributionNetwork,
+        this.expeditionList);
+    ExpeditionPath path = expeditionPathController.findExpeditionPath();
+
+    List<Entity> expected = new ArrayList<>();
+    expected.add(srFernandoLisboa);
+    expected.add(hubCoimbra);
+    expected.add(hubAveiro);
+    expected.add(hubViseu);
+
+    path.printPath();
+    assertEquals(expected, path.getPathList());
+    assertEquals(345, path.getTotalDistance());
   }
 }
