@@ -1,5 +1,13 @@
 -- Star data model Inserts --
 
+-- DELETE CONTENT --
+DELETE FROM Venda;
+DELETE FROM Producao;
+DELETE FROM Cliente;
+DELETE FROM Produto;
+DELETE FROM Setor;
+DELETE FROM Tempo;
+
 -- Dimension tables --
 INSERT INTO Cliente VALUES (1, 'Joao', 123456789);
 INSERT INTO Cliente VALUES (2, 'Maria', 987654321);
@@ -42,12 +50,12 @@ INSERT INTO Venda VALUES (6, 3, 6, 6, 6, 60);
 INSERT INTO Venda VALUES (7, 1, 7, 7, 7, 70);
 INSERT INTO Venda VALUES (8, 2, 8, 8, 8, 80);
 
-INSERT INTO Producao VALUES (1, 1, 1, 1, 1, 10);
-INSERT INTO Producao VALUES (2, 2, 2, 2, 2, 20);
-INSERT INTO Producao VALUES (3, 3, 3, 3, 3, 30);
-INSERT INTO Producao VALUES (4, 1, 4, 4, 4, 40);
-INSERT INTO Producao VALUES (5, 2, 5, 5, 5, 50);
-INSERT INTO Producao VALUES (6, 3, 6, 6, 6, 60);
-INSERT INTO Producao VALUES (7, 1, 7, 7, 7, 70);
-INSERT INTO Producao VALUES (8, 2, 8, 8, 8, 80);
+INSERT INTO Producao VALUES (1, 1, 1, 1, 10);
+INSERT INTO Producao VALUES (2, 2, 2, 2, 20);
+INSERT INTO Producao VALUES (3, 3, 3, 3, 30);
+INSERT INTO Producao VALUES (4, 4, 1, 4, 40);
+INSERT INTO Producao VALUES (5, 5, 2, 5, 50);
+INSERT INTO Producao VALUES (6, 6, 3, 6, 60);
+INSERT INTO Producao VALUES (7, 7, 1, 7, 70);
+INSERT INTO Producao VALUES (8, 8, 2, 8, 80);
 
