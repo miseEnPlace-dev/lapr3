@@ -23,6 +23,7 @@ public class AStar {
   /**
    * Finds the shortest path between two vertices in a graph.
    * 
+   * @param <V>    the vertex type
    * @param graph  the graph
    * @param start  the start vertex
    * @param target the target vertex
@@ -55,7 +56,7 @@ public class AStar {
           continue;
         }
 
-        // Calculate total cost from start to neighbour via current node
+        // Calculate total cost from start to neighbour via current vertex
         int cost = graph.edge(vertex, neighbour).getWeight();
         int totalCostFromStart = vertexWrapper.getTotalCostFromStart() + cost;
 
@@ -68,7 +69,7 @@ public class AStar {
           queue.add(neighbourWrapper);
         }
 
-        // Neighbour discovered, but total cost via current node is lower?
+        // Neighbour discovered, but total cost via current vertex is lower?
         // --> Update costs and predecessor
         else if (totalCostFromStart < neighbourWrapper.getTotalCostFromStart()) {
           queue.remove(neighbourWrapper);
@@ -83,6 +84,49 @@ public class AStar {
 
     // All nodes were visited but the target was not found
     return null;
+  }
+
+  /**
+   * Finds the shortest path between a start vertex and multiple target vertices.
+   * 
+   * @param <V>     the vertex type
+   * @param graph   the graph
+   * @param start   the start vertex
+   * @param targets a {@code List} of target vertices
+   * @return the shortest path between the start and target vertex
+   */
+  public static <V extends VertexHeuristic<V>> List<V> findShortestPath(Graph<V, Integer> graph, V start,
+      List<? extends V> targets) {
+    List<V> path = new ArrayList<>();
+
+    List<V> targetsList = new ArrayList<>();
+    targetsList.addAll(targets);
+
+    V current = start;
+    path.add(current);
+
+    while (!targetsList.isEmpty()) {
+      int minDistance = current.getHeuristicValue(targetsList.get(0));
+      V minV = targetsList.get(0);
+
+      int size = targetsList.size();
+      for (int i = 1; i < size; i++) {
+        int distance = current.getHeuristicValue(targetsList.get(i));
+        if (distance < minDistance) {
+          minDistance = distance;
+          minV = targetsList.get(i);
+        }
+      }
+
+      List<V> shortestPath = findShortestPath(graph, current, minV);
+      shortestPath.remove(0);
+      path.addAll(shortestPath);
+
+      current = minV;
+      targetsList.remove(current);
+    }
+
+    return path;
   }
 
   private static <V> List<V> buildPath(VertexWrapper<V> vertexWrapper) {
