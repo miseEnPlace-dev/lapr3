@@ -1,6 +1,7 @@
 package isep.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -115,6 +116,21 @@ public class ExpeditionPathTest {
   }
 
   @Test
+  public void testWithZeroBaskets() {
+    this.expeditionList = new ExpeditionList(0);
+
+    ExpeditionPathController expeditionPathController = new ExpeditionPathController(this.distributionNetwork,
+        this.expeditionList);
+    ExpeditionPath path = expeditionPathController.findExpeditionPath();
+
+    List<Entity> expected = new ArrayList<>();
+
+    path.printPath();
+    assertEquals(expected, path.getPathList());
+    assertEquals(0, path.getTotalDistance());
+  }
+
+  @Test
   public void testWithDAliceBasket() {
     this.expeditionList = new ExpeditionList(1);
     this.expeditionList.addBasket(dAliceBasket);
@@ -134,7 +150,7 @@ public class ExpeditionPathTest {
 
   @Test
   public void testWithDManuelaBasket() {
-    this.expeditionList = new ExpeditionList(1);
+    this.expeditionList = new ExpeditionList(2);
     this.expeditionList.addBasket(dManuelaBasket);
 
     ExpeditionPathController expeditionPathController = new ExpeditionPathController(this.distributionNetwork,
@@ -150,5 +166,26 @@ public class ExpeditionPathTest {
     path.printPath();
     assertEquals(expected, path.getPathList());
     assertEquals(345, path.getTotalDistance());
+  }
+
+  @Test
+  public void testWithDLuisaBasket() {
+    this.expeditionList = new ExpeditionList(3);
+    this.expeditionList.addBasket(dLuisaBasket);
+
+    ExpeditionPathController expeditionPathController = new ExpeditionPathController(this.distributionNetwork,
+        this.expeditionList);
+    ExpeditionPath path = expeditionPathController.findExpeditionPath();
+
+    List<Entity> expected = new ArrayList<>();
+    expected.add(srFernandoLisboa);
+    expected.add(hubCoimbra);
+    expected.add(hubAveiro);
+    expected.add(srManuelPorto);
+    expected.add(hubAveiro);
+
+    path.printPath();
+    assertEquals(expected, path.getPathList());
+    assertEquals(410, path.getTotalDistance());
   }
 }
