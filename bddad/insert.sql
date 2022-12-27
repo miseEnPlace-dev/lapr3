@@ -178,7 +178,7 @@ INSERT INTO FatorProducaoAplicacao (id_operacao,id_fator_producao,quantidade) VA
 INSERT INTO FatorProducaoAplicacao (id_operacao,id_fator_producao,quantidade) VALUES (2,2,100);
 
 -- input_sensor
-INSERT INTO input_sensor (input_string) VALUES ('62943HS078783897638742310:35');
+INSERT INTO input_sensor (input_string) VALUES ('62943HS078783897638710:35');
 
 -- Visualisacao de dados
 DECLARE
