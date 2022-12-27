@@ -177,6 +177,9 @@ INSERT INTO RestricaoAplicacao (id_setor,data_inicio,data_fim,id_tipo_fator_prod
 INSERT INTO FatorProducaoAplicacao (id_operacao,id_fator_producao,quantidade) VALUES (1,1,100);
 INSERT INTO FatorProducaoAplicacao (id_operacao,id_fator_producao,quantidade) VALUES (2,2,100);
 
+-- input_sensor
+INSERT INTO input_sensor (input_string) VALUES ('62943HS078783897638742310:35');
+
 -- Visualisacao de dados
 DECLARE
     numero_dados NUMBER;
