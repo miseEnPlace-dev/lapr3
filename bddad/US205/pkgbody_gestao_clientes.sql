@@ -40,10 +40,7 @@ CREATE OR REPLACE PACKAGE BODY gestao_clientes AS
       postal_entrega,
       postal);
 
-    DBMS_OUTPUT.PUT_LINE('Cliente ' || cliente_id || ' registado com sucesso.');
-
     registar_logs.pr_RegistarInsert(USER, sysdate,'Cliente');
-
 
     COMMIT;
     RETURN cliente_id;
