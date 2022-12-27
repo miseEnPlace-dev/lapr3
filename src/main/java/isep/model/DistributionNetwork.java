@@ -11,6 +11,7 @@ import isep.utils.MergeSort;
 import isep.utils.graph.AdjacencyMapGraph;
 import isep.utils.graph.Edge;
 import isep.utils.graph.GraphAlgorithms;
+import isep.utils.graph.astar.AStar;
 
 public class DistributionNetwork {
   private NetworkGraph<Entity, Integer> network = new NetworkGraph<>(false);
@@ -106,8 +107,7 @@ public class DistributionNetwork {
     if (numberOfHubs <= 0)
       throw new InvalidNumberOfHubsException();
 
-
-      if (!this.isConnected())
+    if (!this.isConnected())
       return null;
 
     List<Map.Entry<Enterprise, Integer>> list = new ArrayList<>();
@@ -196,5 +196,68 @@ public class DistributionNetwork {
     }
 
     return nearestHub;
+  }
+
+  public int getWeightOfPath(List<Entity> entities) {
+    int weight = 0;
+    for (int i = 0; i < entities.size() - 1; i++) {
+      weight += this.getDistanceBetweenConnectedEntities(entities.get(i), entities.get(i + 1));
+    }
+    return weight;
+  }
+
+  public List<Producer> getNNearestProducers(Enterprise hub, int n) {
+    List<Producer> producers = network.getEntitiesWithClass(Producer.class);
+
+    if (producers.size() < n)
+      return null;
+
+    List<Producer> result = new ArrayList<>();
+
+    ArrayList<Integer> distancesToOtherVertices = this.shortestPathsDistances(hub);
+
+    for (int i = 0; i < n; i++) {
+      Producer nearestProducer = producers.get(0);
+      int minDistance = distancesToOtherVertices.get(network.key(producers.get(0)));
+
+      for (int j = 1; j < producers.size(); j++) {
+        Producer producer = producers.get(j);
+        int distance = distancesToOtherVertices.get(network.key(producer));
+
+        if (distance < minDistance) {
+          minDistance = distance;
+          nearestProducer = producer;
+        }
+      }
+
+      result.add(nearestProducer);
+      producers.remove(nearestProducer);
+    }
+
+    return result;
+  }
+
+  /**
+   * Get the shortest path between a start entity and a list of target entities.
+   * 
+   * @param start   The start entity
+   * @param targets A {@code List} of target entities
+   * @return A {@code List} of entities representing the shortest path between
+   *         both entities
+   */
+  public List<Entity> getShortestPathUsingAStar(Entity start, List<? extends Entity> targets) {
+    return AStar.findShortestPath(this.network, start, targets);
+  }
+
+  /**
+   * Get the shortest path between two entities of the network.
+   * 
+   * @param start  The start entity
+   * @param target The target entity
+   * @return A {@code List} of entities representing the shortest path between
+   *         both entities
+   */
+  public List<Entity> getShortestPathUsingAStar(Entity start, Entity target) {
+    return AStar.findShortestPath(this.network, start, target);
   }
 }

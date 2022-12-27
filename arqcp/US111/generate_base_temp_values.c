@@ -3,12 +3,10 @@
 #include <stdint.h>
 
 #include "random.h"
+#include "shared.h"
 
 extern uint32_t state;
 extern uint64_t inc;
-
-int const BASE_TEMP_VALUE = 10;
-int const TEMP_VARIATION = 20;
 
 // This function will generate a sinusoid like set of values
 void generate_base_temp_values(char *arr, int num)
@@ -22,7 +20,7 @@ void generate_base_temp_values(char *arr, int num)
   for (int i = 0; i < num; i++)
   {
     double angle = STRETCH_FATOR_RND * ((double)i * division);
-    char result = BASE_TEMP_VALUE + (char)(sin(angle) * TEMP_VARIATION);
+    char result = TEMP_BASE_VALUE + (char)(sin(angle) * TEMP_VARIATION);
 
     if (result < 0)
       result = -result;

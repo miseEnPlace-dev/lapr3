@@ -1,8 +1,6 @@
 package isep.controller;
 
-import java.util.LinkedList;
 import isep.model.DistributionNetwork;
-import isep.model.Entity;
 
 /**
  * US 302: Get the minimum number of connections between any two nodes.

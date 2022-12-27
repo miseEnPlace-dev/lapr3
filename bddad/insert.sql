@@ -60,6 +60,13 @@ INSERT INTO TipoTubagem (id_tipo_tubagem,tipo_tubagem) VALUES (2,'Irrigação');
 INSERT INTO TipoTubagem (id_tipo_tubagem,tipo_tubagem) VALUES (3,'Drenagem');
 INSERT INTO TipoTubagem (id_tipo_tubagem,tipo_tubagem) VALUES (4,'Gravidade');
 
+-- Operacao
+INSERT INTO Operacao (id_operacao,data_prevista_operacao,data_operacao) VALUES (1,'01-Feb-2021','01-Feb-2021');
+INSERT INTO Operacao (id_operacao,data_prevista_operacao,data_operacao) VALUES (2,'02-Feb-2021','02-Feb-2021');
+INSERT INTO Operacao (id_operacao,data_prevista_operacao,data_operacao) VALUES (3,'03-Feb-2021',NULL);
+INSERT INTO Operacao (id_operacao,data_prevista_operacao,data_operacao) VALUES (4,'04-Feb-2021',NULL);
+
+
 -- TipoRega
 INSERT INTO TipoRega (id_tipo_rega,id_tipo_tubagem) VALUES (1,1);
 INSERT INTO TipoRega (id_tipo_rega,id_tipo_tubagem) VALUES (2,2);
@@ -67,10 +74,10 @@ INSERT INTO TipoRega (id_tipo_rega,id_tipo_tubagem) VALUES (3,3);
 INSERT INTO TipoRega (id_tipo_rega,id_tipo_tubagem) VALUES (4,4);
 
 -- Rega
-INSERT INTO Rega (id_setor,data,id_tipo_rega) VALUES (1,'10-Jan-2020',1);
-INSERT INTO Rega (id_setor,data,id_tipo_rega) VALUES (2,'11-Feb-2020',2);
-INSERT INTO Rega (id_setor,data,id_tipo_rega) VALUES (3,'12-Feb-2021',3);
-INSERT INTO Rega (id_setor,data,id_tipo_rega) VALUES (1,'13-Feb-2022',4);
+INSERT INTO Rega (id_operacao,id_setor,id_tipo_rega) VALUES (1,1,1);
+INSERT INTO Rega (id_operacao,id_setor,id_tipo_rega) VALUES (2,2,2);
+INSERT INTO Rega (id_operacao,id_setor,id_tipo_rega) VALUES (3,3,3);
+INSERT INTO Rega (id_operacao,id_setor,id_tipo_rega) VALUES (4,4,4);
 
 -- PlanoRega
 INSERT INTO PlanoRega (id_setor,data_inicio,tempo,periodicidade,id_tipo_rega,data_fim) VALUES (1,'10-Jan-2022',1,1,1,Null);
@@ -145,22 +152,30 @@ INSERT INTO MedicaoSensor (id_sensor,id_setor,medicao,data_hora) VALUES (5,1,80,
 INSERT INTO MedicaoSensor (id_sensor,id_setor,medicao,data_hora) VALUES (6,1,5, '15-Jan-2020 12:00:00');
 
 -- Plantacao
-INSERT INTO Plantacao (id_setor,id_cultura,data_inicio) VALUES (1,1,'01-Jan-2021');
-INSERT INTO Plantacao (id_setor,id_cultura,data_inicio) VALUES (2,2,'01-Jan-2021');
-INSERT INTO Plantacao (id_setor,id_cultura,data_inicio) VALUES (3,3,'01-Jan-2021');
+INSERT INTO Plantacao (id_plantacao,id_setor,id_cultura,data_inicio) VALUES (1,1,1,'01-Jan-2021');
+INSERT INTO Plantacao (id_plantacao,id_setor,id_cultura,data_inicio) VALUES (2,2,2,'01-Feb-2021');
+INSERT INTO Plantacao (id_plantacao,id_setor,id_cultura,data_inicio) VALUES (3,3,3,'01-Apr-2021');
 
 -- Colheita
-INSERT INTO Colheita (id_produto,data,quantidade,id_setor) VALUES (1,'01-Feb-2021',10,1);
-INSERT INTO Colheita (id_produto,data,quantidade,id_setor) VALUES (2,'02-Feb-2021',10,2);
-INSERT INTO Colheita (id_produto,data,quantidade,id_setor) VALUES (3,'03-Feb-2021',10,3);
+INSERT INTO Colheita (id_operacao,id_produto,quantidade,id_plantacao) VALUES (1,1,10,1);
+INSERT INTO Colheita (id_operacao,id_produto,quantidade,id_plantacao) VALUES (2,2,10,2);
+INSERT INTO Colheita (id_operacao,id_produto,quantidade,id_plantacao) VALUES (3,3,10,3);
 
--- TipoAplicacaoFatorProducao
-INSERT INTO TipoAplicacaoFatorProducao (id_tipo_aplicacao_fator_producao,tipo_aplicacao_fator_producao) VALUES (1,'Foliar');
-INSERT INTO TipoAplicacaoFatorProducao (id_tipo_aplicacao_fator_producao,tipo_aplicacao_fator_producao) VALUES (2,'Solo');
+-- TipoAplicacao
+INSERT INTO TipoAplicacao (id_tipo_aplicacao,tipo_aplicacao) VALUES (1,'Foliar');
+INSERT INTO TipoAplicacao (id_tipo_aplicacao,tipo_aplicacao) VALUES (2,'Solo');
 
--- AplicacaoFatorProducao
-INSERT INTO AplicacaoFatorProducao (id_setor,id_fator_producao,data,id_tipo_aplicacao_fator_producao) VALUES (1,1,'02-Feb-2021',1);
-INSERT INTO AplicacaoFatorProducao (id_setor,id_fator_producao,data,id_tipo_aplicacao_fator_producao) VALUES (2,2,'03-Feb-2021',2);
+-- Aplicacao
+INSERT INTO Aplicacao (id_operacao,id_setor,id_tipo_aplicacao) VALUES (1,1,1);
+INSERT INTO Aplicacao (id_operacao,id_setor,id_tipo_aplicacao) VALUES (2,2,2);
+
+-- RestricaoAplicacao
+INSERT INTO RestricaoAplicacao (id_setor,data_inicio,data_fim,id_tipo_fator_producao) VALUES (1,'01-Jan-2021','01-Feb-2021',1);
+INSERT INTO RestricaoAplicacao (id_setor,data_inicio,data_fim,id_tipo_fator_producao) VALUES (2,'01-Feb-2021','01-Mar-2021',2);
+
+-- FatorProducaoAplicacao
+INSERT INTO FatorProducaoAplicacao (id_operacao,id_fator_producao,quantidade) VALUES (1,1,100);
+INSERT INTO FatorProducaoAplicacao (id_operacao,id_fator_producao,quantidade) VALUES (2,2,100);
 
 -- Visualisacao de dados
 DECLARE
