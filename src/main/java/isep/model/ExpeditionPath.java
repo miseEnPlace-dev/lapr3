@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import isep.utils.graph.astar.AStar;
-
 /**
  * Expedition Path class. Holds information about US310:
  * - expedition path (entities list)
@@ -17,6 +15,9 @@ import isep.utils.graph.astar.AStar;
  * @author Tomás Russo <1211288@isep.ipp.pt>
  */
 public class ExpeditionPath {
+  /**
+   * Stop inner class. Holds information about a stop in the path.
+   */
   class Stop {
     public Entity entity;
     public Integer basketsDelivered;
@@ -63,25 +64,39 @@ public class ExpeditionPath {
     // Get all producers in the expedition list
     List<Producer> producers = expeditionList.getProducers();
 
+    // If there are no producers, return an empty path
+    if (producers.isEmpty())
+      return;
+
+    // Get the first producer in the list, and remove it
     Entity start = producers.get(0);
     producers.remove(0);
 
+    // Get the shortest path from the first producer to all other producers
     entitiesPath.addAll(distributionNetwork.getShortestPathUsingAStar(start, producers));
 
+    // Get all hubs that can be supplied by the producers in the expedition list, as
+    // well as generate the stops for the producers
     List<Enterprise> hubsSupplied = generateStopsForProducers(entitiesPath);
 
     // Get all hubs in the expedition list
     List<Enterprise> hubs = expeditionList.getHubs();
+    // Remove the hubs that were already supplied
     hubs.removeAll(hubsSupplied);
 
+    // Get the last stop in the path already calculated, and set it as the start
     start = entitiesPath.get(entitiesPath.size() - 1);
     entitiesPath.clear();
 
+    // Get the shortest path from the last stop to all hubs in the expedition list
     entitiesPath.addAll(distributionNetwork.getShortestPathUsingAStar(start, hubs));
+    // Remove repeated entity
     entitiesPath.remove(0);
 
+    // Generate the stops for the hubs
     generateStopsForHubs(entitiesPath, hubsSupplied);
 
+    // Set the total distance of the final path
     setTotalDistance();
   }
 
@@ -104,14 +119,18 @@ public class ExpeditionPath {
     for (int i = 1; i < size; i++) {
       Entity stop = entities.get(i);
       if (stop.getClass() == Enterprise.class) {
+        // If the stop is a Hub, check if it can be supplied
         List<Producer> suppliers = hubsSuppliers.get(stop);
         if (suppliers != null && visitedEntities.containsAll(suppliers)) {
+          // If the hub can be supplied, add it to the path
           path.add(new Stop((Enterprise) stop, getNumberOfBasketsDeliveredAtHub((Enterprise) stop)));
           suppliedHubs.add((Enterprise) stop);
         } else {
+          // If the hub can't be supplied, add it to the path with 0 baskets
           path.add(new Stop((Enterprise) stop, 0));
         }
       } else {
+        // If the stop is a Producer, add it to the path
         path.add(new Stop((Producer) stop));
       }
     }
@@ -130,12 +149,17 @@ public class ExpeditionPath {
     for (Entity stop : entities) {
       if (stop.getClass() == Enterprise.class) {
         if (!suppliedHubs.contains((Enterprise) stop) && getNumberOfBasketsDeliveredAtHub((Enterprise) stop) != -1) {
+          // If the hub is not already supplied, and it has baskets delivered, add it to
+          // the path
           path.add(new Stop((Enterprise) stop, getNumberOfBasketsDeliveredAtHub((Enterprise) stop)));
           suppliedHubs.add((Enterprise) stop);
         } else {
+          // If the hub is already supplied, or it has no baskets delivered, add it to the
+          // path with 0 baskets
           path.add(new Stop((Enterprise) stop, 0));
         }
       } else {
+        // If the stop is a Producer, add it to the path
         path.add(new Stop((Producer) stop));
       }
     }
@@ -229,8 +253,10 @@ public class ExpeditionPath {
     for (int i = 0; i < path.size(); i++) {
       String str = ">> Stop " + (i + 1) + " - ";
       if (path.get(i).entity.getClass() == Producer.class)
+        // If the entity is a Producer, print it's ID
         str = str.concat("Producer " + path.get(i).entity.getId());
       else
+        // If the entity is a Hub, print it's ID and the number of baskets delivered
         str = str
             .concat("Hub " + path.get(i).entity.getId() + " ("
                 + (getNumberOfBasketsDeliveredAtHub((Enterprise) path.get(i).entity) == -1
@@ -241,10 +267,12 @@ public class ExpeditionPath {
                 + ")");
       System.out.println(str);
       if (i != path.size() - 1) {
+        // If it's not the last stop, print the distance to the next stop
         int distance = getDistanceBetweenEntities(path.get(i).entity, path.get(i + 1).entity);
         System.out.println("   : " + distance + "m");
       }
     }
+    // Print the total distance
     System.out.println("----------\nTotal distance: " + getTotalDistance() + "m");
   }
 
