@@ -177,14 +177,15 @@ public class ExpeditionPathTest {
     ExpeditionPath path = expeditionPathController.findExpeditionPath();
 
     List<Entity> expected = new ArrayList<>();
+    expected.add(srManuelPorto);
+    expected.add(hubAveiro);
+    expected.add(hubLeiria);
     expected.add(srFernandoLisboa);
     expected.add(hubCoimbra);
-    expected.add(hubAveiro);
-    expected.add(srManuelPorto);
     expected.add(hubAveiro);
 
     path.printPath();
     assertEquals(expected, path.getPathList());
-    assertEquals(410, path.getTotalDistance());
+    assertEquals(605, path.getTotalDistance());
   }
 }
