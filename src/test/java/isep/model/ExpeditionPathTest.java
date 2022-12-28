@@ -1,7 +1,6 @@
 package isep.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -22,7 +21,7 @@ import isep.shared.exceptions.InvalidProductNameException;
 
 /**
  * Tests for ExpeditionPath class.
- * 
+ *
  * @author Tomás Russo <1211288@isep.ipp.pt>
  */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)

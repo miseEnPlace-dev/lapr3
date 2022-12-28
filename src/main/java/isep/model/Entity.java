@@ -1,6 +1,7 @@
 package isep.model;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import isep.utils.HaversineCalculator;
 
@@ -22,7 +23,7 @@ public abstract class Entity implements VertexHeuristic<Entity> {
   /**
    * Calculates the distance between two entities using the Haversine formula
    * This method is used in the A* algorithm
-   * 
+   *
    * @param target The entity to which the distance will be calculated
    * @return The distance between the two entities, in meters
    */
@@ -114,10 +115,6 @@ public abstract class Entity implements VertexHeuristic<Entity> {
     this.dailyData.addProductInfoToDayData(day, product, quantity);
   }
 
-  public HashMap<Product, Integer> getDayData(Integer day) {
-    return this.dailyData.getDayData(day);
-  }
-
   public Integer getQuantityOfProductForDay(Integer day, Product product) {
     return this.dailyData.getQuantityOfProductForDay(day, product);
   }
@@ -138,5 +135,9 @@ public abstract class Entity implements VertexHeuristic<Entity> {
     if (dayData == null)
       throw new IllegalArgumentException("Day data cannot be null!");
     this.dailyData.addDayData(day, dayData);
+  }
+
+  public Map<Product, Integer> getDayData(Integer day) {
+    return this.dailyData.getDayData(day);
   }
 }

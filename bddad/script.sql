@@ -33,6 +33,7 @@ DROP TABLE Logs CASCADE CONSTRAINTS PURGE;
 DROP TABLE RestricaoAplicacao CASCADE CONSTRAINTS PURGE;
 DROP TABLE FatorProducaoAplicacao CASCADE CONSTRAINTS PURGE;
 DROP TABLE TipoAlteracao CASCADE CONSTRAINTS PURGE;
+DROP TABLE input_sensor CASCADE CONSTRAINTS PURGE;
 
 CREATE TABLE Setor (
   id_setor   number(10),
@@ -342,6 +343,10 @@ CREATE TABLE TipoAlteracao (
   id_tipo_alteracao number(10),
   tipo_alteracao varchar2(30) NOT NULL,
   PRIMARY KEY (id_tipo_alteracao)
+);
+
+CREATE TABLE input_sensor (
+  input_string VARCHAR(25)
 );
 
 CREATE TABLE Logs (
