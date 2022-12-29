@@ -11,6 +11,7 @@
 #include "shared.h"
 #include "bootstrap.h"
 #include "import_from_csv.h"
+#include "dynamic_sensors.h"
 
 uint64_t state = 0;
 uint64_t inc = 0;
@@ -40,8 +41,8 @@ int main(void)
   // Temperature sensors
   for (int j = 0; j < n_sensors[TEMPERATURE_SENSOR_TYPE]; j++) { // for every temperature sensor
     // bootstrap sensor
-    Sensor current_sensor = bootstrap_temperature(f_sensors[0]);    // <-- AQUI
-    current_sensor.id = count++;
+    Sensor current_sensor = bootstrap_temperature(f_sensors[0]);
+    current_sensor.id = ++count;
 
     char base_temperatures[current_sensor.readings_size];
     generate_base_temp_values(base_temperatures, current_sensor.readings_size);
@@ -74,8 +75,8 @@ int main(void)
 
   // Wind velocity sensors
   for (int j = 0; j < n_sensors[WIND_VELOCITY_SENSOR_TYPE]; j++) { // for every sensor
-    Sensor current_sensor = bootstrap_wind_vel(f_sensors[1]);      // <-- AQUI também
-    current_sensor.id = count++;
+    Sensor current_sensor = bootstrap_wind_vel(f_sensors[1]);
+    current_sensor.id = ++count;
 
     int total_errors = 0;
 
@@ -104,8 +105,8 @@ int main(void)
 
   // Wind direction sensors
   for (int j = 0; j < n_sensors[WIND_DIRECTION_SENSOR_TYPE]; j++) {
-    Sensor current_sensor = bootstrap_wind_dir(f_sensors[2]);     // <-- AQUI
-    current_sensor.id = count++;
+    Sensor current_sensor = bootstrap_wind_dir(f_sensors[2]);
+    current_sensor.id = ++count;
 
     int total_errors = 0;
 
@@ -134,8 +135,8 @@ int main(void)
 
   // Pluviosity sensors
   for (int j = 0; j < n_sensors[PLUVIO_SENSOR_TYPE]; j++) { // for every sensor
-    Sensor current_sensor = bootstrap_pluvio(f_sensors[3]);       // <-- AQUI
-    current_sensor.id = count++;
+    Sensor current_sensor = bootstrap_pluvio(f_sensors[3]);
+    current_sensor.id = ++count;
 
     int total_errors = 0;
 
@@ -167,8 +168,8 @@ int main(void)
 
   // Soil humidity sensors
   for (int j = 0; j < n_sensors[SOIL_HUMIDITY_SENSOR_TYPE]; j++) {
-    Sensor current_sensor = bootstrap_soil_humidity(f_sensors[4]);     // <-- AQUI
-    current_sensor.id = count++;
+    Sensor current_sensor = bootstrap_soil_humidity(f_sensors[4]);
+    current_sensor.id = ++count;
 
     int total_errors = 0;
 
@@ -200,8 +201,8 @@ int main(void)
 
   // Air humidity sensors
   for (int j = 0; j < n_sensors[AIR_HUMIDITY_SENSOR_TYPE]; j++) {
-    Sensor current_sensor = bootstrap_air_humidity(f_sensors[5]);       // <-- e AQUI também
-    current_sensor.id = count++;
+    Sensor current_sensor = bootstrap_air_humidity(f_sensors[5]);
+    current_sensor.id = ++count;
 
     int total_errors = 0;
 
@@ -238,9 +239,27 @@ int main(void)
   for (int i = 1; i < NUM_OF_SENSOR_TYPES; i++)
   {
     print_result(data[i], n_sensors[i]);
-    if (i < NUM_OF_SENSOR_TYPES - 1) // fix to avoid printing extra new line in last iteration
-      printf("\n");
+    // if (i < NUM_OF_SENSOR_TYPES - 1) //// fix to avoid printing extra new line in last iteration
+    printf("\n");
   }
+
+  print_small(data, n_sensors);
+
+  // add sensor
+  Sensor new_sensor = bootstrap_temperature(TEMPERATURES_SENSOR_INTERVAL);
+  new_sensor.id = ++count;
+  add_sensor(new_sensor, data, n_sensors);
+  printf("\nAdicionado 1 sensor do tipo %s.\n\n", new_sensor.name);
+
+  print_small(data, n_sensors);
+
+  // delete sensor
+  Sensor *p_delete = &data[SOIL_HUMIDITY_SENSOR_TYPE][1];
+  unsigned short deleted_id = p_delete->id;
+  remove_sensor(p_delete, data, n_sensors);
+  printf("\nRemovido 1 sensor com o id %hu.\n\n", deleted_id);
+
+  print_small(data, n_sensors);
 
   deallocate(data, n_sensors);
 

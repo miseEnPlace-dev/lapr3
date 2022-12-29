@@ -36,8 +36,8 @@ Sensor bootstrap_temperature(unsigned long frequency) {
     s.frequency = frequency;
     s.readings_size = SECS_IN_DAY / frequency;
     s.units = "ºC";
-    s.readings = (unsigned short *)malloc(sizeof(unsigned short) * s.readings_size);
-    s.errors = (unsigned char *)malloc(sizeof(unsigned char) * s.readings_size);
+    s.readings = (unsigned short *)calloc(sizeof(unsigned short), s.readings_size);
+    s.errors = (unsigned char *)calloc(sizeof(unsigned char), s.readings_size);
     return s;
 }
 
@@ -52,8 +52,8 @@ Sensor bootstrap_wind_vel(unsigned long frequency) {
     s.frequency = frequency;
     s.readings_size = SECS_IN_DAY / frequency;
     s.units = "km/h";
-    s.readings = (unsigned short *)malloc(sizeof(unsigned short) * s.readings_size);
-    s.errors = (unsigned char *)malloc(sizeof(unsigned char) * s.readings_size);
+    s.readings = (unsigned short *)calloc(sizeof(unsigned short), s.readings_size);
+    s.errors = (unsigned char *)calloc(sizeof(unsigned char), s.readings_size);
     return s;
 }
 
@@ -68,8 +68,8 @@ Sensor bootstrap_wind_dir(unsigned long frequency) {
     s.frequency = frequency;
     s.readings_size = SECS_IN_DAY / frequency;
     s.units = "º";
-    s.readings = (unsigned short *)malloc(sizeof(unsigned short) * s.readings_size);
-    s.errors = (unsigned char *)malloc(sizeof(unsigned char) * s.readings_size);
+    s.readings = (unsigned short *)calloc(sizeof(unsigned short), s.readings_size);
+    s.errors = (unsigned char *)calloc(sizeof(unsigned char), s.readings_size);
     return s;
 }
 
@@ -84,8 +84,8 @@ Sensor bootstrap_pluvio(unsigned long frequency) {
     s.frequency = frequency;
     s.readings_size = SECS_IN_DAY / frequency;
     s.units = "mm";
-    s.readings = (unsigned short *)malloc(sizeof(unsigned short) * s.readings_size);
-    s.errors = (unsigned char *)malloc(sizeof(unsigned char) * s.readings_size);
+    s.readings = (unsigned short *)calloc(sizeof(unsigned short), s.readings_size);
+    s.errors = (unsigned char *)calloc(sizeof(unsigned char), s.readings_size);
     return s;
 }
 
@@ -100,8 +100,8 @@ Sensor bootstrap_soil_humidity(unsigned long frequency) {
     s.frequency = frequency;
     s.readings_size = SECS_IN_DAY / frequency;
     s.units = "%";
-    s.readings = (unsigned short *)malloc(sizeof(unsigned short) * s.readings_size);
-    s.errors = (unsigned char *)malloc(sizeof(unsigned char) * s.readings_size);
+    s.readings = (unsigned short *)calloc(sizeof(unsigned short), s.readings_size);
+    s.errors = (unsigned char *)calloc(sizeof(unsigned char), s.readings_size);
     return s;
 }
 
@@ -116,8 +116,8 @@ Sensor bootstrap_air_humidity(unsigned long frequency) {
     s.frequency = frequency;
     s.readings_size = SECS_IN_DAY / frequency;
     s.units = "%";
-    s.readings = (unsigned short *)malloc(sizeof(unsigned short) * s.readings_size);
-    s.errors = (unsigned char *)malloc(sizeof(unsigned char) * s.readings_size);
+    s.readings = (unsigned short *)calloc(sizeof(unsigned short), s.readings_size);
+    s.errors = (unsigned char *)calloc(sizeof(unsigned char), s.readings_size);
     return s;
 }
 
