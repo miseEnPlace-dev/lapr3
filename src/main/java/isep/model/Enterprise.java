@@ -3,6 +3,9 @@ package isep.model;
 public class Enterprise extends Client {
   private boolean isHub;
 
+  /*
+   * Constructor
+   */
   public Enterprise(String id, double latitude, double longitude, String localizationId) {
     super(id, latitude, longitude, localizationId);
     this.isHub = false;

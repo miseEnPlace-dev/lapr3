@@ -5,6 +5,10 @@ import java.util.Map;
 
 import isep.utils.HaversineCalculator;
 
+/*
+ * Abstract class that represents an entity in the network
+ *
+ */
 public abstract class Entity implements VertexHeuristic<Entity> {
   private String id;
   private double latitude;
@@ -12,6 +16,9 @@ public abstract class Entity implements VertexHeuristic<Entity> {
   private String localizationId;
   protected DailyData dailyData;
 
+  /*
+   * Constructor
+   */
   public Entity(String id, double latitude, double longitude, String localizationId) {
     validateId(id);
     validateLatitude(latitude);

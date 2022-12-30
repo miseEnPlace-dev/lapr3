@@ -5,6 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Class that represents a list of baskets for a given day.
+ *
+ * @author André Barros <1211299@isep.ipp.pt>
+ * @author Carlos Lopes <1211277@isep.ipp.pt>
+ * @author Tomás Russo <1211288@isep.ipp.pt>
+ */
 public class ExpeditionList {
   private List<Basket> baskets;
   private int day;
@@ -42,7 +49,7 @@ public class ExpeditionList {
 
   /**
    * Get all producers contained in the ExpeditionList.
-   * 
+   *
    * @return A {@code List} of all Producers
    */
   public List<Producer> getProducers() {
@@ -59,7 +66,7 @@ public class ExpeditionList {
 
   /**
    * Get all hubs contained in the ExpeditionList.
-   * 
+   *
    * @return A {@code List} of all hubs (Enterprises)
    */
   public List<Enterprise> getHubs() {
@@ -75,7 +82,7 @@ public class ExpeditionList {
   /**
    * Get, for each hub in the ExpeditionList, all producers that deliver to that
    * hub.
-   * 
+   *
    * @return A {@code Map} that associates a Hub ({@code Enterprise} object) to a
    *         list of {@code Producer} objects.
    */

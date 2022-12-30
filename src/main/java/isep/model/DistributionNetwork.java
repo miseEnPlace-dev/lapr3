@@ -13,6 +13,15 @@ import isep.utils.graph.Edge;
 import isep.utils.graph.GraphAlgorithms;
 import isep.utils.graph.astar.AStar;
 
+/**
+ * DistributionNetwork class
+ *
+ * @author Tomás Lopes <1211289@isep.ipp.pt>
+ * @author André Barros <1211299@isep.ipp.pt>
+ * @author Carlos Lopes <1211277@isep.ipp.pt>
+ * @author Tomás Russo <1211288@isep.ipp.pt>
+ * @author Ricardo Moreira <1211285@isep.ipp.pt>
+ */
 public class DistributionNetwork {
   private NetworkGraph<Entity, Integer> network = new NetworkGraph<>(false);
 
@@ -239,7 +248,7 @@ public class DistributionNetwork {
 
   /**
    * Get the shortest path between a start entity and a list of target entities.
-   * 
+   *
    * @param start   The start entity
    * @param targets A {@code List} of target entities
    * @return A {@code List} of entities representing the shortest path between
@@ -251,7 +260,7 @@ public class DistributionNetwork {
 
   /**
    * Get the shortest path between two entities of the network.
-   * 
+   *
    * @param start  The start entity
    * @param target The target entity
    * @return A {@code List} of entities representing the shortest path between

@@ -7,12 +7,20 @@ import java.util.Map;
 import isep.shared.exceptions.InvalidHubException;
 import isep.shared.exceptions.InvalidOrderException;
 
+/*
+ * Basket class
+ *
+ * @author Carlos Lopes <1211277@isep.ipp.pt>
+ */
 public class Basket {
   private Map<Product, Integer> ordered;
   private Map<Producer, Map<Product, Integer>> received;
   private Enterprise hub;
   private Client client;
 
+  /*
+   * Constructor
+   */
   public Basket(Map<Product, Integer> ordered, Map<Producer, Map<Product, Integer>> received,
       Enterprise hub, Client client) throws InvalidOrderException, InvalidHubException {
     setOrdered(ordered);
@@ -21,6 +29,9 @@ public class Basket {
     setClient(client);
   }
 
+  /*
+   * Set of ordered products
+   */
   private void setOrdered(Map<Product, Integer> ordered) throws InvalidOrderException {
     if (ordered == null)
       throw new IllegalArgumentException("Null ordered map is Invalid!");
@@ -35,6 +46,9 @@ public class Basket {
     this.ordered = ordered;
   }
 
+  /*
+   * Set of received products
+   */
   private void setReceived(Map<Producer, Map<Product, Integer>> received) {
     if (received == null)
       throw new IllegalArgumentException("Null received map is Invalid!");
@@ -42,6 +56,9 @@ public class Basket {
     this.received = received;
   }
 
+  /*
+   * Set hub
+   */
   private void setHub(Enterprise enterprise) throws InvalidHubException {
     if (enterprise == null)
       throw new IllegalArgumentException("Null hub is Invalid!");
@@ -51,6 +68,9 @@ public class Basket {
     this.hub = enterprise;
   }
 
+  /*
+   * Set client
+   */
   private void setClient(Client client) {
     if (client == null)
       throw new IllegalArgumentException("Null client is Invalid!");
@@ -58,10 +78,16 @@ public class Basket {
     this.client = client;
   }
 
+  /*
+   * Get basket hub
+   */
   public Enterprise getHub() {
     return hub;
   }
 
+  /*
+   * Get list of producers
+   */
   public List<Producer> getProducers() {
     List<Producer> producers = new ArrayList<>();
 

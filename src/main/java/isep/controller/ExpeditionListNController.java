@@ -6,8 +6,9 @@ import isep.model.ExpeditionList;
 public class ExpeditionListNController {
 
   /*
-   * Class that generates an expedition list for a given network and day with N
-   * producers
+   * US309 - Controller that generates an expedition list for a given network and
+   * day
+   * with N producers
    *
    * @author André Barros <1211299@isep.ipp.pt>
    */

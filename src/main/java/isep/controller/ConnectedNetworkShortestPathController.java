@@ -6,7 +6,7 @@ import isep.model.Entity;
 import isep.shared.exceptions.NetworkNotConnectedException;
 
 /*
- * Class that gets the shortest path between all entities in a network
+ * US 305 - Controller that get shortest path between all entities in a network
  *
  * @author André Barros <1211299@isep.ipp.pt>
  */

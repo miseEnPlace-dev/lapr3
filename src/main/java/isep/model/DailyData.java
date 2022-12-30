@@ -5,6 +5,11 @@ import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+/*
+ * DailyData class
+ *
+ * @author Carlos Lopes <1211277@isep.ipp.pt>
+ */
 public class DailyData {
   private SortedMap<Integer, Map<Product, Integer>> dailyData;
 
