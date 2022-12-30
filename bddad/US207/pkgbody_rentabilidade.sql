@@ -41,18 +41,16 @@ CREATE OR REPLACE PACKAGE BODY rentabilidade AS
 
   PROCEDURE listarSetoresPorLucro IS
   CURSOR setores IS
-      SELECT s.id_setor, s.designacao, s.area, SUM(p.preco) AS lucro
+      SELECT s.id_setor, s.designacao, s.area, SUM(c.quantidade * c.preco) AS lucro
       FROM Setor s
       INNER JOIN Colheita c
         ON s.id_setor = c.id_setor
-      INNER JOIN Produto p
-        ON c.id_produto = p.id_produto
       GROUP BY s.id_setor, s.designacao, s.area
-      ORDER BY lucro DESC;
+      ORDER BY SUM(c.quantidade * c.preco) DESC;
     v_id_setor SETOR.id_setor%TYPE;
     v_designacao SETOR.designacao%TYPE;
     v_area SETOR.area%TYPE;
-    v_lucro Produto.preco%TYPE;
+    v_lucro COLHEITA.quantidade%TYPE * COLHEITA.preco%TYPE;
   BEGIN
     OPEN setores;
     FETCH setores INTO v_id_setor, v_designacao, v_area, v_lucro;

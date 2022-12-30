@@ -1,14 +1,14 @@
   CREATE OR REPLACE PACKAGE BODY gestao_fatores_producao AS
 
 
-    FUNCTION fn_RegistarTipoFatorProducao(designacao TIPOFATORPRODUCAO.tipo_fator_producao%TYPE) 
+    FUNCTION fn_RegistarTipoFatorProducao(designacao TIPOFATORPRODUCAO.tipo_fator_producao%TYPE)
     RETURN TIPOFATORPRODUCAO.id_tipo_fator_producao%TYPE AS
       new_id TIPOFATORPRODUCAO.id_tipo_fator_producao%TYPE;
 
     BEGIN
       SAVEPOINT inicio;
 
-      SELECT MAX(id_tipo_fator_producao) INTO new_id 
+      SELECT MAX(id_tipo_fator_producao) INTO new_id
       FROM TIPOFATORPRODUCAO;
       IF new_id IS NULL THEN
         new_id := 0;
@@ -18,8 +18,6 @@
 
       INSERT INTO TIPOFATORPRODUCAO(id_tipo_fator_producao, tipo_fator_producao)
       VAlUES (new_id, designacao);
-
-      DBMS_OUTPUT.PUT_LINE('TIPO FATOR PRODUCAO ' || new_id || ' registado com sucesso.');
 
       registar_logs.pr_RegistarInsert(USER, sysdate,'TipoFatorProducao');
 
@@ -36,14 +34,14 @@
 
 
 
-    FUNCTION fn_RegistarCategoriaSubstancia(designacao CATEGORIASUBSTANCIA.categoria_substancia%TYPE) 
+    FUNCTION fn_RegistarCategoriaSubstancia(designacao CATEGORIASUBSTANCIA.categoria_substancia%TYPE)
     RETURN CATEGORIASUBSTANCIA.id_categoria_substancia%TYPE AS
       new_id CATEGORIASUBSTANCIA.id_categoria_substancia%TYPE;
 
     BEGIN
       SAVEPOINT inicio;
 
-      SELECT MAX(id_categoria_substancia) INTO new_id 
+      SELECT MAX(id_categoria_substancia) INTO new_id
       FROM CATEGORIASUBSTANCIA;
       IF new_id IS NULL THEN
         new_id := 0;
@@ -53,8 +51,6 @@
 
       INSERT INTO CATEGORIASUBSTANCIA(id_categoria_substancia, categoria_substancia)
       VAlUES (new_id, designacao);
-
-      DBMS_OUTPUT.PUT_LINE('CATEGORIA SUBSTANCIA ' || new_id || ' registado com sucesso.');
 
       registar_logs.pr_RegistarInsert(USER, sysdate,'CategoriaSubstancia');
 
@@ -69,14 +65,14 @@
 
 
 
-    FUNCTION fn_RegistarFornecedor(designacao FORNECEDOR.fornecedor%TYPE) 
+    FUNCTION fn_RegistarFornecedor(designacao FORNECEDOR.fornecedor%TYPE)
     RETURN FORNECEDOR.id_fornecedor%TYPE AS
       new_id FORNECEDOR.id_fornecedor%TYPE;
 
     BEGIN
       SAVEPOINT inicio;
 
-      SELECT MAX(id_fornecedor) INTO new_id 
+      SELECT MAX(id_fornecedor) INTO new_id
       FROM FORNECEDOR;
       IF new_id IS NULL THEN
         new_id := 0;
@@ -86,8 +82,6 @@
 
       INSERT INTO FORNECEDOR(id_fornecedor, fornecedor)
       VAlUES (new_id, designacao);
-
-      DBMS_OUTPUT.PUT_LINE('FORNECEDOR ' || new_id || ' registado com sucesso.');
 
       registar_logs.pr_RegistarInsert(USER, sysdate,'Fornecedor');
 
@@ -101,14 +95,14 @@
     END fn_RegistarFornecedor;
 
 
-    FUNCTION fn_RegistarTipoFormulacao(designacao TIPOFORMULACAO.tipo_formulacao%TYPE) 
+    FUNCTION fn_RegistarTipoFormulacao(designacao TIPOFORMULACAO.tipo_formulacao%TYPE)
     RETURN TIPOFORMULACAO.id_tipo_formulacao%TYPE AS
       new_id TIPOFORMULACAO.id_tipo_formulacao%TYPE;
 
     BEGIN
       SAVEPOINT inicio;
 
-      SELECT MAX(id_tipo_formulacao) INTO new_id 
+      SELECT MAX(id_tipo_formulacao) INTO new_id
       FROM TIPOFORMULACAO;
       IF new_id IS NULL THEN
         new_id := 0;
@@ -118,8 +112,6 @@
 
       INSERT INTO TIPOFORMULACAO(id_tipo_formulacao, tipo_formulacao)
       VAlUES (new_id, designacao);
-
-      DBMS_OUTPUT.PUT_LINE('TIPO FORMULACAO ' || new_id || ' registado com sucesso.');
 
       registar_logs.pr_RegistarInsert(USER, sysdate,'TipoFormulacao');
 
@@ -135,7 +127,7 @@
 
     FUNCTION fn_RegistarSubstancia(designacao SUBSTANCIA.substancia%TYPE,
       forn SUBSTANCIA.id_fornecedor%TYPE,
-      cat_sub SUBSTANCIA.id_categoria_substancia%TYPE) 
+      cat_sub SUBSTANCIA.id_categoria_substancia%TYPE)
     RETURN SUBSTANCIA.id_substancia%TYPE AS
       new_id SUBSTANCIA.id_substancia%TYPE;
       flag NUMBER;
@@ -144,7 +136,7 @@
       SAVEPOINT inicio;
 
       /* check if tipo fator producao is already registered */
-      SELECT COUNT(*) INTO flag 
+      SELECT COUNT(*) INTO flag
       FROM FORNECEDOR
       WHERE id_fornecedor = forn;
       IF flag = 0 THEN
@@ -152,14 +144,14 @@
       END IF;
 
       /* check if tipo categoria de substancia is already registered */
-      SELECT COUNT(*) INTO flag 
+      SELECT COUNT(*) INTO flag
       FROM CATEGORIASUBSTANCIA
       WHERE id_categoria_substancia = cat_sub;
       IF flag = 0 THEN
         RAISE categoria_substancia_inexistente;
       END IF;
 
-      SELECT MAX(id_substancia) INTO new_id 
+      SELECT MAX(id_substancia) INTO new_id
       FROM SUBSTANCIA;
       IF new_id IS NULL THEN
         new_id := 0;
@@ -169,8 +161,6 @@
 
       INSERT INTO SUBSTANCIA(id_substancia, substancia, id_fornecedor, id_categoria_substancia)
       VAlUES (new_id, designacao, forn, cat_sub);
-
-      DBMS_OUTPUT.PUT_LINE('SUBSTANCIA ' || new_id || ' registado com sucesso.');
 
       registar_logs.pr_RegistarInsert(USER, sysdate,'Substancia');
 
@@ -188,12 +178,9 @@
     END fn_RegistarSubstancia;
 
 
-
-
-
-     FUNCTION fn_RegistarFatorProducao(id_tipo_fator FATORPRODUCAO.id_tipo_fator_producao%TYPE,
+  FUNCTION fn_RegistarFatorProducao(id_tipo_fator FATORPRODUCAO.id_tipo_fator_producao%TYPE,
       designacao FATORPRODUCAO.nome%TYPE,
-      form FATORPRODUCAO.id_tipo_formulacao%TYPE) 
+      form FATORPRODUCAO.id_tipo_formulacao%TYPE)
     RETURN FATORPRODUCAO.id_fator_producao%TYPE AS
       new_id FATORPRODUCAO.id_fator_producao%TYPE;
       flag NUMBER;
@@ -202,7 +189,7 @@
       SAVEPOINT inicio;
 
       /* check if there is any registered culture */
-      SELECT MAX(id_fator_producao) INTO new_id 
+      SELECT MAX(id_fator_producao) INTO new_id
       FROM FATORPRODUCAO;
       IF new_id IS NULL THEN
         new_id := 0;
@@ -210,7 +197,7 @@
       new_id := new_id + 1;
 
       /* check if tipo fator producao is already registered */
-      SELECT COUNT(*) INTO flag 
+      SELECT COUNT(*) INTO flag
       FROM TIPOFATORPRODUCAO
       WHERE id_tipo_fator_producao = id_tipo_fator;
       IF flag = 0 THEN
@@ -218,7 +205,7 @@
       END IF;
 
       /* check if tipo formulacao is already registered */
-      SELECT COUNT(*) INTO flag 
+      SELECT COUNT(*) INTO flag
       FROM TIPOFORMULACAO
       WHERE id_tipo_formulacao = form;
       IF flag = 0 THEN
@@ -228,8 +215,6 @@
 
       INSERT INTO FATORPRODUCAO(id_fator_producao, id_tipo_fator_producao, nome, id_tipo_formulacao)
       VAlUES (new_id, id_tipo_fator, designacao, form);
-
-      DBMS_OUTPUT.PUT_LINE('FATOR PRODUCAO ' || new_id || ' registado com sucesso.');
 
       registar_logs.pr_RegistarInsert(USER, sysdate,'FatorProducao');
 
@@ -260,7 +245,7 @@
 
 
       /* check if tipo fator producao is already registered */
-      SELECT COUNT(*) INTO flag 
+      SELECT COUNT(*) INTO flag
       FROM FATORPRODUCAO
       WHERE id_fator_producao = fat_prod;
       IF flag = 0 THEN
@@ -268,7 +253,7 @@
       END IF;
 
       /* check if tipo formulacao is already registered */
-      SELECT COUNT(*) INTO flag 
+      SELECT COUNT(*) INTO flag
       FROM SUBSTANCIA
       WHERE id_substancia = subs;
       IF flag = 0 THEN
@@ -300,4 +285,4 @@
 
     END pr_RegistarFatorProducaoSubstancia;
 
-  END gestao_fatores_producao; 
+  END gestao_fatores_producao;

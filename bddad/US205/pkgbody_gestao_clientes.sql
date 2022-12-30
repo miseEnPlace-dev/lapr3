@@ -110,8 +110,6 @@ CREATE OR REPLACE PACKAGE BODY gestao_clientes AS
   END IF;
 
   IF ((n_encomendas_pendentes = 0 OR n_encomendas_pendentes IS NULL) AND (valor_total_incidentes = 0 OR valor_total_incidentes IS NULL) AND data_ultimo_incidente = 'Sem incidentes à data') THEN
-     DBMS_OUTPUT.PUT_LINE('Sem dados para o cliente ' || cliente_id);
-     DBMS_OUTPUT.PUT_LINE(chr(13)||chr(10));
      risco := 0;
   END IF;
 
