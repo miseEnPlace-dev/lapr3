@@ -34,6 +34,8 @@ DROP TABLE RestricaoAplicacao CASCADE CONSTRAINTS PURGE;
 DROP TABLE FatorProducaoAplicacao CASCADE CONSTRAINTS PURGE;
 DROP TABLE TipoAlteracao CASCADE CONSTRAINTS PURGE;
 DROP TABLE input_sensor CASCADE CONSTRAINTS PURGE;
+DROP TABLE InputHub CASCADE CONSTRAINTS PURGE;
+DROP TABLE Hub CASCADE CONSTRAINTS PURGE;
 
 CREATE TABLE Setor (
   id_setor   number(10),
@@ -180,15 +182,27 @@ CREATE TABLE Localidade (
   PRIMARY KEY (cod_postal)
 );
 
+CREATE TABLE Hub (
+  id_hub number(10),
+  codigo_hub varchar2(8) NOT NULL,
+  designacao varchar2(50) NOT NULL,
+  latitude float NOT NULL,
+  longitude float NOT NULL,
+  PRIMARY KEY (id_hub)
+);
+
+CREATE TABLE InputHub (
+  string varchar2(25) NOT NULL
+);
+
 CREATE TABLE Cliente (
   id_cliente         number(8),
   nome               varchar2(50) NOT NULL,
   nif                number(9) NOT NULL,
   email              varchar2(250) NOT NULL,
   morada             varchar2(80),
-  morada_entrega     varchar2(80) NOT NULL,
+  id_hub_entrega     number(10) NOT NULL,
   plafond            double precision NOT NULL,
-  cod_postal_entrega varchar2(8) NOT NULL,
   cod_postal         varchar2(8) NOT NULL,
   n_encomendas           number(3) DEFAULT 0 NOT NULL,
   valor_total_encomendas number(10) DEFAULT 0 NOT NULL,
@@ -198,7 +212,7 @@ CREATE TABLE Cliente (
   CONSTRAINT CHK_Cliente_NonNegativePlafond CHECK (plafond >= 0),
   CONSTRAINT CHK_Cliente_NonNegativeEncomendas CHECK (n_encomendas >= 0),
   CONSTRAINT CHK_Cliente_NonNegativeValorTotal CHECK (valor_total_encomendas >= 0),
-  FOREIGN KEY (cod_postal_entrega) REFERENCES Localidade (cod_postal) ON DELETE CASCADE,
+  FOREIGN KEY (id_hub_entrega) REFERENCES Hub (id_hub) ON DELETE CASCADE,
   FOREIGN KEY (cod_postal) REFERENCES Localidade (cod_postal) ON DELETE CASCADE
 );
 
@@ -209,14 +223,13 @@ CREATE TABLE Encomenda (
   data_registo              timestamp(0) NOT NULL,
   data_entrega              timestamp(0),
   data_pagamento            timestamp(0),
-  morada_entrega            varchar2(80) NOT NULL,
-  cod_postal_entrega        varchar2(8) NOT NULL,
+  id_hub_entrega            number(10) NOT NULL,
   PRIMARY KEY (id_encomenda),
   CONSTRAINT CHK_Encomenda_DataVencimentoPagamento CHECK (data_vencimento_pagamento > data_registo),
   CONSTRAINT CHK_Encomenda_DataEntrega CHECK (data_entrega > data_registo),
   CONSTRAINT CHK_Encomenda_DataPagamento CHECK (data_pagamento > data_registo),
   FOREIGN KEY (id_cliente) REFERENCES Cliente (id_cliente) ON DELETE CASCADE,
-  FOREIGN KEY (cod_postal_entrega) REFERENCES Localidade (cod_postal) ON DELETE CASCADE
+  FOREIGN KEY (id_hub_entrega) REFERENCES Hub (id_hub) ON DELETE CASCADE
 );
 
 CREATE TABLE ProdutoEncomenda (
