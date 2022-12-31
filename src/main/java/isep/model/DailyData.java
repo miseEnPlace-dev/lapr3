@@ -14,7 +14,7 @@ public class DailyData {
   public void setData(SortedMap<Integer, HashMap<Product, Integer>> dailyData) {
     if (dailyData == null)
       throw new IllegalArgumentException("Data cannot be null");
-    this.dailyData = dailyData;
+    this.dailyData.putAll(dailyData);
   }
 
   /**
@@ -86,10 +86,10 @@ public class DailyData {
     return quant;
   }
 
-  public Integer removeValidProductQuantity(Product p, Integer quant, Integer day){
-    for (int i = 2; i <= 0; i++) {
+  public void removeValidProductQuantity(Product p, Integer quant, Integer day){
+    for (int i = 2; i >= 0; i--) {
       if(quant != 0){
-        Integer quantAvailable = this.dailyData.get(day - i).get(p);
+        Integer quantAvailable = this.getQuantityOfProductForDay(day - i, p);
         if(quantAvailable < quant){
           quant -= quantAvailable;
           this.setQuantityOfProductDay(day-i, p, 0);
@@ -99,7 +99,6 @@ public class DailyData {
         }
       }
     }
-    return quant;
   }
 
 
