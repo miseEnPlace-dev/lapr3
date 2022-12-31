@@ -14,6 +14,7 @@ CREATE OR REPLACE VIEW compararVendasAnuais AS
   INNER JOIN Produto p ON ve.id_produto = p.id_produto
   INNER JOIN Tempo t ON ve.id_tempo = t.id_tempo
   INNER JOIN Setor s ON ve.id_setor = s.id_setor
+  INNER JOIN Producao pr ON ve.id_produto = pr.id_produto
   WHERE t.ano >= SYSDATE - 1 AND t.ano <= SYSDATE
   GROUP BY p.tipo, t.ano
   ORDER BY t.ano;
@@ -24,6 +25,7 @@ CREATE OR REPLACE VIEW compararVendasMensaisPorTipoCultura AS
   INNER JOIN Produto p ON ve.id_produto = p.id_produto
   INNER JOIN Tempo t ON ve.id_tempo = t.id_tempo
   INNER JOIN Setor s ON ve.id_setor = s.id_setor
+  INNER JOIN Producao pr ON ve.id_produto = pr.id_produto
   WHERE t.mes >= SYSDATE - 1 AND t.mes <= SYSDATE
   GROUP BY p.tipo, t.mes
   ORDER BY t.mes;
