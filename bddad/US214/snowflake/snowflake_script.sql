@@ -21,6 +21,20 @@
 -- Para buscar os dados de uma fact table, é necessário fazer muitos joins com as dimensões.
 -- É um DB complexa.
 
+-- Estimativa de cardinalidades:
+-- A estimativa da cardinalidade é importante porque ela afeta o design do banco de dados e o desempenho das consultas. Se a cardinalidade for subestimada, isso pode levar ao desperdício de recursos, como espaço em disco ou memória, ou ao uso excessivo de recursos. Por outro lado, se a cardinalidade for sobrestimada, isso pode levar ao desperdício de espaço em disco e ao aumento do tempo de inserção de dados.
+-- A cardinalidade de uma tabela é o número de linhas que ela pode conter. A cardinalidade de uma coluna é o número de valores distintos que ela pode conter.
+-- Tempo: a dimensão Tempo pode ter cardinalidade de 12 (meses) * 100 (anos) = 1200.
+-- ano: a dimensão ano pode ter cardinalidade de 100 (anos).
+-- mes: a dimensão mes pode ter cardinalidade de 12 (meses).
+-- Cliente: a dimensão Cliente pode ter cardinalidade de 100000 (clientes).
+-- Produto: a dimensão Produto pode ter cardinalidade de 1000 (produtos).
+-- DesignacaoProduto: a dimensão DesignacaoProduto pode ter cardinalidade de 100 (designações).
+-- TipoProduto: a dimensão TipoProduto pode ter cardinalidade de 10 (tipos).
+-- Setor: a dimensão Setor pode ter cardinalidade de 10 (setores).
+-- Venda: a fact table Venda pode ter cardinalidade de 1000000 (vendas).
+-- Producao: a fact table Producao pode ter cardinalidade de 1000000 (produções).
+
 
 -- DROP TABLES --
 DROP TABLE Cliente CASCADE CONSTRAINTS PURGE;
@@ -37,7 +51,7 @@ DROP TABLE Producao CASCADE CONSTRAINTS PURGE;
 
 -- Dimension tables --
 CREATE TABLE Cliente (
-  id_cliente NUMBER(10) NOT NULL,
+  id_cliente NUMBER(8) NOT NULL,
   nome VARCHAR2(50) NOT NULL,
   nif NUMBER(9) NOT NULL,
   PRIMARY KEY (id_cliente),
@@ -55,7 +69,7 @@ CREATE TABLE TipoProduto (
 );
 
 CREATE TABLE Produto (
-  id_produto NUMBER(10) NOT NULL,
+  id_produto NUMBER(5) NOT NULL,
   tipo VARCHAR2(50) NOT NULL,
   designacao VARCHAR2(50) NOT NULL,
   PRIMARY KEY (id_produto),
@@ -65,7 +79,7 @@ CREATE TABLE Produto (
 
 
 CREATE TABLE Setor (
-  id_setor NUMBER(10) NOT NULL,
+  id_setor NUMBER(2) NOT NULL,
   nome VARCHAR(50) NOT NULL,
   PRIMARY KEY (id_setor)
 );
@@ -83,7 +97,7 @@ CREATE TABLE mes (
 );
 
 CREATE TABLE Tempo (
-  id_tempo NUMBER(10) NOT NULL,
+  id_tempo NUMBER(5) NOT NULL,
   ano NUMBER(4) NOT NULL,
   mes NUMBER(2) NOT NULL,
   PRIMARY KEY (id_tempo),
@@ -95,11 +109,11 @@ CREATE TABLE Tempo (
 
 CREATE TABLE Venda (
   id_venda NUMBER(10) NOT NULL,
-  id_cliente NUMBER(10) NOT NULL,
-  id_produto NUMBER(10) NOT NULL,
-  id_setor NUMBER(10) NOT NULL,
-  id_tempo NUMBER(10) NOT NULL,
-  quantidade NUMBER(10) NOT NULL,
+  id_cliente NUMBER(8) NOT NULL,
+  id_produto NUMBER(5) NOT NULL,
+  id_setor NUMBER(2) NOT NULL,
+  id_tempo NUMBER(5) NOT NULL,
+  quantidade NUMBER(8) NOT NULL,
   PRIMARY KEY (id_venda),
   FOREIGN KEY (id_cliente) REFERENCES Cliente (id_cliente),
   FOREIGN KEY (id_produto) REFERENCES Produto (id_produto),
@@ -110,10 +124,10 @@ CREATE TABLE Venda (
 
 CREATE TABLE Producao (
   id_producao NUMBER(10) NOT NULL,
-  id_produto NUMBER(10) NOT NULL,
-  id_setor NUMBER(10) NOT NULL,
-  id_tempo NUMBER(10) NOT NULL,
-  quantidade NUMBER(10) NOT NULL,
+  id_produto NUMBER(5) NOT NULL,
+  id_setor NUMBER(2) NOT NULL,
+  id_tempo NUMBER(5) NOT NULL,
+  quantidade NUMBER(8) NOT NULL,
   PRIMARY KEY (id_producao),
   FOREIGN KEY (id_produto) REFERENCES Produto (id_produto),
   FOREIGN KEY (id_setor) REFERENCES Setor (id_setor),
