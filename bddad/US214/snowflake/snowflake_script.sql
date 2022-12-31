@@ -1,5 +1,27 @@
 -- Snowflake data model --
 
+-- Descrição do modelo de dados:
+-- Fact table são as tabelas que contêm os dados de negócio. (Ex: Vendas, Produção, etc.)
+-- Dimensões são tabelas que contêm os dados de contexto. (Ex: Tempo, ano, mes, Cliente, Produto, etc.)
+
+-- O modelo de dados é composto por 8 dimensões e 2 fact tables.
+-- A dimensão Tempo é composta por 3 atributos: ano, mes e id_tempo.
+-- A dimensão ano é composta por 1 atributo: ano.
+-- A dimensão mes é composta por 1 atributo: mes.
+-- A dimensão Cliente é composta por 3 atributos: id_cliente, nome e nif.
+-- A dimensão Produto é composta por 3 atributos: id_produto, tipo e designacao.
+-- A dimensão DesignacaoProduto é composta por 1 atributo: designacao.
+-- A dimensão TipoProduto é composta por 1 atributo: tipo.
+-- A dimensão Setor é composta por 2 atributos: id_setor e nome.
+-- A fact table Venda é composta por 6 atributos: id_venda, id_cliente, id_produto, id_setor, id_tempo e quantidade.
+-- A fact table Producao é composta por 5 atributos: id_producao, id_produto, id_setor, id_tempo e quantidade.
+
+-- Este esquema 'SnowFlake' tem as hierarquias divididas em dimensões separadas.
+-- Existe pouca redundância de dados, pois os atributos que se repetem são referenciados por chaves estrangeiras.
+-- Para buscar os dados de uma fact table, é necessário fazer muitos joins com as dimensões.
+-- É um DB complexa.
+
+
 -- DROP TABLES --
 DROP TABLE Cliente CASCADE CONSTRAINTS PURGE;
 DROP TABLE DesignacaoProduto CASCADE CONSTRAINTS PURGE;
