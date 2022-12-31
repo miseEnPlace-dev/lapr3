@@ -186,8 +186,8 @@ CREATE TABLE Hub (
   id_hub number(10),
   codigo_hub varchar2(8) NOT NULL,
   designacao varchar2(50) NOT NULL,
-  latitude float NOT NULL,
-  longitude float NOT NULL,
+  latitude varchar2(25) NOT NULL,
+  longitude varchar2(25) NOT NULL,
   PRIMARY KEY (id_hub)
 );
 
