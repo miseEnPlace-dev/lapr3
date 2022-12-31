@@ -4,7 +4,7 @@ CREATE OR REPLACE VIEW evolucaoProducaoUltimosCincoAnos AS
   INNER JOIN Produto p ON pr.id_produto = p.id_produto
   INNER JOIN Tempo t ON pr.id_tempo = t.id_tempo
   INNER JOIN Setor s ON pr.id_setor = s.id_setor
-  WHERE t.ano >= SYSDATE - 5 AND t.ano <= SYSDATE
+  WHERE t.ano >= TO_CHAR(SYSDATE - 5,'YYYY') AND t.ano <= TO_CHAR(SYSDATE,'YYYY')
   GROUP BY p.tipo, t.ano, t.mes
   ORDER BY t.ano, t.mes;
 
@@ -15,7 +15,7 @@ CREATE OR REPLACE VIEW compararVendasAnuais AS
   INNER JOIN Tempo t ON ve.id_tempo = t.id_tempo
   INNER JOIN Setor s ON ve.id_setor = s.id_setor
   INNER JOIN Producao pr ON ve.id_produto = pr.id_produto
-  WHERE t.ano >= SYSDATE - 1 AND t.ano <= SYSDATE
+  WHERE t.ano >= TO_CHAR(SYSDATE - 1,'YYYY') AND t.ano <= TO_CHAR(SYSDATE,'YYYY')
   GROUP BY p.tipo, t.ano
   ORDER BY t.ano;
 
@@ -26,7 +26,7 @@ CREATE OR REPLACE VIEW compararVendasMensaisPorTipoCultura AS
   INNER JOIN Tempo t ON ve.id_tempo = t.id_tempo
   INNER JOIN Setor s ON ve.id_setor = s.id_setor
   INNER JOIN Producao pr ON ve.id_produto = pr.id_produto
-  WHERE t.mes >= SYSDATE - 1 AND t.mes <= SYSDATE
+  WHERE t.mes >= TO_CHAR(SYSDATE - 1,'MM') AND t.mes <= TO_CHAR(SYSDATE,'MM')
   GROUP BY p.tipo, t.mes
   ORDER BY t.mes;
 

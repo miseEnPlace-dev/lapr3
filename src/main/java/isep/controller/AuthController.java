@@ -10,10 +10,12 @@ public class AuthController {
   }
 
   public boolean doLogin(String username, String password) {
+    return false;
     // TODO: implement login
   }
 
   public boolean doLogout() {
+    return false;
     // TODO: implement logout
   }
 
