@@ -239,7 +239,6 @@ int main(void)
   for (int i = 1; i < NUM_OF_SENSOR_TYPES; i++)
   {
     print_result(data[i], n_sensors[i]);
-    // if (i < NUM_OF_SENSOR_TYPES - 1) //// fix to avoid printing extra new line in last iteration
     printf("\n");
   }
 
@@ -258,6 +257,19 @@ int main(void)
   unsigned short deleted_id = p_delete->id;
   remove_sensor(p_delete, data, n_sensors);
   printf("\nRemovido 1 sensor com o id %hu.\n\n", deleted_id);
+
+  print_small(data, n_sensors);
+
+  // adjust sensor frequency
+  Sensor *p_sens = &data[AIR_HUMIDITY_SENSOR_TYPE][0];
+  unsigned long new_freq = p_sens->frequency * 2;
+  adjust_sensor_freq(p_sens, new_freq);
+  printf("\nAjustada a frequência do sensor c/ id %hu para %lu.", p_sens->id, new_freq);
+
+  p_sens = &data[WIND_DIRECTION_SENSOR_TYPE][2];
+  new_freq = 5400;
+  adjust_sensor_freq(p_sens, new_freq);
+  printf("\nAjustada a frequência do sensor c/ id %hu para %lu.\n\n", p_sens->id, new_freq);
 
   print_small(data, n_sensors);
 

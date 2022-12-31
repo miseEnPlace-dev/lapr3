@@ -5,7 +5,7 @@
 
 void add_sensor(Sensor s, Sensor **data, unsigned int *n_sensors);
 void remove_sensor(Sensor *s, Sensor **data, unsigned int *n_sensors);
-void adjust_sensor_freq(Sensor *s);
+void adjust_sensor_freq(Sensor *s, unsigned long new_freq);
 
 #endif
 
