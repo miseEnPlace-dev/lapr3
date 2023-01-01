@@ -19,7 +19,7 @@ public class App {
   private void bootstrap() {
     this.authFacade.addUserWithRole("agricula", "123456", SystemRole.GESTOR_AGRICOLA);
     this.authFacade.addUserWithRole("client", "123456", SystemRole.CLIENTE);
-    this.authFacade.addUserWithRole("condutor", "123456", SystemRole.CONDUTOR);
+    this.authFacade.addUserWithRole("driver", "123456", SystemRole.CONDUTOR);
     this.authFacade.addUserWithRole("dist", "123456", SystemRole.GESTOR_DISTRIBUICAO);
   }
 
