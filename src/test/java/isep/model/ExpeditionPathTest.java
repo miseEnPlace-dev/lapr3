@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -100,11 +101,11 @@ public class ExpeditionPathTest {
     srManuelAndFernandoOrderedProducts.put(macaDeAlcobaca, 10);
     srManuelAndFernandoOrderedProducts.put(bananaDaMadeira, 10);
 
-    Map<Producer, Map<Product, Integer>> srManuelReceivedProducts = new HashMap<Producer, Map<Product, Integer>>();
+    Map<Producer, Map<Product, Integer>> srManuelReceivedProducts = new TreeMap<Producer, Map<Product, Integer>>();
     srManuelReceivedProducts.put(srManuelPorto, srManuelOrderedProducts);
-    Map<Producer, Map<Product, Integer>> srFernandoReceivedProducts = new HashMap<Producer, Map<Product, Integer>>();
+    Map<Producer, Map<Product, Integer>> srFernandoReceivedProducts = new TreeMap<Producer, Map<Product, Integer>>();
     srFernandoReceivedProducts.put(srFernandoLisboa, srFernandoOrderedProducts);
-    Map<Producer, Map<Product, Integer>> srManuelAndFernandoReceivedProducts = new HashMap<Producer, Map<Product, Integer>>();
+    Map<Producer, Map<Product, Integer>> srManuelAndFernandoReceivedProducts = new TreeMap<Producer, Map<Product, Integer>>();
     srManuelAndFernandoReceivedProducts.put(srManuelPorto, srManuelOrderedProducts);
     srManuelAndFernandoReceivedProducts.put(srFernandoLisboa, srFernandoOrderedProducts);
 
@@ -177,15 +178,14 @@ public class ExpeditionPathTest {
     ExpeditionPath path = expeditionPathController.findExpeditionPath();
 
     List<Entity> expected = new ArrayList<>();
-    expected.add(srManuelPorto);
-    expected.add(hubAveiro);
-    expected.add(hubLeiria);
     expected.add(srFernandoLisboa);
     expected.add(hubCoimbra);
+    expected.add(hubAveiro);
+    expected.add(srManuelPorto);
     expected.add(hubAveiro);
 
     path.printPath();
     assertEquals(expected, path.getPathList());
-    assertEquals(605, path.getTotalDistance());
+    assertEquals(410, path.getTotalDistance());
   }
 }
