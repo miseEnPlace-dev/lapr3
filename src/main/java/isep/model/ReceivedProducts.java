@@ -34,16 +34,29 @@ public class ReceivedProducts {
     return producers;
   }
 
-  public Integer getQuantityOfProduct(Product product) {
+  public boolean matchesProductQuantity(Product product, int quantity) {
     for (Producer producer : received.keySet()) {
       Map<Product, Integer> receivedProducts = received.get(producer);
 
       if (!receivedProducts.containsKey(product))
         continue;
 
-      return receivedProducts.get(product);
+      return receivedProducts.get(product) == quantity;
     }
 
-    return null;
+    return false;
+  }
+
+  public boolean hasNotReceivedProduct(Product product) {
+    for (Producer producer : received.keySet()) {
+      Map<Product, Integer> receivedProducts = received.get(producer);
+
+      if (!receivedProducts.containsKey(product))
+        continue;
+
+      return false;
+    }
+
+    return true;
   }
 }

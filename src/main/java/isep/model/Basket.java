@@ -95,15 +95,25 @@ public class Basket {
 
     for (Product product : ordered.keySet()) {
       int orderedQuantity = ordered.get(product);
-      Integer receivedQuantity = received.getQuantityOfProduct(product);
 
-      if (receivedQuantity == null)
-        continue;
-
-      if (orderedQuantity == receivedQuantity)
+      if (received.matchesProductQuantity(product, orderedQuantity))
         count++;
     }
 
     return count;
+  }
+
+  public int getNumberOfNotSatisfiedProducts() {
+    int count = 0;
+
+    for (Product product : ordered.keySet())
+      if (received.hasNotReceivedProduct(product))
+        count++;
+
+    return count;
+  }
+
+  public int getPartiallySatisfiedProducts() {
+    return ordered.size() - getNumberOfFullySatisfiedProducts() - getNumberOfNotSatisfiedProducts();
   }
 }
