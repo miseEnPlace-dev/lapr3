@@ -21,10 +21,10 @@ CREATE OR REPLACE PACKAGE BODY gestao_hubs AS
     /** Percorre todos os registros da tabela InputHub. */
     FOR v_string IN c_strings LOOP
       /** Faz o split da string. */
-      SELECT REGEXP_SUBSTR(v_string, '[^;]+', 1, LEVEL)
+      SELECT REGEXP_SUBSTR(v_string.string, '[^;]+', 1, LEVEL)
       BULK COLLECT INTO v_columns
       FROM dual
-      CONNECT BY REGEXP_SUBSTR(v_string, '[^;]+', 1, LEVEL) IS NOT NULL;
+      CONNECT BY REGEXP_SUBSTR(v_string.string, '[^;]+', 1, LEVEL) IS NOT NULL;
 
       /** Verifica se o registo é um Hub. */
       SELECT SUBSTR(v_columns(4), 1, 1)
