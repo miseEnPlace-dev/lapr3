@@ -1,18 +1,14 @@
 package isep.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
-
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-
 import isep.controller.DefineHubsController;
 import isep.controller.ExpeditionPathController;
 import isep.shared.exceptions.InvalidHubException;
@@ -43,8 +39,8 @@ public class ExpeditionPathTest {
   private Enterprise hubViseu;
 
   @BeforeAll
-  public void setUp() throws FileNotFoundException, InvalidNumberOfHubsException, InvalidProductNameException,
-      InvalidOrderException, InvalidHubException {
+  public void setUp() throws FileNotFoundException, InvalidNumberOfHubsException,
+      InvalidProductNameException, InvalidOrderException, InvalidHubException {
     this.distributionNetwork = new DistributionNetwork();
 
     Product macaDeAlcobaca = new Product("Maca de Alcobaca");
@@ -101,26 +97,28 @@ public class ExpeditionPathTest {
     srManuelAndFernandoOrderedProducts.put(macaDeAlcobaca, 10);
     srManuelAndFernandoOrderedProducts.put(bananaDaMadeira, 10);
 
-    Map<Producer, Map<Product, Integer>> srManuelReceivedProducts = new TreeMap<Producer, Map<Product, Integer>>();
-    srManuelReceivedProducts.put(srManuelPorto, srManuelOrderedProducts);
-    Map<Producer, Map<Product, Integer>> srFernandoReceivedProducts = new TreeMap<Producer, Map<Product, Integer>>();
-    srFernandoReceivedProducts.put(srFernandoLisboa, srFernandoOrderedProducts);
-    Map<Producer, Map<Product, Integer>> srManuelAndFernandoReceivedProducts = new TreeMap<Producer, Map<Product, Integer>>();
-    srManuelAndFernandoReceivedProducts.put(srManuelPorto, srManuelOrderedProducts);
-    srManuelAndFernandoReceivedProducts.put(srFernandoLisboa, srFernandoOrderedProducts);
+    ReceivedProducts srManuelReceivedProducts = new ReceivedProducts();
+    srManuelReceivedProducts.addProduct(srManuelPorto, srManuelOrderedProducts);
+    ReceivedProducts srFernandoReceivedProducts = new ReceivedProducts();
+    srFernandoReceivedProducts.addProduct(srFernandoLisboa, srFernandoOrderedProducts);
+    ReceivedProducts srManuelAndFernandoReceivedProducts = new ReceivedProducts();
+    srManuelAndFernandoReceivedProducts.addProduct(srManuelPorto, srManuelOrderedProducts);
+    srManuelAndFernandoReceivedProducts.addProduct(srFernandoLisboa, srFernandoOrderedProducts);
 
-    dAliceBasket = new Basket(srManuelOrderedProducts, srManuelReceivedProducts, hubAveiro, dAliceBraga);
-    dManuelaBasket = new Basket(srFernandoOrderedProducts, srFernandoReceivedProducts, hubViseu, dManuelaCBranco);
-    dLuisaBasket = new Basket(srManuelAndFernandoOrderedProducts, srManuelAndFernandoReceivedProducts, hubAveiro,
-        dLuisaVReal);
+    dAliceBasket =
+        new Basket(srManuelOrderedProducts, srManuelReceivedProducts, hubAveiro, dAliceBraga);
+    dManuelaBasket = new Basket(srFernandoOrderedProducts, srFernandoReceivedProducts, hubViseu,
+        dManuelaCBranco);
+    dLuisaBasket = new Basket(srManuelAndFernandoOrderedProducts,
+        srManuelAndFernandoReceivedProducts, hubAveiro, dLuisaVReal);
   }
 
   @Test
   public void testWithZeroBaskets() {
     this.expeditionList = new ExpeditionList(0);
 
-    ExpeditionPathController expeditionPathController = new ExpeditionPathController(this.distributionNetwork,
-        this.expeditionList);
+    ExpeditionPathController expeditionPathController =
+        new ExpeditionPathController(this.distributionNetwork, this.expeditionList);
     ExpeditionPath path = expeditionPathController.findExpeditionPath();
 
     List<Entity> expected = new ArrayList<>();
@@ -135,8 +133,8 @@ public class ExpeditionPathTest {
     this.expeditionList = new ExpeditionList(1);
     this.expeditionList.addBasket(dAliceBasket);
 
-    ExpeditionPathController expeditionPathController = new ExpeditionPathController(this.distributionNetwork,
-        this.expeditionList);
+    ExpeditionPathController expeditionPathController =
+        new ExpeditionPathController(this.distributionNetwork, this.expeditionList);
     ExpeditionPath path = expeditionPathController.findExpeditionPath();
 
     List<Entity> expected = new ArrayList<>();
@@ -153,8 +151,8 @@ public class ExpeditionPathTest {
     this.expeditionList = new ExpeditionList(2);
     this.expeditionList.addBasket(dManuelaBasket);
 
-    ExpeditionPathController expeditionPathController = new ExpeditionPathController(this.distributionNetwork,
-        this.expeditionList);
+    ExpeditionPathController expeditionPathController =
+        new ExpeditionPathController(this.distributionNetwork, this.expeditionList);
     ExpeditionPath path = expeditionPathController.findExpeditionPath();
 
     List<Entity> expected = new ArrayList<>();
@@ -173,8 +171,8 @@ public class ExpeditionPathTest {
     this.expeditionList = new ExpeditionList(3);
     this.expeditionList.addBasket(dLuisaBasket);
 
-    ExpeditionPathController expeditionPathController = new ExpeditionPathController(this.distributionNetwork,
-        this.expeditionList);
+    ExpeditionPathController expeditionPathController =
+        new ExpeditionPathController(this.distributionNetwork, this.expeditionList);
     ExpeditionPath path = expeditionPathController.findExpeditionPath();
 
     List<Entity> expected = new ArrayList<>();

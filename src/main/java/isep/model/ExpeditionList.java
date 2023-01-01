@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Class that represents a list of baskets for a given day.
@@ -89,7 +90,7 @@ public class ExpeditionList {
 
     for (Basket basket : baskets) {
       Enterprise hub = basket.getHub();
-      List<Producer> producers = basket.getProducers();
+      Set<Producer> producers = basket.getProducers();
 
       List<Producer> existingProducers = map.get(hub);
 
@@ -98,7 +99,7 @@ public class ExpeditionList {
           if (!existingProducers.contains(producer))
             existingProducers.add(producer);
 
-      map.put(hub, producers);
+      map.put(hub, new ArrayList<>(producers));
     }
 
     return map;

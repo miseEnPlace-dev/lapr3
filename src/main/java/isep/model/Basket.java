@@ -1,9 +1,7 @@
 package isep.model;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
-
+import java.util.Set;
 import isep.shared.exceptions.InvalidHubException;
 import isep.shared.exceptions.InvalidOrderException;
 
@@ -14,15 +12,15 @@ import isep.shared.exceptions.InvalidOrderException;
  */
 public class Basket {
   private Map<Product, Integer> ordered;
-  private Map<Producer, Map<Product, Integer>> received;
+  private ReceivedProducts received;
   private Enterprise hub;
   private Client client;
 
   /*
    * Constructor
    */
-  public Basket(Map<Product, Integer> ordered, Map<Producer, Map<Product, Integer>> received,
-      Enterprise hub, Client client) throws InvalidOrderException, InvalidHubException {
+  public Basket(Map<Product, Integer> ordered, ReceivedProducts received, Enterprise hub,
+      Client client) throws InvalidOrderException, InvalidHubException {
     setOrdered(ordered);
     setReceived(received);
     setHub(hub);
@@ -49,7 +47,7 @@ public class Basket {
   /*
    * Set of received products
    */
-  private void setReceived(Map<Producer, Map<Product, Integer>> received) {
+  private void setReceived(ReceivedProducts received) {
     if (received == null)
       throw new IllegalArgumentException("Null received map is Invalid!");
 
@@ -88,15 +86,24 @@ public class Basket {
   /*
    * Get list of producers
    */
-  public List<Producer> getProducers() {
-    List<Producer> producers = new ArrayList<>();
+  public Set<Producer> getProducers() {
+    return this.received.getProducers();
+  }
 
-    for (Producer producer : received.keySet()) {
-      if (producers.contains(producer))
+  public int getNumberOfFullySatisfiedProducts() {
+    int count = 0;
+
+    for (Product product : ordered.keySet()) {
+      int orderedQuantity = ordered.get(product);
+      Integer receivedQuantity = received.getQuantityOfProduct(product);
+
+      if (receivedQuantity == null)
         continue;
-      producers.add(producer);
+
+      if (orderedQuantity == receivedQuantity)
+        count++;
     }
 
-    return producers;
+    return count;
   }
 }
