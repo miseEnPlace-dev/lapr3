@@ -11,7 +11,7 @@ import isep.shared.Constants;
 /*
  * US 301 - Controller that loads a distribution network
  *
- * @author Ricardo Moreira <1211289@isep.ipp.pt>
+ * @author Tomás Lopes <1211289@isep.ipp.pt>
  *
  */
 public class LoadDistributionNetworkController {
