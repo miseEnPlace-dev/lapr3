@@ -1,10 +1,11 @@
 package isep.ui;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
-import isep.controller.AuthController;
+import isep.auth.AuthController;
 import isep.shared.Constants;
-import isep.shared.SystemRoles;
+import isep.shared.SystemRole;
 import isep.ui.utils.Utils;
 
 public class AuthUI implements Runnable {
@@ -17,17 +18,50 @@ public class AuthUI implements Runnable {
   public void run() {
     boolean success = doLogin();
 
+    if (!success) {
+      System.out.println("Login failed.");
+      this.logout();
+      return;
+    }
+
+    SystemRole role = this.ctrl.getUserRole();
+
+    if (role == null) {
+      System.out.println("User has not any role assigned.");
+      this.logout();
+      return;
+    }
+
+    List<MenuItem> rolesUI = getMenuItemForRoles();
+    this.redirectToRoleUI(rolesUI, role);
+
     this.logout();
   }
+
+  private void redirectToRoleUI(List<MenuItem> rolesUI, SystemRole role) {
+    boolean found = false;
+    Iterator<MenuItem> it = rolesUI.iterator();
+
+    while (it.hasNext() && !found) {
+      MenuItem item = it.next();
+      found = item.hasDescription(role.toString());
+      if (found)
+        item.run();
+    }
+
+    if (!found)
+      System.out.println("There is no UI for users with role '" + role.toString() + "'");
+  }
+
 
   private List<MenuItem> getMenuItemForRoles() {
     List<MenuItem> rolesUI = new ArrayList<>();
 
-    rolesUI.add(new MenuItem(SystemRoles.GESTOR_AGRICOLA.toString(), new AgriculturalManagerUI()));
-    rolesUI.add(new MenuItem(SystemRoles.CONDUTOR.toString(), new DriverUI()));
-    rolesUI.add(new MenuItem(SystemRoles.CLIENTE.toString(), new ClientUI()));
+    rolesUI.add(new MenuItem(SystemRole.GESTOR_AGRICOLA.toString(), new AgriculturalManagerUI()));
+    rolesUI.add(new MenuItem(SystemRole.CONDUTOR.toString(), new DriverUI()));
+    rolesUI.add(new MenuItem(SystemRole.CLIENTE.toString(), new ClientUI()));
     rolesUI
-        .add(new MenuItem(SystemRoles.GESTOR_DISTRIBUICAO.toString(), new DistributionManagerUI()));
+        .add(new MenuItem(SystemRole.GESTOR_DISTRIBUICAO.toString(), new DistributionManagerUI()));
 
     return rolesUI;
   }
@@ -37,6 +71,7 @@ public class AuthUI implements Runnable {
 
     int maxAttempts = Constants.MAX_OF_PASSWORD_TRIES;
     boolean success = false;
+
     do {
       maxAttempts--;
       String id = Utils.readLineFromConsole("Enter UserId/Email: ");
@@ -49,6 +84,7 @@ public class AuthUI implements Runnable {
       }
 
     } while (!success && maxAttempts > 0);
+
     return success;
   }
 

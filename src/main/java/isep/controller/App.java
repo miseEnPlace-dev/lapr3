@@ -1,12 +1,26 @@
 package isep.controller;
 
+import isep.auth.AuthFacade;
+import isep.auth.UserSession;
 import isep.model.Company;
+import isep.shared.SystemRole;
 
 public class App {
   private final Company company;
+  private final AuthFacade authFacade;
 
   private App() {
     this.company = new Company();
+    this.authFacade = new AuthFacade();
+
+    bootstrap();
+  }
+
+  private void bootstrap() {
+    this.authFacade.addUserWithRole("agricula", "123456", SystemRole.GESTOR_AGRICOLA);
+    this.authFacade.addUserWithRole("client", "123456", SystemRole.CLIENTE);
+    this.authFacade.addUserWithRole("condutor", "123456", SystemRole.CONDUTOR);
+    this.authFacade.addUserWithRole("dist", "123456", SystemRole.GESTOR_DISTRIBUICAO);
   }
 
   /**
@@ -17,6 +31,18 @@ public class App {
 
   public Company getCompany() {
     return company;
+  }
+
+  public UserSession getCurrentUserSession() {
+    return this.authFacade.getCurrentUserSession();
+  }
+
+  public boolean doLogin(String email, String pwd) {
+    return this.authFacade.doLogin(email, pwd).isLoggedIn();
+  }
+
+  public void doLogout() {
+    this.authFacade.doLogout();
   }
 
   // ############# Singleton #############
