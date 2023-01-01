@@ -1,11 +1,10 @@
 package isep.ui;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Objects;
 import isep.controller.AuthController;
 import isep.shared.Constants;
+import isep.shared.SystemRoles;
 import isep.ui.utils.Utils;
 
 public class AuthUI implements Runnable {
@@ -23,12 +22,13 @@ public class AuthUI implements Runnable {
 
   private List<MenuItem> getMenuItemForRoles() {
     List<MenuItem> rolesUI = new ArrayList<>();
-    // To complete with other user roles and related RoleUI
-    rolesUI.add(new MenuItem(Constants.ROLE_GESTOR_AGRICOLA, new AgriculturalManagerUI()));
-    rolesUI.add(new MenuItem(Constants.ROLE_CONDUTOR, new DriverUI()));
-    rolesUI.add(new MenuItem(Constants.ROLE_CLIENTE, new ClientUI()));
-    rolesUI.add(new MenuItem(Constants.ROLE_GESTOR_DISTRIBUICAO, new DistributionManagerUI()));
-    //
+
+    rolesUI.add(new MenuItem(SystemRoles.GESTOR_AGRICOLA.toString(), new AgriculturalManagerUI()));
+    rolesUI.add(new MenuItem(SystemRoles.CONDUTOR.toString(), new DriverUI()));
+    rolesUI.add(new MenuItem(SystemRoles.CLIENTE.toString(), new ClientUI()));
+    rolesUI
+        .add(new MenuItem(SystemRoles.GESTOR_DISTRIBUICAO.toString(), new DistributionManagerUI()));
+
     return rolesUI;
   }
 
@@ -44,7 +44,8 @@ public class AuthUI implements Runnable {
 
       success = ctrl.doLogin(id, pwd);
       if (!success) {
-        System.out.println("Invalid UserId and/or Password. \n You have  " + maxAttempts + " more attempt(s).");
+        System.out.println(
+            "\nInvalid UserId and/or Password. \n You have  " + maxAttempts + " more attempt(s).");
       }
 
     } while (!success && maxAttempts > 0);

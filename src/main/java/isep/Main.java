@@ -1,7 +1,5 @@
-package isep.ui;
+package isep;
 
-import java.util.Properties;
-import isep.controller.App;
 import isep.ui.MainMenuUI;
 
 public class Main {
@@ -9,7 +7,6 @@ public class Main {
     try {
       MainMenuUI menu = new MainMenuUI();
       menu.run();
-
     } catch (Exception e) {
       e.printStackTrace();
     }

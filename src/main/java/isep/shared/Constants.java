@@ -15,10 +15,4 @@ public class Constants {
   public static final String PARAMS_FILENAME = "config.properties";
 
   public static final int MAX_OF_PASSWORD_TRIES = 3;
-
-  public static final String ROLE_GESTOR_AGRICOLA = "Gestor Agricola";
-  public static final String ROLE_CLIENTE = "Cliente";
-  public static final String ROLE_CONDUTOR = "Condutor";
-  public static final String ROLE_GESTOR_DISTRIBUICAO = "Gestor de destribuição";
-
 }

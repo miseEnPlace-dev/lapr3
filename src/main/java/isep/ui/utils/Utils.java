@@ -2,7 +2,6 @@ package isep.ui.utils;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.lang.reflect.Method;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -12,7 +11,7 @@ public class Utils {
 
   static public String readLineFromConsole(String prompt) {
     try {
-      System.out.println("\n" + prompt);
+      System.out.print(prompt);
 
       InputStreamReader converter = new InputStreamReader(System.in);
       BufferedReader in = new BufferedReader(converter);
@@ -127,7 +126,8 @@ public class Utils {
       Date date = readDateFromConsole(prompt);
 
       try {
-        if (date.after(df.parse(df.format(new Date()))) || date.equals(df.parse(df.format(new Date()))))
+        if (date.after(df.parse(df.format(new Date())))
+            || date.equals(df.parse(df.format(new Date()))))
           return date;
         System.out.println("The date must be in the future!\n");
       } catch (ParseException e) {
