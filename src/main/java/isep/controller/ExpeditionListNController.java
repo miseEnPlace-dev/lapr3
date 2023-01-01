@@ -3,15 +3,12 @@ package isep.controller;
 import isep.model.DistributionNetwork;
 import isep.model.ExpeditionList;
 
+/*
+ * US309 - Controller that generates an expedition list for a given network and day with N producers
+ *
+ * @author André Barros <1211299@isep.ipp.pt>
+ */
 public class ExpeditionListNController {
-
-  /*
-   * US309 - Controller that generates an expedition list for a given network and
-   * day
-   * with N producers
-   *
-   * @author André Barros <1211299@isep.ipp.pt>
-   */
   private DistributionNetwork network;
   private int n;
   private ExpeditionList expeditionList;
@@ -42,5 +39,4 @@ public class ExpeditionListNController {
       throw new IllegalArgumentException("Network is null");
     this.network = network;
   }
-
 }

@@ -23,7 +23,7 @@ public class ExpeditionList {
 
   private void setDay(int day) {
     if (day < 0)
-      throw new IllegalArgumentException("Day must be positive number");
+      throw new IllegalArgumentException("Day must be a positive number");
 
     this.day = day;
   }
@@ -54,13 +54,12 @@ public class ExpeditionList {
    */
   public List<Producer> getProducers() {
     List<Producer> producers = new ArrayList<>();
-    for (Basket basket : this.baskets) {
-      for (Producer producer : basket.getProducers()) {
-        if (!producers.contains(producer)) {
+
+    for (Basket basket : this.baskets)
+      for (Producer producer : basket.getProducers())
+        if (!producers.contains(producer))
           producers.add(producer);
-        }
-      }
-    }
+
     return producers;
   }
 
@@ -71,20 +70,19 @@ public class ExpeditionList {
    */
   public List<Enterprise> getHubs() {
     List<Enterprise> hubs = new ArrayList<>();
-    for (Basket basket : this.baskets) {
-      if (!hubs.contains(basket.getHub())) {
+
+    for (Basket basket : this.baskets)
+      if (!hubs.contains(basket.getHub()))
         hubs.add(basket.getHub());
-      }
-    }
+
     return hubs;
   }
 
   /**
-   * Get, for each hub in the ExpeditionList, all producers that deliver to that
-   * hub.
+   * Get, for each hub in the ExpeditionList, all producers that deliver to that hub.
    *
-   * @return A {@code Map} that associates a Hub ({@code Enterprise} object) to a
-   *         list of {@code Producer} objects.
+   * @return A {@code Map} that associates a Hub ({@code Enterprise} object) to a list of
+   *         {@code Producer} objects.
    */
   public Map<Enterprise, List<Producer>> getProducersThatSupplyHubs() {
     Map<Enterprise, List<Producer>> map = new HashMap<Enterprise, List<Producer>>();
@@ -94,12 +92,11 @@ public class ExpeditionList {
       List<Producer> producers = basket.getProducers();
 
       List<Producer> existingProducers = map.get(hub);
-      if (existingProducers != null) {
-        for (Producer producer : producers) {
+
+      if (existingProducers != null)
+        for (Producer producer : producers)
           if (!existingProducers.contains(producer))
             existingProducers.add(producer);
-        }
-      }
 
       map.put(hub, producers);
     }
@@ -114,9 +111,8 @@ public class ExpeditionList {
       Enterprise hub = basket.getHub();
       int basketCount = 0;
 
-      if (map.containsKey(hub)) {
+      if (map.containsKey(hub))
         basketCount = map.get(hub);
-      }
 
       map.put(hub, ++basketCount);
     }
