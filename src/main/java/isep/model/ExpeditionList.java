@@ -120,4 +120,26 @@ public class ExpeditionList {
 
     return map;
   }
+
+  public int getNumberOfFullySatisfiedProducts(Basket basket) {
+    return basket.getNumberOfFullySatisfiedProducts();
+  }
+
+  public int getNumberOfPartiallySatisfiedProducts(Basket basket) {
+    return basket.getNumberOfPartiallySatisfiedProducts();
+  }
+
+  public int getNumberOfNotSatisfiedProducts(Basket basket) {
+    return basket.getNumberOfNotSatisfiedProducts();
+  }
+
+  public int getNumberOfFullySuppliedBasketsByProducer(Producer producer) {
+    int count = 0;
+
+    for (Basket basket : baskets)
+      if (basket.isFullySuppliedBy(producer))
+        count++;
+
+    return count;
+  }
 }

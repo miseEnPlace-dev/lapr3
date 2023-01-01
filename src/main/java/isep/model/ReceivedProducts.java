@@ -59,4 +59,8 @@ public class ReceivedProducts {
 
     return true;
   }
+
+  public int getNumberOfDistinctProducers() {
+    return received.size();
+  }
 }

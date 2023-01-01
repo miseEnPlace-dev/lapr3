@@ -113,7 +113,18 @@ public class Basket {
     return count;
   }
 
-  public int getPartiallySatisfiedProducts() {
+  public int getNumberOfPartiallySatisfiedProducts() {
     return ordered.size() - getNumberOfFullySatisfiedProducts() - getNumberOfNotSatisfiedProducts();
+  }
+
+  public boolean isFullySuppliedBy(Producer producer) {
+    return received.getNumberOfDistinctProducers() == 1
+        && received.getProducers().contains(producer);
+  }
+
+  public boolean isPartiallySuppliedBy(Producer producer) {
+    // ? If is fully supplied by producer, then it is not partially supplied by producer
+    return received.getNumberOfDistinctProducers() > 1
+        && received.getProducers().contains(producer);
   }
 }
