@@ -154,4 +154,12 @@ public class Basket {
     return received.getNumberOfDistinctProducers() > 1
         && received.getProducers().contains(producer);
   }
+
+  public int getQuantityOfSuppliedProduct(Producer producer, Product product) {
+    return received.getQuantityOfSuppliedProduct(producer, product);
+  }
+
+  public Set<Product> getProducts() {
+    return ordered.keySet();
+  }
 }

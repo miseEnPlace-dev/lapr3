@@ -3,6 +3,7 @@ package isep.model;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -54,13 +55,12 @@ public class ExpeditionList {
    *
    * @return A {@code List} of all Producers
    */
-  public List<Producer> getProducers() {
-    List<Producer> producers = new ArrayList<>();
+  public Set<Producer> getProducers() {
+    Set<Producer> producers = new LinkedHashSet<>();
 
     for (Basket basket : this.baskets)
       for (Producer producer : basket.getProducers())
-        if (!producers.contains(producer))
-          producers.add(producer);
+        producers.add(producer);
 
     return producers;
   }
@@ -70,12 +70,11 @@ public class ExpeditionList {
    *
    * @return A {@code List} of all hubs (Enterprises)
    */
-  public List<Enterprise> getHubs() {
-    List<Enterprise> hubs = new ArrayList<>();
+  public Set<Enterprise> getHubs() {
+    Set<Enterprise> hubs = new LinkedHashSet<>();
 
     for (Basket basket : this.baskets)
-      if (!hubs.contains(basket.getHub()))
-        hubs.add(basket.getHub());
+      hubs.add(basket.getHub());
 
     return hubs;
   }
@@ -97,8 +96,7 @@ public class ExpeditionList {
 
       if (existingProducers != null)
         for (Producer producer : producers)
-          if (!existingProducers.contains(producer))
-            existingProducers.add(producer);
+          existingProducers.add(producer);
 
       map.put(hub, new ArrayList<>(producers));
     }
@@ -258,5 +256,20 @@ public class ExpeditionList {
     }
 
     return producers.size();
+  }
+
+  public int getNumberOfOutOfStockProducts(Producer producer) {
+    int count = 0;
+
+    for (Basket basket : baskets)
+      for (Product product : basket.getProducts()) {
+        int availableStock = producer.getNonExpiredQuantityUntilDate(product, day);
+        int suppliedQuantity = basket.getQuantityOfSuppliedProduct(producer, product);
+
+        if (availableStock <= suppliedQuantity)
+          count++;
+      }
+
+    return count;
   }
 }

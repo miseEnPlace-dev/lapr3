@@ -1,9 +1,9 @@
 package isep.model;
 
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.TreeSet;
 
 public class ReceivedProducts {
   private Map<Producer, Map<Product, Integer>> received;
@@ -25,8 +25,26 @@ public class ReceivedProducts {
     received.put(producer, products);
   }
 
+  public int getQuantityOfSuppliedProduct(Producer producer, Product product) {
+    if (producer == null)
+      throw new IllegalArgumentException("Producer cannot be null");
+
+    if (product == null)
+      throw new IllegalArgumentException("Product cannot be null");
+
+    if (!received.containsKey(producer))
+      throw new IllegalArgumentException("Producer does not exist");
+
+    Map<Product, Integer> receivedProducts = received.get(producer);
+
+    if (!receivedProducts.containsKey(product))
+      throw new IllegalArgumentException("Product does not exist");
+
+    return receivedProducts.get(product);
+  }
+
   public Set<Producer> getProducers() {
-    Set<Producer> producers = new TreeSet<>();
+    Set<Producer> producers = new LinkedHashSet<>();
 
     for (Producer producer : received.keySet())
       producers.add(producer);

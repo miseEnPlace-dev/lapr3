@@ -9,6 +9,10 @@ public class Producer extends Entity implements Comparable<Object> {
     return this.dailyData.getDailyDataUntilDate(day);
   }
 
+  public int getNonExpiredQuantityUntilDate(Product product, int day) {
+    return this.dailyData.getNonExpiredProductQuantity(product, day);
+  }
+
   @Override
   public int compareTo(Object o) {
     return this.getId().compareTo(((Producer) o).getId());
