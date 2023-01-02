@@ -2,6 +2,7 @@ package isep.model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -133,6 +134,14 @@ public class ExpeditionList {
     return basket.getNumberOfNotSatisfiedProducts();
   }
 
+  public double getPercentageOfFullySatisfiedProducts(Basket basket) {
+    return basket.getNumberOfFullySatisfiedProducts() / (double) basket.getNumberOfProducts();
+  }
+
+  public int getNumberOfDistinctProducersForBasket(Basket basket) {
+    return basket.getProducers().size();
+  }
+
   public int getNumberOfFullySuppliedBasketsByProducer(Producer producer) {
     int count = 0;
 
@@ -141,5 +150,113 @@ public class ExpeditionList {
         count++;
 
     return count;
+  }
+
+  public int getNumberOfPartiallySuppliedBasketsByProducer(Producer producer) {
+    int count = 0;
+
+    for (Basket basket : baskets)
+      if (basket.isPartiallySuppliedBy(producer))
+        count++;
+
+    return count;
+  }
+
+  public int getNumberOfFullyFulfilledBasketsByClient(Client client) {
+    int count = 0;
+
+    for (Basket basket : baskets) {
+      if (!basket.isFromClient(client))
+        continue;
+
+      if (basket.isFullyFulfilled())
+        count++;
+    }
+
+    return count;
+  }
+
+  public int getNumberOfPartiallyFulfilledBasketsByClient(Client client) {
+    int count = 0;
+
+    for (Basket basket : baskets) {
+      if (!basket.isFromClient(client))
+        continue;
+
+      if (basket.isPartiallyFulfilled())
+        count++;
+    }
+
+    return count;
+  }
+
+  public Set<Producer> getProducersThatSupplyAllClientsBaskets(Client client) {
+    Set<Producer> producers = new HashSet<>();
+
+    for (Basket basket : baskets) {
+      if (!basket.isFromClient(client))
+        continue;
+
+      Set<Producer> basketProducers = basket.getProducers();
+      producers.addAll(basketProducers);
+    }
+
+    return producers;
+  }
+
+  public int getNumberOfDistinctClients(Producer producer) {
+    Set<Client> clients = new HashSet<>();
+
+    for (Basket basket : baskets) {
+      if (!basket.isFullySuppliedBy(producer) && !basket.isPartiallySuppliedBy(producer))
+        continue;
+
+      Client client = basket.getClient();
+      clients.add(client);
+    }
+
+    return clients.size();
+  }
+
+  public int getNumberOfDistinctHubs(Producer producer) {
+    Set<Enterprise> hubs = new HashSet<>();
+
+    for (Basket basket : baskets) {
+      if (!basket.isFullySuppliedBy(producer) && !basket.isPartiallySuppliedBy(producer))
+        continue;
+
+      Enterprise hub = basket.getHub();
+      hubs.add(hub);
+    }
+
+    return hubs.size();
+  }
+
+  public int getDistinctClients(Enterprise hub) {
+    Set<Client> clients = new HashSet<>();
+
+    for (Basket basket : baskets) {
+      if (!basket.isFromHub(hub))
+        continue;
+
+      Client client = basket.getClient();
+      clients.add(client);
+    }
+
+    return clients.size();
+  }
+
+  public int getDistinctProducers(Enterprise hub) {
+    Set<Producer> producers = new HashSet<>();
+
+    for (Basket basket : baskets) {
+      if (!basket.isFromHub(hub))
+        continue;
+
+      Set<Producer> basketProducers = basket.getProducers();
+      producers.addAll(basketProducers);
+    }
+
+    return producers.size();
   }
 }

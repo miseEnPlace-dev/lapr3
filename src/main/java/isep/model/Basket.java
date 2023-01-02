@@ -76,6 +76,18 @@ public class Basket {
     this.client = client;
   }
 
+  public Client getClient() {
+    return this.client;
+  }
+
+  public boolean isFromClient(Client client) {
+    return this.client.equals(client);
+  }
+
+  public boolean isFromHub(Enterprise hub) {
+    return this.hub.equals(hub);
+  }
+
   /*
    * Get basket hub
    */
@@ -88,6 +100,21 @@ public class Basket {
    */
   public Set<Producer> getProducers() {
     return this.received.getProducers();
+  }
+
+  public int getNumberOfProducts() {
+    return ordered.size();
+  }
+
+  public boolean isFullyFulfilled() {
+    return getNumberOfFullySatisfiedProducts() == ordered.size();
+  }
+
+  public boolean isPartiallyFulfilled() {
+    int numberOfFulfilledProducts =
+        getNumberOfFullySatisfiedProducts() + getNumberOfPartiallySatisfiedProducts();
+
+    return numberOfFulfilledProducts > 0 && numberOfFulfilledProducts < ordered.size();
   }
 
   public int getNumberOfFullySatisfiedProducts() {
