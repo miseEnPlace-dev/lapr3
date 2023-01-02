@@ -5,9 +5,7 @@ import isep.controller.ConnectedNetworkShortestPathController;
 import isep.model.DistributionNetwork;
 import isep.model.Entity;
 import isep.shared.exceptions.NetworkNotConnectedException;
-import isep.utils.graph.AdjacencyMapGraph;
 import isep.utils.graph.Graph;
-import isep.utils.graph.MapVertex;
 
 public class NetworkMinimumCostUI implements Runnable {
   ConnectedNetworkShortestPathController controller;
@@ -21,7 +19,8 @@ public class NetworkMinimumCostUI implements Runnable {
   @Override
   public void run() {
     try {
-      System.out.println(printNetworkMinimumCost(controller.getConnectedNetworkShortestPath()));
+      Graph<Entity, Integer> graph = controller.getConnectedNetworkShortestPath();
+      System.out.println(printNetworkMinimumCost(graph));
     } catch (NetworkNotConnectedException e) {
       System.out.println("Missing data for this action");
     }
