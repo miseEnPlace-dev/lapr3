@@ -1,7 +1,6 @@
 package isep.model;
 
-public class Producer extends Entity implements Comparable {
-
+public class Producer extends Entity implements Comparable<Object> {
   public Producer(String id, double latitude, double longitude, String localizationId) {
     super(id, latitude, longitude, localizationId);
   }
