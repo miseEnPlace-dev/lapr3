@@ -3,20 +3,11 @@ package isep.ui;
 import java.util.ArrayList;
 import java.util.List;
 
-import isep.controller.App;
-import isep.controller.LoadDistributionNetworkController;
-import isep.model.DistributionNetwork;
-import isep.model.store.EntityStore;
 import isep.ui.utils.Utils;
 
 public class AgriculturalManagerUI implements Runnable {
-  LoadDistributionNetworkController loadDistributionNetworkController;
-  EntityStore entityStore;
-  DistributionNetwork distributionNetwork;
 
   public AgriculturalManagerUI() {
-    entityStore = App.getInstance().getCompany().getEntityStore();
-    distributionNetwork = App.getInstance().getCompany().getDistributionNetwork();
   }
 
   @Override
