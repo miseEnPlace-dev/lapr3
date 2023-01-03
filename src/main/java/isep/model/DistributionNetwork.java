@@ -9,7 +9,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.RecursiveAction;
 
+import isep.shared.exceptions.InvalidHubException;
 import isep.shared.exceptions.InvalidNumberOfHubsException;
+import isep.shared.exceptions.InvalidOrderException;
 import isep.utils.MergeSort;
 import isep.utils.graph.AdjacencyMapGraph;
 import isep.utils.graph.Edge;
@@ -210,8 +212,8 @@ public class DistributionNetwork {
     return nearestHub;
   }
 
-  public ExpeditionList getExpeditionList(Integer day){
-    ExpeditionList resultList = new ExpeditionList(day);
+  public ExpeditionList getExpeditionList(Integer day) throws InvalidOrderException, InvalidHubException{
+    ExpeditionList expeditionList = new ExpeditionList(day);
 
     List<Client> clientsList = this.network.getEntitiesWithClass(Client.class);
     HashMap<Producer, DailyData> prodStocks = this.getActualStock(day);
@@ -244,12 +246,17 @@ public class DistributionNetwork {
         }
 
         prodStocks.get(bestProducer).removeValidProductQuantity(product, bestQuant, j);
+        received.setProduct(bestProducer, product, bestQuant);
 
       }
       
+      Basket basket = new Basket(ordered, received, hub, client);
+
+      expeditionList.addBasket(basket);
+
     }
 
-    return resultList;
+    return expeditionList;
   }
 
 
