@@ -76,6 +76,18 @@ public class Basket {
     this.client = client;
   }
 
+  public Client getClient() {
+    return this.client;
+  }
+
+  public boolean isFromClient(Client client) {
+    return this.client.equals(client);
+  }
+
+  public boolean isFromHub(Enterprise hub) {
+    return this.hub.equals(hub);
+  }
+
   /*
    * Get basket hub
    */
@@ -90,20 +102,64 @@ public class Basket {
     return this.received.getProducers();
   }
 
+  public int getNumberOfProducts() {
+    return ordered.size();
+  }
+
+  public boolean isFullyFulfilled() {
+    return getNumberOfFullySatisfiedProducts() == ordered.size();
+  }
+
+  public boolean isPartiallyFulfilled() {
+    int numberOfFulfilledProducts =
+        getNumberOfFullySatisfiedProducts() + getNumberOfPartiallySatisfiedProducts();
+
+    return numberOfFulfilledProducts > 0 && numberOfFulfilledProducts < ordered.size();
+  }
+
   public int getNumberOfFullySatisfiedProducts() {
     int count = 0;
 
     for (Product product : ordered.keySet()) {
       int orderedQuantity = ordered.get(product);
-      Integer receivedQuantity = received.getQuantityOfProduct(product);
 
-      if (receivedQuantity == null)
-        continue;
-
-      if (orderedQuantity == receivedQuantity)
+      if (received.matchesProductQuantity(product, orderedQuantity))
         count++;
     }
 
     return count;
+  }
+
+  public int getNumberOfNotSatisfiedProducts() {
+    int count = 0;
+
+    for (Product product : ordered.keySet())
+      if (received.hasNotReceivedProduct(product))
+        count++;
+
+    return count;
+  }
+
+  public int getNumberOfPartiallySatisfiedProducts() {
+    return ordered.size() - getNumberOfFullySatisfiedProducts() - getNumberOfNotSatisfiedProducts();
+  }
+
+  public boolean isFullySuppliedBy(Producer producer) {
+    return received.getNumberOfDistinctProducers() == 1
+        && received.getProducers().contains(producer);
+  }
+
+  public boolean isPartiallySuppliedBy(Producer producer) {
+    // ? If is fully supplied by producer, then it is not partially supplied by producer
+    return received.getNumberOfDistinctProducers() > 1
+        && received.getProducers().contains(producer);
+  }
+
+  public int getQuantityOfSuppliedProduct(Producer producer, Product product) {
+    return received.getQuantityOfSuppliedProduct(producer, product);
+  }
+
+  public Set<Product> getProducts() {
+    return ordered.keySet();
   }
 }

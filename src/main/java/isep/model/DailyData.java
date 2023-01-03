@@ -11,6 +11,8 @@ import java.util.TreeMap;
  * @author Carlos Lopes <1211277@isep.ipp.pt>
  */
 public class DailyData {
+  private final int DAYS_TO_EXPIRE = 3;
+
   private SortedMap<Integer, Map<Product, Integer>> dailyData;
 
   public DailyData() {
@@ -24,10 +26,10 @@ public class DailyData {
   }
 
   /**
-   * @param day      - day to add data
+   * @param day - day to add data
    * @param products - product/quantity data
    *
-   *                 Adds the products/quantity data to a specif day
+   *        Adds the products/quantity data to a specif day
    */
   public void addDayData(Integer day, Map<Product, Integer> products) {
     if (day < 0)
@@ -39,14 +41,15 @@ public class DailyData {
   }
 
   /**
-   * @param day      - day to add data
-   * @param product  - product adding
+   * @param day - day to add data
+   * @param product - product adding
    * @param quantity - quantity of product adding
    *
-   *                 Adds a single product/quantity to a specif day
+   *        Adds a single product/quantity to a specif day
    */
   public void addProductInfoToDayData(Integer day, Product product, Integer quantity) {
-    Map<Product, Integer> map = this.dailyData.containsKey(day) ? this.dailyData.get(day) : new HashMap<>();
+    Map<Product, Integer> map =
+        this.dailyData.containsKey(day) ? this.dailyData.get(day) : new HashMap<>();
 
     map.put(product, quantity);
 
@@ -57,20 +60,19 @@ public class DailyData {
    * @param day - day to get data from
    * @return HashMap<Product, Integer>
    *
-   *         Returns a map with the products and quantities registered
-   *         in that dailyData for a specif day
+   *         Returns a map with the products and quantities registered in that dailyData for a
+   *         specif day
    */
   public Map<Product, Integer> getDayData(Integer day) {
     return this.dailyData.get(day);
   }
 
   /**
-   * @param day     - day to get data from
+   * @param day - day to get data from
    * @param product - product to get data from
    * @return Integer
    *
-   *         Returns the quantity of a product registered
-   *         in that dailyData for a specif day
+   *         Returns the quantity of a product registered in that dailyData for a specif day
    */
   public Integer getQuantityOfProductForDay(Integer day, Product product) {
     return this.dailyData.get(day).get(product) != null ? this.dailyData.get(day).get(product) : 0;
@@ -112,4 +114,12 @@ public class DailyData {
   }
 
 
+  public int getNonExpiredProductQuantity(Product product, int day) {
+    int quantity = 0;
+
+    for (int i = day; i > day - DAYS_TO_EXPIRE; i--)
+      quantity += getQuantityOfProductForDay(i, product);
+
+    return quantity;
+  }
 }
