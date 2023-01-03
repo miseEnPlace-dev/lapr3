@@ -1,16 +1,16 @@
 package isep.model;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 
 public class ReceivedProducts {
   private Map<Producer, Map<Product, Integer>> received;
 
   public ReceivedProducts() {
-    this.received = new TreeMap<>();
+    this.received = new LinkedHashMap<>();
   }
 
   public void addProduct(Producer producer, Product product, Integer quantity) {

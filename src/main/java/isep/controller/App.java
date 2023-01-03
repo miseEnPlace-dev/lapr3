@@ -17,10 +17,12 @@ public class App {
   }
 
   private void bootstrap() {
-    this.authFacade.addUserWithRole("agricula", "123456", SystemRole.GESTOR_AGRICOLA);
-    this.authFacade.addUserWithRole("client", "123456", SystemRole.CLIENTE);
-    this.authFacade.addUserWithRole("driver", "123456", SystemRole.CONDUTOR);
-    this.authFacade.addUserWithRole("dist", "123456", SystemRole.GESTOR_DISTRIBUICAO);
+    this.authFacade.addUserWithRole(SystemRole.AGRICULTURAL_MANAGER.toString(), "123456",
+        SystemRole.AGRICULTURAL_MANAGER);
+    this.authFacade.addUserWithRole(SystemRole.CLIENT.toString(), "123456", SystemRole.CLIENT);
+    this.authFacade.addUserWithRole(SystemRole.DRIVER.toString(), "123456", SystemRole.DRIVER);
+    this.authFacade.addUserWithRole(SystemRole.DISTRIBUTION_MANAGER.toString(), "123456",
+        SystemRole.DISTRIBUTION_MANAGER);
   }
 
   /**

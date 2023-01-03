@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ALLOWED_FOLDERS="US110 US111" # US112
+ALLOWED_FOLDERS="US110 US111 US112"
 flag=0
 
 for d in ./*/; do

@@ -6,8 +6,8 @@
 
 -- O modelo de dados é composto por 8 dimensões e 2 fact tables.
 -- A dimensão Tempo é composta por 3 atributos: ano, mes e id_tempo.
--- A dimensão ano é composta por 1 atributo: ano.
--- A dimensão mes é composta por 1 atributo: mes.
+-- A dimensão Ano é composta por 1 atributo: ano.
+-- A dimensão Mes é composta por 1 atributo: mes.
 -- A dimensão Cliente é composta por 3 atributos: id_cliente, nome e nif.
 -- A dimensão Produto é composta por 3 atributos: id_produto, tipo e designacao.
 -- A dimensão DesignacaoProduto é composta por 1 atributo: designacao.
@@ -84,13 +84,13 @@ CREATE TABLE Setor (
   PRIMARY KEY (id_setor)
 );
 
-CREATE TABLE ano (
+CREATE TABLE Ano (
   ano NUMBER(4) NOT NULL,
   PRIMARY KEY (ano),
   CONSTRAINT CHK_Ano    CHECK (ano > 0)
 );
 
-CREATE TABLE mes (
+CREATE TABLE Mes (
   mes NUMBER(2) NOT NULL,
   PRIMARY KEY (mes),
   CONSTRAINT CHK_Mes    CHECK (mes > 0 AND mes < 13)
