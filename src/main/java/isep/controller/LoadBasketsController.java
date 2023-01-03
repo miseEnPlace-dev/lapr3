@@ -3,7 +3,9 @@ package isep.controller;
 import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Map;
+import isep.model.Company;
 import isep.model.mapper.BasketsMapper;
+import isep.model.store.EntityStore;
 import isep.utils.CSVReader;
 
 /**
@@ -13,13 +15,21 @@ import isep.utils.CSVReader;
  */
 public class LoadBasketsController {
   private String filename;
+  private Company company;
 
   public LoadBasketsController() {
     this.filename = null;
+    this.company = App.getInstance().getCompany();
   }
 
   public LoadBasketsController(String filename) {
     this.filename = filename;
+    this.company = App.getInstance().getCompany();
+  }
+
+  public LoadBasketsController(String filename, Company company) {
+    this.filename = filename;
+    this.company = company;
   }
 
   public void setFilename(String filename) {
@@ -31,7 +41,8 @@ public class LoadBasketsController {
     return csvreader.read();
   }
 
-  public Map<Integer, Map<String, Map<Integer, Double>>> mapBaskets(List<Map<String, String>> data) {
-    return BasketsMapper.toPlan(data);
+  public void mapBaskets(List<Map<String, String>> data) {
+    EntityStore entityStore = company.getEntityStore();
+    return BasketsMapper.toPlan(data, entityStore);
   }
 }

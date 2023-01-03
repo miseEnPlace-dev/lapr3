@@ -114,15 +114,15 @@ public abstract class Entity implements VertexHeuristic<Entity> {
     return this.id.equals(entity.id);
   }
 
-  public void addDayData(Integer day, HashMap<Product, Integer> products) {
+  public void addDayData(Integer day, HashMap<Product, Double> products) {
     this.dailyData.addDayData(day, products);
   }
 
-  public void addProductInfoToDayData(Integer day, Product product, Integer quantity) {
+  public void addProductInfoToDayData(Integer day, Product product, Double quantity) {
     this.dailyData.addProductInfoToDayData(day, product, quantity);
   }
 
-  public Integer getQuantityOfProductForDay(Integer day, Product product) {
+  public Double getQuantityOfProductForDay(Integer day, Product product) {
     return this.dailyData.getQuantityOfProductForDay(day, product);
   }
 
@@ -136,7 +136,7 @@ public abstract class Entity implements VertexHeuristic<Entity> {
     return this.dailyData;
   }
 
-  public void setDayData(Integer day, HashMap<Product, Integer> dayData) {
+  public void setDayData(Integer day, HashMap<Product, Double> dayData) {
     if (day <= 0)
       throw new IllegalArgumentException("Day must be a positive number!");
     if (dayData == null)
@@ -144,7 +144,7 @@ public abstract class Entity implements VertexHeuristic<Entity> {
     this.dailyData.addDayData(day, dayData);
   }
 
-  public Map<Product, Integer> getDayData(Integer day) {
+  public Map<Product, Double> getDayData(Integer day) {
     return this.dailyData.getDayData(day);
   }
 }
