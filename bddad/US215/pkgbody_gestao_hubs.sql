@@ -39,6 +39,10 @@ CREATE OR REPLACE PACKAGE BODY gestao_hubs AS
         /** Incrementa o id do Hub. */
         v_id_hub := v_id_hub + 1;
       END IF;
+
+      /** Apaga o registo da tabela InputHub. */
+      DELETE FROM INPUTHUB
+      WHERE string = v_string.string;
     END LOOP;
   
     COMMIT;

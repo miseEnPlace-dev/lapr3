@@ -1,8 +1,24 @@
 CREATE OR REPLACE PACKAGE BODY gerir_sensores AS
-  FUNCTION fn_NEsimoTuplo(n NUMBER) RETURN input_sensor.input_string%TYPE AS
-    t input_sensor.input_string%TYPE;
+  /** Permite obter o tuplo n da tabela InputSensor. */
+  FUNCTION fn_obter_tuplo (
+    p_n NUMBER
+  ) RETURN input_sensor.input_string%TYPE 
+  IS
+    v_tuplo input_sensor.input_string%TYPE;
   BEGIN
-    SELECT input_string INTO t FROM input_sensor WHERE rownum = n;
-    RETURN t;
-  END fn_NEsimoTuplo;
+    /** Obtem o tuplo n da tabela InputSensor. */
+    SELECT *
+    INTO v_tuplo
+    FROM ( SELECT T.*, ROWNUM rnum
+           FROM ( SELECT * 
+                  FROM CLIENTE ) T
+           WHERE ROWNUM <= p_n )
+    WHERE ROWNUM >= p_n;
+
+    RETURN v_tuplo;
+  END fn_obter_tuplo;
+
+  /** Permite atualizar a tabela Sensor, a partir da tabela InputSensor. */
+  PROCEDURE pr_atualizar_sensores IS
+     
 END gerir_sensores;
