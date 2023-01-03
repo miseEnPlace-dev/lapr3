@@ -102,11 +102,10 @@ public class ExpeditionPathTest {
     ReceivedProducts srFernandoReceivedProducts = new ReceivedProducts();
     srFernandoReceivedProducts.addProduct(srFernandoLisboa, srFernandoOrderedProducts);
     ReceivedProducts srManuelAndFernandoReceivedProducts = new ReceivedProducts();
-    srManuelAndFernandoReceivedProducts.addProduct(srManuelPorto, srManuelOrderedProducts);
     srManuelAndFernandoReceivedProducts.addProduct(srFernandoLisboa, srFernandoOrderedProducts);
+    srManuelAndFernandoReceivedProducts.addProduct(srManuelPorto, srManuelOrderedProducts);
 
-    dAliceBasket =
-        new Basket(srManuelOrderedProducts, srManuelReceivedProducts, hubAveiro, dAliceBraga);
+    dAliceBasket = new Basket(srManuelOrderedProducts, srManuelReceivedProducts, hubAveiro, dAliceBraga);
     dManuelaBasket = new Basket(srFernandoOrderedProducts, srFernandoReceivedProducts, hubViseu,
         dManuelaCBranco);
     dLuisaBasket = new Basket(srManuelAndFernandoOrderedProducts,
@@ -117,8 +116,8 @@ public class ExpeditionPathTest {
   public void testWithZeroBaskets() {
     this.expeditionList = new ExpeditionList(0);
 
-    ExpeditionPathController expeditionPathController =
-        new ExpeditionPathController(this.distributionNetwork, this.expeditionList);
+    ExpeditionPathController expeditionPathController = new ExpeditionPathController(this.distributionNetwork,
+        this.expeditionList);
     ExpeditionPath path = expeditionPathController.findExpeditionPath();
 
     List<Entity> expected = new ArrayList<>();
@@ -133,8 +132,8 @@ public class ExpeditionPathTest {
     this.expeditionList = new ExpeditionList(1);
     this.expeditionList.addBasket(dAliceBasket);
 
-    ExpeditionPathController expeditionPathController =
-        new ExpeditionPathController(this.distributionNetwork, this.expeditionList);
+    ExpeditionPathController expeditionPathController = new ExpeditionPathController(this.distributionNetwork,
+        this.expeditionList);
     ExpeditionPath path = expeditionPathController.findExpeditionPath();
 
     List<Entity> expected = new ArrayList<>();
@@ -151,8 +150,8 @@ public class ExpeditionPathTest {
     this.expeditionList = new ExpeditionList(2);
     this.expeditionList.addBasket(dManuelaBasket);
 
-    ExpeditionPathController expeditionPathController =
-        new ExpeditionPathController(this.distributionNetwork, this.expeditionList);
+    ExpeditionPathController expeditionPathController = new ExpeditionPathController(this.distributionNetwork,
+        this.expeditionList);
     ExpeditionPath path = expeditionPathController.findExpeditionPath();
 
     List<Entity> expected = new ArrayList<>();
@@ -171,8 +170,8 @@ public class ExpeditionPathTest {
     this.expeditionList = new ExpeditionList(3);
     this.expeditionList.addBasket(dLuisaBasket);
 
-    ExpeditionPathController expeditionPathController =
-        new ExpeditionPathController(this.distributionNetwork, this.expeditionList);
+    ExpeditionPathController expeditionPathController = new ExpeditionPathController(this.distributionNetwork,
+        this.expeditionList);
     ExpeditionPath path = expeditionPathController.findExpeditionPath();
 
     List<Entity> expected = new ArrayList<>();
