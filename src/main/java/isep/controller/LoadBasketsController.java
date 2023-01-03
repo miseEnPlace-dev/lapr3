@@ -14,7 +14,15 @@ import isep.utils.CSVReader;
 public class LoadBasketsController {
   private String filename;
 
+  public LoadBasketsController() {
+    this.filename = null;
+  }
+
   public LoadBasketsController(String filename) {
+    this.filename = filename;
+  }
+
+  public void setFilename(String filename) {
     this.filename = filename;
   }
 

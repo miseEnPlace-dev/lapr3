@@ -17,6 +17,7 @@ DROP TABLE Produto CASCADE CONSTRAINTS PURGE;
 DROP TABLE Localidade CASCADE CONSTRAINTS PURGE;
 DROP TABLE EscalaoIva CASCADE CONSTRAINTS PURGE;
 DROP TABLE MedicaoSensor CASCADE CONSTRAINTS PURGE;
+DROP TABLE Operacao CASCADE CONSTRAINTS PURGE;
 DROP TABLE Rega CASCADE CONSTRAINTS PURGE;
 DROP TABLE Colheita CASCADE CONSTRAINTS PURGE;
 DROP TABLE Encomenda CASCADE CONSTRAINTS PURGE;
@@ -32,6 +33,9 @@ DROP TABLE Logs CASCADE CONSTRAINTS PURGE;
 DROP TABLE RestricaoAplicacao CASCADE CONSTRAINTS PURGE;
 DROP TABLE FatorProducaoAplicacao CASCADE CONSTRAINTS PURGE;
 DROP TABLE TipoAlteracao CASCADE CONSTRAINTS PURGE;
+DROP TABLE input_sensor CASCADE CONSTRAINTS PURGE;
+DROP TABLE InputHub CASCADE CONSTRAINTS PURGE;
+DROP TABLE Hub CASCADE CONSTRAINTS PURGE;
 
 CREATE TABLE Setor (
   id_setor   number(10),
@@ -178,15 +182,27 @@ CREATE TABLE Localidade (
   PRIMARY KEY (cod_postal)
 );
 
+CREATE TABLE Hub (
+  id_hub number(10),
+  codigo_hub varchar2(8) NOT NULL,
+  designacao varchar2(50) NOT NULL,
+  latitude varchar2(25) NOT NULL,
+  longitude varchar2(25) NOT NULL,
+  PRIMARY KEY (id_hub)
+);
+
+CREATE TABLE InputHub (
+  string varchar2(25) NOT NULL
+);
+
 CREATE TABLE Cliente (
   id_cliente         number(8),
   nome               varchar2(50) NOT NULL,
   nif                number(9) NOT NULL,
   email              varchar2(250) NOT NULL,
   morada             varchar2(80),
-  morada_entrega     varchar2(80) NOT NULL,
+  id_hub_entrega     number(10) NOT NULL,
   plafond            double precision NOT NULL,
-  cod_postal_entrega varchar2(8) NOT NULL,
   cod_postal         varchar2(8) NOT NULL,
   n_encomendas           number(3) DEFAULT 0 NOT NULL,
   valor_total_encomendas number(10) DEFAULT 0 NOT NULL,
@@ -196,7 +212,7 @@ CREATE TABLE Cliente (
   CONSTRAINT CHK_Cliente_NonNegativePlafond CHECK (plafond >= 0),
   CONSTRAINT CHK_Cliente_NonNegativeEncomendas CHECK (n_encomendas >= 0),
   CONSTRAINT CHK_Cliente_NonNegativeValorTotal CHECK (valor_total_encomendas >= 0),
-  FOREIGN KEY (cod_postal_entrega) REFERENCES Localidade (cod_postal) ON DELETE CASCADE,
+  FOREIGN KEY (id_hub_entrega) REFERENCES Hub (id_hub) ON DELETE CASCADE,
   FOREIGN KEY (cod_postal) REFERENCES Localidade (cod_postal) ON DELETE CASCADE
 );
 
@@ -207,14 +223,13 @@ CREATE TABLE Encomenda (
   data_registo              timestamp(0) NOT NULL,
   data_entrega              timestamp(0),
   data_pagamento            timestamp(0),
-  morada_entrega            varchar2(80) NOT NULL,
-  cod_postal_entrega        varchar2(8) NOT NULL,
+  id_hub_entrega            number(10) NOT NULL,
   PRIMARY KEY (id_encomenda),
   CONSTRAINT CHK_Encomenda_DataVencimentoPagamento CHECK (data_vencimento_pagamento > data_registo),
   CONSTRAINT CHK_Encomenda_DataEntrega CHECK (data_entrega > data_registo),
   CONSTRAINT CHK_Encomenda_DataPagamento CHECK (data_pagamento > data_registo),
   FOREIGN KEY (id_cliente) REFERENCES Cliente (id_cliente) ON DELETE CASCADE,
-  FOREIGN KEY (cod_postal_entrega) REFERENCES Localidade (cod_postal) ON DELETE CASCADE
+  FOREIGN KEY (id_hub_entrega) REFERENCES Hub (id_hub) ON DELETE CASCADE
 );
 
 CREATE TABLE ProdutoEncomenda (
@@ -242,15 +257,21 @@ CREATE TABLE MedicaoSensor (
   FOREIGN KEY (id_setor) REFERENCES Setor (id_setor) ON DELETE CASCADE
 );
 
+CREATE TABLE Operacao (
+  id_operacao number(10) NOT NULL,
+  data_prevista_operacao timestamp(0),
+  data_operacao timestamp(0),
+  PRIMARY KEY (id_operacao)
+);
+
 CREATE TABLE Rega (
-  id_rega    number(10) NOT NULL,
+  id_operacao    number(10) NOT NULL,
   id_setor     number(10) NOT NULL,
   id_tipo_rega number(2) NOT NULL,
-  data_prevista_rega timestamp(0),
-  data_rega timestamp(0),
-  PRIMARY KEY (id_rega),
+  PRIMARY KEY (id_operacao),
   FOREIGN KEY (id_tipo_rega) REFERENCES TipoRega (id_tipo_rega) ON DELETE CASCADE,
-  FOREIGN KEY (id_setor) REFERENCES Setor (id_setor) ON DELETE CASCADE
+  FOREIGN KEY (id_setor) REFERENCES Setor (id_setor) ON DELETE CASCADE,
+  FOREIGN KEY (id_operacao) REFERENCES Operacao (id_operacao) ON DELETE CASCADE
 );
 
 CREATE TABLE Plantacao (
@@ -264,14 +285,15 @@ CREATE TABLE Plantacao (
 );
 
 CREATE TABLE Colheita (
+  id_operacao number(10) NOT NULL,
   id_produto number(8) NOT NULL,
-  data       timestamp(0) NOT NULL,
   quantidade number(8) NOT NULL,
   id_plantacao   number(10) NOT NULL,
-  PRIMARY KEY (id_produto, data),
+  PRIMARY KEY (id_operacao),
   CONSTRAINT CHK_Colheita_PositiveQuantidade CHECK (quantidade > 0),
   FOREIGN KEY (id_produto) REFERENCES Produto (id_produto) ON DELETE CASCADE,
-  FOREIGN KEY (id_plantacao) REFERENCES Plantacao (id_plantacao) ON DELETE CASCADE
+  FOREIGN KEY (id_plantacao) REFERENCES Plantacao (id_plantacao) ON DELETE CASCADE,
+  FOREIGN KEY (id_operacao) REFERENCES Operacao (id_operacao) ON DELETE CASCADE
 );
 
 CREATE TABLE TipoEdificio (
@@ -294,23 +316,22 @@ CREATE TABLE TipoAplicacao (
 );
 
 CREATE TABLE Aplicacao (
-  id_aplicacao number(10),
+  id_operacao number(10),
   id_setor number(10) NOT NULL,
-  data_prevista_aplicacao timestamp(0),
-  data_aplicacao timestamp(0),
   id_tipo_aplicacao number(3) NOT NULL,
-  PRIMARY KEY (id_aplicacao),
+  PRIMARY KEY (id_operacao),
   FOREIGN KEY (id_setor) REFERENCES Setor (id_setor) ON DELETE CASCADE,
-  FOREIGN KEY (id_tipo_aplicacao) REFERENCES TipoAplicacao (id_tipo_aplicacao) ON DELETE CASCADE
+  FOREIGN KEY (id_tipo_aplicacao) REFERENCES TipoAplicacao (id_tipo_aplicacao) ON DELETE CASCADE,
+  FOREIGN KEY (id_operacao) REFERENCES Operacao (id_operacao) ON DELETE CASCADE
 );
 
 CREATE TABLE FatorProducaoAplicacao (
-  id_aplicacao number(10) NOT NULL,
+  id_operacao number(10) NOT NULL,
   id_fator_producao number(2) NOT NULL,
   quantidade number(3) NOT NULL,
-  PRIMARY KEY (id_aplicacao, id_fator_producao),
-  FOREIGN KEY (id_aplicacao) REFERENCES Aplicacao (id_aplicacao) ON DELETE CASCADE,
-  FOREIGN KEY (id_fator_producao) REFERENCES FatorProducao (id_fator_producao) ON DELETE CASCADE
+  PRIMARY KEY (id_operacao, id_fator_producao),
+  FOREIGN KEY (id_fator_producao) REFERENCES FatorProducao (id_fator_producao) ON DELETE CASCADE,
+  FOREIGN KEY (id_operacao) REFERENCES Operacao (id_operacao) ON DELETE CASCADE
 );
 
 CREATE TABLE RestricaoAplicacao (
@@ -335,6 +356,10 @@ CREATE TABLE TipoAlteracao (
   id_tipo_alteracao number(10),
   tipo_alteracao varchar2(30) NOT NULL,
   PRIMARY KEY (id_tipo_alteracao)
+);
+
+CREATE TABLE input_sensor (
+  input_string VARCHAR(25)
 );
 
 CREATE TABLE Logs (

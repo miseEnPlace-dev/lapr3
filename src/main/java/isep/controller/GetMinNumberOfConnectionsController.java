@@ -1,8 +1,6 @@
 package isep.controller;
 
-import java.util.LinkedList;
 import isep.model.DistributionNetwork;
-import isep.model.Entity;
 
 /**
  * US 302: Get the minimum number of connections between any two nodes.
@@ -32,12 +30,10 @@ public class GetMinNumberOfConnectionsController {
 
     int max = shortestPaths[0][0];
 
-    for (int i = 0; i < shortestPaths.length; i++) {
-      for (int j = 0; j < shortestPaths[i].length; j++) {
+    for (int i = 0; i < shortestPaths.length; i++)
+      for (int j = 0; j < shortestPaths[i].length; j++)
         if (shortestPaths[i][j] > max)
           max = shortestPaths[i][j];
-      }
-    }
 
     return max;
   }

@@ -3,10 +3,14 @@ INSERT INTO Localidade (cod_postal,localidade) VALUES ('1234-567','Porto');
 INSERT INTO Localidade (cod_postal,localidade) VALUES ('1234-566','Porto');
 INSERT INTO Localidade (cod_postal,localidade) VALUES ('1234-565','Porto');
 
+-- Hub
+INSERT INTO Hub (id_hub,codigo_hub,designacao,latitude,longitude) VALUES (1,'HUB1','Hub 1',1,1);
+INSERT INTO Hub (id_hub,codigo_hub,designacao,latitude,longitude) VALUES (2,'HUB2','Hub 2',2,2);
+
 -- Clientes
-INSERT INTO Cliente (id_cliente,nome,nif,email,morada,morada_entrega,plafond,cod_postal_entrega,cod_postal) VALUES (1,'Joao',123456789,'email@gmail.com','Rua do Joao','Rua do Joao','1000','1234-567','1234-567');
-INSERT INTO Cliente (id_cliente,nome,nif,email,morada,morada_entrega,plafond,cod_postal_entrega,cod_postal) VALUES (2,'Maria',987654321,'maria@gmail.com','Rua da Maria','Rua da Maria','1000','1234-566','1234-566');
-INSERT INTO Cliente (id_cliente,nome,nif,email,morada,morada_entrega,plafond,cod_postal_entrega,cod_postal) VALUES (3,'Jose',111111111,'jose@gmail.com','Rua do Jose','Rua do Jose','1000','1234-565','1234-565');
+INSERT INTO Cliente (id_cliente,nome,nif,email,morada,id_hub_entrega,plafond,cod_postal) VALUES (1,'Joao',123456789,'email@gmail.com','Rua do Joao',1,'1000','1234-567');
+INSERT INTO Cliente (id_cliente,nome,nif,email,morada,id_hub_entrega,plafond,cod_postal) VALUES (2,'Maria',987654321,'maria@gmail.com','Rua da Maria',1,'1000','1234-566');
+INSERT INTO Cliente (id_cliente,nome,nif,email,morada,id_hub_entrega,plafond,cod_postal) VALUES (3,'Jose',111111111,'jose@gmail.com','Rua do Jose',2,'1000','1234-565');
 
 -- Setores
 INSERT INTO Setor (id_setor,designacao,area) VALUES (1,'Setor 1',200);
@@ -27,10 +31,10 @@ INSERT INTO Produto (id_produto,designacao,preco,id_escalao_iva) VALUES (4,'Cere
 INSERT INTO Produto (id_produto,designacao,preco,id_escalao_iva) VALUES (5,'Amora',10,1);
 
 -- Encomendas
-INSERT INTO Encomenda (id_encomenda,id_cliente,data_vencimento_pagamento,data_registo,data_entrega,data_pagamento,morada_entrega,cod_postal_entrega) VALUES (1,1,'01-Feb-2022','01-Jan-2022',NULL,NULL,'Rua do Joao','1234-567');
-INSERT INTO Encomenda (id_encomenda,id_cliente,data_vencimento_pagamento,data_registo,data_entrega,data_pagamento,morada_entrega,cod_postal_entrega) VALUES (2,2,'12-Feb-2022','02-Feb-2022',NULL,NULL,'Rua da Maria','1234-566');
-INSERT INTO Encomenda (id_encomenda,id_cliente,data_vencimento_pagamento,data_registo,data_entrega,data_pagamento,morada_entrega,cod_postal_entrega) VALUES (3,3,'13-Feb-2022','03-Feb-2022',NULL,NULL,'Rua do Jose','1234-565');
-INSERT INTO Encomenda (id_encomenda,id_cliente,data_vencimento_pagamento,data_registo,data_entrega,data_pagamento,morada_entrega,cod_postal_entrega) VALUES (4,1,'25-Apr-2022','15-Apr-2022',NULL,NULL,'Rua do Joao','1234-567');
+INSERT INTO Encomenda (id_encomenda,id_cliente,data_vencimento_pagamento,data_registo,data_entrega,data_pagamento,id_hub_entrega) VALUES (1,1,'01-Feb-2022','01-Jan-2022',NULL,NULL,1);
+INSERT INTO Encomenda (id_encomenda,id_cliente,data_vencimento_pagamento,data_registo,data_entrega,data_pagamento,id_hub_entrega) VALUES (2,2,'12-Feb-2022','02-Feb-2022',NULL,NULL,1);
+INSERT INTO Encomenda (id_encomenda,id_cliente,data_vencimento_pagamento,data_registo,data_entrega,data_pagamento,id_hub_entrega) VALUES (3,3,'13-Feb-2022','03-Feb-2022',NULL,NULL,2);
+INSERT INTO Encomenda (id_encomenda,id_cliente,data_vencimento_pagamento,data_registo,data_entrega,data_pagamento,id_hub_entrega) VALUES (4,1,'25-Apr-2022','15-Apr-2022',NULL,NULL,2);
 
 
 -- ProdutoEncomenda
@@ -60,6 +64,13 @@ INSERT INTO TipoTubagem (id_tipo_tubagem,tipo_tubagem) VALUES (2,'Irrigação');
 INSERT INTO TipoTubagem (id_tipo_tubagem,tipo_tubagem) VALUES (3,'Drenagem');
 INSERT INTO TipoTubagem (id_tipo_tubagem,tipo_tubagem) VALUES (4,'Gravidade');
 
+-- Operacao
+INSERT INTO Operacao (id_operacao,data_prevista_operacao,data_operacao) VALUES (1,'01-Feb-2021','01-Feb-2021');
+INSERT INTO Operacao (id_operacao,data_prevista_operacao,data_operacao) VALUES (2,'02-Feb-2021','02-Feb-2021');
+INSERT INTO Operacao (id_operacao,data_prevista_operacao,data_operacao) VALUES (3,'03-Feb-2021',NULL);
+INSERT INTO Operacao (id_operacao,data_prevista_operacao,data_operacao) VALUES (4,'04-Feb-2021',NULL);
+
+
 -- TipoRega
 INSERT INTO TipoRega (id_tipo_rega,id_tipo_tubagem) VALUES (1,1);
 INSERT INTO TipoRega (id_tipo_rega,id_tipo_tubagem) VALUES (2,2);
@@ -67,10 +78,10 @@ INSERT INTO TipoRega (id_tipo_rega,id_tipo_tubagem) VALUES (3,3);
 INSERT INTO TipoRega (id_tipo_rega,id_tipo_tubagem) VALUES (4,4);
 
 -- Rega
-INSERT INTO Rega (id_setor,data,id_tipo_rega) VALUES (1,'10-Jan-2020',1);
-INSERT INTO Rega (id_setor,data,id_tipo_rega) VALUES (2,'11-Feb-2020',2);
-INSERT INTO Rega (id_setor,data,id_tipo_rega) VALUES (3,'12-Feb-2021',3);
-INSERT INTO Rega (id_setor,data,id_tipo_rega) VALUES (1,'13-Feb-2022',4);
+INSERT INTO Rega (id_operacao,id_setor,id_tipo_rega) VALUES (1,1,1);
+INSERT INTO Rega (id_operacao,id_setor,id_tipo_rega) VALUES (2,2,2);
+INSERT INTO Rega (id_operacao,id_setor,id_tipo_rega) VALUES (3,3,3);
+INSERT INTO Rega (id_operacao,id_setor,id_tipo_rega) VALUES (4,4,4);
 
 -- PlanoRega
 INSERT INTO PlanoRega (id_setor,data_inicio,tempo,periodicidade,id_tipo_rega,data_fim) VALUES (1,'10-Jan-2022',1,1,1,Null);
@@ -145,22 +156,38 @@ INSERT INTO MedicaoSensor (id_sensor,id_setor,medicao,data_hora) VALUES (5,1,80,
 INSERT INTO MedicaoSensor (id_sensor,id_setor,medicao,data_hora) VALUES (6,1,5, '15-Jan-2020 12:00:00');
 
 -- Plantacao
-INSERT INTO Plantacao (id_setor,id_cultura,data_inicio) VALUES (1,1,'01-Jan-2021');
-INSERT INTO Plantacao (id_setor,id_cultura,data_inicio) VALUES (2,2,'01-Jan-2021');
-INSERT INTO Plantacao (id_setor,id_cultura,data_inicio) VALUES (3,3,'01-Jan-2021');
+INSERT INTO Plantacao (id_plantacao,id_setor,id_cultura,data_inicio) VALUES (1,1,1,'01-Jan-2021');
+INSERT INTO Plantacao (id_plantacao,id_setor,id_cultura,data_inicio) VALUES (2,2,2,'01-Feb-2021');
+INSERT INTO Plantacao (id_plantacao,id_setor,id_cultura,data_inicio) VALUES (3,3,3,'01-Apr-2021');
 
 -- Colheita
-INSERT INTO Colheita (id_produto,data,quantidade,id_setor) VALUES (1,'01-Feb-2021',10,1);
-INSERT INTO Colheita (id_produto,data,quantidade,id_setor) VALUES (2,'02-Feb-2021',10,2);
-INSERT INTO Colheita (id_produto,data,quantidade,id_setor) VALUES (3,'03-Feb-2021',10,3);
+INSERT INTO Colheita (id_operacao,id_produto,quantidade,id_plantacao) VALUES (1,1,10,1);
+INSERT INTO Colheita (id_operacao,id_produto,quantidade,id_plantacao) VALUES (2,2,10,2);
+INSERT INTO Colheita (id_operacao,id_produto,quantidade,id_plantacao) VALUES (3,3,10,3);
 
--- TipoAplicacaoFatorProducao
-INSERT INTO TipoAplicacaoFatorProducao (id_tipo_aplicacao_fator_producao,tipo_aplicacao_fator_producao) VALUES (1,'Foliar');
-INSERT INTO TipoAplicacaoFatorProducao (id_tipo_aplicacao_fator_producao,tipo_aplicacao_fator_producao) VALUES (2,'Solo');
+-- TipoAplicacao
+INSERT INTO TipoAplicacao (id_tipo_aplicacao,tipo_aplicacao) VALUES (1,'Foliar');
+INSERT INTO TipoAplicacao (id_tipo_aplicacao,tipo_aplicacao) VALUES (2,'Solo');
 
--- AplicacaoFatorProducao
-INSERT INTO AplicacaoFatorProducao (id_setor,id_fator_producao,data,id_tipo_aplicacao_fator_producao) VALUES (1,1,'02-Feb-2021',1);
-INSERT INTO AplicacaoFatorProducao (id_setor,id_fator_producao,data,id_tipo_aplicacao_fator_producao) VALUES (2,2,'03-Feb-2021',2);
+-- Aplicacao
+INSERT INTO Aplicacao (id_operacao,id_setor,id_tipo_aplicacao) VALUES (1,1,1);
+INSERT INTO Aplicacao (id_operacao,id_setor,id_tipo_aplicacao) VALUES (2,2,2);
+
+-- RestricaoAplicacao
+INSERT INTO RestricaoAplicacao (id_setor,data_inicio,data_fim,id_tipo_fator_producao) VALUES (1,'01-Jan-2021','01-Feb-2021',1);
+INSERT INTO RestricaoAplicacao (id_setor,data_inicio,data_fim,id_tipo_fator_producao) VALUES (2,'01-Feb-2021','01-Mar-2021',2);
+
+-- FatorProducaoAplicacao
+INSERT INTO FatorProducaoAplicacao (id_operacao,id_fator_producao,quantidade) VALUES (1,1,100);
+INSERT INTO FatorProducaoAplicacao (id_operacao,id_fator_producao,quantidade) VALUES (2,2,100);
+
+-- input_sensor
+INSERT INTO input_sensor (input_string) VALUES ('62943HS078783897638710:35');
+
+-- InputHub
+INSERT INTO InputHub(string) VALUES ('CT1;40.6389;-8.6553;C1');
+INSERT INTO InputHub(string) VALUES ('CT2;38.0333;-7.8833;C2');
+INSERT INTO InputHub(string) VALUES ('CT10;39.7444;-8.8072;P3');
 
 -- Visualisacao de dados
 DECLARE

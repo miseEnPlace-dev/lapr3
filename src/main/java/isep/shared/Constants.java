@@ -13,4 +13,6 @@ public class Constants {
   public static final int DEFAULT_IRRIGATION_PLAN_DURATION = 30;
 
   public static final String PARAMS_FILENAME = "config.properties";
+
+  public static final int MAX_OF_PASSWORD_TRIES = 3;
 }

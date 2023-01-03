@@ -1,14 +1,14 @@
 CREATE OR REPLACE PACKAGE BODY gestao_setores AS
 
-  FUNCTION fn_RegistarSetor(designacao SETOR.designacao%TYPE, 
-    area SETOR.area%TYPE) 
+  FUNCTION fn_RegistarSetor(designacao SETOR.designacao%TYPE,
+    area SETOR.area%TYPE)
     RETURN SETOR.id_setor%TYPE AS
     new_id SETOR.id_setor%TYPE;
 
   BEGIN
     SAVEPOINT inicio;
 
-    SELECT MAX(id_setor) INTO new_id 
+    SELECT MAX(id_setor) INTO new_id
     FROM SETOR;
 
     IF new_id IS NULL THEN
@@ -20,8 +20,6 @@ CREATE OR REPLACE PACKAGE BODY gestao_setores AS
     INSERT INTO SETOR(id_setor, designacao, area)
     VAlUES (new_id, designacao, area);
 
-    DBMS_OUTPUT.PUT_LINE('SETOR ' || new_id || ' registado com sucesso.');
-
     registar_logs.pr_RegistarInsert(USER, sysdate,'Setor');
 
     RETURN new_id;
@@ -30,14 +28,14 @@ CREATE OR REPLACE PACKAGE BODY gestao_setores AS
 
 
 
-  FUNCTION fn_RegistarTipoCultura(tipo_cultura TIPOCULTURA.tipo_cultura%TYPE)  
+  FUNCTION fn_RegistarTipoCultura(tipo_cultura TIPOCULTURA.tipo_cultura%TYPE)
     RETURN TIPOCULTURA.id_tipo_cultura%TYPE AS
     new_id TIPOCULTURA.id_tipo_cultura%TYPE;
 
   BEGIN
     SAVEPOINT inicio;
 
-    SELECT MAX(id_tipo_cultura) INTO new_id 
+    SELECT MAX(id_tipo_cultura) INTO new_id
     FROM TIPOCULTURA;
 
     IF new_id IS NULL THEN
@@ -48,8 +46,6 @@ CREATE OR REPLACE PACKAGE BODY gestao_setores AS
 
     INSERT INTO TIPOCULTURA(id_tipo_cultura, tipo_cultura)
     VAlUES (new_id, tipo_cultura);
-
-    DBMS_OUTPUT.PUT_LINE('TIPOCULTURA ' || new_id || ' registado com sucesso.');
 
     registar_logs.pr_RegistarInsert(USER, sysdate,'TipoCultura');
 
@@ -71,7 +67,7 @@ CREATE OR REPLACE PACKAGE BODY gestao_setores AS
     SAVEPOINT inicio;
 
     /* check if there is any registered culture */
-    SELECT MAX(id_cultura) INTO new_id 
+    SELECT MAX(id_cultura) INTO new_id
     FROM CULTURA;
     IF new_id IS NULL THEN
       new_id := 0;
@@ -79,7 +75,7 @@ CREATE OR REPLACE PACKAGE BODY gestao_setores AS
     new_id := new_id + 1;
 
     /* check if culture type is already registered */
-    SELECT COUNT(*) INTO flag 
+    SELECT COUNT(*) INTO flag
     FROM TIPOCULTURA
     WHERE id_tipo_cultura = id_t_cultura;
     IF flag = 0 THEN
@@ -89,8 +85,6 @@ CREATE OR REPLACE PACKAGE BODY gestao_setores AS
 
     INSERT INTO CULTURA(id_cultura, cultura, id_tipo_cultura)
     VAlUES (new_id, cultura_param, id_t_cultura);
-
-    DBMS_OUTPUT.PUT_LINE('CULTURA ' || new_id || ' registado com sucesso.');
 
     registar_logs.pr_RegistarInsert(USER, sysdate,'Cultura');
 
@@ -297,7 +291,7 @@ CREATE OR REPLACE PACKAGE BODY gestao_setores AS
 
 
       /* check if tipo fator producao is already registered */
-      SELECT COUNT(*) INTO flag 
+      SELECT COUNT(*) INTO flag
       FROM SETOR
       WHERE id_setor = id_set;
       IF flag = 0 THEN
@@ -305,7 +299,7 @@ CREATE OR REPLACE PACKAGE BODY gestao_setores AS
       END IF;
 
       /* check if tipo fator producao is already registered */
-      SELECT COUNT(*) INTO flag 
+      SELECT COUNT(*) INTO flag
       FROM CULTURA
       WHERE id_cultura = id_cult;
       IF flag = 0 THEN

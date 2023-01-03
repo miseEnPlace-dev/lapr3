@@ -89,4 +89,17 @@ public class EntityTest {
     assertEquals(entity.toString(), "Entity [id=Test, latitude=10.0, longitude=10.0, localizationId=Test");
   }
 
+  @Test
+  public void testZeroHeuristicValue() {
+    Entity entity = new Enterprise("Test", 10, 10, "Test");
+    Entity target = new Enterprise("Test", 10, 10, "Test");
+    assertEquals(0, entity.getHeuristicValue(target));
+  }
+
+  @Test
+  public void testHeuristicValue() {
+    Entity entity = new Enterprise("CT32", 40.4333, -8.4333, "CT32");
+    Entity target = new Enterprise("CT160", 40.3781, -8.4515, "CT160");
+    assertEquals(6328, entity.getHeuristicValue(target));
+  }
 }
