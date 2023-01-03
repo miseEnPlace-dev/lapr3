@@ -232,7 +232,7 @@ public class ExpeditionList {
     return hubs.size();
   }
 
-  public int getDistinctClients(Enterprise hub) {
+  public int getNumberOfDistinctClients(Enterprise hub) {
     Set<Client> clients = new HashSet<>();
 
     for (Basket basket : baskets) {

@@ -54,13 +54,13 @@ public class ReceivedProducts {
     if (product == null)
       throw new IllegalArgumentException("Product cannot be null");
 
-    if (!received.containsKey(producer))
-      throw new IllegalArgumentException("Producer does not exist");
+    if (received.get(producer) == null)
+      return 0;
 
     Map<Product, Integer> receivedProducts = received.get(producer);
 
-    if (!receivedProducts.containsKey(product))
-      throw new IllegalArgumentException("Product does not exist");
+    if (receivedProducts.get(product) == null)
+      return 0;
 
     return receivedProducts.get(product);
   }

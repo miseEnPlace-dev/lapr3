@@ -48,11 +48,13 @@ public class DailyData {
    *                 Adds a single product/quantity to a specif day
    */
   public void addProductInfoToDayData(Integer day, Product product, Integer quantity) {
-    Map<Product, Integer> map = this.dailyData.containsKey(day) ? this.dailyData.get(day) : new HashMap<>();
+    Map<Product, Integer> dailyMap = this.dailyData.get(day);
+    if (dailyMap == null)
+      dailyMap = new HashMap<>();
 
-    map.put(product, quantity);
+    dailyMap.put(product, quantity);
 
-    this.dailyData.put(day, map);
+    this.dailyData.put(day, dailyMap);
   }
 
   /**
@@ -76,7 +78,12 @@ public class DailyData {
    *         specif day
    */
   public Integer getQuantityOfProductForDay(Integer day, Product product) {
-    return this.dailyData.get(day).get(product) != null ? this.dailyData.get(day).get(product) : 0;
+    if (dailyData.get(day) == null)
+      return 0;
+    if (dailyData.get(day).get(product) == null)
+      return 0;
+
+    return this.dailyData.get(day).get(product);
   }
 
   public void setQuantityOfProductDay(Integer day, Product p, Integer quant) {

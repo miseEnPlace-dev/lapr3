@@ -13,11 +13,14 @@ import isep.shared.exceptions.InvalidHubException;
 public class ExpeditionListTest {
   private static ExpeditionList expList;
   private static Client mockClient;
+  private static Enterprise mockHub;
 
   @BeforeAll
   public static void setup() throws InvalidHubException {
     expList = new ExpeditionListMock().mockSimpleExpeditionList();
     mockClient = new Client("id2", 0, 0, "C01");
+    mockHub = new Enterprise("id1", 0, 0, "E01");
+    mockHub.makeHub();
   }
 
   @Test
@@ -80,8 +83,30 @@ public class ExpeditionListTest {
   }
 
   @Test
-  public void testGetNumberOfDistinctClients() {
+  public void testGetNumberOfDistinctClientsFromProducer() {
     assertEquals(1, expList.getNumberOfDistinctClients(new ArrayList<>(expList.getProducers()).get(0)));
     assertEquals(1, expList.getNumberOfDistinctClients(new ArrayList<>(expList.getProducers()).get(1)));
+  }
+
+  @Test
+  public void testGetNumberOfDistinctHubs() {
+    assertEquals(1, expList.getNumberOfDistinctHubs(new ArrayList<>(expList.getProducers()).get(0)));
+    assertEquals(1, expList.getNumberOfDistinctHubs(new ArrayList<>(expList.getProducers()).get(1)));
+  }
+
+  @Test
+  public void testGetNumberOfDistinctClientsFromHub() {
+    assertEquals(1, expList.getNumberOfDistinctClients(mockHub));
+  }
+
+  @Test
+  public void testGetNumberOfDistinctProducers() {
+    assertEquals(2, expList.getDistinctProducers(mockHub));
+  }
+
+  @Test
+  public void testGetNumberOfOutOfStockProducts() {
+    assertEquals(2, expList.getNumberOfOutOfStockProducts(new ArrayList<>(expList.getProducers()).get(0)));
+    assertEquals(0, expList.getNumberOfOutOfStockProducts(new ArrayList<>(expList.getProducers()).get(1)));
   }
 }
