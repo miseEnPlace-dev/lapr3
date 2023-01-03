@@ -235,7 +235,6 @@ public class DistributionNetwork {
         }
 
         prodStocks.get(bestProducer).removeValidProductQuantity(product, bestQuant, j);
-        received.p
 
       }
       
