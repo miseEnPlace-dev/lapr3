@@ -58,7 +58,8 @@ public class Hour implements Comparable<Hour> {
   }
 
   /**
-   * Compares two Hour instances. If this hour is before the other hour, returns a negative number.
+   * Compares two Hour instances. If this hour is before the other hour, returns a
+   * negative number.
    * If they are the same, returns 0.
    *
    * @param other
@@ -118,7 +119,8 @@ public class Hour implements Comparable<Hour> {
   }
 
   /**
-   * Converts a string to hour and minute. If the string is not valid, exception is thrown.
+   * Converts a string to hour and minute. If the string is not valid, exception
+   * is thrown.
    *
    * @param hour
    * @return
@@ -134,6 +136,6 @@ public class Hour implements Comparable<Hour> {
     String[] hourParts = hour.split("h");
     int hourValue = Integer.parseInt(hourParts[0]);
     int minuteValue = Integer.parseInt(hourParts[1]);
-    return new int[] {hourValue, minuteValue};
+    return new int[] { hourValue, minuteValue };
   }
 }
