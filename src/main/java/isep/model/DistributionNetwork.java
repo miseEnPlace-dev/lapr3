@@ -3,9 +3,12 @@ package isep.model;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.RecursiveAction;
+
 import isep.shared.exceptions.InvalidNumberOfHubsException;
 import isep.utils.MergeSort;
 import isep.utils.graph.AdjacencyMapGraph;
@@ -197,4 +200,86 @@ public class DistributionNetwork {
 
     return nearestHub;
   }
+
+  public ExpeditionList getExpeditionList(Integer day){
+    ExpeditionList resultList = new ExpeditionList(day);
+
+    List<Client> clientsList = this.network.getEntitiesWithClass(Client.class);
+    HashMap<Producer, DailyData> prodStocks = this.getActualStock(day);
+
+    for (int j = 0; j < clientsList.size(); j++) { // iterate all clients
+      Client client = clientsList.get(j);
+      HashMap<Product, Integer> ordered = client.getDayData(day);
+      HashMap<Producer, HashMap<Product, Integer>> received = new HashMap<>();
+
+      Enterprise hub = this.getNearestHub(client);
+      
+      for (Product product : ordered.keySet()) { // iterates client product orders
+        Producer bestProducer = null;
+        Integer bestQuant = 0;
+
+        Integer quantOrdered = ordered.get(product);
+        
+        for (Producer producer : prodStocks.keySet()) { // iterates all producers
+          Integer quant = prodStocks.get(producer).getQuantityAvailable(product, quantOrdered); 
+          
+          if(quant ==  quantOrdered){
+            bestProducer = producer;
+            bestQuant = quant;
+            break;
+          }else if( bestQuant < quant){
+            bestProducer = producer;
+            bestQuant = quant;
+          }
+
+        }
+
+        prodStocks.get(bestProducer).removeValidProductQuantity(product, bestQuant, j);
+        received.p
+
+      }
+      
+    }
+
+    return resultList;
+  }
+
+
+  public HashMap<Producer, DailyData> getActualStock(Integer day){
+    List<Client> clientsList = this.network.getEntitiesWithClass(Client.class);
+    HashMap<Producer, DailyData> prodStocks = this.network.getProducersStockUntilDate(day);
+
+    for (int i = 0; i < day-1; i++) { // iterate all days before
+
+      for (int j = 0; j < clientsList.size(); j++) { // iterate all clients
+        HashMap<Product, Integer> ordered = clientsList.get(j).getDayData(i);
+        
+        for (Product product : ordered.keySet()) { // iterates client product orders
+          Producer bestProducer = null;
+          Integer bestQuant = 0;
+
+          Integer quantOrdered = ordered.get(product);
+          
+          for (Producer producer : prodStocks.keySet()) { // iterates all producers
+            Integer quant = prodStocks.get(producer).getQuantityAvailable(product, quantOrdered); 
+            
+            if(quant ==  quantOrdered){
+              bestProducer = producer;
+              bestQuant = quant;
+              break;
+            }else if( bestQuant < quant){
+              bestProducer = producer;
+              bestQuant = quant;
+            }
+
+          }
+
+          prodStocks.get(bestProducer).removeValidProductQuantity(product, bestQuant, i);
+
+        }
+      }
+    }
+    return prodStocks;
+  }
+
 }
