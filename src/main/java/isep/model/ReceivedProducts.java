@@ -37,6 +37,26 @@ public class ReceivedProducts {
     received.put(producer, producerProducts);
   }
 
+  public void setProduct(Producer producer, Product product, Integer quantity){
+    if (producer == null)
+      throw new IllegalArgumentException("Producer cannot be null");
+
+    if (product == null)
+      throw new IllegalArgumentException("Product cannot be null");
+    
+    if (quantity == null)
+      throw new IllegalArgumentException("Quantity cannot be null");
+      
+    if(this.received.containsKey(producer)){
+      this.received.get(producer).put(product, quantity);
+    }else{
+      Map<Product, Integer> products = new TreeMap<>();
+      products.put(product, quantity);
+      this.received.put(producer, products);
+    }
+
+  }
+
   public void addAllProducts(Producer producer, Map<Product, Integer> products) {
     if (producer == null)
       throw new IllegalArgumentException("Producer cannot be null");
