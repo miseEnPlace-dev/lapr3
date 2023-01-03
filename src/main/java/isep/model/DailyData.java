@@ -1,11 +1,17 @@
 package isep.model;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+/*
+ * DailyData class
+ *
+ * @author Carlos Lopes <1211277@isep.ipp.pt>
+ */
 public class DailyData {
-  private SortedMap<Integer, HashMap<Product, Integer>> dailyData;
+  private SortedMap<Integer, Map<Product, Integer>> dailyData;
 
   public DailyData() {
     this.dailyData = new TreeMap<>();
@@ -23,7 +29,12 @@ public class DailyData {
    *
    *                 Adds the products/quantity data to a specif day
    */
-  public void addDayData(Integer day, HashMap<Product, Integer> products) {
+  public void addDayData(Integer day, Map<Product, Integer> products) {
+    if (day < 0)
+      throw new IllegalArgumentException("Day cannot be negative");
+    if (products.isEmpty())
+      throw new IllegalArgumentException("A map without data cannot be added to a day data.");
+
     this.dailyData.put(day, products);
   }
 
@@ -35,8 +46,7 @@ public class DailyData {
    *                 Adds a single product/quantity to a specif day
    */
   public void addProductInfoToDayData(Integer day, Product product, Integer quantity) {
-    HashMap<Product, Integer> map;
-    map = this.dailyData.containsKey(day) ? this.dailyData.get(day) : new HashMap<>();
+    Map<Product, Integer> map = this.dailyData.containsKey(day) ? this.dailyData.get(day) : new HashMap<>();
 
     map.put(product, quantity);
 
@@ -50,7 +60,7 @@ public class DailyData {
    *         Returns a map with the products and quantities registered
    *         in that dailyData for a specif day
    */
-  public HashMap<Product, Integer> getDayData(Integer day) {
+  public Map<Product, Integer> getDayData(Integer day) {
     return this.dailyData.get(day);
   }
 
@@ -72,7 +82,7 @@ public class DailyData {
 
   public DailyData getDailyDataUntilDate(Integer day) {
     DailyData result = new DailyData();
-    result.setData(this.dailyData.subMap(0, day));
+    this.dailyData = this.dailyData.subMap(0, day);
 
     return result;
   }

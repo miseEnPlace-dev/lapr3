@@ -8,15 +8,27 @@ import isep.model.Entity;
 import isep.model.store.EntityStore;
 import isep.shared.Constants;
 
+/*
+ * US 301 - Controller that loads a distribution network
+ *
+ * @author Tomás Lopes <1211289@isep.ipp.pt>
+ *
+ */
 public class LoadDistributionNetworkController {
   private EntityStore entityStore;
   private List<Map<String, String>> distancesData;
 
+  /*
+   * Constructor
+   */
   public LoadDistributionNetworkController(EntityStore entityStore, List<Map<String, String>> distancesData) {
     this.entityStore = entityStore;
     this.distancesData = distancesData;
   }
 
+  /*
+   * Loads a distribution network
+   */
   public DistributionNetwork loadDistributionNetwork() {
     DistributionNetwork distributionNetwork = new DistributionNetwork();
 

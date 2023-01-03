@@ -1,0 +1,56 @@
+@startuml DM
+
+hide methods
+left to right direction
+skinparam classAttributeIconSize 0
+
+class Company {
+}
+
+class Entity {
+  - id
+  - latitude
+  - longitude
+  - localizationId
+  - dailyData
+}
+
+class Client {
+  - id
+  - latitude
+  - longitude
+  - localizationId
+}
+
+class Enterprise {
+  - id
+  - latitude
+  - longitude
+  - localizationId
+}
+
+class Producer {
+  - id
+  - latitude
+  - longitude
+  - localizationId
+}
+
+class Product {
+  - name
+}
+
+class Basket {
+  - client
+  - hub
+  - ordered
+  - received
+}
+
+
+Entity <|-- Client
+Entity <|-- Enterprise
+Entity <|-- Producer
+
+
+@enduml

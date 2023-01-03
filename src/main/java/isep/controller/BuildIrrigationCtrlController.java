@@ -15,11 +15,19 @@ import isep.shared.exceptions.InvalidFileFormatException;
 import isep.shared.exceptions.InvalidHourFormatException;
 import isep.utils.CustomScanner;
 
+/*
+ * US 310 - Controller that builds an irrigation controller
+ *
+ * @author Ricardo Moreira <1211285@isep.ipp.pt>
+ */
 public class BuildIrrigationCtrlController {
   private AgriculturalParcelStore store;
   private CustomScanner scanner;
   private List<String> data;
 
+  /*
+   * Constructor for the controller with file name and store
+   */
   public BuildIrrigationCtrlController(String fileName, AgriculturalParcelStore store)
       throws FileNotFoundException {
     this.store = store;
@@ -27,6 +35,9 @@ public class BuildIrrigationCtrlController {
     this.data = new ArrayList<>();
   }
 
+  /*
+   * Constructor for the controller with file name
+   */
   public BuildIrrigationCtrlController(String fileName) throws FileNotFoundException {
     this.store = App.getInstance().getCompany().getAgriculturalParcelStore();
     this.scanner = new CustomScanner(fileName);

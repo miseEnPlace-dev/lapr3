@@ -1,7 +1,7 @@
 CREATE OR REPLACE PACKAGE BODY gestao_encomendas AS
-  FUNCTION fn_registar_encomenda(id_cliente CLIENTE.id_cliente%TYPE, 
+  FUNCTION fn_registar_encomenda(id_cliente CLIENTE.id_cliente%TYPE,
     lista_produtos produtos,
-    data_registo ENCOMENDA.data_registo%TYPE) 
+    data_registo ENCOMENDA.data_registo%TYPE)
   RETURN ENCOMENDA.id_encomenda%TYPE IS
     encomenda_id ENCOMENDA.id_encomenda%TYPE;
     produto_id PRODUTO.id_produto%TYPE;
@@ -19,11 +19,11 @@ CREATE OR REPLACE PACKAGE BODY gestao_encomendas AS
 
     cliente_id := id_cliente;
 
-    SELECT morada_entrega, cod_postal_entrega, plafond 
-    INTO morada_entrega, cod_postal_entrega, plafond_cliente 
-    FROM cliente 
+    SELECT morada_entrega, cod_postal_entrega, plafond
+    INTO morada_entrega, cod_postal_entrega, plafond_cliente
+    FROM cliente
     WHERE id_cliente = cliente_id;
-  
+
     IF morada_entrega IS NULL THEN
       RAISE cliente_inexistente;
     END IF;
@@ -46,15 +46,15 @@ CREATE OR REPLACE PACKAGE BODY gestao_encomendas AS
     produto_id := lista_produtos.FIRST;
 
     WHILE produto_id IS NOT NULL LOOP
-      SELECT preco, designacao 
-      INTO preco_produto, designacao_produto 
-      FROM produto 
+      SELECT preco, designacao
+      INTO preco_produto, designacao_produto
+      FROM produto
       WHERE id_produto = produto_id;
-  
+
       IF preco_produto IS NULL THEN
         RAISE produto_inexistente;
       END IF;
-  
+
       SELECT valor
       INTO iva_produto
       FROM escalaoiva e, produto p
@@ -70,14 +70,12 @@ CREATE OR REPLACE PACKAGE BODY gestao_encomendas AS
 
     SELECT SUM(preco_unitario * quantidade * (1 + iva/100))
     INTO valor_por_pagar
-    FROM produtoencomenda 
+    FROM produtoencomenda
     WHERE id_encomenda IN (SELECT id_encomenda FROM encomenda WHERE id_cliente = cliente_id AND data_pagamento IS NULL);
 
     IF valor_por_pagar > plafond_cliente THEN
       RAISE sem_plafond;
     END IF;
-
-    DBMS_OUTPUT.PUT_LINE('Encomenda ' || encomenda_id || ' registada com sucesso.');
 
     COMMIT;
     RETURN encomenda_id;
@@ -96,11 +94,11 @@ CREATE OR REPLACE PACKAGE BODY gestao_encomendas AS
       ROLLBACK TO inicio;
   END fn_registar_encomenda;
 
-  FUNCTION fn_registar_encomenda(id_cliente CLIENTE.id_cliente%TYPE, 
-    lista_produtos produtos, 
-    morada_entrega ENCOMENDA.morada_entrega%TYPE, 
+  FUNCTION fn_registar_encomenda(id_cliente CLIENTE.id_cliente%TYPE,
+    lista_produtos produtos,
+    morada_entrega ENCOMENDA.morada_entrega%TYPE,
     cod_postal_entrega ENCOMENDA.cod_postal_entrega%TYPE,
-    data_registo ENCOMENDA.data_registo%TYPE) 
+    data_registo ENCOMENDA.data_registo%TYPE)
   RETURN ENCOMENDA.id_encomenda%TYPE IS
     encomenda_id ENCOMENDA.id_encomenda%TYPE;
     produto_id PRODUTO.id_produto%TYPE;
@@ -116,11 +114,11 @@ CREATE OR REPLACE PACKAGE BODY gestao_encomendas AS
 
     cliente_id := id_cliente;
 
-    SELECT plafond 
-    INTO plafond_cliente 
-    FROM cliente 
+    SELECT plafond
+    INTO plafond_cliente
+    FROM cliente
     WHERE id_cliente = cliente_id;
-  
+
     IF plafond_cliente IS NULL THEN
       RAISE cliente_inexistente;
     END IF;
@@ -143,15 +141,15 @@ CREATE OR REPLACE PACKAGE BODY gestao_encomendas AS
     produto_id := lista_produtos.FIRST;
 
     WHILE produto_id IS NOT NULL LOOP
-      SELECT preco, designacao 
-      INTO preco_produto, designacao_produto 
+      SELECT preco, designacao
+      INTO preco_produto, designacao_produto
       FROM produto
       WHERE id_produto = produto_id;
-  
+
       IF preco_produto IS NULL THEN
         RAISE produto_inexistente;
       END IF;
-  
+
       SELECT valor
       INTO iva_produto
       FROM escalaoiva e, produto p
@@ -167,14 +165,12 @@ CREATE OR REPLACE PACKAGE BODY gestao_encomendas AS
 
     SELECT SUM(preco_unitario * quantidade * (1 + iva/100))
     INTO valor_por_pagar
-    FROM produtoencomenda 
+    FROM produtoencomenda
     WHERE id_encomenda IN (SELECT id_encomenda FROM encomenda WHERE id_cliente = cliente_id AND data_pagamento IS NULL);
 
     IF valor_por_pagar > plafond_cliente THEN
       RAISE sem_plafond;
     END IF;
-
-    DBMS_OUTPUT.PUT_LINE('Encomenda ' || encomenda_id || ' registada com sucesso.');
 
     COMMIT;
     RETURN encomenda_id;
@@ -193,7 +189,7 @@ CREATE OR REPLACE PACKAGE BODY gestao_encomendas AS
       ROLLBACK TO inicio;
   END fn_registar_encomenda;
 
-  PROCEDURE pr_registar_entrega(id_encomenda ENCOMENDA.id_encomenda%TYPE, 
+  PROCEDURE pr_registar_entrega(id_encomenda ENCOMENDA.id_encomenda%TYPE,
     data_entrega ENCOMENDA.data_entrega%TYPE) IS
     cont NUMBER;
     encomenda_id ENCOMENDA.id_encomenda%TYPE;
@@ -204,7 +200,7 @@ CREATE OR REPLACE PACKAGE BODY gestao_encomendas AS
     encomenda_id := id_encomenda;
     data_ent := data_entrega;
 
-    SELECT COUNT(*) 
+    SELECT COUNT(*)
     INTO cont
     FROM encomenda
     WHERE id_encomenda = encomenda_id AND data_entrega IS NULL;
@@ -216,8 +212,6 @@ CREATE OR REPLACE PACKAGE BODY gestao_encomendas AS
     UPDATE encomenda
     SET (data_entrega) = data_ent
     WHERE id_encomenda = encomenda_id;
-
-    DBMS_OUTPUT.PUT_LINE('Entrega da encomenda ' || encomenda_id || ' registada com sucesso.');
 
     registar_logs.pr_RegistarUpdate(USER, sysdate,'Encomenda');
 
@@ -231,7 +225,7 @@ CREATE OR REPLACE PACKAGE BODY gestao_encomendas AS
       ROLLBACK TO inicio;
   END pr_registar_entrega;
 
-  PROCEDURE pr_registar_pagamento(id_encomenda ENCOMENDA.id_encomenda%TYPE, 
+  PROCEDURE pr_registar_pagamento(id_encomenda ENCOMENDA.id_encomenda%TYPE,
     data_pagamento ENCOMENDA.data_pagamento%TYPE) IS
     cont NUMBER;
     encomenda_id ENCOMENDA.id_encomenda%TYPE;
@@ -242,7 +236,7 @@ CREATE OR REPLACE PACKAGE BODY gestao_encomendas AS
     encomenda_id := id_encomenda;
     data_pag := data_pagamento;
 
-    SELECT COUNT(*) 
+    SELECT COUNT(*)
     INTO cont
     FROM encomenda
     WHERE id_encomenda = encomenda_id AND data_pagamento IS NULL;
@@ -254,8 +248,6 @@ CREATE OR REPLACE PACKAGE BODY gestao_encomendas AS
     UPDATE encomenda
     SET (data_pagamento) = data_pag
     WHERE id_encomenda = encomenda_id;
-
-    DBMS_OUTPUT.PUT_LINE('Pagamento da encomenda ' || encomenda_id || ' registado com sucesso.');
 
     registar_logs.pr_RegistarUpdate(USER, sysdate,'Encomenda');
 
@@ -284,7 +276,7 @@ CREATE OR REPLACE PACKAGE BODY gestao_encomendas AS
   BEGIN
     OPEN encomendas;
     FETCH encomendas INTO encomenda_id, cliente_id, data_entrega, data_pagamento, data_registo;
-  
+
     IF encomendas%NOTFOUND THEN
       DBMS_OUTPUT.PUT_LINE('Não existem encomendas.');
     ELSE
@@ -298,7 +290,7 @@ CREATE OR REPLACE PACKAGE BODY gestao_encomendas AS
 
         SELECT SUM(preco_unitario * quantidade * (1 + iva/100))
         INTO valor
-        FROM produtoencomenda 
+        FROM produtoencomenda
         WHERE id_encomenda = encomenda_id;
 
         SELECT nome
@@ -359,7 +351,7 @@ CREATE OR REPLACE PACKAGE BODY gestao_encomendas AS
 
         SELECT SUM(preco_unitario * quantidade * (1 + iva/100))
         INTO valor
-        FROM produtoencomenda 
+        FROM produtoencomenda
         WHERE id_encomenda = encomenda_id;
 
         SELECT nome
@@ -408,7 +400,7 @@ CREATE OR REPLACE PACKAGE BODY gestao_encomendas AS
 
         SELECT SUM(preco_unitario * quantidade * (1 + iva/100))
         INTO valor
-        FROM produtoencomenda 
+        FROM produtoencomenda
         WHERE id_encomenda = encomenda_id;
 
         SELECT nome
@@ -467,7 +459,7 @@ CREATE OR REPLACE PACKAGE BODY gestao_encomendas AS
 
         SELECT SUM(preco_unitario * quantidade * (1 + iva/100))
         INTO valor
-        FROM produtoencomenda 
+        FROM produtoencomenda
         WHERE id_encomenda = encomenda_id;
 
         SELECT nome

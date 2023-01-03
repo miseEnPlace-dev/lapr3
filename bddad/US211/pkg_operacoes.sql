@@ -1,8 +1,12 @@
-CREATE OR REPLACE PACKAGE operacoes_nao_realizadas AS
-  TYPE produtos IS TABLE OF NUMBER INDEX BY BINARY_INTEGER;
+CREATE OR REPLACE PACKAGE operacoes AS
 
-  PROCEDURE cancel_operacao (id_operacao Operacao.id_operacao%TYPE);
-  PROCEDURE atualizar_operacao_produtos (lista_produtos produtos, id_operacao Operacao.id_operacao%TYPE);
-  PROCEDURE atualizar_operacao_datas (id_operacao Operacao.id_operacao%TYPE, data_nova TIMESTAMP);
+  -- Procedimento para cancelar operacao
+  PROCEDURE cancel_operacao (operacao_id Operacao.id_operacao%TYPE);
 
-END operacoes_nao_realizadas;
+  -- Procedimento para atualizar operacoes com datas
+  PROCEDURE atualizar_operacao_datas (operacao_id Operacao.id_operacao%TYPE, data_nova TIMESTAMP);
+
+  -- Procedimento para atualizar operacoes com produtos
+  PROCEDURE atualizar_operacao_produtos (operacao_id Operacao.id_operacao%TYPE, quantidade_nova Colheita.quantidade%TYPE);
+
+END operacoes;

@@ -41,7 +41,7 @@ public class CSVReader {
           if (line.charAt(i) == ',' && !insideString)
             line = line.substring(0, i) + TEMP_SEPARATOR + line.substring(i + 1);
         }
-        line = line.replaceAll("\"", ""); // removes double quotas
+        line = line.replaceAll("\"", ""); // removes double quotes
       }
 
       String[] lineFields = line.split(separator);
