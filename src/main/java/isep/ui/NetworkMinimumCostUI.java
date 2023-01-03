@@ -8,16 +8,17 @@ import isep.shared.exceptions.NetworkNotConnectedException;
 import isep.utils.graph.Graph;
 
 public class NetworkMinimumCostUI implements Runnable {
-  ConnectedNetworkShortestPathController controller;
-  DistributionNetwork network;
+  private ConnectedNetworkShortestPathController controller;
+  private DistributionNetwork network;
 
   public NetworkMinimumCostUI() {
-    network = App.getInstance().getCompany().getDistributionNetwork();
-    controller = new ConnectedNetworkShortestPathController(network);
   }
 
   @Override
   public void run() {
+    network = App.getInstance().getCompany().getDistributionNetwork();
+    controller = new ConnectedNetworkShortestPathController(network);
+
     try {
       Graph<Entity, Integer> graph = controller.getConnectedNetworkShortestPath();
       System.out.println(printNetworkMinimumCost(graph));
@@ -48,14 +49,11 @@ public class NetworkMinimumCostUI implements Runnable {
   private int getNetworkMinimumCost(Graph<Entity, Integer> graph) {
     int cost = 0;
 
-    for (Entity v : graph.vertices()) {
-      for (Entity w : graph.vertices()) {
-        if (v != w) {
+    for (Entity v : graph.vertices())
+      for (Entity w : graph.vertices())
+        if (v != w)
           cost += graph.edge(v, w).getWeight();
-        }
-      }
-    }
+
     return cost;
   }
-
 }

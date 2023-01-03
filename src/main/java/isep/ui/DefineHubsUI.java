@@ -9,12 +9,12 @@ public class DefineHubsUI implements Runnable {
   DistributionNetwork network;
 
   public DefineHubsUI() {
-    network = App.getInstance().getCompany().getDistributionNetwork();
-    controller = new DefineHubsController(network);
   }
 
   @Override
   public void run() {
+    network = App.getInstance().getCompany().getDistributionNetwork();
+    controller = new DefineHubsController(network);
     // TODO Auto-generated method stub
 
   }
