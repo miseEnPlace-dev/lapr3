@@ -1,7 +1,9 @@
 package isep.model;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+
 import isep.shared.exceptions.InvalidHubException;
 import isep.shared.exceptions.InvalidOrderException;
 
@@ -9,6 +11,7 @@ import isep.shared.exceptions.InvalidOrderException;
  * Basket class
  *
  * @author Carlos Lopes <1211277@isep.ipp.pt>
+ * @author Tomás Lopes <1211289@isep.ipp.pt>
  */
 public class Basket {
   private Map<Product, Integer> ordered;
@@ -25,6 +28,28 @@ public class Basket {
     setReceived(received);
     setHub(hub);
     setClient(client);
+  }
+
+  /*
+   * Constructor
+   */
+  public Basket(Enterprise hub, Client client) throws InvalidHubException {
+    ordered = new HashMap<>();
+    received = new ReceivedProducts();
+    setHub(hub);
+    setClient(client);
+  }
+
+  public void addOrderedProduct(Product product, Integer quantity) {
+    Integer currentQuantity = ordered.get(product);
+    if (currentQuantity != null)
+      throw new IllegalArgumentException("Product already exists!");
+
+    ordered.put(product, quantity);
+  }
+
+  public void addReceivedProduct(Producer producer, Product product, Integer quantity) {
+    received.addProduct(producer, product, quantity);
   }
 
   /*
@@ -111,8 +136,7 @@ public class Basket {
   }
 
   public boolean isPartiallyFulfilled() {
-    int numberOfFulfilledProducts =
-        getNumberOfFullySatisfiedProducts() + getNumberOfPartiallySatisfiedProducts();
+    int numberOfFulfilledProducts = getNumberOfFullySatisfiedProducts() + getNumberOfPartiallySatisfiedProducts();
 
     return numberOfFulfilledProducts > 0 && numberOfFulfilledProducts < ordered.size();
   }
@@ -150,7 +174,8 @@ public class Basket {
   }
 
   public boolean isPartiallySuppliedBy(Producer producer) {
-    // ? If is fully supplied by producer, then it is not partially supplied by producer
+    // ? If is fully supplied by producer, then it is not partially supplied by
+    // producer
     return received.getNumberOfDistinctProducers() > 1
         && received.getProducers().contains(producer);
   }
