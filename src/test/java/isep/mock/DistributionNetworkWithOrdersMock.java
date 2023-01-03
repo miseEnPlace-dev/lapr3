@@ -22,36 +22,44 @@ public class DistributionNetworkWithOrdersMock {
 
     EntityStore store = new EntityStoreMock().mockSimpleEntityStoreSmall();
 
+    Product banana = new Product("banana");
+    Product orange = new Product("orange");
+    Product lemon = new Product("lemon");
+
+
     DailyData dataProducer = new DailyData();
     DailyData dataProducer1 = new DailyData();
     DailyData dataProducer2 = new DailyData();
 
     Map<Product, Integer> mapProducer = new HashMap<>();
-    mapProducer.put(new Product("banana"), 100);
-    mapProducer.put(new Product("orange"), 200);
-    mapProducer.put(new Product("limon"), 300);
+    mapProducer.put(banana, 100);
+    mapProducer.put(orange, 200);
+    mapProducer.put(lemon, 300);
 
     dataProducer.addDayData(1, mapProducer);
     dataProducer.addDayData(2, mapProducer);
     dataProducer.addDayData(3, mapProducer);
+    dataProducer.addDayData(4, mapProducer);
 
     Map<Product, Integer> mapProducer1 = new HashMap<>();
-    mapProducer.put(new Product("banana"), 300);
-    mapProducer.put(new Product("orange"), 200);
-    mapProducer.put(new Product("limon"), 100);
+    mapProducer.put(banana, 300);
+    mapProducer.put(orange, 200);
+    mapProducer.put(lemon, 100);
 
     dataProducer1.addDayData(1, mapProducer1);
     dataProducer1.addDayData(2, mapProducer1);
     dataProducer1.addDayData(3, mapProducer1);
+    dataProducer1.addDayData(4, mapProducer1);
 
     Map<Product, Integer> mapProducer2 = new HashMap<>();
-    mapProducer.put(new Product("banana"), 300);
-    mapProducer.put(new Product("orange"), 200);
-    mapProducer.put(new Product("limon"), 100);
+    mapProducer.put(banana, 300);
+    mapProducer.put(orange, 200);
+    mapProducer.put(lemon, 100);
 
     dataProducer2.addDayData(1, mapProducer2);
     dataProducer2.addDayData(2, mapProducer2);
     dataProducer2.addDayData(3, mapProducer2);
+    dataProducer2.addDayData(4, mapProducer2);
 
     store.getEntityByLocalizationId("CT5").setDailyData(dataProducer);
     store.getEntityByLocalizationId("CT6").setDailyData(dataProducer1);
@@ -62,22 +70,28 @@ public class DistributionNetworkWithOrdersMock {
     DailyData dataClient2 = new DailyData();
 
     Map<Product, Integer> mapClient = new HashMap<>();
-    mapClient.put(new Product("banana"), 100);
+    mapClient.put(banana, 100);
 
     dataClient.addDayData(1, mapClient);
 
     Map<Product, Integer> mapClient1 = new HashMap<>();
-    mapClient1.put(new Product("orange"), 200);
-    mapClient1.put(new Product("limon"), 100);
+    mapClient1.put(orange, 200);
+    mapClient1.put(lemon, 100);
 
     dataClient1.addDayData(1, mapClient1);
 
     Map<Product, Integer> mapClient2 = new HashMap<>();
-    mapClient2.put(new Product("orange"), 200);
-    mapClient2.put(new Product("limon"), 100);
-    mapClient2.put(new Product("banana"), 150);
+    mapClient2.put(orange, 200);
+    mapClient2.put(lemon, 100);
+    mapClient2.put(banana, 150);
+
+    Map<Product, Integer> mapClient3 = new HashMap<>();
+    mapClient2.put(orange, 200);
+    mapClient2.put(lemon, 100);
+    mapClient2.put(banana, 150);
 
     dataClient2.addDayData(3, mapClient2);
+    dataClient2.addDayData(4, mapClient3);
 
     store.getEntityByLocalizationId("CT1").setDailyData(dataClient);
     store.getEntityByLocalizationId("CT2").setDailyData(dataClient1);
