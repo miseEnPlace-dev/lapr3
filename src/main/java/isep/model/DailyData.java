@@ -17,6 +17,12 @@ public class DailyData {
     this.dailyData = new TreeMap<>();
   }
 
+  public void setData(SortedMap<Integer, HashMap<Product, Integer>> dailyData) {
+    if (dailyData == null)
+      throw new IllegalArgumentException("Data cannot be null");
+    this.dailyData.putAll(dailyData);
+  }
+
   /**
    * @param day      - day to add data
    * @param products - product/quantity data
@@ -70,10 +76,40 @@ public class DailyData {
     return this.dailyData.get(day).get(product) != null ? this.dailyData.get(day).get(product) : 0;
   }
 
+  public void setQuantityOfProductDay(Integer day, Product p, Integer quant){
+    this.dailyData.get(day).put(p, quant);
+  }
+
   public DailyData getDailyDataUntilDate(Integer day) {
     DailyData result = new DailyData();
     this.dailyData = this.dailyData.subMap(0, day);
 
     return result;
   }
+
+  public Integer getQuantityAvailable(Product p, Integer day){
+    Integer quant = 0;
+    for (int i = 0; i < 3; i++) {
+      if(this.dailyData.containsKey(day-i))
+        quant += this.dailyData.get(day - i).get(p);
+    }
+    return quant;
+  }
+
+  public void removeValidProductQuantity(Product p, Integer quant, Integer day){
+    for (int i = 2; i >= 0; i--) {
+      if(quant != 0){
+        Integer quantAvailable = this.getQuantityOfProductForDay(day - i, p);
+        if(quantAvailable < quant){
+          quant -= quantAvailable;
+          this.setQuantityOfProductDay(day-i, p, 0);
+        }else{
+          this.setQuantityOfProductDay(day-i, p, quantAvailable - quant);
+          quant = 0;
+        }
+      }
+    }
+  }
+
+
 }
