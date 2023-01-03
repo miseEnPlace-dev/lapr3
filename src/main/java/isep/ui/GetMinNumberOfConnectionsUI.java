@@ -9,12 +9,12 @@ public class GetMinNumberOfConnectionsUI implements Runnable {
   DistributionNetwork network;
 
   public GetMinNumberOfConnectionsUI() {
-    network = App.getInstance().getCompany().getDistributionNetwork();
-    controller = new GetMinNumberOfConnectionsController(network);
   }
 
   @Override
   public void run() {
+    network = App.getInstance().getCompany().getDistributionNetwork();
+    controller = new GetMinNumberOfConnectionsController(network);
     // TODO Auto-generated method stub
 
   }

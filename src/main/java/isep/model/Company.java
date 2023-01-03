@@ -12,7 +12,7 @@ import isep.model.store.EntityStore;
  * @author Tomás Russo <1211288@isep.ipp.pt>
  */
 public class Company {
-  private final DistributionNetwork distributionNetwork;
+  private DistributionNetwork distributionNetwork;
   private final EntityStore entityStore;
   private final AgriculturalParcelStore agriculturalParcelStore;
   private final CultivationStore cultivationStore;
@@ -25,7 +25,11 @@ public class Company {
   }
 
   public DistributionNetwork getDistributionNetwork() {
-    return distributionNetwork;
+    return this.distributionNetwork;
+  }
+
+  public void setDistributionNetwork(DistributionNetwork distributionNetwork) {
+    this.distributionNetwork = distributionNetwork;
   }
 
   public EntityStore getEntityStore() {
