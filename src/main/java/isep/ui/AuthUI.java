@@ -53,15 +53,14 @@ public class AuthUI implements Runnable {
       System.out.println("There is no UI for users with role '" + role.toString() + "'");
   }
 
-
   private List<MenuItem> getMenuItemForRoles() {
     List<MenuItem> rolesUI = new ArrayList<>();
 
-    rolesUI.add(new MenuItem(SystemRole.GESTOR_AGRICOLA.toString(), new AgriculturalManagerUI()));
-    rolesUI.add(new MenuItem(SystemRole.CONDUTOR.toString(), new DriverUI()));
-    rolesUI.add(new MenuItem(SystemRole.CLIENTE.toString(), new ClientUI()));
+    rolesUI.add(new MenuItem(SystemRole.AGRICULTURAL_MANAGER.toString(), new AgriculturalManagerUI()));
+    rolesUI.add(new MenuItem(SystemRole.DRIVER.toString(), new DriverUI()));
+    rolesUI.add(new MenuItem(SystemRole.CLIENT.toString(), new ClientUI()));
     rolesUI
-        .add(new MenuItem(SystemRole.GESTOR_DISTRIBUICAO.toString(), new DistributionManagerUI()));
+        .add(new MenuItem(SystemRole.DISTRIBUTION_MANAGER.toString(), new DistributionManagerUI()));
 
     return rolesUI;
   }

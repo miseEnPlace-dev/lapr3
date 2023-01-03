@@ -1,8 +1,8 @@
 package isep.shared;
 
 public enum SystemRole {
-  GESTOR_AGRICOLA("Gestor Agricola"), GESTOR_DISTRIBUICAO("Gestor Distribuicao"), CONDUTOR(
-      "Condutor"), CLIENTE("Cliente");
+  AGRICULTURAL_MANAGER("Gestor Agricola"), DISTRIBUTION_MANAGER("Gestor Distribuicao"), DRIVER("Condutor"),
+  CLIENT("Cliente");
 
   private String description = "";
 

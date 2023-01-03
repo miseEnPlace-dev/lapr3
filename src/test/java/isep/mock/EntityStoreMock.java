@@ -58,4 +58,20 @@ public class EntityStoreMock {
     return store;
   }
 
+  public EntityStore mockSimpleEntityStoreSmall() {
+    EntityStore store = new EntityStore();
+
+    store.addEntity("C1", 10.0, 0.0, "CT1", Role.CLIENT);
+    store.addEntity("C2", 20.0, 0.0, "CT2", Role.CLIENT);
+    store.addEntity("C3", 30.0, 10.0, "CT4", Role.CLIENT);
+    store.addEntity("E1", 20.0, 10.0, "CT3", Role.ENTERPRISE);
+    store.addEntity("P1", 10.0, 10.0, "CT5", Role.PRODUCER);
+    store.addEntity("P2", 11, 20, "CT6", Role.PRODUCER);
+    store.addEntity("C4", 30, 10, "CT7", Role.CLIENT);
+    store.addEntity("P3", 10, 10, "CT8", Role.PRODUCER);
+    store.addEntity("E2", 100, -20, "CT9", Role.ENTERPRISE);
+
+    return store;
+  }
+
 }
