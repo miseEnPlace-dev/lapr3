@@ -5,6 +5,7 @@ import isep.controller.ConnectedNetworkShortestPathController;
 import isep.model.DistributionNetwork;
 import isep.model.Entity;
 import isep.shared.exceptions.NetworkNotConnectedException;
+import isep.utils.graph.Edge;
 import isep.utils.graph.Graph;
 
 public class NetworkMinimumCostUI implements Runnable {
@@ -30,17 +31,8 @@ public class NetworkMinimumCostUI implements Runnable {
   private String printNetworkMinimumCost(Graph<Entity, Integer> graph) {
     String s;
 
-    s = "\n\nNetwork minimum cost between all entities:\nnumber of vertices =  " + graph.numVertices()
-        + "\nnumber of edges = " + graph.numEdges();
-
-    for (Entity v : graph.vertices()) {
-      s += "\n" + v.getId() + ":\n";
-      for (Entity w : graph.vertices()) {
-        if (v != w) {
-          s += "  " + w.getId() + ": " + graph.edge(v, w) + "\n";
-        }
-      }
-    }
+    s = "\n\nNetwork minimum cost between all entities:\n\nNumber of vertices = " + graph.numVertices()
+        + "\nNumber of edges = " + graph.numEdges();
 
     s += "\nTotal cost: " + getNetworkMinimumCost(graph);
     return s;
@@ -49,10 +41,8 @@ public class NetworkMinimumCostUI implements Runnable {
   private int getNetworkMinimumCost(Graph<Entity, Integer> graph) {
     int cost = 0;
 
-    for (Entity v : graph.vertices())
-      for (Entity w : graph.vertices())
-        if (v != w)
-          cost += graph.edge(v, w).getWeight();
+    for (Edge<Entity, Integer> v : graph.edges())
+      cost += v.getWeight();
 
     return cost;
   }
