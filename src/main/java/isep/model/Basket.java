@@ -60,8 +60,8 @@ public class Basket {
       throw new IllegalArgumentException("Null ordered map is Invalid!");
 
     Integer sum = 0;
-    for (Integer qnt : ordered.values())
-      sum += qnt;
+    for (Integer quantity : ordered.values())
+      sum += quantity;
 
     if (sum == 0)
       throw new InvalidOrderException();

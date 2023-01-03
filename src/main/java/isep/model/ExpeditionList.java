@@ -80,9 +80,11 @@ public class ExpeditionList {
   }
 
   /**
-   * Get, for each hub in the ExpeditionList, all producers that deliver to that hub.
+   * Get, for each hub in the ExpeditionList, all producers that deliver to that
+   * hub.
    *
-   * @return A {@code Map} that associates a Hub ({@code Enterprise} object) to a list of
+   * @return A {@code Map} that associates a Hub ({@code Enterprise} object) to a
+   *         list of
    *         {@code Producer} objects.
    */
   public Map<Enterprise, List<Producer>> getProducersThatSupplyHubs() {
