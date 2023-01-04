@@ -43,6 +43,14 @@ public class EntityStore {
     return null;
   }
 
+  public Entity getEntityById(String id) {
+    for (Entity entity : entities)
+      if (entity.getId().equals(id))
+        return entity;
+
+    return null;
+  }
+
   private Role mapIdToRole(String id) {
     String letter = id.substring(0, 1).toLowerCase();
 
