@@ -1,7 +1,9 @@
 package isep.model;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+
 import isep.shared.exceptions.InvalidHubException;
 import isep.shared.exceptions.InvalidOrderException;
 
@@ -9,6 +11,7 @@ import isep.shared.exceptions.InvalidOrderException;
  * Basket class
  *
  * @author Carlos Lopes <1211277@isep.ipp.pt>
+ * @author Tomás Lopes <1211289@isep.ipp.pt>
  */
 public class Basket {
   private Map<Product, Integer> ordered;
@@ -28,6 +31,28 @@ public class Basket {
   }
 
   /*
+   * Constructor
+   */
+  public Basket(Enterprise hub, Client client) throws InvalidHubException {
+    ordered = new HashMap<>();
+    received = new ReceivedProducts();
+    setHub(hub);
+    setClient(client);
+  }
+
+  public void addOrderedProduct(Product product, Integer quantity) {
+    Integer currentQuantity = ordered.get(product);
+    if (currentQuantity != null)
+      throw new IllegalArgumentException("Product already exists!");
+
+    ordered.put(product, quantity);
+  }
+
+  public void addReceivedProduct(Producer producer, Product product, Integer quantity) {
+    received.addProduct(producer, product, quantity);
+  }
+
+  /*
    * Set of ordered products
    */
   private void setOrdered(Map<Product, Integer> ordered) throws InvalidOrderException {
@@ -35,8 +60,8 @@ public class Basket {
       throw new IllegalArgumentException("Null ordered map is Invalid!");
 
     Integer sum = 0;
-    for (Integer qnt : ordered.values())
-      sum += qnt;
+    for (Integer quantity : ordered.values())
+      sum += quantity;
 
     if (sum == 0)
       throw new InvalidOrderException();
@@ -76,6 +101,18 @@ public class Basket {
     this.client = client;
   }
 
+  public Client getClient() {
+    return this.client;
+  }
+
+  public boolean isFromClient(Client client) {
+    return this.client.equals(client);
+  }
+
+  public boolean isFromHub(Enterprise hub) {
+    return this.hub.equals(hub);
+  }
+
   /*
    * Get basket hub
    */
@@ -90,20 +127,64 @@ public class Basket {
     return this.received.getProducers();
   }
 
+  public int getNumberOfProducts() {
+    return ordered.size();
+  }
+
+  public boolean isFullyFulfilled() {
+    return getNumberOfFullySatisfiedProducts() == ordered.size();
+  }
+
+  public boolean isPartiallyFulfilled() {
+    int numberOfFulfilledProducts = getNumberOfFullySatisfiedProducts() + getNumberOfPartiallySatisfiedProducts();
+
+    return numberOfFulfilledProducts > 0 && numberOfFulfilledProducts < ordered.size();
+  }
+
   public int getNumberOfFullySatisfiedProducts() {
     int count = 0;
 
     for (Product product : ordered.keySet()) {
       int orderedQuantity = ordered.get(product);
-      Integer receivedQuantity = received.getQuantityOfProduct(product);
 
-      if (receivedQuantity == null)
-        continue;
-
-      if (orderedQuantity == receivedQuantity)
+      if (received.matchesProductQuantity(product, orderedQuantity))
         count++;
     }
 
     return count;
+  }
+
+  public int getNumberOfNotSatisfiedProducts() {
+    int count = 0;
+
+    for (Product product : ordered.keySet())
+      if (received.hasNotReceivedProduct(product))
+        count++;
+
+    return count;
+  }
+
+  public int getNumberOfPartiallySatisfiedProducts() {
+    return ordered.size() - getNumberOfFullySatisfiedProducts() - getNumberOfNotSatisfiedProducts();
+  }
+
+  public boolean isFullySuppliedBy(Producer producer) {
+    return received.getNumberOfDistinctProducers() == 1
+        && received.getProducers().contains(producer);
+  }
+
+  public boolean isPartiallySuppliedBy(Producer producer) {
+    // ? If is fully supplied by producer, then it is not partially supplied by
+    // producer
+    return received.getNumberOfDistinctProducers() > 1
+        && received.getProducers().contains(producer);
+  }
+
+  public int getQuantityOfSuppliedProduct(Producer producer, Product product) {
+    return received.getQuantityOfSuppliedProduct(producer, product);
+  }
+
+  public Set<Product> getProducts() {
+    return ordered.keySet();
   }
 }
