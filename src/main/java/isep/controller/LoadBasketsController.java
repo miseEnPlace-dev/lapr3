@@ -41,7 +41,7 @@ public class LoadBasketsController {
     return csvreader.read();
   }
 
-  public void mapBaskets(List<Map<String, String>> data) {
+  public int mapBaskets(List<Map<String, String>> data) {
     EntityStore entityStore = company.getEntityStore();
     return BasketsMapper.toPlan(data, entityStore);
   }
