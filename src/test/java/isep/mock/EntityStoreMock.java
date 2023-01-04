@@ -66,10 +66,10 @@ public class EntityStoreMock {
     store.addEntity("C3", 30.0, 10.0, "CT4", Role.CLIENT);
     store.addEntity("E1", 20.0, 10.0, "CT3", Role.ENTERPRISE);
     store.addEntity("P1", 10.0, 10.0, "CT5", Role.PRODUCER);
-    store.addEntity("P2", 11, 20, "CT6", Role.PRODUCER);
-    store.addEntity("C4", 30, 10, "CT7", Role.CLIENT);
-    store.addEntity("P3", 10, 10, "CT8", Role.PRODUCER);
-    store.addEntity("E2", 100, -20, "CT9", Role.ENTERPRISE);
+    store.addEntity("P2", 11.0, 20.0, "CT6", Role.PRODUCER);
+    store.addEntity("C4", 30.0, 10.0, "CT7", Role.CLIENT);
+    store.addEntity("P3", 10.0, 10.0, "CT8", Role.PRODUCER);
+    store.addEntity("E2", 10.0, -20.0, "CT9", Role.ENTERPRISE);
 
     return store;
   }
