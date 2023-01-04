@@ -1,6 +1,5 @@
 package isep.model;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import isep.utils.HaversineCalculator;
@@ -120,7 +119,7 @@ public abstract class Entity implements VertexHeuristic<Entity> {
     return this.id.equals(entity.id);
   }
 
-  public void addDayData(Integer day, HashMap<Product, Integer> products) {
+  public void addDayData(Integer day, Map<Product, Integer> products) {
     this.dailyData.addDayData(day, products);
   }
 
@@ -135,6 +134,7 @@ public abstract class Entity implements VertexHeuristic<Entity> {
   public void setDailyData(DailyData dailyData) {
     if (dailyData == null)
       throw new IllegalArgumentException("Daily Data cannot be null!");
+
     this.dailyData = dailyData;
   }
 
@@ -142,11 +142,12 @@ public abstract class Entity implements VertexHeuristic<Entity> {
     return this.dailyData;
   }
 
-  public void setDayData(Integer day, HashMap<Product, Integer> dayData) {
+  public void setDayData(Integer day, Map<Product, Integer> dayData) {
     if (day <= 0)
       throw new IllegalArgumentException("Day must be a positive number!");
     if (dayData == null)
       throw new IllegalArgumentException("Day data cannot be null!");
+
     this.dailyData.addDayData(day, dayData);
   }
 

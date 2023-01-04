@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 
@@ -203,9 +204,59 @@ public class EntityTest {
   @Test
   public void testGetDayDataWithMultipleProducts() {
     Entity entity = new Enterprise("Test", 10, 10, "Test");
-    HashMap<Product, Integer> data = new HashMap<>();
+    Map<Product, Integer> data = new HashMap<>();
     data.put(new Product("banana"), 1);
     data.put(new Product("apple"), 2);
     entity.setDayData(3, data);
+
+    Map<Product, Integer> expected = new HashMap<>();
+    expected.put(new Product("banana"), 1);
+    expected.put(new Product("apple"), 2);
+
+    assertEquals(expected, entity.getDayData(3));
+  }
+
+  @Test
+  public void testAddDayData() {
+    Entity entity = new Enterprise("Test", 10, 10, "Test");
+    Map<Product, Integer> data = new HashMap<>();
+    data.put(new Product("banana"), 1);
+    entity.addDayData(1, data);
+
+    assertEquals(data, entity.getDayData(1));
+  }
+
+  @Test
+  public void testGetQuantityOfProductForDay() {
+    Entity entity = new Enterprise("Test", 10, 10, "Test");
+    Map<Product, Integer> data = new HashMap<>();
+    data.put(new Product("banana"), 1);
+    entity.addDayData(1, data);
+
+    assertEquals(1, entity.getQuantityOfProductForDay(1, new Product("banana")));
+  }
+
+  @Test
+  public void testSetDailyDataWithNull() {
+    Entity entity = new Enterprise("Test", 10, 10, "Test");
+    assertThrows(IllegalArgumentException.class, () -> {
+      entity.setDailyData(null);
+    });
+  }
+
+  @Test
+  public void testSetDailyData() {
+    Entity entity = new Enterprise("Test", 10, 10, "Test");
+    Map<Integer, Map<Product, Integer>> data = new HashMap<>();
+    Map<Product, Integer> dayData = new HashMap<>();
+    dayData.put(new Product("banana"), 1);
+    data.put(1, dayData);
+
+    DailyData dailyData = new DailyData();
+    dailyData.addDayData(1, dayData);
+
+    entity.setDailyData(dailyData);
+
+    assertEquals(dailyData, entity.getDailyData());
   }
 }
