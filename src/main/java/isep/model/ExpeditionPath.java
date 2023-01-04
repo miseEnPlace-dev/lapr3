@@ -4,14 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
- * Expedition Path class. Holds information about US310:
- * - expedition path (entities list)
- * - baskets delivered at a given hub
- * - distance between all entities of path
- * - total distance of the path
- * 
+ * Expedition Path class. Holds information about US310: - expedition path (entities list) - baskets
+ * delivered at a given hub - distance between all entities of path - total distance of the path
+ *
  * @author Tomás Russo <1211288@isep.ipp.pt>
  */
 public class ExpeditionPath {
@@ -42,9 +40,9 @@ public class ExpeditionPath {
 
   /**
    * Constructor fot ExpeditionPath.
-   * 
+   *
    * @param distributionNetwork The distribution network
-   * @param path                The expedition path
+   * @param path The expedition path
    */
   public ExpeditionPath(DistributionNetwork distributionNetwork, ExpeditionList expeditionList) {
     this.distributionNetwork = distributionNetwork;
@@ -62,7 +60,7 @@ public class ExpeditionPath {
     List<Entity> entitiesPath = new ArrayList<>();
 
     // Get all producers in the expedition list
-    List<Producer> producers = expeditionList.getProducers();
+    List<Producer> producers = new ArrayList<>(expeditionList.getProducers());
 
     // If there are no producers, return an empty path
     if (producers.isEmpty())
@@ -80,7 +78,7 @@ public class ExpeditionPath {
     List<Enterprise> hubsSupplied = generateStopsForProducers(entitiesPath);
 
     // Get all hubs in the expedition list
-    List<Enterprise> hubs = expeditionList.getHubs();
+    Set<Enterprise> hubs = expeditionList.getHubs();
     // Remove the hubs that were already supplied
     hubs.removeAll(hubsSupplied);
 
@@ -89,7 +87,8 @@ public class ExpeditionPath {
     entitiesPath.clear();
 
     // Get the shortest path from the last stop to all hubs in the expedition list
-    entitiesPath.addAll(distributionNetwork.getShortestPathUsingAStar(start, hubs));
+    entitiesPath
+        .addAll(distributionNetwork.getShortestPathUsingAStar(start, new ArrayList<>(hubs)));
     // Remove repeated entity
     entitiesPath.remove(0);
 
@@ -101,9 +100,9 @@ public class ExpeditionPath {
   }
 
   /**
-   * Generates the {@code List} of Stops for Producers. Checks for hubs that can
-   * already be supplied, and returns them.
-   * 
+   * Generates the {@code List} of Stops for Producers. Checks for hubs that can already be
+   * supplied, and returns them.
+   *
    * @param entities The path
    * @return A {@code List} of Hubs that were already supplied.
    */
@@ -123,7 +122,8 @@ public class ExpeditionPath {
         List<Producer> suppliers = hubsSuppliers.get(stop);
         if (suppliers != null && visitedEntities.containsAll(suppliers)) {
           // If the hub can be supplied, add it to the path
-          path.add(new Stop((Enterprise) stop, getNumberOfBasketsDeliveredAtHub((Enterprise) stop)));
+          path.add(
+              new Stop((Enterprise) stop, getNumberOfBasketsDeliveredAtHub((Enterprise) stop)));
           suppliedHubs.add((Enterprise) stop);
         } else {
           // If the hub can't be supplied, add it to the path with 0 baskets
@@ -139,19 +139,21 @@ public class ExpeditionPath {
   }
 
   /**
-   * Generates the {@code List} of Stops for Hubs. It checks for already supplied
-   * hubs, and puts their delivered baskets to 0.
-   * 
-   * @param entities     The path
+   * Generates the {@code List} of Stops for Hubs. It checks for already supplied hubs, and puts
+   * their delivered baskets to 0.
+   *
+   * @param entities The path
    * @param suppliedHubs A {@code List} of the already supplied hubs
    */
   private void generateStopsForHubs(List<Entity> entities, List<Enterprise> suppliedHubs) {
     for (Entity stop : entities) {
       if (stop.getClass() == Enterprise.class) {
-        if (!suppliedHubs.contains((Enterprise) stop) && getNumberOfBasketsDeliveredAtHub((Enterprise) stop) != -1) {
+        if (!suppliedHubs.contains((Enterprise) stop)
+            && getNumberOfBasketsDeliveredAtHub((Enterprise) stop) != -1) {
           // If the hub is not already supplied, and it has baskets delivered, add it to
           // the path
-          path.add(new Stop((Enterprise) stop, getNumberOfBasketsDeliveredAtHub((Enterprise) stop)));
+          path.add(
+              new Stop((Enterprise) stop, getNumberOfBasketsDeliveredAtHub((Enterprise) stop)));
           suppliedHubs.add((Enterprise) stop);
         } else {
           // If the hub is already supplied, or it has no baskets delivered, add it to the
@@ -196,7 +198,7 @@ public class ExpeditionPath {
 
   /**
    * Get the total distance of the expedition path.
-   * 
+   *
    * @return The path's total distance
    */
   public int getTotalDistance() {
@@ -205,10 +207,10 @@ public class ExpeditionPath {
 
   /**
    * Get the number of baskets delivered at the given hub.
-   * 
+   *
    * @param hub The hub to search for
-   * @return Number of baskets delivered at the given hub, or {@code -1} if hub
-   *         does not exist in the path
+   * @return Number of baskets delivered at the given hub, or {@code -1} if hub does not exist in
+   *         the path
    */
   public int getNumberOfBasketsDeliveredAtHub(Enterprise hub) {
     if (deliveredBaskets.containsKey(hub))
@@ -218,7 +220,7 @@ public class ExpeditionPath {
 
   /**
    * Get the distance between two entities in the path
-   * 
+   *
    * @param entity1 First entity
    * @param entity2 Second entity
    * @return The distance between entity1 and entity2
@@ -229,16 +231,15 @@ public class ExpeditionPath {
 
   /**
    * Get the distance between all entities of the path.
-   * 
-   * @return A {@code Map} that associates a {@code Entry} of two Entities to
-   *         it's distance
+   *
+   * @return A {@code Map} that associates a {@code Entry} of two Entities to it's distance
    */
   public Map<Map.Entry<Entity, Entity>, Integer> getDistanceBetweenAllEntities() {
     Map<Map.Entry<Entity, Entity>, Integer> map = new HashMap<>();
 
     for (int i = 0; i < path.size() - 1; i++) {
-      int distance = this.distributionNetwork.getDistanceBetweenConnectedEntities(path.get(i).entity,
-          path.get(i + 1).entity);
+      int distance = this.distributionNetwork
+          .getDistanceBetweenConnectedEntities(path.get(i).entity, path.get(i + 1).entity);
       map.put(Map.entry(path.get(i).entity, path.get(i + 1).entity), distance);
     }
 
@@ -257,14 +258,13 @@ public class ExpeditionPath {
         str = str.concat("Producer " + path.get(i).entity.getId());
       else
         // If the entity is a Hub, print it's ID and the number of baskets delivered
-        str = str
-            .concat("Hub " + path.get(i).entity.getId() + " ("
-                + (getNumberOfBasketsDeliveredAtHub((Enterprise) path.get(i).entity) == -1
-                    ? "No baskets to deliver here"
-                    : path.get(i).basketsDelivered
-                        + " basket(s) delivered in this stop (Total: " + path.get(i).basketsDelivered + "/"
-                        + getNumberOfBasketsDeliveredAtHub((Enterprise) path.get(i).entity) + ")")
-                + ")");
+        str = str.concat("Hub " + path.get(i).entity.getId() + " ("
+            + (getNumberOfBasketsDeliveredAtHub((Enterprise) path.get(i).entity) == -1
+                ? "No baskets to deliver here"
+                : path.get(i).basketsDelivered + " basket(s) delivered in this stop (Total: "
+                    + path.get(i).basketsDelivered + "/"
+                    + getNumberOfBasketsDeliveredAtHub((Enterprise) path.get(i).entity) + ")")
+            + ")");
       System.out.println(str);
       if (i != path.size() - 1) {
         // If it's not the last stop, print the distance to the next stop
@@ -278,7 +278,7 @@ public class ExpeditionPath {
 
   /**
    * Get the entities list of the path.
-   * 
+   *
    * @return A {@code List} of all entities of the path.
    */
   public List<Entity> getPathList() {

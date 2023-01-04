@@ -1,20 +1,22 @@
 package isep.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+
 import isep.controller.DefineHubsController;
 import isep.controller.ExpeditionPathController;
 import isep.shared.exceptions.InvalidHubException;
 import isep.shared.exceptions.InvalidNumberOfHubsException;
 import isep.shared.exceptions.InvalidOrderException;
-import isep.shared.exceptions.InvalidProductNameException;
 
 /**
  * Tests for ExpeditionPath class.
@@ -40,7 +42,7 @@ public class ExpeditionPathTest {
 
   @BeforeAll
   public void setUp() throws FileNotFoundException, InvalidNumberOfHubsException,
-      InvalidProductNameException, InvalidOrderException, InvalidHubException {
+      InvalidOrderException, InvalidHubException {
     this.distributionNetwork = new DistributionNetwork();
 
     Product macaDeAlcobaca = new Product("Maca de Alcobaca");
@@ -98,12 +100,12 @@ public class ExpeditionPathTest {
     srManuelAndFernandoOrderedProducts.put(bananaDaMadeira, 10);
 
     ReceivedProducts srManuelReceivedProducts = new ReceivedProducts();
-    srManuelReceivedProducts.addProduct(srManuelPorto, srManuelOrderedProducts);
+    srManuelReceivedProducts.addAllProducts(srManuelPorto, srManuelOrderedProducts);
     ReceivedProducts srFernandoReceivedProducts = new ReceivedProducts();
-    srFernandoReceivedProducts.addProduct(srFernandoLisboa, srFernandoOrderedProducts);
+    srFernandoReceivedProducts.addAllProducts(srFernandoLisboa, srFernandoOrderedProducts);
     ReceivedProducts srManuelAndFernandoReceivedProducts = new ReceivedProducts();
-    srManuelAndFernandoReceivedProducts.addProduct(srFernandoLisboa, srFernandoOrderedProducts);
-    srManuelAndFernandoReceivedProducts.addProduct(srManuelPorto, srManuelOrderedProducts);
+    srManuelAndFernandoReceivedProducts.addAllProducts(srFernandoLisboa, srFernandoOrderedProducts);
+    srManuelAndFernandoReceivedProducts.addAllProducts(srManuelPorto, srManuelOrderedProducts);
 
     dAliceBasket = new Basket(srManuelOrderedProducts, srManuelReceivedProducts, hubAveiro, dAliceBraga);
     dManuelaBasket = new Basket(srFernandoOrderedProducts, srFernandoReceivedProducts, hubViseu,

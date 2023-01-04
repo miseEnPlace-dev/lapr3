@@ -28,16 +28,17 @@ public abstract class Entity implements VertexHeuristic<Entity> {
   }
 
   /**
-   * Calculates the distance between two entities using the Haversine formula
-   * This method is used in the A* algorithm
+   * Calculates the distance between two entities using the Haversine formula This
+   * method is used in
+   * the A* algorithm
    *
    * @param target The entity to which the distance will be calculated
    * @return The distance between the two entities, in meters
    */
   @Override
   public int getHeuristicValue(Entity target) {
-    return (int) (HaversineCalculator.getDistanceBetweenTwoCoordinates(this.latitude, this.longitude,
-        target.latitude, target.longitude) * 1000);
+    return (int) (HaversineCalculator.getDistanceBetweenTwoCoordinates(this.latitude,
+        this.longitude, target.latitude, target.longitude) * 1000);
   }
 
   private void validateId(String id) {
@@ -97,8 +98,13 @@ public abstract class Entity implements VertexHeuristic<Entity> {
 
   @Override
   public String toString() {
-    return "Entity [id=" + id + ", latitude=" + latitude + ", longitude=" + longitude + ", localizationId="
-        + localizationId;
+    return "Entity [id=" + id + ", latitude=" + latitude + ", longitude=" + longitude
+        + ", localizationId=" + localizationId;
+  }
+
+  @Override
+  public int hashCode() {
+    return id.hashCode();
   }
 
   @Override
