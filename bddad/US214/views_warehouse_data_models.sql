@@ -10,23 +10,21 @@ CREATE OR REPLACE VIEW evolucaoProducaoUltimosCincoAnosPorCulturaESetor AS
 
 
 CREATE OR REPLACE VIEW compararVendasAnuais AS
-  SELECT p.tipo, s.id_setor, t.ano, SUM(pr.quantidade) AS quantidade
+  SELECT p.tipo, s.id_setor, t.ano, SUM(ve.quantidade) AS quantidade
   FROM Venda ve
   INNER JOIN Produto p ON ve.id_produto = p.id_produto
   INNER JOIN Tempo t ON ve.id_tempo = t.id_tempo
   INNER JOIN Setor s ON ve.id_setor = s.id_setor
-  INNER JOIN Producao pr ON ve.id_produto = pr.id_produto
    WHERE t.ano >= (SELECT MAX(ano) FROM Tempo) - 1 AND t.ano <= (SELECT MAX(ano) FROM Tempo)
   GROUP BY p.tipo, s.id_setor, t.ano
   ORDER BY s.id_setor, t.ano;
 
 CREATE OR REPLACE VIEW compararVendasMensaisPorTipoCultura AS
-  SELECT p.tipo, t.mes, SUM(pr.quantidade) AS quantidade
+  SELECT p.tipo, t.mes, SUM(ve.quantidade) AS quantidade
   FROM Venda ve
   INNER JOIN Produto p ON ve.id_produto = p.id_produto
   INNER JOIN Tempo t ON ve.id_tempo = t.id_tempo
   INNER JOIN Setor s ON ve.id_setor = s.id_setor
-  INNER JOIN Producao pr ON ve.id_produto = pr.id_produto
   WHERE t.mes >= (SELECT MAX(mes) FROM Tempo) - 1 AND t.mes <= (SELECT MAX(mes) FROM Tempo)
   GROUP BY p.tipo, t.mes
   ORDER BY t.mes;
