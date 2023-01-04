@@ -21,14 +21,11 @@ public class AgriculturalManagerUI implements Runnable {
     options.add(new MenuItem("Find nearest hub for all clients", new NearestHubUI()));
     options.add(new MenuItem("Find minimum cost network", new NetworkMinimumCostUI()));
     options.add(new MenuItem("Import baskets list", new ImportBasketListUI()));
-    // options.add(new MenuItem("Generate expedition list", new
-    // GenerateExpeditionListUI()));
-    // options.add(new MenuItem("Generate expedition list with nearest N producers",
-    // new
-    // GenerateExpeditionListNUI()));
-    // options.add(new MenuItem("Generate expedition path", new
-    // MinimumTotalDistanceUI()));
-    // options.add(new MenuItem("Find statistics", new StatisticsUI()));
+    options.add(new MenuItem("Generate expedition list", new GenerateExpeditionListUI()));
+    options.add(
+        new MenuItem("Generate expedition list with nearest N producers", new GenerateExpeditionListNProducersUI()));
+    options.add(new MenuItem("Generate expedition path", new MinimumTotalDistanceUI()));
+    options.add(new MenuItem("Get statistics for an expedition list", new StatisticsUI()));
 
     int option = 0;
 
