@@ -62,8 +62,8 @@ public class BasketTest {
     hub.makeHub();
     Client client = new Client("id1", 0, 0, "loc1");
 
-    Map<Product, Integer> ordered = new HashMap<>();
-    ordered.put(new Product("Apples"), 100);
+    Map<Product, Double> ordered = new HashMap<>();
+    ordered.put(new Product("Apples"), 100.);
 
     assertThrows(IllegalArgumentException.class, () -> {
       new Basket(ordered, null, hub, client);
@@ -76,7 +76,7 @@ public class BasketTest {
     hub.makeHub();
     Client client = new Client("id1", 0, 0, "loc1");
 
-    Map<Product, Integer> ordered = new HashMap<>();
+    Map<Product, Double> ordered = new HashMap<>();
     ReceivedProducts received = new ReceivedProducts();
 
     assertThrows(InvalidOrderException.class, () -> {
@@ -107,7 +107,7 @@ public class BasketTest {
   public void testAddProductQuantity() throws InvalidHubException {
     Product product = new Product("Apples");
 
-    mockBasket.addOrderedProduct(product, 100);
+    mockBasket.addOrderedProduct(product, 100.);
     assertTrue(mockBasket.getProducts().contains(product));
   }
 
@@ -115,9 +115,9 @@ public class BasketTest {
   public void testAddProductQuantityWithDuplicateProduct() throws InvalidHubException {
     Product product = new Product("Apples");
 
-    mockBasket.addOrderedProduct(product, 100);
+    mockBasket.addOrderedProduct(product, 100.);
     assertThrows(IllegalArgumentException.class, () -> {
-      mockBasket.addOrderedProduct(product, 200);
+      mockBasket.addOrderedProduct(product, 200.);
     });
   }
 
