@@ -126,6 +126,7 @@ public class BasketTest {
     Basket basket = new BasketMock().mockFullyFulfilledWithOneProducerBasket();
     assertTrue(basket.isFullyFulfilled());
     assertTrue(basket.isFullySuppliedBy(firstProducer));
+    assertFalse(basket.isPartiallyFulfilled());
   }
 
   @Test

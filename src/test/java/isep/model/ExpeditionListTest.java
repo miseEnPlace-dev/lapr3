@@ -109,4 +109,9 @@ public class ExpeditionListTest {
     assertEquals(2, expList.getNumberOfOutOfStockProducts(new ArrayList<>(expList.getProducers()).get(0)));
     assertEquals(0, expList.getNumberOfOutOfStockProducts(new ArrayList<>(expList.getProducers()).get(1)));
   }
+
+  @Test
+  public void testGetNumberOfBaskets() {
+    assertEquals(2, expList.getNumberOfBaskets());
+  }
 }
