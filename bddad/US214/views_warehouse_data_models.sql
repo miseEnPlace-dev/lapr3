@@ -29,5 +29,3 @@ CREATE OR REPLACE VIEW compararVendasMensaisPorTipoCultura AS
   WHERE t.mes >= TO_CHAR(SYSDATE - 1,'MM') AND t.mes <= TO_CHAR(SYSDATE,'MM')
   GROUP BY p.tipo, t.mes
   ORDER BY t.mes;
-
-
