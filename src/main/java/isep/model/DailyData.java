@@ -29,7 +29,7 @@ public class DailyData {
    * @param day      - day to add data
    * @param products - product/quantity data
    *
-   *                 Adds the products/quantity data to a specif day
+   *                 Adds the products/quantity data to a specific day
    */
   public void addDayData(Integer day, Map<Product, Integer> products) {
     if (day < 0)
@@ -45,7 +45,7 @@ public class DailyData {
    * @param product  - product adding
    * @param quantity - quantity of product adding
    *
-   *                 Adds a single product/quantity to a specif day
+   *                 Adds a single product/quantity to a specific day
    */
   public void addProductInfoToDayData(Integer day, Product product, Integer quantity) {
     Map<Product, Integer> dailyMap = this.dailyData.get(day);
@@ -63,7 +63,7 @@ public class DailyData {
    *
    *         Returns a map with the products and quantities registered in that
    *         dailyData for a
-   *         specif day
+   *         specific day
    */
   public Map<Product, Integer> getDayData(Integer day) {
     return this.dailyData.get(day);
@@ -75,7 +75,7 @@ public class DailyData {
    * @return Integer
    *
    *         Returns the quantity of a product registered in that dailyData for a
-   *         specif day
+   *         specific day
    */
   public Integer getQuantityOfProductForDay(Integer day, Product product) {
     if (dailyData.get(day) == null)
