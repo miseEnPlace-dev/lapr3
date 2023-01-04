@@ -95,7 +95,3 @@ CREATE TABLE Producao (
   CONSTRAINT FK_Producao_Tempo    FOREIGN KEY (id_tempo) REFERENCES Tempo (id_tempo),
   CONSTRAINT CHK_Quantidade_Prod   CHECK (quantidade > 0)
 );
-
-
-
-
