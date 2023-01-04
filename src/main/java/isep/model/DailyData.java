@@ -34,7 +34,7 @@ public class DailyData {
   public void addDayData(Integer day, Map<Product, Integer> products) {
     if (day < 0)
       throw new IllegalArgumentException("Day cannot be negative");
-    if (products.isEmpty())
+    if (products == null || products.isEmpty())
       throw new IllegalArgumentException("A map without data cannot be added to a day data.");
 
     this.dailyData.put(day, products);
