@@ -1,6 +1,7 @@
 package isep.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.ArrayList;
 
@@ -21,6 +22,20 @@ public class ExpeditionListTest {
     mockClient = new Client("id2", 0, 0, "C01");
     mockHub = new Enterprise("id1", 0, 0, "E01");
     mockHub.makeHub();
+  }
+
+  @Test
+  public void testAddBasketWithNull() {
+    assertThrows(IllegalArgumentException.class, () -> {
+      expList.addBasket(null);
+    });
+  }
+
+  @Test
+  public void testCreateExpeditionListWithInvalidDay() {
+    assertThrows(IllegalArgumentException.class, () -> {
+      new ExpeditionList(-1);
+    });
   }
 
   @Test
