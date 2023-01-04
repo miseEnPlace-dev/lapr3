@@ -13,7 +13,7 @@ for d in ./*/; do
       cd ..
       continue
     fi
-    output=$(valgrind -s ./prog 2>&1)
+    output=$(valgrind ./prog 2>&1)
     echo "$output"
     if echo $output | grep -q "definitely lost"; then
       echo "Memory leak detected in $d"
