@@ -58,4 +58,3 @@ INSERT INTO Producao VALUES (5, 5, 2, 5, 50);
 INSERT INTO Producao VALUES (6, 6, 3, 6, 60);
 INSERT INTO Producao VALUES (7, 7, 1, 7, 70);
 INSERT INTO Producao VALUES (8, 8, 2, 8, 80);
-

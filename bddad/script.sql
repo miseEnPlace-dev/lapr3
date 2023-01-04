@@ -36,6 +36,8 @@ DROP TABLE TipoAlteracao CASCADE CONSTRAINTS PURGE;
 DROP TABLE input_sensor CASCADE CONSTRAINTS PURGE;
 DROP TABLE InputHub CASCADE CONSTRAINTS PURGE;
 DROP TABLE Hub CASCADE CONSTRAINTS PURGE;
+DROP TABLE LeituraInputSensor CASCADE CONSTRAINTS PURGE;
+DROP TABLE ErroLeituraInputSensor CASCADE CONSTRAINTS PURGE;
 
 CREATE TABLE Setor (
   id_setor   number(10),
@@ -249,12 +251,10 @@ CREATE TABLE ProdutoEncomenda (
 
 CREATE TABLE MedicaoSensor (
   id_sensor number(8) NOT NULL,
-  id_setor  number(10) NOT NULL,
   medicao   number(3) NOT NULL,
   data_hora timestamp(0) NOT NULL,
   PRIMARY KEY (id_sensor, id_setor),
-  FOREIGN KEY (id_sensor) REFERENCES Sensor (id_sensor) ON DELETE CASCADE,
-  FOREIGN KEY (id_setor) REFERENCES Setor (id_setor) ON DELETE CASCADE
+  FOREIGN KEY (id_sensor) REFERENCES Sensor (id_sensor) ON DELETE CASCADE
 );
 
 CREATE TABLE Operacao (
@@ -370,4 +370,20 @@ CREATE TABLE Logs (
   tabela varchar2(30) NOT NULL,
   PRIMARY KEY (id_log),
   FOREIGN KEY (id_tipo_alteracao) REFERENCES TipoAlteracao (id_tipo_alteracao) ON DELETE CASCADE
+);
+
+CREATE TABLE LeituraInputSensor (
+  id_leitura number(10) NOT NULL,
+  n_registos_lidos number(10) NOT NULL,
+  data_hora timestamp(0) NOT NULL,
+  PRIMARY KEY (id_leitura)
+);
+
+CREATE TABLE ErroLeituraInputSensor (
+  id_leitura number(10) NOT NULL,
+  id_sensor number(10) NOT NULL,
+  n_registos number(10) NOT NULL,
+  PRIMARY KEY (id_leitura, id_sensor),
+  FOREIGN KEY (id_leitura) REFERENCES LeituraInputSensor (id_leitura) ON DELETE CASCADE,
+  FOREIGN KEY (id_sensor) REFERENCES Sensor (id_sensor) ON DELETE CASCADE
 );

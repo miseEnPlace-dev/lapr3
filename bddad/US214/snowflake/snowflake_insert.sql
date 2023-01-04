@@ -96,6 +96,3 @@ INSERT INTO Venda VALUES (5, 2, 5, 5, 5, 500);
 INSERT INTO Venda VALUES (6, 3, 6, 6, 6, 600);
 INSERT INTO Venda VALUES (7, 1, 7, 7, 7, 700);
 INSERT INTO Venda VALUES (8, 2, 8, 8, 8, 800);
-
-
-
