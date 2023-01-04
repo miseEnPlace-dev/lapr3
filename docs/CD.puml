@@ -63,6 +63,7 @@ class Company {
    - cultivationStore: CultivationStore
 
   +getDistributionNetwork(): DistributionNetwork
+  +setDistributionNetwork(): void
   +getEntityStore(): EntityStore
   +getAgriculturalParcelStore(): AgriculturalParcelStore
   +getCultivationStore(): CultivationStore
@@ -128,6 +129,91 @@ class RegularityFactory {
 class RegularityAll {}
 class RegularityOdd {}
 class RegularityEven {}
+
+class Basket {
+   - ordered: Map<Product, Integer>
+   - received: ReceivedProducts
+   - hub: Enterprise
+   - client: Client
+
+   +addOrderedProduct(): void
+   +addReceivedProduct(): void
+   +getClient(): Client
+   +isFromClient(): boolean
+   +isFromHub(): boolean
+   +getHub(): Enterprise
+   +getProducers(): Set<Producer>
+   +getNumberOfProducts(): int
+   +isFullyFulfilled(): boolean
+   +isPartialFullfilled(): boolean
+   +getNumberOfFullySatisfiedProducts(): int
+   +getNUmberOfNotSatisfiedProducts(): int
+   +getNUmberOfPartialSatisfiedProducts(): int
+   +isFullySuppliedBy(): boolean
+   +isPartialSuppliedBy(): boolean
+   +getQuantityOfSuppliedProduct(): int
+   +getProducts(): Set<Product>
+}
+
+class DailyData {
+  - dailyData: SortedMap<Integer, Map<Product,Integer>>
+
+  +setData(): void
+  +addDayData(): void
+  +addProductInfoToDayData(): void
+  +getDayData(): Map<Product, Integer>
+  +getQuantityOfProductForDay(): Integer
+  +setQuantityOfProductDay(): void
+  +getDailyDataUntilData(): DailyData
+  +getNonExpiredProductQuantity(): int
+  +getQuantityAvailable(): Integer
+  +removeValidProductQuantity(): void
+}
+
+class ReceivedProducts {
+  - received: Map<Producer, Map<Product, Integer>>
+
+  +addProduct(): void
+  +addAllProducts(): void
+  +getQuantityOfSuppliedProduct(): int
+  +getProducers(): Set<Producer>
+  +matchesProductQuantity(): boolean
+  +hasNotReceivedProduct(): boolean
+  +getNumberOfDistinctProducers(): int
+}
+
+class ExpeditionList {
+ - baskets: List<Basket>
+ - day: int
+
+ +getDay(): int
+ +addBasket(): void
+ +getBaskets(): List<Basket>
+ +getNUmberOfBaskets(): int
+ +getProducers(): Set<Producer>
+ +getHubs(): Set<Enterprise>
+ +getProducersThatSupplyHubs(): Map<Enterprise, List<Producer>>
+ +getBasketsDeliveredAtHubs(): Map<Enterprise, Integer>
+ +getNumberOfFullySatisfiedProducts(): int
+ +getNumberOfPartiallySatisfiedProducts(): int
+ +getNumberOfNotSatisfiedProducts(): int
+ +getPercentageOfFullySatisfiedProducts(): double
+ +getNumberOfDistinctProducersForBasket(): int
+ +getNumberOfFullySuppliedBasketsByProducer(): int
+ +getNumberOfPartiallySuppliedBasketsByProducer(): int
+ +getNumberOfFullyFulfilledBasketsByClient(): int
+ +getNumberOfPartiallyFulfilledBasketsByClient(): int
+ +getProducersThatSupplyAllClientsBaskets(): Set<Producer>
+ +getNumberOfDistinctClients(): int
+ +getNumberOfDistinctHubs(): int
+ +getNumberOfDistinctClients(): int
+ +getDistinctProducers(): int
+ +getNumberOfOutOfStockProducts(): int
+
+}
+
+Basket "*" --o "1" ExpeditionList
+Basket <|-- ReceivedProducts
 
 Regularity <|-- RegularityAll
 Regularity <|-- RegularityOdd
