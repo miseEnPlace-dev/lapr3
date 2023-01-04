@@ -47,7 +47,6 @@ public class ExpeditionPathTest {
 
     Product macaDeAlcobaca = new Product("Maca de Alcobaca");
     Product bananaDaMadeira = new Product("Banana da Madeira");
-    Product batataVermelha = new Product("Batata Vermelha");
 
     // Porto coordinates
     srManuelPorto = new Producer("SR_MANUEL_PORTO", 41.14961, -8.61099, "OPO");

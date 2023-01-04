@@ -423,14 +423,14 @@ public class DistributionNetworkTest {
     network.addRelation(e2, e6, 600);
     network.addRelation(e6, e3, 400);
 
-    Graph expected = new AdjacencyMapGraph<>(false);
+    Graph<Entity, Integer> expected = new AdjacencyMapGraph<>(false);
     expected.addEdge(e1, e2, 100);
     expected.addEdge(e3, e4, 200);
     expected.addEdge(e3, e2, 300);
     expected.addEdge(e6, e3, 400);
     expected.addEdge(e1, e5, 500);
 
-    Graph actual = network.getMinimumShortestPathNetwork();
+    Graph<Entity, Integer> actual = network.getMinimumShortestPathNetwork();
 
     assertEquals(expected.edges().size(), actual.edges().size());
     assertTrue(expected.edges().containsAll(actual.edges()));
