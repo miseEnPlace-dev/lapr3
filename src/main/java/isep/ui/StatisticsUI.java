@@ -1,6 +1,7 @@
 package isep.ui;
 
 import isep.controller.ExpeditionListStatisticsController;
+import isep.ui.utils.Utils;
 
 public class StatisticsUI implements Runnable {
   private ExpeditionListStatisticsController controller;
@@ -12,6 +13,8 @@ public class StatisticsUI implements Runnable {
   public void run() {
 
     // TODO Auto-generated method stub
+
+    Utils.readLineFromConsole("Press any key to continue... ");
 
   }
 
