@@ -15,33 +15,33 @@ public class ExpeditionListMock {
     hub.makeHub();
     Client client = new Client("id2", 0, 0, "C01");
     Producer producer = new Producer("id3", 0, 0, "P01");
-    producer.addProductInfoToDayData(1, new Product("Apple"), 500);
-    producer.addProductInfoToDayData(1, new Product("Banana"), 500);
-    producer.addProductInfoToDayData(1, new Product("Orange"), 500);
+    producer.addProductInfoToDayData(1, new Product("Apple"), 500.);
+    producer.addProductInfoToDayData(1, new Product("Banana"), 500.);
+    producer.addProductInfoToDayData(1, new Product("Orange"), 500.);
 
     Producer secondProducer = new Producer("id4", 0, 0, "P02");
-    secondProducer.addProductInfoToDayData(1, new Product("Apple"), 1000);
-    secondProducer.addProductInfoToDayData(1, new Product("Banana"), 200);
-    secondProducer.addProductInfoToDayData(1, new Product("Orange"), 500);
+    secondProducer.addProductInfoToDayData(1, new Product("Apple"), 1000.);
+    secondProducer.addProductInfoToDayData(1, new Product("Banana"), 200.);
+    secondProducer.addProductInfoToDayData(1, new Product("Orange"), 500.);
 
     Basket firstBasket = new Basket(hub, client);
-    firstBasket.addOrderedProduct(new Product("Apple"), 500);
-    firstBasket.addOrderedProduct(new Product("Banana"), 1000);
-    firstBasket.addOrderedProduct(new Product("Orange"), 10);
+    firstBasket.addOrderedProduct(new Product("Apple"), 500.);
+    firstBasket.addOrderedProduct(new Product("Banana"), 1000.);
+    firstBasket.addOrderedProduct(new Product("Orange"), 10.);
 
-    firstBasket.addReceivedProduct(producer, new Product("Apple"), 500);
-    firstBasket.addReceivedProduct(producer, new Product("Banana"), 800);
-    firstBasket.addReceivedProduct(producer, new Product("Orange"), 10);
+    firstBasket.addReceivedProduct(producer, new Product("Apple"), 500.);
+    firstBasket.addReceivedProduct(producer, new Product("Banana"), 800.);
+    firstBasket.addReceivedProduct(producer, new Product("Orange"), 10.);
 
     Client secondClient = new Client("id2", 0, 0, "C02");
     Basket secondBasket = new Basket(hub, secondClient);
-    secondBasket.addOrderedProduct(new Product("Apple"), 10000);
-    secondBasket.addOrderedProduct(new Product("Banana"), 200);
-    secondBasket.addOrderedProduct(new Product("Orange"), 100);
+    secondBasket.addOrderedProduct(new Product("Apple"), 10000.);
+    secondBasket.addOrderedProduct(new Product("Banana"), 200.);
+    secondBasket.addOrderedProduct(new Product("Orange"), 100.);
 
-    secondBasket.addReceivedProduct(secondProducer, new Product("Apple"), 500);
-    secondBasket.addReceivedProduct(producer, new Product("Banana"), 200);
-    secondBasket.addReceivedProduct(producer, new Product("Orange"), 0);
+    secondBasket.addReceivedProduct(secondProducer, new Product("Apple"), 500.);
+    secondBasket.addReceivedProduct(producer, new Product("Banana"), 200.);
+    secondBasket.addReceivedProduct(producer, new Product("Orange"), .0);
 
     expList.addBasket(firstBasket);
     expList.addBasket(secondBasket);

@@ -23,6 +23,7 @@ public class App {
     this.authFacade.addUserWithRole(SystemRole.DRIVER.toString(), "123456", SystemRole.DRIVER);
     this.authFacade.addUserWithRole(SystemRole.DISTRIBUTION_MANAGER.toString(), "123456",
         SystemRole.DISTRIBUTION_MANAGER);
+    this.authFacade.addUserWithRole("agri", "1", SystemRole.AGRICULTURAL_MANAGER);
   }
 
   /**

@@ -13,13 +13,13 @@ import java.util.TreeMap;
 public class DailyData {
   private final int DAYS_TO_EXPIRE = 3;
 
-  private SortedMap<Integer, Map<Product, Integer>> dailyData;
+  private SortedMap<Integer, Map<Product, Double>> dailyData;
 
   public DailyData() {
     this.dailyData = new TreeMap<>();
   }
 
-  public void setData(SortedMap<Integer, HashMap<Product, Integer>> dailyData) {
+  public void setData(SortedMap<Integer, HashMap<Product, Double>> dailyData) {
     if (dailyData == null)
       throw new IllegalArgumentException("Data cannot be null");
     this.dailyData.putAll(dailyData);
@@ -31,7 +31,7 @@ public class DailyData {
    *
    *                 Adds the products/quantity data to a specific day
    */
-  public void addDayData(Integer day, Map<Product, Integer> products) {
+  public void addDayData(Integer day, Map<Product, Double> products) {
     if (day < 0)
       throw new IllegalArgumentException("Day cannot be negative");
     if (products == null || products.isEmpty())
@@ -47,8 +47,8 @@ public class DailyData {
    *
    *                 Adds a single product/quantity to a specific day
    */
-  public void addProductInfoToDayData(Integer day, Product product, Integer quantity) {
-    Map<Product, Integer> dailyMap = this.dailyData.get(day);
+  public void addProductInfoToDayData(Integer day, Product product, Double quantity) {
+    Map<Product, Double> dailyMap = this.dailyData.get(day);
     if (dailyMap == null)
       dailyMap = new HashMap<>();
 
@@ -65,7 +65,7 @@ public class DailyData {
    *         dailyData for a
    *         specific day
    */
-  public Map<Product, Integer> getDayData(Integer day) {
+  public Map<Product, Double> getDayData(Integer day) {
     return this.dailyData.get(day);
   }
 
@@ -77,16 +77,16 @@ public class DailyData {
    *         Returns the quantity of a product registered in that dailyData for a
    *         specific day
    */
-  public Integer getQuantityOfProductForDay(Integer day, Product product) {
+  public Double getQuantityOfProductForDay(Integer day, Product product) {
     if (dailyData.get(day) == null)
-      return 0;
+      return .0;
     if (dailyData.get(day).get(product) == null)
-      return 0;
+      return .0;
 
     return this.dailyData.get(day).get(product);
   }
 
-  public void setQuantityOfProductDay(Integer day, Product p, Integer quant) {
+  public void setQuantityOfProductDay(Integer day, Product p, Double quant) {
     this.dailyData.get(day).put(p, quant);
   }
 
@@ -97,8 +97,8 @@ public class DailyData {
     return result;
   }
 
-  public int getNonExpiredProductQuantity(Product product, int day) {
-    int quantity = 0;
+  public Double getNonExpiredProductQuantity(Product product, int day) {
+    Double quantity = .0;
 
     for (int i = day; i > day - DAYS_TO_EXPIRE; i--)
       quantity += getQuantityOfProductForDay(i, product);
@@ -106,8 +106,8 @@ public class DailyData {
     return quantity;
   }
 
-  public Integer getQuantityAvailable(Product p, Integer day) {
-    Integer quant = 0;
+  public Double getQuantityAvailable(Product p, Integer day) {
+    Double quant = .0;
     for (int i = 0; i < 3; i++) {
       if (this.dailyData.containsKey(day - i))
         quant += this.dailyData.get(day - i).get(p);
@@ -115,16 +115,16 @@ public class DailyData {
     return quant;
   }
 
-  public void removeValidProductQuantity(Product p, Integer quant, Integer day) {
+  public void removeValidProductQuantity(Product p, Double quant, Integer day) {
     for (int i = 2; i >= 0; i--) {
       if (quant != 0) {
-        Integer quantAvailable = this.getQuantityOfProductForDay(day - i, p);
+        Double quantAvailable = this.getQuantityOfProductForDay(day - i, p);
         if (quantAvailable < quant) {
           quant -= quantAvailable;
-          this.setQuantityOfProductDay(day - i, p, 0);
+          this.setQuantityOfProductDay(day - i, p, .0);
         } else {
           this.setQuantityOfProductDay(day - i, p, quantAvailable - quant);
-          quant = 0;
+          quant = .0;
         }
       }
     }

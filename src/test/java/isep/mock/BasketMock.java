@@ -19,13 +19,13 @@ public class BasketMock {
     Product product2 = new Product("Bananas");
     Product product3 = new Product("Oranges");
 
-    basket.addOrderedProduct(product1, 100);
-    basket.addOrderedProduct(product2, 100);
-    basket.addOrderedProduct(product3, 100);
+    basket.addOrderedProduct(product1, 100.);
+    basket.addOrderedProduct(product2, 100.);
+    basket.addOrderedProduct(product3, 100.);
 
-    basket.addReceivedProduct(producer, product1, 100);
-    basket.addReceivedProduct(producer, product2, 100);
-    basket.addReceivedProduct(producer, product3, 100);
+    basket.addReceivedProduct(producer, product1, 100.);
+    basket.addReceivedProduct(producer, product2, 100.);
+    basket.addReceivedProduct(producer, product3, 100.);
 
     return basket;
   }
@@ -42,13 +42,13 @@ public class BasketMock {
     Product product2 = new Product("Bananas");
     Product product3 = new Product("Oranges");
 
-    basket.addOrderedProduct(product1, 100);
-    basket.addOrderedProduct(product2, 100);
-    basket.addOrderedProduct(product3, 100);
+    basket.addOrderedProduct(product1, 100.);
+    basket.addOrderedProduct(product2, 100.);
+    basket.addOrderedProduct(product3, 100.);
 
-    basket.addReceivedProduct(producer1, product1, 100);
-    basket.addReceivedProduct(producer1, product2, 100);
-    basket.addReceivedProduct(producer2, product3, 100);
+    basket.addReceivedProduct(producer1, product1, 100.);
+    basket.addReceivedProduct(producer1, product2, 100.);
+    basket.addReceivedProduct(producer2, product3, 100.);
 
     return basket;
   }
@@ -64,12 +64,12 @@ public class BasketMock {
     Product product2 = new Product("Bananas");
     Product product3 = new Product("Oranges");
 
-    basket.addOrderedProduct(product1, 100);
-    basket.addOrderedProduct(product2, 100);
-    basket.addOrderedProduct(product3, 100);
+    basket.addOrderedProduct(product1, 100.);
+    basket.addOrderedProduct(product2, 100.);
+    basket.addOrderedProduct(product3, 100.);
 
-    basket.addReceivedProduct(producer, product1, 100);
-    basket.addReceivedProduct(producer, product2, 100);
+    basket.addReceivedProduct(producer, product1, 100.);
+    basket.addReceivedProduct(producer, product2, 100.);
 
     return basket;
   }

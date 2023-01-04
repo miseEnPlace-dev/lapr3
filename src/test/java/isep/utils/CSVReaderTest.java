@@ -96,7 +96,7 @@ class CSVReaderTest {
     map.put("Area Code", "68");
     map.put("Item", "Pro,du,ction");
     map.put("AaAA", "");
-    map.put("\"gaagda\"", "");
+    map.put("gaagda", "");
     map.put("f", "A");
     expected.add(map);
 
@@ -104,7 +104,7 @@ class CSVReaderTest {
     map.put("Area Code", "1");
     map.put("Item", "'3");
     map.put("AaAA", "Italy");
-    map.put("\"gaagda\"", "1");
+    map.put("gaagda", "1");
     map.put("f", "'2");
     expected.add(map);
 
