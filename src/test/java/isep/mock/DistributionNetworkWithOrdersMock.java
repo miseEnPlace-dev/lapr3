@@ -14,10 +14,9 @@ import isep.shared.exceptions.InvalidProductNameException;
 import isep.utils.CSVReader;
 
 public class DistributionNetworkWithOrdersMock {
-
   private final static String FILE_PATH = "./src/test/resources/distancesSample.csv";
 
-  public static DistributionNetwork distributionNetworkWithOrdersMockSmall()
+  public DistributionNetwork distributionNetworkWithOrdersMockSmall()
       throws FileNotFoundException, InvalidProductNameException {
 
     EntityStore store = new EntityStoreMock().mockSimpleEntityStoreSmall();
@@ -37,8 +36,6 @@ public class DistributionNetworkWithOrdersMock {
     mapProducer.put(lemon, 300);
 
     dataProducer.addDayData(1, mapProducer);
-    dataProducer.addDayData(2, mapProducer);
-    dataProducer.addDayData(3, mapProducer);
     dataProducer.addDayData(4, mapProducer);
 
     Map<Product, Integer> mapProducer1 = new HashMap<>();
@@ -48,16 +45,12 @@ public class DistributionNetworkWithOrdersMock {
 
     dataProducer1.addDayData(1, mapProducer1);
     dataProducer1.addDayData(2, mapProducer1);
-    dataProducer1.addDayData(3, mapProducer1);
-    dataProducer1.addDayData(4, mapProducer1);
 
     Map<Product, Integer> mapProducer2 = new HashMap<>();
     mapProducer.put(banana, 300);
     mapProducer.put(orange, 200);
     mapProducer.put(lemon, 100);
 
-    dataProducer2.addDayData(1, mapProducer2);
-    dataProducer2.addDayData(2, mapProducer2);
     dataProducer2.addDayData(3, mapProducer2);
     dataProducer2.addDayData(4, mapProducer2);
 
