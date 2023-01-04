@@ -3,6 +3,7 @@ package isep.ui;
 import isep.controller.App;
 import isep.controller.FindNearestHubController;
 import isep.model.DistributionNetwork;
+import isep.ui.utils.Utils;
 
 public class NearestHubUI implements Runnable {
   private FindNearestHubController findNearestHubController;
@@ -17,6 +18,8 @@ public class NearestHubUI implements Runnable {
     findNearestHubController = new FindNearestHubController(distributionNetwork);
     System.out.println("\nYour nearest hub is:");
     findNearestHubController.findNearestHub();
+
+    Utils.readLineFromConsole("Press any key to continue... ");
 
   }
 
