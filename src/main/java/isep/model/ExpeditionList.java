@@ -265,8 +265,8 @@ public class ExpeditionList {
 
     for (Basket basket : baskets)
       for (Product product : basket.getProducts()) {
-        int availableStock = producer.getNonExpiredQuantityUntilDate(product, day);
-        int suppliedQuantity = basket.getQuantityOfSuppliedProduct(producer, product);
+        Double availableStock = producer.getNonExpiredQuantityUntilDate(product, day);
+        Double suppliedQuantity = basket.getQuantityOfSuppliedProduct(producer, product);
 
         if (availableStock <= suppliedQuantity)
           count++;

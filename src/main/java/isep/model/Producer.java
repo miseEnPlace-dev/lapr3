@@ -9,7 +9,7 @@ public class Producer extends Entity {
     return this.dailyData.getDailyDataUntilDate(day);
   }
 
-  public int getNonExpiredQuantityUntilDate(Product product, int day) {
+  public Double getNonExpiredQuantityUntilDate(Product product, int day) {
     return this.dailyData.getNonExpiredProductQuantity(product, day);
   }
 }

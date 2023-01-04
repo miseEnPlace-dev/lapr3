@@ -79,14 +79,14 @@ public class DailyData {
    */
   public Double getQuantityOfProductForDay(Integer day, Product product) {
     if (dailyData.get(day) == null)
-      return 0;
+      return .0;
     if (dailyData.get(day).get(product) == null)
-      return 0;
+      return .0;
 
     return this.dailyData.get(day).get(product);
   }
 
-  public void setQuantityOfProductDay(Integer day, Product p, Integer quant) {
+  public void setQuantityOfProductDay(Integer day, Product p, Double quant) {
     this.dailyData.get(day).put(p, quant);
   }
 
@@ -121,10 +121,10 @@ public class DailyData {
         Double quantAvailable = this.getQuantityOfProductForDay(day - i, p);
         if (quantAvailable < quant) {
           quant -= quantAvailable;
-          this.setQuantityOfProductDay(day - i, p, 0);
+          this.setQuantityOfProductDay(day - i, p, .0);
         } else {
           this.setQuantityOfProductDay(day - i, p, quantAvailable - quant);
-          quant = 0;
+          quant = .0;
         }
       }
     }
