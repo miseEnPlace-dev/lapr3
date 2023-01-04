@@ -232,7 +232,7 @@ public class DistributionNetwork {
         Integer quantOrdered = ordered.get(product);
         
         for (Producer producer : prodStocks.keySet()) { // iterates all producers
-          Integer quant = prodStocks.get(producer).getQuantityAvailable(product, quantOrdered); 
+          Integer quant = prodStocks.get(producer).getNonExpiredProductQuantity(product, quantOrdered); 
           
           if(quant >=  quantOrdered){
             bestProducer = producer;
@@ -276,7 +276,7 @@ public class DistributionNetwork {
           Integer quantOrdered = ordered.get(product);
           
           for (Producer producer : prodStocks.keySet()) { // iterates all producers
-            Integer quant = prodStocks.get(producer).getQuantityAvailable(product, quantOrdered); 
+            Integer quant = prodStocks.get(producer).getNonExpiredProductQuantity(product, quantOrdered); 
             
             if(quant >=  quantOrdered){
               bestProducer = producer;

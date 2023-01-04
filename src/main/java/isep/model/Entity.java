@@ -2,6 +2,7 @@ package isep.model;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import isep.utils.HaversineCalculator;
 
 /*
@@ -27,7 +28,8 @@ public abstract class Entity implements VertexHeuristic<Entity> {
   }
 
   /**
-   * Calculates the distance between two entities using the Haversine formula This method is used in
+   * Calculates the distance between two entities using the Haversine formula This
+   * method is used in
    * the A* algorithm
    *
    * @param target The entity to which the distance will be calculated
@@ -98,6 +100,11 @@ public abstract class Entity implements VertexHeuristic<Entity> {
   public String toString() {
     return "Entity [id=" + id + ", latitude=" + latitude + ", longitude=" + longitude
         + ", localizationId=" + localizationId;
+  }
+
+  @Override
+  public int hashCode() {
+    return id.hashCode();
   }
 
   @Override

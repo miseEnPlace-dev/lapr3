@@ -32,6 +32,8 @@ public class LoadDistributionNetworkUI implements Runnable {
       controller = new LoadDistributionNetworkController(entityStore, data);
       network = controller.loadDistributionNetwork();
 
+      App.getInstance().getCompany().setDistributionNetwork(network);
+      System.out.println("\nDistribution network loaded successfully!");
     } catch (FileNotFoundException e) {
       System.out.println("\nFile not found!");
     }

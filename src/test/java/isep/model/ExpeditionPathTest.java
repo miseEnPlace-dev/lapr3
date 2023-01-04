@@ -104,8 +104,8 @@ public class ExpeditionPathTest {
     ReceivedProducts srFernandoReceivedProducts = new ReceivedProducts();
     srFernandoReceivedProducts.addAllProducts(srFernandoLisboa, srFernandoOrderedProducts);
     ReceivedProducts srManuelAndFernandoReceivedProducts = new ReceivedProducts();
-    srManuelAndFernandoReceivedProducts.addAllProducts(srManuelPorto, srManuelOrderedProducts);
     srManuelAndFernandoReceivedProducts.addAllProducts(srFernandoLisboa, srFernandoOrderedProducts);
+    srManuelAndFernandoReceivedProducts.addAllProducts(srManuelPorto, srManuelOrderedProducts);
 
     dAliceBasket = new Basket(srManuelOrderedProducts, srManuelReceivedProducts, hubAveiro, dAliceBraga);
     dManuelaBasket = new Basket(srFernandoOrderedProducts, srFernandoReceivedProducts, hubViseu,
