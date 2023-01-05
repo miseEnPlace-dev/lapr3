@@ -3,6 +3,8 @@ package isep.model;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import isep.utils.graph.AdjacencyMapGraph;
 
 public class NetworkGraph<V, E> extends AdjacencyMapGraph<V, E> {
@@ -28,8 +30,9 @@ public class NetworkGraph<V, E> extends AdjacencyMapGraph<V, E> {
     return hubs;
   }
 
-  public HashMap<Producer, DailyData> getProducersStockUntilDate(Integer day) {
-    HashMap<Producer, DailyData> result = new HashMap<>();
+  public Map<Producer, DailyData> getProducersStockUntilDate(Integer day) {
+    Map<Producer, DailyData> result = new HashMap<>();
+
     for (V vertex : super.mapVertices.keySet())
       if (vertex.getClass() == Producer.class) {
         Producer p = (Producer) vertex;
