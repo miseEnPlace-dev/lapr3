@@ -17,8 +17,11 @@ uint64_t get_value_from_dev_random() {
 
         if (result < 1) {
                 printf("Error: failed to read any words\n");
+                fclose(f);
                 return 0;
         }
+
+        fclose(f);
 
         return buffer[0];
 }
