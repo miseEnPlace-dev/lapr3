@@ -212,11 +212,11 @@ public class DistributionNetwork {
     return nearestHub;
   }
 
-  public ExpeditionList getExpeditionList(Integer day) throws InvalidOrderException, InvalidHubException{
+  public ExpeditionList getExpeditionList(Integer day) throws InvalidOrderException, InvalidHubException {
     ExpeditionList expeditionList = new ExpeditionList(day);
 
     List<Client> clientsList = this.network.getEntitiesWithClass(Client.class);
-    HashMap<Producer, DailyData> prodStocks = this.getActualStock(day);
+    Map<Producer, DailyData> prodStocks = this.getActualStock(day);
 
     for (int j = 0; j < clientsList.size(); j++) { // iterate all clients
       Client client = clientsList.get(j);
@@ -224,21 +224,21 @@ public class DistributionNetwork {
       ReceivedProducts received = new ReceivedProducts();
 
       Enterprise hub = this.getNearestHub(client);
-      
+
       for (Product product : ordered.keySet()) { // iterates client product orders
         Producer bestProducer = null;
         Integer bestQuant = 0;
 
         Integer quantOrdered = ordered.get(product);
-        
+
         for (Producer producer : prodStocks.keySet()) { // iterates all producers
-          Integer quant = prodStocks.get(producer).getNonExpiredProductQuantity(product, quantOrdered); 
-          
-          if(quant >=  quantOrdered){
+          Integer quant = prodStocks.get(producer).getNonExpiredProductQuantity(product, quantOrdered);
+
+          if (quant >= quantOrdered) {
             bestProducer = producer;
             bestQuant = quant;
             break;
-          }else if( bestQuant < quant){
+          } else if (bestQuant < quant) {
             bestProducer = producer;
             bestQuant = quant;
           }
@@ -249,7 +249,7 @@ public class DistributionNetwork {
         received.setProduct(bestProducer, product, bestQuant);
 
       }
-      
+
       Basket basket = new Basket(ordered, received, hub, client);
 
       expeditionList.addBasket(basket);
@@ -259,38 +259,38 @@ public class DistributionNetwork {
     return expeditionList;
   }
 
-
-  public HashMap<Producer, DailyData> getActualStock(Integer day){
+  public Map<Producer, DailyData> getActualStock(Integer day) {
     List<Client> clientsList = this.network.getEntitiesWithClass(Client.class);
-    HashMap<Producer, DailyData> prodStocks = this.network.getProducersStockUntilDate(day);
+    Map<Producer, DailyData> prodStocks = this.network.getProducersStockUntilDate(day);
 
-    for (int i = 0; i < day-1; i++) { // iterate all days before
-
+    for (int i = 1; i < day; i++) { // iterate all days before
       for (int j = 0; j < clientsList.size(); j++) { // iterate all clients
         Map<Product, Integer> ordered = clientsList.get(j).getDayData(i);
-        
+
+        if (ordered == null)
+          continue;
+
         for (Product product : ordered.keySet()) { // iterates client product orders
           Producer bestProducer = null;
           Integer bestQuant = 0;
 
           Integer quantOrdered = ordered.get(product);
-          
-          for (Producer producer : prodStocks.keySet()) { // iterates all producers
-            Integer quant = prodStocks.get(producer).getNonExpiredProductQuantity(product, quantOrdered); 
-            
-            if(quant >=  quantOrdered){
-              bestProducer = producer;
-              bestQuant = quant;
-              break;
-            }else if( bestQuant < quant){
-              bestProducer = producer;
-              bestQuant = quant;
-            }
 
+          for (Producer producer : prodStocks.keySet()) { // iterates all producers
+            Integer quantAvailable = prodStocks.get(producer).getNonExpiredProductQuantity(product, i);
+
+            if (quantAvailable >= quantOrdered) {
+              bestProducer = producer;
+              bestQuant = quantOrdered;
+              break;
+            } else if (bestQuant < quantAvailable) {
+              bestProducer = producer;
+              bestQuant = quantAvailable;
+            }
           }
 
-          prodStocks.get(bestProducer).removeValidProductQuantity(product, bestQuant, i);
-
+          if (bestProducer != null)
+            prodStocks.get(bestProducer).removeValidProductQuantity(product, quantOrdered, i);
         }
       }
     }
