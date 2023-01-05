@@ -39,17 +39,17 @@ public class DistributionNetworkWithOrdersMock {
     dataProducer.addDayData(4, mapProducer);
 
     Map<Product, Integer> mapProducer1 = new HashMap<>();
-    mapProducer.put(banana, 300);
-    mapProducer.put(orange, 200);
-    mapProducer.put(lemon, 100);
+    mapProducer1.put(banana, 300);
+    mapProducer1.put(orange, 200);
+    mapProducer1.put(lemon, 100);
 
     dataProducer1.addDayData(1, mapProducer1);
     dataProducer1.addDayData(2, mapProducer1);
 
     Map<Product, Integer> mapProducer2 = new HashMap<>();
-    mapProducer.put(banana, 300);
-    mapProducer.put(orange, 200);
-    mapProducer.put(lemon, 100);
+    mapProducer2.put(banana, 300);
+    mapProducer2.put(orange, 200);
+    mapProducer2.put(lemon, 100);
 
     dataProducer2.addDayData(3, mapProducer2);
     dataProducer2.addDayData(4, mapProducer2);
@@ -79,9 +79,9 @@ public class DistributionNetworkWithOrdersMock {
     mapClient2.put(banana, 150);
 
     Map<Product, Integer> mapClient3 = new HashMap<>();
-    mapClient2.put(orange, 200);
-    mapClient2.put(lemon, 100);
-    mapClient2.put(banana, 150);
+    mapClient3.put(orange, 200);
+    mapClient3.put(lemon, 100);
+    mapClient3.put(banana, 150);
 
     dataClient2.addDayData(3, mapClient2);
     dataClient2.addDayData(4, mapClient3);
