@@ -40,6 +40,12 @@ public class UserTest {
   }
 
   @Test
+  public void testEqualsWithSameObject() {
+    User user = new User("username", "pwd", SystemRole.CLIENT);
+    assertTrue(user.equals(user));
+  }
+
+  @Test
   public void testEquals() {
     User user = new User("username", "pwd", SystemRole.CLIENT);
     assertTrue(user.equals(new User("username", "pwd", SystemRole.CLIENT)));
