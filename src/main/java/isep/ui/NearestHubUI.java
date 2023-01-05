@@ -19,7 +19,7 @@ public class NearestHubUI implements Runnable {
     System.out.println("\nYour nearest hub is:");
     findNearestHubController.findNearestHub();
 
-    Utils.readLineFromConsole("Press any key to continue... ");
+    Utils.readLineFromConsole("\nPress any key to continue... ");
 
   }
 

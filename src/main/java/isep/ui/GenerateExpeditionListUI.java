@@ -11,7 +11,7 @@ public class GenerateExpeditionListUI implements Runnable {
   public void run() {
     // TODO Auto-generated method stub
 
-    Utils.readLineFromConsole("Press any key to continue... ");
+    Utils.readLineFromConsole("\nPress any key to continue... ");
 
   }
 
