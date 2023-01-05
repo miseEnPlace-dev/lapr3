@@ -12,7 +12,6 @@ import java.util.TreeMap;
  */
 public class DailyData {
   private final int DAYS_TO_EXPIRE = 3;
-
   private SortedMap<Integer, Map<Product, Integer>> dailyData;
 
   public DailyData() {
@@ -87,12 +86,16 @@ public class DailyData {
   }
 
   public void setQuantityOfProductDay(Integer day, Product p, Integer quant) {
-    this.dailyData.get(day).put(p, quant);
+    if(this.dailyData.containsKey(day))
+      this.dailyData.get(day).put(p, quant);
   }
 
   public DailyData getDailyDataUntilDate(Integer day) {
     DailyData result = new DailyData();
-    this.dailyData = this.dailyData.subMap(0, day);
+
+    for (int i = 1; i < day; i++)
+      if (dailyData.get(i) != null)
+        result.addDayData(i, dailyData.get(i));
 
     return result;
   }
@@ -105,8 +108,6 @@ public class DailyData {
 
     return quantity;
   }
-
-
 
   public void removeValidProductQuantity(Product p, Integer quant, Integer day) {
     for (int i = 2; i >= 0; i--) {
