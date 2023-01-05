@@ -79,6 +79,16 @@ public class ExpeditionList {
     return hubs;
   }
 
+  public Set<Client> getClients() {
+    Set<Client> clients = new LinkedHashSet<>();
+
+    for (Basket basket : this.baskets)
+      clients.add(basket.getClient());
+
+    return clients;
+
+  }
+
   /**
    * Get, for each hub in the ExpeditionList, all producers that deliver to that
    * hub.

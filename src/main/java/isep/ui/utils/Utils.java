@@ -39,12 +39,10 @@ public class Utils {
         e.printStackTrace();
       }
 
-      if (answer.length() > 0) {
+      if (answer.length() > 0)
         valid = true;
-      } else {
+      else
         System.out.println("Invalid input! Please try again.\n");
-      }
-
     } while (!valid);
 
     return answer;
@@ -145,12 +143,12 @@ public class Utils {
     return input.equalsIgnoreCase("y");
   }
 
-  static public Object showAndSelectOne(List list, String header) {
+  static public <E> Object showAndSelectOne(List<E> list, String header) {
     showList(list, header);
     return selectsObject(list);
   }
 
-  static public int showAndSelectIndex(List list, String header) {
+  static public <E> int showAndSelectIndex(List<E> list, String header) {
     showList(list, header);
     return selectsIndex(list);
   }
@@ -160,15 +158,17 @@ public class Utils {
     return selectEnumObject(list);
   }
 
-  static public void showList(List list, String header) {
+  static public <E> void showList(List<E> list, String header) {
     System.out.println(header);
 
     int index = 0;
+
     for (Object o : list) {
       index++;
 
       System.out.println(index + ". " + o.toString());
     }
+
     System.out.println("");
     System.out.println("0 - Cancel");
   }
@@ -186,7 +186,7 @@ public class Utils {
     System.out.println("0 - Cancel");
   }
 
-  static public Object selectsObject(List list) {
+  static public <E> Object selectsObject(List<E> list) {
     int value = 0;
 
     do {
@@ -212,7 +212,7 @@ public class Utils {
       return list[value - 1];
   }
 
-  static public int selectsIndex(List list) {
+  static public <E> int selectsIndex(List<E> list) {
     int value = -1;
     do {
       value = Utils.readIntegerFromConsole("Type your option: ");
