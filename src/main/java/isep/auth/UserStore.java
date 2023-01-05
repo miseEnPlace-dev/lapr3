@@ -2,6 +2,7 @@ package isep.auth;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import isep.shared.SystemRole;
 
 public class UserStore {
@@ -15,11 +16,12 @@ public class UserStore {
     if (userExist(username, password))
       return false;
 
-    users.add(new User(username, password, role));
-    return true;
+    return users.add(new User(username, password, role));
   }
 
   private boolean userExist(String userName, String password) {
+    if (userName == null || password == null)
+      return false;
     if (users.isEmpty())
       return false;
 
@@ -29,7 +31,6 @@ public class UserStore {
 
     return false;
   }
-
 
   public User getByUsername(String username, String password) {
     if (!userExist(username, password))

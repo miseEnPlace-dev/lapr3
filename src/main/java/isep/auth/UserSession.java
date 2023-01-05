@@ -24,9 +24,9 @@ public class UserSession {
     return this.user != null;
   }
 
-  public String getUserNam() {
+  public String getUserName() {
     if (isLoggedIn())
-      this.user.getUsername();
+      return this.user.getUsername();
 
     return null;
   }
