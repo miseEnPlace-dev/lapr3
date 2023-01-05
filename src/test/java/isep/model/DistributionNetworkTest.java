@@ -2,16 +2,22 @@ package isep.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 
+import isep.mock.DistributionNetworkWithOrdersMock;
 import isep.shared.exceptions.InvalidNumberOfHubsException;
+import isep.shared.exceptions.InvalidProductNameException;
 import isep.utils.graph.AdjacencyMapGraph;
 import isep.utils.graph.Graph;
 
@@ -499,5 +505,38 @@ public class DistributionNetworkTest {
     assertEquals(expected.size(), actual.size());
     assertEquals(expected.get(0), actual.get(0)); // p1
     assertEquals(expected.get(1), actual.get(1)); // p3
+  }
+
+  @Test
+  public void testGetActualStockWorks() throws FileNotFoundException, InvalidProductNameException {
+    DistributionNetwork network = new DistributionNetworkWithOrdersMock().distributionNetworkWithOrdersMockSmall();
+
+    Map<Producer, DailyData> actualStock = network.getActualStock(4);
+
+    DailyData producer1Data = actualStock.get(new Producer("P1", 0, 0, "CT5"));
+    DailyData producer2Data = actualStock.get(new Producer("P2", 0, 0, "CT6"));
+    DailyData producer3Data = actualStock.get(new Producer("P3", 0, 0, "CT8"));
+
+    Product banana = new Product("banana");
+    Product orange = new Product("orange");
+    Product lemon = new Product("lemon");
+
+    
+    assertEquals(0, producer1Data.getQuantityOfProductForDay(1, banana));
+    assertEquals(0, producer1Data.getQuantityOfProductForDay(1, orange));
+    assertEquals(100, producer1Data.getQuantityOfProductForDay(1, lemon));
+
+    assertEquals(150, producer2Data.getQuantityOfProductForDay(1, banana));
+    assertEquals(0, producer2Data.getQuantityOfProductForDay(1, orange));
+    assertEquals(100, producer2Data.getQuantityOfProductForDay(1, lemon));
+
+    assertEquals(300, producer2Data.getQuantityOfProductForDay(2, banana));
+    assertEquals(200, producer2Data.getQuantityOfProductForDay(2, orange));
+    assertEquals(100, producer2Data.getQuantityOfProductForDay(2, lemon));
+
+    assertEquals(300, producer3Data.getQuantityOfProductForDay(3, banana));
+    assertEquals(200, producer3Data.getQuantityOfProductForDay(3, orange));
+    assertEquals(100, producer3Data.getQuantityOfProductForDay(3, lemon));
+
   }
 }
