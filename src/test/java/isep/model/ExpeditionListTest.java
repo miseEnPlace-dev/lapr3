@@ -115,6 +115,11 @@ public class ExpeditionListTest {
   }
 
   @Test
+  public void testGetClients() {
+    assertEquals(1, expList.getClients().size());
+  }
+
+  @Test
   public void testGetNumberOfDistinctProducers() {
     assertEquals(2, expList.getNumberOfDistinctProducers(mockHub));
   }
