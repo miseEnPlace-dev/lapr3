@@ -31,7 +31,7 @@ public class ExpeditionListStatisticsController {
 
       current.put("No. of products totally fulfilled", Integer.toString(fullySatisfiedProducts));
       current.put("No. of products partially fulfilled", Integer.toString(partiallySatisfiedProducts));
-      current.put("Basket fulfillment percentage", Double.toString(percentageOfFullySatisfiedProducts));
+      current.put("Basket fulfillment percentage", String.format("%.1f%%", percentageOfFullySatisfiedProducts * 100));
       current.put("No. of producers that supply basket", Integer.toString(numberOfDistinctProducers));
 
       result.add(current);
