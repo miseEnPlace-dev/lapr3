@@ -270,7 +270,7 @@ int main(void)
   new_freq = 5400;
   adjust_sensor_freq(p_sens, new_freq);
   printf("\nAjustada a frequência do sensor c/ id %hu para %lu segundos.\n\n", p_sens->id, new_freq);
-//
+
   print_small(data, n_sensors);
 
   deallocate(data, n_sensors);
