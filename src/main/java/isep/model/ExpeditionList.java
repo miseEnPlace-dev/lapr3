@@ -200,7 +200,7 @@ public class ExpeditionList {
     return count;
   }
 
-  public Set<Producer> getProducersThatSupplyAllClientsBaskets(Client client) {
+  public int getNumberOfDistinctProducersThatSupplyAllClientsBasket(Client client) {
     Set<Producer> producers = new HashSet<>();
 
     for (Basket basket : baskets) {
@@ -211,7 +211,7 @@ public class ExpeditionList {
       producers.addAll(basketProducers);
     }
 
-    return producers;
+    return producers.size();
   }
 
   public int getNumberOfDistinctClients(Producer producer) {
@@ -256,7 +256,7 @@ public class ExpeditionList {
     return clients.size();
   }
 
-  public int getDistinctProducers(Enterprise hub) {
+  public int getNumberOfDistinctProducers(Enterprise hub) {
     Set<Producer> producers = new HashSet<>();
 
     for (Basket basket : baskets) {

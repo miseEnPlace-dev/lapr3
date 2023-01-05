@@ -13,6 +13,25 @@ public class StatisticsUI implements Runnable {
   public StatisticsUI() {
   }
 
+  private void showStatisticsOfOptions(int option) {
+    switch (option) {
+      case 1:
+        Utils.showList(controller.getBasketsStatistics(), "Baskets' Statistics");
+        break;
+      case 2:
+        Utils.showList(controller.getClientsStatistics(), "Clients' Statistics");
+        break;
+      case 3:
+        Utils.showList(controller.getProducersStatistics(), "Producers' Statistics");
+        break;
+      case 4:
+        Utils.showList(controller.getHubsStatistics(), "Hubs' Statistics");
+        break;
+      default:
+        break;
+    }
+  }
+
   @Override
   public void run() {
     controller = new ExpeditionListStatisticsController(App.getInstance().getCompany().getCurrentExpeditionList());
@@ -23,6 +42,14 @@ public class StatisticsUI implements Runnable {
     options.add("Producer");
     options.add("Hub");
 
-    Utils.showAndSelectIndex(options, "Statistics");
+    int option = 0;
+
+    do {
+      Utils.showList(options, "Statistics");
+      option = Utils.readIntegerFromConsole("Option: ");
+
+      showStatisticsOfOptions(option);
+    } while (option < 0 || option > 4);
   }
+
 }
