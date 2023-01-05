@@ -18,6 +18,11 @@ public class NetworkMinimumCostUI implements Runnable {
   @Override
   public void run() {
     network = App.getInstance().getCompany().getDistributionNetwork();
+    if (network.getEntities().isEmpty()) {
+      System.out.println("\nYou must load a distribution network first");
+      return;
+    }
+
     controller = new ConnectedNetworkShortestPathController(network);
 
     try {

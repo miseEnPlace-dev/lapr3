@@ -13,9 +13,6 @@ public class StatisticsUI implements Runnable {
   public void run() {
 
     // TODO Auto-generated method stub
-
-    Utils.readLineFromConsole("Press any key to continue... ");
-
   }
 
 }

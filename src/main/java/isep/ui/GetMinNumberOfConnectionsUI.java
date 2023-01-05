@@ -18,8 +18,6 @@ public class GetMinNumberOfConnectionsUI implements Runnable {
     controller = new GetMinNumberOfConnectionsController(network);
     // TODO Auto-generated method stub
 
-    Utils.readLineFromConsole("\nPress any key to continue... ");
-
   }
 
 }
