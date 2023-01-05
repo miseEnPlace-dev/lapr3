@@ -26,7 +26,7 @@ public class ImportBasketListUI implements Runnable {
       System.out.println("\nFile does not exist.");
     }
 
-    Utils.readLineFromConsole("Press any key to continue... ");
+    Utils.readLineFromConsole("\nPress any key to continue... ");
 
   }
 }
