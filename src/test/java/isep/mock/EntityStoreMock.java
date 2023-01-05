@@ -69,7 +69,7 @@ public class EntityStoreMock {
     store.addEntity("P2", 11.0, 20.0, "CT6", Role.PRODUCER);
     store.addEntity("C4", 30.0, 10.0, "CT7", Role.CLIENT);
     store.addEntity("P3", 10.0, 10.0, "CT8", Role.PRODUCER);
-    store.addEntity("E2", 10.0, -20.0, "CT9", Role.ENTERPRISE);
+    store.addEntity("E2", 10.0, 20.0, "CT9", Role.ENTERPRISE);
 
     return store;
   }
