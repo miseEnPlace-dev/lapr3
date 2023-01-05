@@ -20,19 +20,21 @@ public class DefineHubsUI implements Runnable {
   @Override
   public void run() {
     network = App.getInstance().getCompany().getDistributionNetwork();
+    if (network.getEntities().isEmpty()) {
+      System.out.println("\nYou must load a distribution network first");
+      return;
+    }
+
     controller = new DefineHubsController(network);
 
-    int numberOfHubs = Utils.readIntegerFromConsole("\n\nNumber of hubs: ");
+    int numberOfHubs = Utils.readIntegerFromConsole("\nNumber of hubs: ");
     try {
       hubs = controller.defineHubs(numberOfHubs);
     } catch (InvalidNumberOfHubsException e) {
-      System.out.println("Invalid number of hubs");
+      System.out.println("\nInvalid number of hubs");
     }
 
     Utils.showList(hubs, "\nHubs defined: ");
-
-    Utils.readLineFromConsole("\nPress any key to continue... ");
-
   }
 
 }

@@ -34,7 +34,6 @@ public class LoadDistributionNetworkUI implements Runnable {
 
       App.getInstance().getCompany().setDistributionNetwork(network);
 
-      Utils.readLineFromConsole("\nPress any key to continue... ");
     } catch (FileNotFoundException e) {
       System.out.println("\nFile not found!");
     }

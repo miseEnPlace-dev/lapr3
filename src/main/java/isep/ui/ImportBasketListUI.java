@@ -15,6 +15,10 @@ public class ImportBasketListUI implements Runnable {
 
   @Override
   public void run() {
+    if (ctrler.isNetworkEmpty()) {
+      System.out.println("\nYou must load a distribution network first");
+      return;
+    }
     String filePath = Utils.readLineFromConsole("\nInsert the file path: ");
     ctrler.setFilename(filePath);
 
@@ -25,8 +29,6 @@ public class ImportBasketListUI implements Runnable {
     } catch (FileNotFoundException e) {
       System.out.println("\nFile does not exist.");
     }
-
-    Utils.readLineFromConsole("\nPress any key to continue... ");
 
   }
 }

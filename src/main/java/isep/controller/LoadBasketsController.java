@@ -45,4 +45,8 @@ public class LoadBasketsController {
     EntityStore entityStore = company.getEntityStore();
     return BasketsMapper.toPlan(data, entityStore);
   }
+
+  public boolean isNetworkEmpty() {
+    return company.getDistributionNetwork().getEntities().isEmpty();
+  }
 }

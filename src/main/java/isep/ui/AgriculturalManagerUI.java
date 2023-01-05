@@ -34,6 +34,7 @@ public class AgriculturalManagerUI implements Runnable {
 
       if ((option >= 0) && (option < options.size())) {
         options.get(option).run();
+        Utils.readLineFromConsole("\nPress any key to continue... ");
       }
 
     } while (option != -1);
