@@ -10,7 +10,7 @@ typedef struct
   unsigned char *errors;        // array de erros das leituras
   unsigned short id;
   unsigned short max_limit;     // limites do sensor
-  unsigned short min_limit; 
+  unsigned short min_limit;
   unsigned char sensor_type;
 } Sensor;
 
