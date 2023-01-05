@@ -3,6 +3,7 @@ package isep.ui;
 import java.util.ArrayList;
 import java.util.List;
 
+import isep.controller.App;
 import isep.ui.utils.Utils;
 
 public class AgriculturalManagerUI implements Runnable {
@@ -12,24 +13,27 @@ public class AgriculturalManagerUI implements Runnable {
 
   @Override
   public void run() {
-
     List<MenuItem> options = new ArrayList<>();
+    List<MenuItem> networkOptions = new ArrayList<>();
 
     options.add(new MenuItem("Load distribution network", new LoadDistributionNetworkUI()));
-    options.add(new MenuItem("Find minimum number of connections", new GetMinNumberOfConnectionsUI()));
-    options.add(new MenuItem("Set network hubs", new DefineHubsUI()));
-    options.add(new MenuItem("Find nearest hub for all clients", new NearestHubUI()));
-    options.add(new MenuItem("Find minimum cost network", new NetworkMinimumCostUI()));
-    options.add(new MenuItem("Import baskets list", new ImportBasketListUI()));
-    options.add(new MenuItem("Generate expedition list", new GenerateExpeditionListUI()));
-    options.add(
-        new MenuItem("Generate expedition list with nearest N producers", new GenerateExpeditionListNProducersUI()));
-    options.add(new MenuItem("Generate expedition path", new MinimumTotalDistanceUI()));
-    options.add(new MenuItem("Get statistics for an expedition list", new StatisticsUI()));
+
+    networkOptions.add(new MenuItem("Find minimum number of connections", new GetMinNumberOfConnectionsUI()));
+    networkOptions.add(new MenuItem("Set network hubs", new DefineHubsUI()));
+    networkOptions.add(new MenuItem("Find nearest hub for all clients", new NearestHubUI()));
+    networkOptions.add(new MenuItem("Find minimum cost network", new NetworkMinimumCostUI()));
+    networkOptions.add(new MenuItem("Import baskets list", new ImportBasketListUI()));
+    networkOptions.add(new MenuItem("Generate expedition list", new GenerateExpeditionListUI()));
+    networkOptions.add(new MenuItem("Generate expedition path", new MinimumTotalDistanceUI()));
+    networkOptions.add(new MenuItem("Get statistics for an expedition list", new StatisticsUI()));
 
     int option = 0;
 
     do {
+
+      if (!App.getInstance().getCompany().getDistributionNetwork().getEntities().isEmpty() && options.size() == 1)
+        options.addAll(networkOptions);
+
       option = Utils.showAndSelectIndex(options, "\n\nAgricultural Manager Menu:");
 
       if ((option >= 0) && (option < options.size())) {
@@ -38,6 +42,5 @@ public class AgriculturalManagerUI implements Runnable {
       }
 
     } while (option != -1);
-
   }
 }
