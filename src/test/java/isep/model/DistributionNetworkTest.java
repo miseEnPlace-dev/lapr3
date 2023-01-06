@@ -625,4 +625,14 @@ public class DistributionNetworkTest {
     assertEquals(200, dailyData2.getQuantityOfProductForDay(2, new Product("orange")));
     assertEquals(100, dailyData2.getQuantityOfProductForDay(2, new Product("lemon")));
   }
+
+  @Test
+  public void testHasHubs() throws FileNotFoundException, InvalidProductNameException, InvalidNumberOfHubsException {
+    DistributionNetwork network = new DistributionNetworkWithOrdersMock().distributionNetworkWithOrdersMockSmall();
+    assertTrue(!network.hasHub());
+
+    network.defineHubs(1);
+    assertTrue(network.hasHub());
+  }
+
 }
