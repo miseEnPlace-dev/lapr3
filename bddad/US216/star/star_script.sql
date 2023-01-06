@@ -7,7 +7,7 @@
 -- O modelo de dados é composto por 4 dimensões e 2 fact tables.
 -- A dimensão Tempo é composta por 3 atributos: ano, mes e id_tempo.
 -- A dimensão Cliente é composta por 3 atributos: id_cliente, nome e nif.
--- A dimensão Produto é composta por 3 atributos: id_produto, tipo e designacao.
+-- A dimensão Produto é composta por 3 atributos: id_produto, tipo_cultura e cultura.
 -- A dimensão Setor é composta por 2 atributos: id_setor e nome.
 -- A fact table Venda é composta por 6 atributos: id_venda, id_cliente, id_produto, id_setor, id_tempo e quantidade.
 -- A fact table Producao é composta por 5 atributos: id_producao, id_produto, id_setor, id_tempo e quantidade.
@@ -48,8 +48,8 @@ CREATE TABLE Cliente (
 
 CREATE TABLE Produto (
   id_produto NUMBER(5) NOT NULL,
-  tipo VARCHAR2(50) NOT NULL,
-  designacao VARCHAR2(50) NOT NULL,
+  tipo_cultura VARCHAR2(50) NOT NULL,
+  cultura VARCHAR2(50) NOT NULL,
   PRIMARY KEY (id_produto)
 );
 
