@@ -564,6 +564,16 @@ public class DistributionNetworkTest {
     DistributionNetwork network = new DistributionNetworkWithOrdersMock().distributionNetworkWithOrdersMockSmall();
 
     assertThrows(UndefinedHubsException.class, () -> {
-      network.getExpeditionList(4); });  
-    }
+    network.getExpeditionList(4); });  
+  }
+  
+  @Test
+  public void testHasHubs() throws FileNotFoundException, InvalidProductNameException, InvalidNumberOfHubsException{
+    DistributionNetwork network = new DistributionNetworkWithOrdersMock().distributionNetworkWithOrdersMockSmall();
+    assertTrue(!network.hasHub());
+
+    network.defineHubs(1);
+    assertTrue(network.hasHub());
+  }
+
 }
