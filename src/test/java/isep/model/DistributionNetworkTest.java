@@ -558,4 +558,12 @@ public class DistributionNetworkTest {
     assertEquals(200, basket.getQuantityOfSuppliedProduct(new Producer("P2", 0, 0, "CT6"), new Product("orange")));
     assertEquals(100, basket.getQuantityOfSuppliedProduct(new Producer("P1", 0, 0, "CT6"), new Product("lemon")));
   }
+
+  @Test
+  public void testGetExpeditionListWithUndefinedHubs() throws FileNotFoundException, InvalidProductNameException, InvalidOrderException, InvalidHubException, UndefinedHubsException, InvalidNumberOfHubsException{
+    DistributionNetwork network = new DistributionNetworkWithOrdersMock().distributionNetworkWithOrdersMockSmall();
+
+    assertThrows(UndefinedHubsException.class, () -> {
+      network.getExpeditionList(4); });  
+    }
 }
