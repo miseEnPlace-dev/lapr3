@@ -22,6 +22,8 @@ enum sensor_types {
 #define SOIL_HUMIDITY_SENSOR_INTERVAL 10000
 #define AIR_HUMIDITY_SENSOR_INTERVAL 10000
 
+#define CONFIG_FILENAME "config_file.csv"
+
 // shared.c
 extern const char TEMP_SENSOR_MAX_VARIATION;
 extern const char TEMP_BASE_VALUE;

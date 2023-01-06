@@ -28,7 +28,7 @@ int main(void)
   unsigned int f_sensors[NUM_OF_SENSOR_TYPES];
 
   // read the number of sensors and frequency from the config file
-  read_file("config_file.csv", n_sensors, f_sensors);
+  read_file(CONFIG_FILENAME, n_sensors, f_sensors);
 
   if (n_sensors[TEMPERATURE_SENSOR_TYPE] < 1 || n_sensors[PLUVIO_SENSOR_TYPE] < 1) {
     printf("Número de sensores inválido.\nVerifique se o número de sensores de temperatura e de pluviosidade são maiores que 0.\n");
@@ -277,6 +277,10 @@ int main(void)
   // export data
   export_result(data, n_sensors);
   export_summary(data, n_sensors);
+
+  // TODO:
+  // meter a US103 aqui (matriz de resumo)
+  //
 
   deallocate(data, n_sensors);
 
