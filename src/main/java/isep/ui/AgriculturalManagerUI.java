@@ -30,11 +30,14 @@ public class AgriculturalManagerUI implements Runnable {
     int option = 0;
 
     do {
+      if (!App.getInstance().getCompany().getDistributionNetwork().getEntities().isEmpty() && options.size() == 1) {
+        Utils.showRightToLeftText("Loaded distances", App.getInstance().getCompany().getCurrentDistancesFilePath());
+        Utils.showRightToLeftText("Loaded entities", App.getInstance().getCompany().getCurrentEntitiesFilePath());
 
-      if (!App.getInstance().getCompany().getDistributionNetwork().getEntities().isEmpty() && options.size() == 1)
         options.addAll(networkOptions);
+      }
 
-      option = Utils.showAndSelectIndex(options, "\n\nAgricultural Manager Menu:");
+      option = Utils.showAndSelectIndex(options, "\nAgricultural Manager Menu:");
 
       if ((option >= 0) && (option < options.size())) {
         options.get(option).run();

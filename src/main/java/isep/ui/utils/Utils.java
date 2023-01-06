@@ -220,4 +220,15 @@ public class Utils {
 
     return value - 1;
   }
+
+  static public void showRightToLeftText(String title, String text) {
+    final int MAX_WIDTH = 120;
+
+    int nOfSpaces = MAX_WIDTH - title.length() - text.length() - 2;
+
+    for (int i = 0; i < nOfSpaces; i++)
+      System.out.print(" ");
+
+    System.out.printf("%s: %s%n", title, text);
+  }
 }

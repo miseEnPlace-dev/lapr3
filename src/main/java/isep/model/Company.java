@@ -18,6 +18,8 @@ public class Company {
 
   private DistributionNetwork distributionNetwork;
   private ExpeditionList currentExpeditionList;
+  private String currentEntitiesFilePath = null;
+  private String currentDistancesFilePath = null;
 
   public Company() {
     this.distributionNetwork = new DistributionNetwork();
@@ -32,6 +34,22 @@ public class Company {
 
   public ExpeditionList getCurrentExpeditionList() {
     return this.currentExpeditionList;
+  }
+
+  public String getCurrentEntitiesFilePath() {
+    return currentEntitiesFilePath;
+  }
+
+  public void setCurrentEntitiesFilePath(String currentEntitiesFilePath) {
+    this.currentEntitiesFilePath = currentEntitiesFilePath;
+  }
+
+  public String getCurrentDistancesFilePath() {
+    return currentDistancesFilePath;
+  }
+
+  public void setCurrentDistancesFilePath(String currentDistancesFilePath) {
+    this.currentDistancesFilePath = currentDistancesFilePath;
   }
 
   public void setDistributionNetwork(DistributionNetwork distributionNetwork) {
