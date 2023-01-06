@@ -301,8 +301,8 @@ public class DistributionNetwork {
 
         Integer quantOrdered = ordered.get(product);
 
-        for (Producer producer : prodStocks.get(client).keySet()) { // iterates all producers
-          Integer quantAvailable = prodStocks.get(client).get(producer).getNonExpiredProductQuantity(product, day);
+        for (Producer producer : prodStocks.get(hub).keySet()) { // iterates all producers
+          Integer quantAvailable = prodStocks.get(hub).get(producer).getNonExpiredProductQuantity(product, day);
 
           if (quantAvailable >= quantOrdered) {
             bestProducer = producer;
@@ -319,7 +319,7 @@ public class DistributionNetwork {
           continue;
 
         // remove stock
-        prodStocks.get(client).get(bestProducer).removeValidProductQuantity(product, bestQuant, day);
+        prodStocks.get(hub).get(bestProducer).removeValidProductQuantity(product, bestQuant, day);
 
         // register for expeditionsList
         received.setProduct(bestProducer, product, bestQuant);
@@ -508,7 +508,7 @@ public class DistributionNetwork {
     return AStar.findShortestPath(this.network, start, target);
   }
 
-  public boolean hasHub(){
+  public boolean hasHub() {
     return this.network.hasHubs();
   }
 
