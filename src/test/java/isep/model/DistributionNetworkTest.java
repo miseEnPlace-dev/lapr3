@@ -2,28 +2,34 @@ package isep.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 
+import isep.controller.LoadDistributionNetworkController;
 import isep.mock.DistributionNetworkWithOrdersMock;
+import isep.model.store.EntityStore;
 import isep.shared.exceptions.InvalidHubException;
 import isep.shared.exceptions.InvalidNumberOfHubsException;
 import isep.shared.exceptions.InvalidOrderException;
 import isep.shared.exceptions.UndefinedHubsException;
+import isep.utils.CSVReader;
 import isep.utils.graph.AdjacencyMapGraph;
 import isep.utils.graph.Graph;
 
 public class DistributionNetworkTest {
+  private static final String SMALL_FILE_DISTANCES = "data/small/distancias_small.csv";
+  private static final String SMALL_ENTITIES = "data/small/clientes-produtores_small.csv";
+  private static final String BIG_FILE_DISTANCES = "data/small/distancias_big.csv";
+  private static final String BIG_ENTITIES = "data/small/clientes-produtores_big.csv";
+
   @Test
   public void testAddRelation() {
     DistributionNetwork network = new DistributionNetwork();
