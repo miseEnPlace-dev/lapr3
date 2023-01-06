@@ -195,7 +195,7 @@ public class Basket {
     for (Product product : this.ordered.keySet()) {
       result += "   Product: " + product.getName() + " - Quantity: " + ordered.get(product) + "\n";
     }
-    result += "\nDelivered Products:\n" + this.received.toString();
+    result += "\nDelivered Products:\n" + this.received.toString() + "\n\n";
 
     return result;
   }
