@@ -16,8 +16,11 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 import isep.mock.DistributionNetworkWithOrdersMock;
+import isep.shared.exceptions.InvalidHubException;
 import isep.shared.exceptions.InvalidNumberOfHubsException;
+import isep.shared.exceptions.InvalidOrderException;
 import isep.shared.exceptions.InvalidProductNameException;
+import isep.shared.exceptions.UndefinedHubsException;
 import isep.utils.graph.AdjacencyMapGraph;
 import isep.utils.graph.Graph;
 
@@ -538,5 +541,21 @@ public class DistributionNetworkTest {
     assertEquals(200, producer3Data.getQuantityOfProductForDay(3, orange));
     assertEquals(100, producer3Data.getQuantityOfProductForDay(3, lemon));
 
+  }
+
+  @Test
+  public void testGetExpeditionList() throws FileNotFoundException, InvalidProductNameException, InvalidOrderException, InvalidHubException, UndefinedHubsException, InvalidNumberOfHubsException{
+    DistributionNetwork network = new DistributionNetworkWithOrdersMock().distributionNetworkWithOrdersMockSmall();
+    network.defineHubs(1);
+
+    ExpeditionList expeditionList = network.getExpeditionList(4);
+
+    assertEquals(1, expeditionList.getBaskets().size());
+    
+    Basket basket = expeditionList.getBaskets().get(0);
+    System.out.println(basket.toString());
+    assertEquals(150, basket.getQuantityOfSuppliedProduct(new Producer("P2", 0, 0, "CT6"), new Product("banana")));
+    assertEquals(200, basket.getQuantityOfSuppliedProduct(new Producer("P2", 0, 0, "CT6"), new Product("orange")));
+    assertEquals(100, basket.getQuantityOfSuppliedProduct(new Producer("P1", 0, 0, "CT6"), new Product("lemon")));
   }
 }

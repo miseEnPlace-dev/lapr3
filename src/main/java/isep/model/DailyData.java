@@ -93,7 +93,7 @@ public class DailyData {
   public DailyData getDailyDataUntilDate(Integer day) {
     DailyData result = new DailyData();
 
-    for (int i = 1; i < day; i++)
+    for (int i = 1; i <= day; i++)
       if (dailyData.get(i) != null)
         result.addDayData(i, dailyData.get(i));
 

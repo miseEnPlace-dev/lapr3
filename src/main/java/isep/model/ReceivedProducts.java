@@ -51,7 +51,7 @@ public class ReceivedProducts {
     if(this.received.containsKey(producer)){
       this.received.get(producer).put(product, quantity);
     }else{
-      Map<Product, Integer> products = new TreeMap<>();
+      Map<Product, Integer> products = new LinkedHashMap<>();
       products.put(product, quantity);
       this.received.put(producer, products);
     }

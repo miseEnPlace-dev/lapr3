@@ -12,6 +12,7 @@ import java.util.concurrent.RecursiveAction;
 import isep.shared.exceptions.InvalidHubException;
 import isep.shared.exceptions.InvalidNumberOfHubsException;
 import isep.shared.exceptions.InvalidOrderException;
+import isep.shared.exceptions.UndefinedHubsException;
 import isep.utils.MergeSort;
 import isep.utils.graph.AdjacencyMapGraph;
 import isep.utils.graph.Edge;
@@ -212,10 +213,13 @@ public class DistributionNetwork {
     return nearestHub;
   }
 
-  public ExpeditionList getExpeditionList(Integer day) throws InvalidOrderException, InvalidHubException {
+  public ExpeditionList getExpeditionList(Integer day) throws InvalidOrderException, InvalidHubException, UndefinedHubsException {
     ExpeditionList expeditionList = new ExpeditionList(day);
 
     List<Client> clientsList = this.network.getEntitiesWithClass(Client.class);
+
+    if(this.getNearestHub(clientsList.get(0)) == null)
+      throw new UndefinedHubsException();
     Map<Producer, DailyData> prodStocks = this.getActualStock(day);
 
     for (int j = 0; j < clientsList.size(); j++) { // iterate all clients
@@ -225,6 +229,9 @@ public class DistributionNetwork {
 
       Enterprise hub = this.getNearestHub(client);
 
+      if (ordered == null)
+        continue;
+
       for (Product product : ordered.keySet()) { // iterates client product orders
         Producer bestProducer = null;
         Integer bestQuant = 0;
@@ -232,20 +239,26 @@ public class DistributionNetwork {
         Integer quantOrdered = ordered.get(product);
 
         for (Producer producer : prodStocks.keySet()) { // iterates all producers
-          Integer quant = prodStocks.get(producer).getNonExpiredProductQuantity(product, quantOrdered);
+          Integer quantAvailable = prodStocks.get(producer).getNonExpiredProductQuantity(product, day);
 
-          if (quant >= quantOrdered) {
+          if (quantAvailable >= quantOrdered) {
             bestProducer = producer;
-            bestQuant = quant;
+            bestQuant = quantOrdered;
             break;
-          } else if (bestQuant < quant) {
+          } else if (bestQuant < quantAvailable) {
             bestProducer = producer;
-            bestQuant = quant;
+            bestQuant = quantAvailable;
           }
 
         }
 
-        prodStocks.get(bestProducer).removeValidProductQuantity(product, bestQuant, j);
+        if (bestProducer == null)
+        continue;
+        
+        //remove stock
+        prodStocks.get(bestProducer).removeValidProductQuantity(product, bestQuant, day);
+        
+        //register for expeditionsList
         received.setProduct(bestProducer, product, bestQuant);
 
       }
@@ -255,6 +268,7 @@ public class DistributionNetwork {
       expeditionList.addBasket(basket);
 
     }
+
 
     return expeditionList;
   }
@@ -290,7 +304,7 @@ public class DistributionNetwork {
           }
 
           if (bestProducer != null)
-            prodStocks.get(bestProducer).removeValidProductQuantity(product, quantOrdered, i);
+            prodStocks.get(bestProducer).removeValidProductQuantity(product, bestQuant, i);
         }
       }
     }

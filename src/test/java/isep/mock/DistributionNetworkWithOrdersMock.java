@@ -108,6 +108,8 @@ public class DistributionNetworkWithOrdersMock {
     CSVReader csvReader = new CSVReader(FILE_PATH);
     List<Map<String, String>> list = csvReader.read();
 
+    
+
     return new LoadDistributionNetworkController(store, list).loadDistributionNetwork();
   }
 
