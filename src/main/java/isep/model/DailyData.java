@@ -12,7 +12,7 @@ import java.util.TreeMap;
  */
 public class DailyData {
   private final int DAYS_TO_EXPIRE = 3;
-  private SortedMap<Integer, Map<Product, Integer>> dailyData;
+  private Map<Integer, Map<Product, Integer>> dailyData;
 
   public DailyData() {
     this.dailyData = new TreeMap<>();
@@ -111,16 +111,17 @@ public class DailyData {
 
   public void removeValidProductQuantity(Product p, Integer quant, Integer day) {
     for (int i = 2; i >= 0; i--) {
-      if (quant != 0) {
+      if (quant == 0) 
+        continue;
         Integer quantAvailable = this.getQuantityOfProductForDay(day - i, p);
-        if (quantAvailable < quant) {
-          quant -= quantAvailable;
-          this.setQuantityOfProductDay(day - i, p, 0);
-        } else {
-          this.setQuantityOfProductDay(day - i, p, quantAvailable - quant);
-          quant = 0;
-        }
+      if (quantAvailable < quant) {
+        quant -= quantAvailable;
+        this.setQuantityOfProductDay(day - i, p, 0);
+      } else {
+        this.setQuantityOfProductDay(day - i, p, quantAvailable - quant);
+        quant = 0;
       }
+      
     }
   }
 
