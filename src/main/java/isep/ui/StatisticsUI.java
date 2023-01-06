@@ -36,6 +36,12 @@ public class StatisticsUI implements Runnable {
   public void run() {
     controller = new ExpeditionListStatisticsController(App.getInstance().getCompany().getCurrentExpeditionList());
 
+    if (!controller.isExpeditionListLoaded()) {
+      System.out.println("Please load an expedition list first...");
+      System.out.println("Going back to main menu...\n");
+      return;
+    }
+
     List<String> options = new ArrayList<>();
     options.add("Basket");
     options.add("Client");

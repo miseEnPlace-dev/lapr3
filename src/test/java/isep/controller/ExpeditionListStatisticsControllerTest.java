@@ -1,6 +1,8 @@
 package isep.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -102,5 +104,13 @@ public class ExpeditionListStatisticsControllerTest {
     expected.add(firstHubStats);
 
     assertEquals(expected, controller.getHubsStatistics());
+  }
+
+  @Test
+  public void testIsExpeditionListLoaded() throws InvalidHubException {
+    ExpeditionListStatisticsController controller = new ExpeditionListStatisticsController(null);
+    assertFalse(controller.isExpeditionListLoaded());
+    controller = new ExpeditionListStatisticsController(new ExpeditionListMock().mockSimpleExpeditionList());
+    assertTrue(controller.isExpeditionListLoaded());
   }
 }

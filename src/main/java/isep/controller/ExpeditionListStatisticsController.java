@@ -40,6 +40,10 @@ public class ExpeditionListStatisticsController {
     return result;
   }
 
+  public boolean isExpeditionListLoaded() {
+    return expeditionList != null;
+  }
+
   public List<Map<String, String>> getClientsStatistics() {
     List<Map<String, String>> result = new ArrayList<>();
 
