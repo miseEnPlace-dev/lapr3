@@ -47,7 +47,6 @@ public class ExpeditionPathTest {
 
     Product macaDeAlcobaca = new Product("Maca de Alcobaca");
     Product bananaDaMadeira = new Product("Banana da Madeira");
-    Product batataVermelha = new Product("Batata Vermelha");
 
     // Porto coordinates
     srManuelPorto = new Producer("SR_MANUEL_PORTO", 41.14961, -8.61099, "OPO");
@@ -91,13 +90,13 @@ public class ExpeditionPathTest {
     DefineHubsController defineHubsController = new DefineHubsController(this.distributionNetwork);
     defineHubsController.defineHubs(4);
 
-    Map<Product, Integer> srManuelOrderedProducts = new HashMap<Product, Integer>();
-    srManuelOrderedProducts.put(macaDeAlcobaca, 10);
-    Map<Product, Integer> srFernandoOrderedProducts = new HashMap<Product, Integer>();
-    srFernandoOrderedProducts.put(bananaDaMadeira, 10);
-    Map<Product, Integer> srManuelAndFernandoOrderedProducts = new HashMap<Product, Integer>();
-    srManuelAndFernandoOrderedProducts.put(macaDeAlcobaca, 10);
-    srManuelAndFernandoOrderedProducts.put(bananaDaMadeira, 10);
+    Map<Product, Double> srManuelOrderedProducts = new HashMap<Product, Double>();
+    srManuelOrderedProducts.put(macaDeAlcobaca, 10.);
+    Map<Product, Double> srFernandoOrderedProducts = new HashMap<Product, Double>();
+    srFernandoOrderedProducts.put(bananaDaMadeira, 10.);
+    Map<Product, Double> srManuelAndFernandoOrderedProducts = new HashMap<Product, Double>();
+    srManuelAndFernandoOrderedProducts.put(macaDeAlcobaca, 10.);
+    srManuelAndFernandoOrderedProducts.put(bananaDaMadeira, 10.);
 
     ReceivedProducts srManuelReceivedProducts = new ReceivedProducts();
     srManuelReceivedProducts.addAllProducts(srManuelPorto, srManuelOrderedProducts);

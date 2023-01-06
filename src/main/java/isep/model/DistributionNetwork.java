@@ -227,7 +227,7 @@ public class DistributionNetwork {
 
     for (int j = 0; j < clientsList.size(); j++) { // iterate all clients
       Client client = clientsList.get(j);
-      Map<Product, Integer> ordered = client.getDayData(day);
+      Map<Product, Double> ordered = client.getDayData(day);
       ReceivedProducts received = new ReceivedProducts();
 
       Enterprise hub = this.getNearestHub(client);
@@ -237,12 +237,12 @@ public class DistributionNetwork {
 
       for (Product product : ordered.keySet()) { // iterates client product orders
         Producer bestProducer = null;
-        Integer bestQuant = 0;
+        Double bestQuant = 0.;
 
-        Integer quantOrdered = ordered.get(product);
+        Double quantOrdered = ordered.get(product);
 
         for (Producer producer : prodStocks.keySet()) { // iterates all producers
-          Integer quantAvailable = prodStocks.get(producer).getNonExpiredProductQuantity(product, day);
+          Double quantAvailable = prodStocks.get(producer).getNonExpiredProductQuantity(product, day);
 
           if (quantAvailable >= quantOrdered) {
             bestProducer = producer;
@@ -287,7 +287,7 @@ public class DistributionNetwork {
 
     for (int j = 0; j < clientsList.size(); j++) { // iterate all clients
       Client client = clientsList.get(j);
-      Map<Product, Integer> ordered = client.getDayData(day);
+      Map<Product, Double> ordered = client.getDayData(day);
       ReceivedProducts received = new ReceivedProducts();
 
       Enterprise hub = this.getNearestHub(client);
@@ -297,12 +297,12 @@ public class DistributionNetwork {
 
       for (Product product : ordered.keySet()) { // iterates client product orders
         Producer bestProducer = null;
-        Integer bestQuant = 0;
+        Double bestQuant = 0.;
 
-        Integer quantOrdered = ordered.get(product);
+        Double quantOrdered = ordered.get(product);
 
         for (Producer producer : prodStocks.get(hub).keySet()) { // iterates all producers
-          Integer quantAvailable = prodStocks.get(hub).get(producer).getNonExpiredProductQuantity(product, day);
+          Double quantAvailable = prodStocks.get(hub).get(producer).getNonExpiredProductQuantity(product, day);
 
           if (quantAvailable >= quantOrdered) {
             bestProducer = producer;
@@ -368,19 +368,19 @@ public class DistributionNetwork {
 
     for (int i = 1; i < day; i++) { // iterate all days before
       for (int j = 0; j < clientsList.size(); j++) { // iterate all clients
-        Map<Product, Integer> ordered = clientsList.get(j).getDayData(i);
+        Map<Product, Double> ordered = clientsList.get(j).getDayData(i);
 
         if (ordered == null)
           continue;
 
         for (Product product : ordered.keySet()) { // iterates client product orders
           Producer bestProducer = null;
-          Integer bestQuant = 0;
+          Double bestQuant = 0.;
 
-          Integer quantOrdered = ordered.get(product);
+          Double quantOrdered = ordered.get(product);
 
           for (Producer producer : prodStocks.keySet()) { // iterates all producers
-            Integer quantAvailable = prodStocks.get(producer).getNonExpiredProductQuantity(product, i);
+            Double quantAvailable = prodStocks.get(producer).getNonExpiredProductQuantity(product, i);
 
             if (quantAvailable >= quantOrdered) {
               bestProducer = producer;
@@ -412,7 +412,7 @@ public class DistributionNetwork {
 
     for (int i = 1; i < day; i++) { // iterate all days before
       for (Client client : clientHub.keySet()) { // iterate all clients
-        Map<Product, Integer> ordered = client.getDayData(i);
+        Map<Product, Double> ordered = client.getDayData(i);
         Enterprise hub = clientHub.get(client);
 
         if (ordered == null)
@@ -420,12 +420,12 @@ public class DistributionNetwork {
 
         for (Product product : ordered.keySet()) { // iterates client product orders
           Producer bestProducer = null;
-          Integer bestQuant = 0;
+          Double bestQuant = 0.;
 
-          Integer quantOrdered = ordered.get(product);
+          Double quantOrdered = ordered.get(product);
 
           for (Producer producer : prodStocks.get(hub).keySet()) { // iterates all producers
-            Integer quantAvailable = prodStocks.get(hub).get(producer).getNonExpiredProductQuantity(product, i);
+            Double quantAvailable = prodStocks.get(hub).get(producer).getNonExpiredProductQuantity(product, i);
 
             if (quantAvailable >= quantOrdered) {
               bestProducer = producer;

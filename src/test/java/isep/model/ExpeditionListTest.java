@@ -1,6 +1,7 @@
 package isep.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.ArrayList;
 
@@ -21,6 +22,20 @@ public class ExpeditionListTest {
     mockClient = new Client("id2", 0, 0, "C01");
     mockHub = new Enterprise("id1", 0, 0, "E01");
     mockHub.makeHub();
+  }
+
+  @Test
+  public void testAddBasketWithNull() {
+    assertThrows(IllegalArgumentException.class, () -> {
+      expList.addBasket(null);
+    });
+  }
+
+  @Test
+  public void testCreateExpeditionListWithInvalidDay() {
+    assertThrows(IllegalArgumentException.class, () -> {
+      new ExpeditionList(-1);
+    });
   }
 
   @Test
@@ -79,7 +94,7 @@ public class ExpeditionListTest {
 
   @Test
   public void testGetProducersThatSupplyAllClientsBaskets() {
-    assertEquals(2, expList.getProducersThatSupplyAllClientsBaskets(mockClient).size());
+    assertEquals(2, expList.getNumberOfDistinctProducersThatSupplyAllClientsBasket(mockClient));
   }
 
   @Test
@@ -100,13 +115,23 @@ public class ExpeditionListTest {
   }
 
   @Test
+  public void testGetClients() {
+    assertEquals(1, expList.getClients().size());
+  }
+
+  @Test
   public void testGetNumberOfDistinctProducers() {
-    assertEquals(2, expList.getDistinctProducers(mockHub));
+    assertEquals(2, expList.getNumberOfDistinctProducers(mockHub));
   }
 
   @Test
   public void testGetNumberOfOutOfStockProducts() {
     assertEquals(2, expList.getNumberOfOutOfStockProducts(new ArrayList<>(expList.getProducers()).get(0)));
     assertEquals(0, expList.getNumberOfOutOfStockProducts(new ArrayList<>(expList.getProducers()).get(1)));
+  }
+
+  @Test
+  public void testGetNumberOfBaskets() {
+    assertEquals(2, expList.getNumberOfBaskets());
   }
 }

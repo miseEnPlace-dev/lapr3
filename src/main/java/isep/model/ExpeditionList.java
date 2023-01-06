@@ -14,6 +14,7 @@ import java.util.Set;
  * @author André Barros <1211299@isep.ipp.pt>
  * @author Carlos Lopes <1211277@isep.ipp.pt>
  * @author Tomás Russo <1211288@isep.ipp.pt>
+ * @author Tomás Lopes <1211289@isep.ipp.pt>
  */
 public class ExpeditionList {
   private List<Basket> baskets;
@@ -77,6 +78,16 @@ public class ExpeditionList {
       hubs.add(basket.getHub());
 
     return hubs;
+  }
+
+  public Set<Client> getClients() {
+    Set<Client> clients = new LinkedHashSet<>();
+
+    for (Basket basket : this.baskets)
+      clients.add(basket.getClient());
+
+    return clients;
+
   }
 
   /**
@@ -190,7 +201,7 @@ public class ExpeditionList {
     return count;
   }
 
-  public Set<Producer> getProducersThatSupplyAllClientsBaskets(Client client) {
+  public int getNumberOfDistinctProducersThatSupplyAllClientsBasket(Client client) {
     Set<Producer> producers = new HashSet<>();
 
     for (Basket basket : baskets) {
@@ -201,7 +212,7 @@ public class ExpeditionList {
       producers.addAll(basketProducers);
     }
 
-    return producers;
+    return producers.size();
   }
 
   public int getNumberOfDistinctClients(Producer producer) {
@@ -246,7 +257,7 @@ public class ExpeditionList {
     return clients.size();
   }
 
-  public int getDistinctProducers(Enterprise hub) {
+  public int getNumberOfDistinctProducers(Enterprise hub) {
     Set<Producer> producers = new HashSet<>();
 
     for (Basket basket : baskets) {
@@ -265,8 +276,8 @@ public class ExpeditionList {
 
     for (Basket basket : baskets)
       for (Product product : basket.getProducts()) {
-        int availableStock = producer.getNonExpiredQuantityUntilDate(product, day);
-        int suppliedQuantity = basket.getQuantityOfSuppliedProduct(producer, product);
+        Double availableStock = producer.getNonExpiredQuantityUntilDate(product, day);
+        Double suppliedQuantity = basket.getQuantityOfSuppliedProduct(producer, product);
 
         if (availableStock <= suppliedQuantity)
           count++;

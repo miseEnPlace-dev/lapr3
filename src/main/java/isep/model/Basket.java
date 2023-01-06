@@ -14,7 +14,7 @@ import isep.shared.exceptions.InvalidOrderException;
  * @author Tomás Lopes <1211289@isep.ipp.pt>
  */
 public class Basket {
-  private Map<Product, Integer> ordered;
+  private Map<Product, Double> ordered;
   private ReceivedProducts received;
   private Enterprise hub;
   private Client client;
@@ -22,7 +22,7 @@ public class Basket {
   /*
    * Constructor
    */
-  public Basket(Map<Product, Integer> ordered, ReceivedProducts received, Enterprise hub,
+  public Basket(Map<Product, Double> ordered, ReceivedProducts received, Enterprise hub,
       Client client) throws InvalidOrderException, InvalidHubException {
     setOrdered(ordered);
     setReceived(received);
@@ -40,27 +40,27 @@ public class Basket {
     setClient(client);
   }
 
-  public void addOrderedProduct(Product product, Integer quantity) {
-    Integer currentQuantity = ordered.get(product);
+  public void addOrderedProduct(Product product, Double quantity) {
+    Double currentQuantity = ordered.get(product);
     if (currentQuantity != null)
       throw new IllegalArgumentException("Product already exists!");
 
     ordered.put(product, quantity);
   }
 
-  public void addReceivedProduct(Producer producer, Product product, Integer quantity) {
+  public void addReceivedProduct(Producer producer, Product product, Double quantity) {
     received.addProduct(producer, product, quantity);
   }
 
   /*
    * Set of ordered products
    */
-  private void setOrdered(Map<Product, Integer> ordered) throws InvalidOrderException {
+  private void setOrdered(Map<Product, Double> ordered) throws InvalidOrderException {
     if (ordered == null)
       throw new IllegalArgumentException("Null ordered map is Invalid!");
 
-    Integer sum = 0;
-    for (Integer quantity : ordered.values())
+    Double sum = .0;
+    for (Double quantity : ordered.values())
       sum += quantity;
 
     if (sum == 0)
@@ -145,7 +145,7 @@ public class Basket {
     int count = 0;
 
     for (Product product : ordered.keySet()) {
-      int orderedQuantity = ordered.get(product);
+      Double orderedQuantity = ordered.get(product);
 
       if (received.matchesProductQuantity(product, orderedQuantity))
         count++;
@@ -180,7 +180,7 @@ public class Basket {
         && received.getProducers().contains(producer);
   }
 
-  public int getQuantityOfSuppliedProduct(Producer producer, Product product) {
+  public Double getQuantityOfSuppliedProduct(Producer producer, Product product) {
     return received.getQuantityOfSuppliedProduct(producer, product);
   }
 

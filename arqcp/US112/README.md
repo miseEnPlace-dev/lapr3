@@ -1,5 +1,6 @@
-US104 - Deve ser possível estabelecer limites máximos e mínimos para os valores produzidos por
-um sensor. Se o valor enviado pelo sensor estiver fora desse limite, deve ser assinalado o erro. Após
-N leituras consecutivas erradas, deve ser possível reiniciar o sensor, iniciando-se assim uma nova
-sequência de valores produzidos. Entende-se por reiniciar o sensor, descartar todas as leituras
-erradas e gerar uma nova semente para a geração aleatória de valores. 
+US111 - Durante a execução do programa deve ser possível:
+  - acrescentar/remover sensores de um dado tipo;
+  - alterar a frequência de leituras de um sensor, ajustando devidamente o vetor de leituras.
+
+O array de estruturas de cada tipo de sensor afetado pela alteração e/ou o array de leituras dos
+sensores já existentes devem ser adaptados ao novo cenário.

@@ -2,6 +2,7 @@ package isep.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeAll;
@@ -19,15 +20,14 @@ public class LoadDistributionNetworkTest {
   @BeforeAll
   public static void setup() throws FileNotFoundException {
     entityStore = new EntityStoreMock().mockEntityStoreFromSampleFile();
-    List<Map<String, String>> distancesData =
-        new DistancesDataMock().mockDistancesDataFromSampleFile();
+    List<Map<String, String>> distancesData = new DistancesDataMock().mockDistancesDataFromSampleFile();
 
-    loadDistributionNetworkController =
-        new LoadDistributionNetworkController(entityStore, distancesData);
+    loadDistributionNetworkController = new LoadDistributionNetworkController(entityStore, distancesData);
   }
 
   @Test
   public void testLoadDistributionNetworkFromSampleFile() {
+    System.out.println("testLoadDistributionNetworkFromSampleFile");
     DistributionNetwork network = loadDistributionNetworkController.loadDistributionNetwork();
 
     Entity ct7 = entityStore.getEntityByLocalizationId("CT7");
@@ -44,6 +44,7 @@ public class LoadDistributionNetworkTest {
 
   @Test
   public void testLoadDistributionNetworkIsBidirectional() {
+    System.out.println("testLoadDistributionNetworkIsBidirectional");
     DistributionNetwork network = loadDistributionNetworkController.loadDistributionNetwork();
 
     Entity ct7 = entityStore.getEntityByLocalizationId("CT7");
@@ -55,16 +56,60 @@ public class LoadDistributionNetworkTest {
 
   @Test
   public void testLoadDistributionNetworkWithBigFile() throws FileNotFoundException {
+    System.out.println("testLoadDistributionNetworkWithBigFile");
     entityStore = new EntityStoreMock().mockEntityStoreWithBigFile();
-    List<Map<String, String>> distancesData =
-        new DistancesDataMock().mockDistancesDataWithBigFile();
+    List<Map<String, String>> distancesData = new DistancesDataMock().mockDistancesDataWithBigFile();
 
-    loadDistributionNetworkController =
-        new LoadDistributionNetworkController(entityStore, distancesData);
+    loadDistributionNetworkController = new LoadDistributionNetworkController(entityStore, distancesData);
 
     DistributionNetwork network = loadDistributionNetworkController.loadDistributionNetwork();
 
     assertEquals(323, network.getNumberOfEntities());
     assertEquals(783, network.getNumberOfRelations());
+  }
+
+  @Test
+  public void testLoadDistributionNetworkWithBigFileIsBidirectional() throws FileNotFoundException {
+    System.out.println("testLoadDistributionNetworkWithBigFileIsBidirectional");
+    entityStore = new EntityStoreMock().mockEntityStoreWithBigFile();
+    List<Map<String, String>> distancesData = new DistancesDataMock().mockDistancesDataWithBigFile();
+
+    loadDistributionNetworkController = new LoadDistributionNetworkController(entityStore, distancesData);
+
+    DistributionNetwork network = loadDistributionNetworkController.loadDistributionNetwork();
+
+    Entity ct1 = entityStore.getEntityByLocalizationId("CT1");
+    Entity ct2 = entityStore.getEntityByLocalizationId("CT2");
+
+    assertEquals(network.getDistanceBetweenConnectedEntities(ct1, ct2),
+        network.getDistanceBetweenConnectedEntities(ct2, ct1));
+  }
+
+  @Test
+  public void testLoadDistributionNetworkWithDistancesFileNull() throws FileNotFoundException {
+    System.out.println("testLoadDistributionNetworkWithDistancesFileNull");
+    entityStore = new EntityStoreMock().mockEntityStoreFromSampleFile();
+    List<Map<String, String>> distancesData = new ArrayList<>();
+
+    loadDistributionNetworkController = new LoadDistributionNetworkController(entityStore, distancesData);
+
+    DistributionNetwork network = loadDistributionNetworkController.loadDistributionNetwork();
+
+    assertEquals(0, network.getNumberOfEntities());
+    assertEquals(0, network.getNumberOfRelations());
+  }
+
+  @Test
+  public void testLoadDistributionNetworkWithEntityStoreNull() throws FileNotFoundException {
+    System.out.println("testLoadDistributionNetworkWithEntityStoreNull");
+    entityStore = new EntityStore();
+    List<Map<String, String>> distancesData = new DistancesDataMock().mockDistancesDataFromSampleFile();
+
+    loadDistributionNetworkController = new LoadDistributionNetworkController(entityStore, distancesData);
+
+    DistributionNetwork network = loadDistributionNetworkController.loadDistributionNetwork();
+
+    assertEquals(0, network.getNumberOfEntities());
+    assertEquals(0, network.getNumberOfRelations());
   }
 }

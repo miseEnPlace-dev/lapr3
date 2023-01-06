@@ -2,18 +2,17 @@ package isep.model;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
 public class ReceivedProducts {
-  private Map<Producer, Map<Product, Integer>> received;
+  private Map<Producer, Map<Product, Double>> received;
 
   public ReceivedProducts() {
     this.received = new LinkedHashMap<>();
   }
 
-  public void addProduct(Producer producer, Product product, Integer quantity) {
+  public void addProduct(Producer producer, Product product, Double quantity) {
     if (producer == null)
       throw new IllegalArgumentException("Producer cannot be null");
 
@@ -23,12 +22,12 @@ public class ReceivedProducts {
     if (quantity == null)
       throw new IllegalArgumentException("Quantity cannot be null");
 
-    Map<Product, Integer> producerProducts = received.get(producer);
+    Map<Product, Double> producerProducts = received.get(producer);
 
     if (producerProducts == null)
       producerProducts = new HashMap<>();
 
-    Integer currentQuantity = producerProducts.get(product);
+    Double currentQuantity = producerProducts.get(product);
 
     if (currentQuantity != null)
       throw new IllegalArgumentException("Product already exists");
@@ -37,7 +36,7 @@ public class ReceivedProducts {
     received.put(producer, producerProducts);
   }
 
-  public void setProduct(Producer producer, Product product, Integer quantity) {
+  public void setProduct(Producer producer, Product product, Double quantity) {
     if (producer == null)
       throw new IllegalArgumentException("Producer cannot be null");
 
@@ -50,14 +49,14 @@ public class ReceivedProducts {
     if (this.received.containsKey(producer)) {
       this.received.get(producer).put(product, quantity);
     } else {
-      Map<Product, Integer> products = new LinkedHashMap<>();
+      Map<Product, Double> products = new LinkedHashMap<>();
       products.put(product, quantity);
       this.received.put(producer, products);
     }
 
   }
 
-  public void addAllProducts(Producer producer, Map<Product, Integer> products) {
+  public void addAllProducts(Producer producer, Map<Product, Double> products) {
     if (producer == null)
       throw new IllegalArgumentException("Producer cannot be null");
 
@@ -67,7 +66,7 @@ public class ReceivedProducts {
     received.put(producer, products);
   }
 
-  public int getQuantityOfSuppliedProduct(Producer producer, Product product) {
+  public Double getQuantityOfSuppliedProduct(Producer producer, Product product) {
     if (producer == null)
       throw new IllegalArgumentException("Producer cannot be null");
 
@@ -75,12 +74,12 @@ public class ReceivedProducts {
       throw new IllegalArgumentException("Product cannot be null");
 
     if (received.get(producer) == null)
-      return 0;
+      return .0;
 
-    Map<Product, Integer> receivedProducts = received.get(producer);
+    Map<Product, Double> receivedProducts = received.get(producer);
 
     if (receivedProducts.get(product) == null)
-      return 0;
+      return .0;
 
     return receivedProducts.get(product);
   }
@@ -89,9 +88,9 @@ public class ReceivedProducts {
     return this.received.keySet();
   }
 
-  public boolean matchesProductQuantity(Product product, int quantity) {
+  public boolean matchesProductQuantity(Product product, Double quantity) {
     for (Producer producer : received.keySet()) {
-      Map<Product, Integer> receivedProducts = received.get(producer);
+      Map<Product, Double> receivedProducts = received.get(producer);
 
       if (receivedProducts.get(product) == null)
         continue;
@@ -105,7 +104,7 @@ public class ReceivedProducts {
 
   public boolean hasNotReceivedProduct(Product product) {
     for (Producer producer : received.keySet()) {
-      Map<Product, Integer> receivedProducts = received.get(producer);
+      Map<Product, Double> receivedProducts = received.get(producer);
 
       if (receivedProducts.get(product) == null)
         continue;
@@ -122,12 +121,12 @@ public class ReceivedProducts {
   }
 
   @Override
-  public String toString(){
+  public String toString() {
     String result = "Received Products: \n\n";
 
-    for(Producer producer : this.received.keySet()){
+    for (Producer producer : this.received.keySet()) {
       result += "Producer: " + producer.getId() + "\n";
-      Map<Product, Integer> products = this.received.get(producer);
+      Map<Product, Double> products = this.received.get(producer);
       for (Product product : products.keySet()) {
         result += "   Product: " + product.getName() + " - Quantity: " + products.get(product) + "\n";
       }

@@ -3,35 +3,52 @@ package isep.model.mapper;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import isep.model.Entity;
+import isep.model.Product;
+import isep.model.store.EntityStore;
 import isep.utils.Field;
 
 /**
  * This class takes a list and outputs the baskets data.
  */
 public class BasketsMapper {
-    private BasketsMapper() {}
+  private BasketsMapper() {
+  }
 
-    public static Map<Integer, Map<String, Map<Integer, Double>>> toPlan(List<Map<String, String>> data) {
-        // map has a variable number of products
+  public static int toPlan(List<Map<String, String>> data, EntityStore entityStore) {
+    // map has a variable number of products
+    int count = 0;
 
-        Map<Integer, Map<String, Map<Integer, Double>>> baskets = new HashMap<>();
+    for (Map<String, String> map : data) {
+      String entityId = map.get(Field.CLIENTPROD.name);
+      int day = Integer.parseInt(map.get(Field.DAY.name));
 
-        for (Map<String, String> map : data) {
-          String clientprod = map.get(Field.CLIENTPROD.name);
-          int day = Integer.parseInt(map.get(Field.DAY.name));
-
-          if (baskets.get(day) != null) baskets.put(day, new HashMap<>());
-          if (baskets.get(day).get(clientprod) != null) baskets.get(day).put(clientprod, new HashMap<>());
-
-          int i = 1;
-          while (map.get(Field.PRODUCT.name + i) != null) {
-            String qtyStr = map.get(Field.PRODUCT.name + i);
-            Double qty = Double.parseDouble(qtyStr);
-            baskets.get(day).get(clientprod).put(i, qty);
-            i++;
-          }
-        }
-
-        return baskets;
+      Entity foundEntity = entityStore.getEntityById(entityId);
+      if (foundEntity == null) {
+        System.out.println("Entity " + entityId + " not found.");
+        continue;
       }
+
+      Map<Product, Double> thisDayData = new HashMap<>();
+      int i = 1;
+
+      while (map.get(Field.PRODUCT.name + i) != null) {
+        String productName = map.get(Field.PRODUCT.name + i);
+        Double quantity = Double.parseDouble(map.get(Field.PRODUCT.name + i));
+
+        try {
+          Product product = new Product(productName);
+          thisDayData.put(product, quantity);
+        } catch (IllegalArgumentException e) {
+          System.out.println("Invalid product name: " + productName);
+        }
+        i++;
+      }
+      foundEntity.getDailyData().addDayData(day, thisDayData);
+      count++;
+    }
+
+    return count;
+  }
 }

@@ -264,12 +264,12 @@ int main(void)
   Sensor *p_sens = &data[AIR_HUMIDITY_SENSOR_TYPE][0];
   unsigned long new_freq = p_sens->frequency * 2;
   adjust_sensor_freq(p_sens, new_freq);
-  printf("\nAjustada a frequência do sensor c/ id %hu para %lu.", p_sens->id, new_freq);
+  printf("\nAjustada a frequência do sensor c/ id %hu para %lu segundos.", p_sens->id, new_freq);
 
   p_sens = &data[WIND_DIRECTION_SENSOR_TYPE][2];
   new_freq = 5400;
   adjust_sensor_freq(p_sens, new_freq);
-  printf("\nAjustada a frequência do sensor c/ id %hu para %lu.\n\n", p_sens->id, new_freq);
+  printf("\nAjustada a frequência do sensor c/ id %hu para %lu segundos.\n\n", p_sens->id, new_freq);
 
   print_small(data, n_sensors);
 

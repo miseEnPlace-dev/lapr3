@@ -3,6 +3,7 @@ package isep.ui;
 import isep.controller.App;
 import isep.controller.GetMinNumberOfConnectionsController;
 import isep.model.DistributionNetwork;
+import isep.ui.utils.Utils;
 
 public class GetMinNumberOfConnectionsUI implements Runnable {
   GetMinNumberOfConnectionsController controller;

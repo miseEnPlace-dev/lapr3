@@ -1,16 +1,15 @@
 package isep.ui;
 
-import isep.controller.LoadDistributionNetworkController;
-import isep.model.DistributionNetwork;
-import isep.model.store.EntityStore;
-import isep.ui.utils.Utils;
-import isep.utils.CSVReader;
-
 import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Map;
 
 import isep.controller.App;
+import isep.controller.LoadDistributionNetworkController;
+import isep.model.DistributionNetwork;
+import isep.model.store.EntityStore;
+import isep.ui.utils.Utils;
+import isep.utils.CSVReader;
 
 public class LoadDistributionNetworkUI implements Runnable {
   LoadDistributionNetworkController controller;
@@ -33,11 +32,12 @@ public class LoadDistributionNetworkUI implements Runnable {
       network = controller.loadDistributionNetwork();
 
       App.getInstance().getCompany().setDistributionNetwork(network);
-      System.out.println("\nDistribution network loaded successfully!");
+      App.getInstance().getCompany().setDistributionNetwork(network);
     } catch (FileNotFoundException e) {
+      App.getInstance().getCompany().setCurrentDistancesFilePath(null);
+      App.getInstance().getCompany().setCurrentEntitiesFilePath(null);
       System.out.println("\nFile not found!");
     }
-
   }
 
   /*
@@ -48,6 +48,7 @@ public class LoadDistributionNetworkUI implements Runnable {
   private List<Map<String, String>> insertDataDistances() throws FileNotFoundException {
     String filePath = Utils.readLineFromConsole("\nFile path distances: ");
     csvReader = new CSVReader(filePath);
+    App.getInstance().getCompany().setCurrentDistancesFilePath(filePath);
 
     return csvReader.read();
 
@@ -62,6 +63,7 @@ public class LoadDistributionNetworkUI implements Runnable {
     String filePath = Utils.readLineFromConsole("\nFile path entities: ");
     csvReader = new CSVReader(filePath);
     entityStore.addEntitiesFromList(csvReader.read());
+    App.getInstance().getCompany().setCurrentEntitiesFilePath(filePath);
 
     return entityStore;
   }

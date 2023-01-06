@@ -1,6 +1,8 @@
 package isep.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.FileNotFoundException;
 import java.util.HashMap;
@@ -186,4 +188,40 @@ public class FindNearestHubTest {
 
     distributionNetwork = loadDistributionNetworkController.loadDistributionNetwork();
   }
+
+  @Test
+  public void testWithNetworkNull() {
+    System.out.println("testWithNetworkNull");
+
+    findNearestHubController = new FindNearestHubController(null);
+
+    assertThrows(NullPointerException.class, () -> {
+      findNearestHubController.findNearestHub();
+    });
+  }
+
+  @Test
+  public void testWithNetworkWithoutHubs() throws FileNotFoundException {
+    System.out.println("testWithNetworkWithoutHubs");
+
+    loadDistributionNetwork(ENTITIES_FILE_PATH_WITH_ONE_ENTERPRISE, DISTANCES_FILE_PATH);
+
+    findNearestHubController = new FindNearestHubController(distributionNetwork);
+
+    assertTrue(distributionNetwork.getHubs().isEmpty());
+
+  }
+
+  @Test
+  public void testWithNetworkEmpty() {
+    System.out.println("testWithNetworkEmpty");
+
+    distributionNetwork = new DistributionNetwork();
+
+    findNearestHubController = new FindNearestHubController(distributionNetwork);
+
+    assertTrue(distributionNetwork.getHubs().isEmpty());
+
+  }
+
 }

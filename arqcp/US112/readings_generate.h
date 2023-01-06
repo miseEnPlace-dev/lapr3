@@ -1,0 +1,7 @@
+#ifndef READINGS_GENERATE
+#define READINGS_GENERATE
+
+
+
+#endif
+
