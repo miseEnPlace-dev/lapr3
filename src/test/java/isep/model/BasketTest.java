@@ -136,4 +136,16 @@ public class BasketTest {
     assertFalse(basket.isFullySuppliedBy(firstProducer));
     assertFalse(basket.isFullySuppliedBy(secondProducer));
   }
+
+  @Test
+  public void testIsFullyFulfilledWithInvalidProducer() throws InvalidHubException {
+    Basket basket = new BasketMock().mockFullyFulfilledWithOneProducerBasket();
+    assertFalse(basket.isFullySuppliedBy(new Producer("id4", 0, 0, "loc4")));
+  }
+
+  @Test
+  public void testIsPartiallyFulfilledWithInvalidProducer() throws InvalidHubException {
+    Basket basket = new BasketMock().mockFullyFulfilledWithOneProducerBasket();
+    assertFalse(basket.isFullySuppliedBy(new Producer("id4", 0, 0, "loc4")));
+  }
 }

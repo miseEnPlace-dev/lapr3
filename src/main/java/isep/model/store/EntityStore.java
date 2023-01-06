@@ -10,6 +10,7 @@ import isep.model.Enterprise;
 import isep.model.Entity;
 import isep.model.Producer;
 import isep.model.Role;
+import isep.model.mapper.RoleMapper;
 import isep.shared.Constants;
 
 public class EntityStore {
@@ -81,5 +82,19 @@ public class EntityStore {
         System.out.println("Error parsing localization: " + localization);
       }
     }
+  }
+
+  public <E extends Entity> List<E> getEntitiesWithRole(Role role) {
+    List<E> entitiesWithRole = new ArrayList<>();
+
+    for (Entity entity : entities) {
+      Class<? extends Entity> entityClass = entity.getClass();
+      Class<? extends Entity> roleClass = new RoleMapper().toClass(role);
+
+      if (entityClass.equals(roleClass))
+        entitiesWithRole.add((E) entity);
+    }
+
+    return entitiesWithRole;
   }
 }

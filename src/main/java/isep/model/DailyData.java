@@ -12,7 +12,6 @@ import java.util.TreeMap;
  */
 public class DailyData {
   private final int DAYS_TO_EXPIRE = 3;
-
   private SortedMap<Integer, Map<Product, Double>> dailyData;
 
   public DailyData() {
@@ -129,5 +128,4 @@ public class DailyData {
       }
     }
   }
-
 }

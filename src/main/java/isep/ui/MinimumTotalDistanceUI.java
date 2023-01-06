@@ -28,7 +28,5 @@ public class MinimumTotalDistanceUI implements Runnable {
 
     expeditionPath.printPath();
 
-    Utils.readLineFromConsole("\nPress any key to continue... ");
-
   }
 }

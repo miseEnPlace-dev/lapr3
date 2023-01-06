@@ -3,17 +3,18 @@ package isep.model.mapper;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import isep.model.Entity;
 import isep.model.Product;
 import isep.model.store.EntityStore;
-import isep.shared.exceptions.InvalidProductNameException;
 import isep.utils.Field;
 
 /**
  * This class takes a list and outputs the baskets data.
  */
 public class BasketsMapper {
-  private BasketsMapper() {}
+  private BasketsMapper() {
+  }
 
   public static int toPlan(List<Map<String, String>> data, EntityStore entityStore) {
     // map has a variable number of products
@@ -31,6 +32,7 @@ public class BasketsMapper {
 
       Map<Product, Double> thisDayData = new HashMap<>();
       int i = 1;
+
       while (map.get(Field.PRODUCT.name + i) != null) {
         String productName = map.get(Field.PRODUCT.name + i);
         Double quantity = Double.parseDouble(map.get(Field.PRODUCT.name + i));

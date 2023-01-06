@@ -94,7 +94,7 @@ public class ExpeditionListTest {
 
   @Test
   public void testGetProducersThatSupplyAllClientsBaskets() {
-    assertEquals(2, expList.getProducersThatSupplyAllClientsBaskets(mockClient).size());
+    assertEquals(2, expList.getNumberOfDistinctProducersThatSupplyAllClientsBasket(mockClient));
   }
 
   @Test
@@ -115,8 +115,13 @@ public class ExpeditionListTest {
   }
 
   @Test
+  public void testGetClients() {
+    assertEquals(1, expList.getClients().size());
+  }
+
+  @Test
   public void testGetNumberOfDistinctProducers() {
-    assertEquals(2, expList.getDistinctProducers(mockHub));
+    assertEquals(2, expList.getNumberOfDistinctProducers(mockHub));
   }
 
   @Test

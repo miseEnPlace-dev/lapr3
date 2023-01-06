@@ -8,12 +8,10 @@ import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 
-import isep.shared.exceptions.InvalidProductNameException;
-
 public class DailyDataTest {
 
   @Test
-  public void testQuantityAvailableWorks() throws InvalidProductNameException {
+  public void testQuantityAvailableWorks() {
     DailyData dailyData = new DailyData();
     Product p = new Product("Banana");
 
@@ -44,7 +42,7 @@ public class DailyDataTest {
   }
 
   @Test
-  public void testQuantityAvailableWorksWithPartialData() throws InvalidProductNameException {
+  public void testQuantityAvailableWorksWithPartialData() {
     DailyData dailyData = new DailyData();
     Product p = new Product("Banana");
 
@@ -62,7 +60,7 @@ public class DailyDataTest {
   }
 
   @Test
-  public void testRemoveValidQuantityWorks() throws InvalidProductNameException {
+  public void testRemoveValidQuantityWorks() {
     DailyData dailyData = new DailyData();
     Product p = new Product("Banana");
 

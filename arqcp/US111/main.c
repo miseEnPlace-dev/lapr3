@@ -36,15 +36,13 @@ int main(void)
 
   Sensor **data = bootstrap(n_sensors);
 
-  unsigned int count = 1;
+  unsigned int count = 0;
 
   // Temperature sensors
   for (int j = 0; j < n_sensors[TEMPERATURE_SENSOR_TYPE]; j++) { // for every temperature sensor
     // bootstrap sensor
     Sensor current_sensor = bootstrap_temperature(f_sensors[0]);
-    current_sensor.id = count;
-
-    count++;
+    current_sensor.id = ++count;
 
     char base_temperatures[current_sensor.readings_size];
     generate_base_temp_values(base_temperatures, current_sensor.readings_size);
@@ -78,9 +76,7 @@ int main(void)
   // Wind velocity sensors
   for (int j = 0; j < n_sensors[WIND_VELOCITY_SENSOR_TYPE]; j++) { // for every sensor
     Sensor current_sensor = bootstrap_wind_vel(f_sensors[1]);
-    current_sensor.id = count;
-
-    count++;
+    current_sensor.id = ++count;
 
     int total_errors = 0;
 
@@ -110,9 +106,7 @@ int main(void)
   // Wind direction sensors
   for (int j = 0; j < n_sensors[WIND_DIRECTION_SENSOR_TYPE]; j++) {
     Sensor current_sensor = bootstrap_wind_dir(f_sensors[2]);
-    current_sensor.id = count;
-
-    count++;
+    current_sensor.id = ++count;
 
     int total_errors = 0;
 
@@ -142,9 +136,7 @@ int main(void)
   // Pluviosity sensors
   for (int j = 0; j < n_sensors[PLUVIO_SENSOR_TYPE]; j++) { // for every sensor
     Sensor current_sensor = bootstrap_pluvio(f_sensors[3]);
-    current_sensor.id = count;
-
-    count++;
+    current_sensor.id = ++count;
 
     int total_errors = 0;
 
@@ -177,9 +169,7 @@ int main(void)
   // Soil humidity sensors
   for (int j = 0; j < n_sensors[SOIL_HUMIDITY_SENSOR_TYPE]; j++) {
     Sensor current_sensor = bootstrap_soil_humidity(f_sensors[4]);
-    current_sensor.id = count;
-
-    count++;
+    current_sensor.id = ++count;
 
     int total_errors = 0;
 
@@ -212,9 +202,7 @@ int main(void)
   // Air humidity sensors
   for (int j = 0; j < n_sensors[AIR_HUMIDITY_SENSOR_TYPE]; j++) {
     Sensor current_sensor = bootstrap_air_humidity(f_sensors[5]);
-    current_sensor.id = count;
-
-    count++;
+    current_sensor.id = ++count;
 
     int total_errors = 0;
 
@@ -251,7 +239,6 @@ int main(void)
   for (int i = 1; i < NUM_OF_SENSOR_TYPES; i++)
   {
     print_result(data[i], n_sensors[i]);
-    // if (i < NUM_OF_SENSOR_TYPES - 1) //// fix to avoid printing extra new line in last iteration
     printf("\n");
   }
 
@@ -270,6 +257,19 @@ int main(void)
   unsigned short deleted_id = p_delete->id;
   remove_sensor(p_delete, data, n_sensors);
   printf("\nRemovido 1 sensor com o id %hu.\n\n", deleted_id);
+
+  print_small(data, n_sensors);
+
+  // adjust sensor frequency
+  Sensor *p_sens = &data[AIR_HUMIDITY_SENSOR_TYPE][0];
+  unsigned long new_freq = p_sens->frequency * 2;
+  adjust_sensor_freq(p_sens, new_freq);
+  printf("\nAjustada a frequência do sensor c/ id %hu para %lu segundos.", p_sens->id, new_freq);
+
+  p_sens = &data[WIND_DIRECTION_SENSOR_TYPE][2];
+  new_freq = 5400;
+  adjust_sensor_freq(p_sens, new_freq);
+  printf("\nAjustada a frequência do sensor c/ id %hu para %lu segundos.\n\n", p_sens->id, new_freq);
 
   print_small(data, n_sensors);
 

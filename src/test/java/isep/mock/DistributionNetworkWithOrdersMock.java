@@ -10,7 +10,6 @@ import isep.model.DailyData;
 import isep.model.DistributionNetwork;
 import isep.model.Product;
 import isep.model.store.EntityStore;
-import isep.shared.exceptions.InvalidProductNameException;
 import isep.utils.CSVReader;
 
 public class DistributionNetworkWithOrdersMock {
@@ -18,7 +17,7 @@ public class DistributionNetworkWithOrdersMock {
   private final static String FILE_PATH = "./src/test/resources/distancesSample.csv";
 
   public static DistributionNetwork distributionNetworkWithOrdersMockSmall()
-      throws FileNotFoundException, InvalidProductNameException {
+      throws FileNotFoundException {
 
     EntityStore store = new EntityStoreMock().mockSimpleEntityStoreSmall();
 
