@@ -47,7 +47,7 @@ void export_result(Sensor **data, unsigned int const *n_sensors) {
         }
     }
     
-    write_csv(buffer, "details");
+    write_csv(buffer, "result");
 }
 
 void export_summary(Sensor **data, unsigned int const *n_sensors) {
@@ -57,7 +57,7 @@ void export_summary(Sensor **data, unsigned int const *n_sensors) {
     //char temp[256];
 
 
-    write_csv(buffer, "result");
+    write_csv(buffer, "summary");
 }
 
 void format_time(char *output){
