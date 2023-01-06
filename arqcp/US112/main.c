@@ -12,6 +12,7 @@
 #include "bootstrap.h"
 #include "import_from_csv.h"
 #include "dynamic_sensors.h"
+#include "export_to_csv.h"
 
 uint64_t state = 0;
 uint64_t inc = 0;
@@ -272,6 +273,9 @@ int main(void)
   printf("\nAjustada a frequência do sensor c/ id %hu para %lu segundos.\n\n", p_sens->id, new_freq);
 
   print_small(data, n_sensors);
+
+  export_result(data, n_sensors);
+  export_details(data, n_sensors);
 
   deallocate(data, n_sensors);
 
