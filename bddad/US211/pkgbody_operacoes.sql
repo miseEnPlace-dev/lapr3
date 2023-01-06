@@ -4,6 +4,7 @@ CREATE OR REPLACE PACKAGE BODY operacoes AS
   PROCEDURE cancel_operacao (operacao_id Operacao.id_operacao%TYPE) IS
   data_prevista TIMESTAMP;
   data_op TIMESTAMP;
+
   BEGIN
 
     SELECT data_prevista_operacao, data_operacao
@@ -28,6 +29,7 @@ CREATE OR REPLACE PACKAGE BODY operacoes AS
   PROCEDURE atualizar_operacao_datas(operacao_id Operacao.id_operacao%TYPE, data_nova TIMESTAMP) IS
   data_prevista TIMESTAMP;
   data_op TIMESTAMP;
+
   BEGIN
   SELECT data_prevista_operacao, data_operacao
     INTO data_prevista, data_op
@@ -52,6 +54,7 @@ CREATE OR REPLACE PACKAGE BODY operacoes AS
   PROCEDURE atualizar_operacao_produtos(operacao_id Operacao.id_operacao%TYPE, quantidade_nova Colheita.quantidade%TYPE) IS
   data_prevista TIMESTAMP;
   data_op TIMESTAMP;
+
   BEGIN
   SELECT data_prevista_operacao, data_operacao
     INTO data_prevista, data_op
@@ -70,5 +73,53 @@ CREATE OR REPLACE PACKAGE BODY operacoes AS
     DBMS_OUTPUT.PUT_LINE('Operação atualizada com sucesso');
 
   END atualizar_operacao_produtos;
+
+  -- Procedimento para atualizar operacoes fator producao aplicacao
+  PROCEDURE atualizar_operacao_fator_aplicacao(operacao_id Operacao.id_operacao%TYPE, quantidade_nova FatorProducaoAplicacao.quantidade%TYPE) IS
+  data_prevista TIMESTAMP;
+  data_op TIMESTAMP;
+
+  BEGIN
+  SELECT data_prevista_operacao, data_operacao
+  INTO data_prevista, data_op
+  FROM Operacao
+  WHERE id_operacao = operacao_id;
+
+  IF data_prevista IS NOT NULL AND data_op IS NOT NULL THEN
+    RAISE_APPLICATION_ERROR(-20001, 'Operação já realizada');
+  ELSE IF data_prevista IS NOT NULL AND data_op IS NULL THEN
+      UPDATE FatorProducaoAplicacao
+      SET quantidade = quantidade_nova
+      WHERE id_operacao = operacao_id;
+  END IF;
+  END IF;
+
+  DBMS_OUTPUT.PUT_LINE('Operação atualizada com sucesso');
+
+  END atualizar_operacao_fator_aplicacao;
+
+  -- Procedimento para atualizar operacoes tipo aplicacao
+  PROCEDURE atualizar_operacao_tipo_aplicacao (operacao_id Operacao.id_operacao%TYPE, tipo_aplicacao_id Aplicacao.id_tipo_aplicacao%TYPE, novo_tipo_aplicacao TipoAplicacao.tipo_aplicacao%TYPE) IS
+  data_prevista TIMESTAMP;
+  data_op TIMESTAMP;
+
+  BEGIN
+  SELECT data_prevista_operacao, data_operacao
+  INTO data_prevista, data_op
+  FROM Operacao
+  WHERE id_operacao = operacao_id;
+
+  IF data_prevista IS NOT NULL AND data_op IS NOT NULL THEN
+    RAISE_APPLICATION_ERROR(-20001, 'Operação já realizada');
+  ELSE IF data_prevista IS NOT NULL AND data_op IS NULL THEN
+      UPDATE TipoAplicacao
+      SET tipo_aplicacao = novo_tipo_aplicacao
+      WHERE id_tipo_aplicacao = tipo_aplicacao_id;
+  END IF;
+  END IF;
+
+  DBMS_OUTPUT.PUT_LINE('Operação atualizada com sucesso');
+
+  END atualizar_operacao_tipo_aplicacao;
 
 END operacoes;
