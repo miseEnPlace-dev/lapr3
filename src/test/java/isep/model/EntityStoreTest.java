@@ -1,6 +1,8 @@
 package isep.model;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.FileNotFoundException;
@@ -26,9 +28,7 @@ public class EntityStoreTest {
    */
   @Test
   public void testEntityStoreAddEntity() {
-    boolean add = entityStore.addEntity("test", 0, 0, "test", Role.CLIENT);
-    assertTrue(add);
-
+    assertTrue(entityStore.addEntity("test", 0, 0, "test", Role.CLIENT));
   }
 
   @Test
@@ -69,6 +69,65 @@ public class EntityStoreTest {
     assertEquals(list.get(14).getId(), entityStore.getEntityByLocalizationId("CT15").getId());
     assertEquals(list.get(15).getId(), entityStore.getEntityByLocalizationId("CT16").getId());
     assertEquals(list.get(16).getId(), entityStore.getEntityByLocalizationId("CT17").getId());
+  }
 
+  @Test
+  public void testGetEntitiesWithRoleClient() {
+    List<Client> expected = new ArrayList();
+    expected.add(new Client("C1", 10.0, 0.0, "CT1"));
+    expected.add(new Client("C2", 20.0, 0.0, "CT2"));
+    expected.add(new Client("C3", 30.0, 10.0, "CT4"));
+    expected.add(new Client("C4", 30.0, 10.0, "CT7"));
+    expected.add(new Client("C5", 40.0, 10.0, "CT9"));
+    expected.add(new Client("C6", 50.0, 10.0, "CT10"));
+    expected.add(new Client("C7", 60.0, 10.0, "CT11"));
+    expected.add(new Client("C8", 70.0, 10.0, "CT12"));
+    expected.add(new Client("C9", 80.0, 10.0, "CT13"));
+    expected.add(new Client("C10", 80.0, 10.0, "CT14"));
+    expected.add(new Client("C11", 80.0, 10.0, "CT15"));
+    expected.add(new Client("C12", 80.0, 10.0, "CT16"));
+    expected.add(new Client("C13", 80.0, 10.0, "CT17"));
+
+    List<Client> actual = entityStore.getEntitiesWithRole(Role.CLIENT);
+
+    assertArrayEquals(expected.toArray(), actual.toArray());
+  }
+
+  @Test
+  public void testGetEntitiesWithRoleEnterprise() {
+    List<Enterprise> expected = new ArrayList<>();
+    expected.add(new Enterprise("E1", 20.0, 10.0, "CT3"));
+    expected.add(new Enterprise("E2", 20.0, 20.0, "CT8"));
+
+    List<Enterprise> actual = entityStore.getEntitiesWithRole(Role.ENTERPRISE);
+
+    assertArrayEquals(expected.toArray(), actual.toArray());
+  }
+
+  @Test
+  public void testGetEntitiesWithRoleProducer() {
+    List<Producer> expected = new ArrayList<>();
+    expected.add(new Producer("P1", 10.0, 10.0, "CT5"));
+    expected.add(new Producer("P2", 11.0, 20.0, "CT6"));
+
+    List<Producer> actual = entityStore.getEntitiesWithRole(Role.PRODUCER);
+
+    assertArrayEquals(expected.toArray(), actual.toArray());
+  }
+
+  @Test
+  public void testGetEntityById() {
+    Entity entity = new Client("C1", 10.0, 0.0, "CT1");
+    assertEquals(entity, entityStore.getEntityById("C1"));
+  }
+
+  @Test
+  public void testGetEntityByIdWithNull() {
+    assertNull(entityStore.getEntityById(null));
+  }
+
+  @Test
+  public void testGetEntityByIdWithNonExistingId() {
+    assertNull(entityStore.getEntityById("C100"));
   }
 }
