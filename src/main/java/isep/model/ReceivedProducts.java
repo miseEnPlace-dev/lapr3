@@ -5,7 +5,6 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 
 public class ReceivedProducts {
   private Map<Producer, Map<Product, Integer>> received;
@@ -125,5 +124,20 @@ public class ReceivedProducts {
 
   public int getNumberOfDistinctProducers() {
     return received.size();
+  }
+
+  @Override
+  public String toString(){
+    String result = "Received Products: \n\n";
+
+    for(Producer producer : this.received.keySet()){
+      result += "Producer: " + producer.getId() + "\n";
+      Map<Product, Integer> products = this.received.get(producer);
+      for (Product product : products.keySet()) {
+        result += "   Product: " + product.getName() + " - Quantity: " + products.get(product) + "\n";
+      }
+    }
+
+    return result;
   }
 }
