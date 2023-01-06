@@ -373,4 +373,9 @@ public class DistributionNetwork {
   public List<Entity> getShortestPathUsingAStar(Entity start, Entity target) {
     return AStar.findShortestPath(this.network, start, target);
   }
+
+  public boolean hasHub(){
+    return this.network.hasHubs();
+  }
+
 }
