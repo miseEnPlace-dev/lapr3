@@ -5,7 +5,6 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 
 public class ReceivedProducts {
   private Map<Producer, Map<Product, Integer>> received;
@@ -38,19 +37,19 @@ public class ReceivedProducts {
     received.put(producer, producerProducts);
   }
 
-  public void setProduct(Producer producer, Product product, Integer quantity){
+  public void setProduct(Producer producer, Product product, Integer quantity) {
     if (producer == null)
       throw new IllegalArgumentException("Producer cannot be null");
 
     if (product == null)
       throw new IllegalArgumentException("Product cannot be null");
-    
+
     if (quantity == null)
       throw new IllegalArgumentException("Quantity cannot be null");
-      
-    if(this.received.containsKey(producer)){
+
+    if (this.received.containsKey(producer)) {
       this.received.get(producer).put(product, quantity);
-    }else{
+    } else {
       Map<Product, Integer> products = new LinkedHashMap<>();
       products.put(product, quantity);
       this.received.put(producer, products);
@@ -87,12 +86,7 @@ public class ReceivedProducts {
   }
 
   public Set<Producer> getProducers() {
-    Set<Producer> producers = new LinkedHashSet<>();
-
-    for (Producer producer : received.keySet())
-      producers.add(producer);
-
-    return producers;
+    return this.received.keySet();
   }
 
   public boolean matchesProductQuantity(Product product, int quantity) {

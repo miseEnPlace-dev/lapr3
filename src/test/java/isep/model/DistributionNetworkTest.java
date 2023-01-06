@@ -462,7 +462,7 @@ public class DistributionNetworkTest {
     List<Producer> expected = new ArrayList<>();
     expected.add(p1);
 
-    List<Producer> actual = network.getNNearestProducers(e1, 1);
+    List<Producer> actual = network.getNNearestProducersByHub(e1, 1);
 
     assertEquals(expected.size(), actual.size());
     assertEquals(expected.get(0), actual.get(0));
@@ -477,12 +477,12 @@ public class DistributionNetworkTest {
 
     network.addRelation(e1, c1, 100);
 
-    assertNull(network.getNNearestProducers(e1, 1));
+    assertNull(network.getNNearestProducersByHub(e1, 1));
   }
 
   @Test
   public void testGetNNearestProducersEmptyNetwork() {
-    assertNull(new DistributionNetwork().getNNearestProducers(new Enterprise("e1", 1, 1, "l1"), 1));
+    assertNull(new DistributionNetwork().getNNearestProducersByHub(new Enterprise("e1", 1, 1, "l1"), 1));
   }
 
   @Test
@@ -503,7 +503,7 @@ public class DistributionNetworkTest {
     expected.add(p1);
     expected.add(p3);
 
-    List<Producer> actual = network.getNNearestProducers(e1, 2);
+    List<Producer> actual = network.getNNearestProducersByHub(e1, 2);
 
     assertEquals(expected.size(), actual.size());
     assertEquals(expected.get(0), actual.get(0)); // p1
@@ -524,7 +524,6 @@ public class DistributionNetworkTest {
     Product orange = new Product("orange");
     Product lemon = new Product("lemon");
 
-    
     assertEquals(0, producer1Data.getQuantityOfProductForDay(1, banana));
     assertEquals(0, producer1Data.getQuantityOfProductForDay(1, orange));
     assertEquals(100, producer1Data.getQuantityOfProductForDay(1, lemon));
@@ -544,14 +543,15 @@ public class DistributionNetworkTest {
   }
 
   @Test
-  public void testGetExpeditionList() throws FileNotFoundException, InvalidProductNameException, InvalidOrderException, InvalidHubException, UndefinedHubsException, InvalidNumberOfHubsException{
+  public void testGetExpeditionList() throws FileNotFoundException, InvalidProductNameException, InvalidOrderException,
+      InvalidHubException, UndefinedHubsException, InvalidNumberOfHubsException {
     DistributionNetwork network = new DistributionNetworkWithOrdersMock().distributionNetworkWithOrdersMockSmall();
     network.defineHubs(1);
 
     ExpeditionList expeditionList = network.getExpeditionList(4);
 
     assertEquals(1, expeditionList.getBaskets().size());
-    
+
     Basket basket = expeditionList.getBaskets().get(0);
     System.out.println(basket.toString());
     assertEquals(150, basket.getQuantityOfSuppliedProduct(new Producer("P2", 0, 0, "CT6"), new Product("banana")));
@@ -560,10 +560,69 @@ public class DistributionNetworkTest {
   }
 
   @Test
-  public void testGetExpeditionListWithUndefinedHubs() throws FileNotFoundException, InvalidProductNameException, InvalidOrderException, InvalidHubException, UndefinedHubsException, InvalidNumberOfHubsException{
+  public void testGetExpeditionListWithUndefinedHubs() throws FileNotFoundException, InvalidProductNameException,
+      InvalidOrderException, InvalidHubException, UndefinedHubsException, InvalidNumberOfHubsException {
     DistributionNetwork network = new DistributionNetworkWithOrdersMock().distributionNetworkWithOrdersMockSmall();
 
     assertThrows(UndefinedHubsException.class, () -> {
-      network.getExpeditionList(4); });  
-    }
+      network.getExpeditionList(4);
+    });
+  }
+
+  @Test
+  public void testGetNNearestProducersStock()
+      throws FileNotFoundException, InvalidProductNameException, InvalidNumberOfHubsException {
+    DistributionNetwork network = new DistributionNetworkWithOrdersMock().distributionNetworkWithOrdersMockSmall();
+
+    List<Enterprise> hubs = network.defineHubs(1);
+
+    Map<Enterprise, Map<Producer, DailyData>> stock = network.getNNearestProducersStock(2, 4);
+
+    assertEquals(1, stock.size());
+    assertEquals(2, stock.get(new Enterprise("E1", 0, 0, "CT3")).size());
+
+    DailyData dailyData = stock.get(new Enterprise("E1", 0, 0, "CT3")).get(new Producer("P3", 0, 0, "CT6"));
+    DailyData dailyData2 = stock.get(new Enterprise("E1", 0, 0, "CT3")).get(new Producer("P2", 0, 0, "CT8"));
+
+    assertEquals(300, dailyData.getQuantityOfProductForDay(3, new Product("banana")));
+    assertEquals(200, dailyData.getQuantityOfProductForDay(3, new Product("orange")));
+    assertEquals(100, dailyData.getQuantityOfProductForDay(3, new Product("lemon")));
+
+    assertEquals(300, dailyData2.getQuantityOfProductForDay(1, new Product("banana")));
+    assertEquals(200, dailyData2.getQuantityOfProductForDay(1, new Product("orange")));
+    assertEquals(100, dailyData2.getQuantityOfProductForDay(1, new Product("lemon")));
+
+    assertEquals(300, dailyData2.getQuantityOfProductForDay(2, new Product("banana")));
+    assertEquals(200, dailyData2.getQuantityOfProductForDay(2, new Product("orange")));
+    assertEquals(100, dailyData2.getQuantityOfProductForDay(2, new Product("lemon")));
+
+  }
+
+  @Test
+  public void testGetActualStockForNNearestProducers()
+      throws FileNotFoundException, InvalidProductNameException, InvalidNumberOfHubsException {
+    DistributionNetwork network = new DistributionNetworkWithOrdersMock().distributionNetworkWithOrdersMockSmall();
+
+    List<Enterprise> hubs = network.defineHubs(1);
+
+    Map<Enterprise, Map<Producer, DailyData>> stock = network.getActualStockForNNearestProducers(4, 2);
+
+    assertEquals(1, stock.size());
+    assertEquals(2, stock.get(new Enterprise("E1", 0, 0, "CT3")).size());
+
+    DailyData dailyData = stock.get(new Enterprise("E1", 0, 0, "CT3")).get(new Producer("P3", 0, 0, "CT8"));
+    DailyData dailyData2 = stock.get(new Enterprise("E1", 0, 0, "CT3")).get(new Producer("P2", 0, 0, "CT6"));
+
+    assertEquals(150, dailyData.getQuantityOfProductForDay(3, new Product("banana")));
+    assertEquals(0, dailyData.getQuantityOfProductForDay(3, new Product("orange")));
+    assertEquals(0, dailyData.getQuantityOfProductForDay(3, new Product("lemon")));
+
+    assertEquals(200, dailyData2.getQuantityOfProductForDay(1, new Product("banana")));
+    assertEquals(0, dailyData2.getQuantityOfProductForDay(1, new Product("orange")));
+    assertEquals(0, dailyData2.getQuantityOfProductForDay(1, new Product("lemon")));
+
+    assertEquals(300, dailyData2.getQuantityOfProductForDay(2, new Product("banana")));
+    assertEquals(200, dailyData2.getQuantityOfProductForDay(2, new Product("orange")));
+    assertEquals(100, dailyData2.getQuantityOfProductForDay(2, new Product("lemon")));
+  }
 }
