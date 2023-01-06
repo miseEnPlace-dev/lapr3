@@ -274,8 +274,9 @@ int main(void)
 
   print_small(data, n_sensors);
 
+  // export data
   export_result(data, n_sensors);
-  export_details(data, n_sensors);
+  export_summary(data, n_sensors);
 
   deallocate(data, n_sensors);
 

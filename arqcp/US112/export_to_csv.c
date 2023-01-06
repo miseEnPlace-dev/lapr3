@@ -8,7 +8,7 @@
 
 void format_time(char *output);
 
-void write_csv(char *buffer, const char* name) {
+void write_csv(char *buffer, char const *name) {
     FILE *file_ptr;
     char file_name[50];
     strcpy(file_name, "exported_");
@@ -26,27 +26,38 @@ void write_csv(char *buffer, const char* name) {
     fclose(file_ptr);
 }
 
-void export_result(Sensor **data, unsigned int *n_sensors) {
-    char buffer[4096];
-    strcpy(buffer, "ID,Leitura,Erro");
+void export_result(Sensor **data, unsigned int const *n_sensors) {
+    char buffer[16384]; // be careful with buffer overflow
+    strcpy(buffer, "Nome,Tipo,ID,Leitura,Erro\n");
 
-    //export_to_csv(buffer, "result");
-}
-
-void export_details(Sensor **data, unsigned int *n_sensors) {
-    char buffer[4096];
-    strcpy(buffer, "ID,Nome,Tipo,Unidades,Frequência,Num Leituras,Num Erros,Limite Max,Limite Min\n");
-
-    char temp[256];
-    for (int i = 0; i < NUM_OF_SENSOR_TYPES; i++) {
-        for (int j = 0; j < n_sensors[i]; j++) {
-            int errors = get_total_errors(data[i][j]);
-            sprintf(temp, "%hu,%s,%hhu,%s,%lu,%lu,%d,%hu,%hu\n", data[i][j].id, data[i][j].name, data[i][j].sensor_type, data[i][j].units, data[i][j].frequency, data[i][j].readings_size, errors, data[i][j].min_limit, data[i][j].max_limit);
+    char temp[256]; // here too
+    for (int j = 0; j < n_sensors[0]; j++) {
+        for (int k = 0; k < data[0][j].readings_size; k++) {
+            sprintf(temp, "%s,%hhu,%hu,%d%s,%hhu\n", data[0][j].name, data[0][j].sensor_type, data[0][j].id, data[0][j].readings[k], data[0][j].units, data[0][j].errors[k]);
             strcat(buffer, temp);
+        }
+    }
+ 
+    for (int i = 1; i < NUM_OF_SENSOR_TYPES; i++) {
+        for (int j = 0; j < n_sensors[i]; j++) {
+            for (int k = 0; k < data[i][j].readings_size; k++) {
+                sprintf(temp, "%s,%hhu,%hu,%u%s,%hhu\n", data[i][j].name, data[i][j].sensor_type, data[i][j].id, data[i][j].readings[k], data[i][j].units, data[i][j].errors[k]);
+                strcat(buffer, temp);
+            }
         }
     }
     
     write_csv(buffer, "details");
+}
+
+void export_summary(Sensor **data, unsigned int const *n_sensors) {
+    char buffer[16384]; // be careful with buffer overflow
+    strcpy(buffer, "ID,Leitura,Erro");
+
+    //char temp[256];
+
+
+    write_csv(buffer, "result");
 }
 
 void format_time(char *output){
