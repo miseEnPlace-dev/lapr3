@@ -19,6 +19,11 @@ public class Product {
   }
 
   @Override
+  public String toString() {
+    return this.name;
+  }
+
+  @Override
   public int hashCode() {
     return this.name.hashCode();
   }

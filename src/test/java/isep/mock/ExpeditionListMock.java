@@ -16,7 +16,7 @@ public class ExpeditionListMock {
     Client client = new Client("id2", 0, 0, "C01");
     Producer producer = new Producer("id3", 0, 0, "P01");
     producer.addProductInfoToDayData(1, new Product("Apple"), 500.);
-    producer.addProductInfoToDayData(1, new Product("Banana"), 500.);
+    producer.addProductInfoToDayData(1, new Product("Banana"), 1000.);
     producer.addProductInfoToDayData(1, new Product("Orange"), 500.);
 
     Producer secondProducer = new Producer("id4", 0, 0, "P02");
