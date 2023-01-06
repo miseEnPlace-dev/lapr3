@@ -134,13 +134,14 @@ INSERT INTO FatorProducaoSubstancia (id_fator_producao,id_substancia,quantidade,
 -- TipoSensor
 INSERT INTO TipoSensor (id_tipo_sensor,tipo_sensor) VALUES (1,'TS');
 INSERT INTO TipoSensor (id_tipo_sensor,tipo_sensor) VALUES (2,'HS');
-INSERT INTO TipoSensor (id_tipo_sensor,tipo_sensor) VALUES (3,'VS');
-INSERT INTO TipoSensor (id_tipo_sensor,tipo_sensor) VALUES (4,'DS');
+INSERT INTO TipoSensor (id_tipo_sensor,tipo_sensor) VALUES (3,'TA');
+INSERT INTO TipoSensor (id_tipo_sensor,tipo_sensor) VALUES (4,'VV');
 INSERT INTO TipoSensor (id_tipo_sensor,tipo_sensor) VALUES (5,'HA');
 INSERT INTO TipoSensor (id_tipo_sensor,tipo_sensor) VALUES (6,'PL');
+INSERT INTO TipoSensor (id_tipo_sensor,tipo_sensor) VALUES (7,'PA');
 
 -- Sensor
-INSERT INTO Sensor (id_sensor,identificador,id_tipo_sensor,valor_referencia) VALUES (1,'TS',1,10);
+INSERT INTO Sensor (id_sensor,identificador,id_tipo_sensor,valor_referencia) VALUES (1,'12345',1,10);
 INSERT INTO Sensor (id_sensor,identificador,id_tipo_sensor,valor_referencia) VALUES (2,'HS',2,10);
 INSERT INTO Sensor (id_sensor,identificador,id_tipo_sensor,valor_referencia) VALUES (3,'VS',3,10);
 INSERT INTO Sensor (id_sensor,identificador,id_tipo_sensor,valor_referencia) VALUES (4,'DS',4,10);
@@ -148,12 +149,12 @@ INSERT INTO Sensor (id_sensor,identificador,id_tipo_sensor,valor_referencia) VAL
 INSERT INTO Sensor (id_sensor,identificador,id_tipo_sensor,valor_referencia) VALUES (6,'PL',6,10);
 
 -- MedicaoSensor
-INSERT INTO MedicaoSensor (id_sensor,id_setor,medicao,data_hora) VALUES (1,1,20,'10-Jan-2020 12:00:00');
-INSERT INTO MedicaoSensor (id_sensor,id_setor,medicao,data_hora) VALUES (2,1,60,'11-Jan-2020 12:00:00');
-INSERT INTO MedicaoSensor (id_sensor,id_setor,medicao,data_hora) VALUES (3,1,10, '12-Jan-2020 12:00:00');
-INSERT INTO MedicaoSensor (id_sensor,id_setor,medicao,data_hora) VALUES (4,1,10, '13-Jan-2020 12:00:00');
-INSERT INTO MedicaoSensor (id_sensor,id_setor,medicao,data_hora) VALUES (5,1,80, '14-Jan-2020 12:00:00');
-INSERT INTO MedicaoSensor (id_sensor,id_setor,medicao,data_hora) VALUES (6,1,5, '15-Jan-2020 12:00:00');
+INSERT INTO MedicaoSensor (id_medicao,id_sensor,medicao,data_hora) VALUES (1,1,20,'10-Jan-2020 12:00:00');
+INSERT INTO MedicaoSensor (id_medicao,id_sensor,medicao,data_hora) VALUES (2,2,60,'11-Jan-2020 12:00:00');
+INSERT INTO MedicaoSensor (id_medicao,id_sensor,medicao,data_hora) VALUES (3,3,10, '12-Jan-2020 12:00:00');
+INSERT INTO MedicaoSensor (id_medicao,id_sensor,medicao,data_hora) VALUES (4,4,10, '13-Jan-2020 12:00:00');
+INSERT INTO MedicaoSensor (id_medicao,id_sensor,medicao,data_hora) VALUES (5,5,80, '14-Jan-2020 12:00:00');
+INSERT INTO MedicaoSensor (id_medicao,id_sensor,medicao,data_hora) VALUES (6,6,5, '15-Jan-2020 12:00:00');
 
 -- Plantacao
 INSERT INTO Plantacao (id_plantacao,id_setor,id_cultura,data_inicio) VALUES (1,1,1,'01-Jan-2021');
@@ -181,8 +182,13 @@ INSERT INTO RestricaoAplicacao (id_setor,data_inicio,data_fim,id_tipo_fator_prod
 INSERT INTO FatorProducaoAplicacao (id_operacao,id_fator_producao,quantidade) VALUES (1,1,100);
 INSERT INTO FatorProducaoAplicacao (id_operacao,id_fator_producao,quantidade) VALUES (2,2,100);
 
--- input_sensor
-INSERT INTO input_sensor (input_string) VALUES ('62943HS078783897638710:35');
+-- InputSensor
+INSERT INTO InputSensor (string) VALUES ('62943HS050090202301051035');
+INSERT INTO InputSensor (string) VALUES ('62943TS050090202301061520');
+INSERT INTO InputSensor (string) VALUES ('62943TS080090202302311035');
+INSERT INTO InputSensor (string) VALUES ('62943DS080090202302071520');
+INSERT INTO InputSensor (string) VALUES ('12345DS080090202302071520');
+INSERT INTO InputSensor (string) VALUES (' ');
 
 -- InputHub
 INSERT INTO InputHub(string) VALUES ('CT1;40.6389;-8.6553;C1');
