@@ -187,4 +187,16 @@ public class Basket {
   public Set<Product> getProducts() {
     return ordered.keySet();
   }
+
+  @Override
+  public String toString(){
+    String result = "Basket of Client: " + this.client.getId() + "\nDelivery Hub: " + this.hub.getId() + "\nOrdered Products:\n";
+    
+    for (Product product : this.ordered.keySet()) {
+      result += "   Product: " + product.getName() + " - Quantity: " + ordered.get(product) + "\n";
+    }
+    result += "\nDelivered Products:\n" + this.received.toString() + "\n\n";
+
+    return result;
+  }
 }

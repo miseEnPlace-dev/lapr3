@@ -3,10 +3,18 @@ package isep.model;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedMap;
+import java.util.concurrent.RecursiveAction;
+
+import isep.shared.exceptions.InvalidHubException;
 import isep.shared.exceptions.InvalidNumberOfHubsException;
+import isep.shared.exceptions.InvalidOrderException;
+import isep.shared.exceptions.UndefinedHubsException;
 import isep.utils.MergeSort;
 import isep.utils.graph.AdjacencyMapGraph;
 import isep.utils.graph.Edge;
@@ -207,6 +215,236 @@ public class DistributionNetwork {
     return nearestHub;
   }
 
+  public ExpeditionList getExpeditionList(Integer day)
+      throws InvalidOrderException, InvalidHubException, UndefinedHubsException {
+    ExpeditionList expeditionList = new ExpeditionList(day);
+
+    List<Client> clientsList = this.network.getEntitiesWithClass(Client.class);
+
+    if (this.getNearestHub(clientsList.get(0)) == null)
+      throw new UndefinedHubsException();
+    Map<Producer, DailyData> prodStocks = this.getActualStock(day);
+
+    for (int j = 0; j < clientsList.size(); j++) { // iterate all clients
+      Client client = clientsList.get(j);
+      Map<Product, Double> ordered = client.getDayData(day);
+      ReceivedProducts received = new ReceivedProducts();
+
+      Enterprise hub = this.getNearestHub(client);
+
+      if (ordered == null)
+        continue;
+
+      for (Product product : ordered.keySet()) { // iterates client product orders
+        Producer bestProducer = null;
+        Double bestQuant = 0.;
+
+        Double quantOrdered = ordered.get(product);
+
+        for (Producer producer : prodStocks.keySet()) { // iterates all producers
+          Double quantAvailable = prodStocks.get(producer).getNonExpiredProductQuantity(product, day);
+
+          if (quantAvailable >= quantOrdered) {
+            bestProducer = producer;
+            bestQuant = quantOrdered;
+            break;
+          } else if (bestQuant < quantAvailable) {
+            bestProducer = producer;
+            bestQuant = quantAvailable;
+          }
+
+        }
+
+        if (bestProducer == null)
+          continue;
+
+        // remove stock
+        prodStocks.get(bestProducer).removeValidProductQuantity(product, bestQuant, day);
+
+        // register for expeditionsList
+        received.setProduct(bestProducer, product, bestQuant);
+
+      }
+
+      Basket basket = new Basket(ordered, received, hub, client);
+
+      expeditionList.addBasket(basket);
+
+    }
+
+    return expeditionList;
+  }
+
+  public ExpeditionList getExpeditionListForNNearestProducers(Integer day, Integer nProducers)
+      throws InvalidOrderException, InvalidHubException, UndefinedHubsException {
+    ExpeditionList expeditionList = new ExpeditionList(day);
+
+    List<Client> clientsList = this.network.getEntitiesWithClass(Client.class);
+
+    if (this.getNearestHub(clientsList.get(0)) == null)
+      throw new UndefinedHubsException();
+    Map<Enterprise, Map<Producer, DailyData>> prodStocks = this.getActualStockForNNearestProducers(day, nProducers);
+
+    for (int j = 0; j < clientsList.size(); j++) { // iterate all clients
+      Client client = clientsList.get(j);
+      Map<Product, Double> ordered = client.getDayData(day);
+      ReceivedProducts received = new ReceivedProducts();
+
+      Enterprise hub = this.getNearestHub(client);
+
+      if (ordered == null)
+        continue;
+
+      for (Product product : ordered.keySet()) { // iterates client product orders
+        Producer bestProducer = null;
+        Double bestQuant = 0.;
+
+        Double quantOrdered = ordered.get(product);
+
+        for (Producer producer : prodStocks.get(hub).keySet()) { // iterates all producers
+          Double quantAvailable = prodStocks.get(hub).get(producer).getNonExpiredProductQuantity(product, day);
+
+          if (quantAvailable >= quantOrdered) {
+            bestProducer = producer;
+            bestQuant = quantOrdered;
+            break;
+          } else if (bestQuant < quantAvailable) {
+            bestProducer = producer;
+            bestQuant = quantAvailable;
+          }
+
+        }
+
+        if (bestProducer == null)
+          continue;
+
+        // remove stock
+        prodStocks.get(hub).get(bestProducer).removeValidProductQuantity(product, bestQuant, day);
+
+        // register for expeditionsList
+        received.setProduct(bestProducer, product, bestQuant);
+
+      }
+
+      Basket basket = new Basket(ordered, received, hub, client);
+
+      expeditionList.addBasket(basket);
+
+    }
+
+    return expeditionList;
+  }
+
+  public Map<Enterprise, Map<Producer, DailyData>> getNNearestProducersStock(Integer nProducers, Integer day) {
+    List<Enterprise> hubs = this.getHubs();
+    Map<Enterprise, Map<Producer, DailyData>> result = new HashMap<>();
+
+    Map<Producer, DailyData> visitedStock = new HashMap<>();
+
+    for (Enterprise hub : hubs) {
+      List<Producer> producersList = this.getNNearestProducersByHub(hub, nProducers);
+
+      Map<Producer, DailyData> stock = new LinkedHashMap<>();
+
+      for (Producer producer : producersList) {
+        DailyData dailyStock = visitedStock.get(producer);
+        if (dailyStock == null) {
+          dailyStock = producer.getStockUntilDate(day);
+          visitedStock.put(producer, dailyStock);
+        }
+
+        stock.put(producer, dailyStock);
+      }
+
+      result.put(hub, stock);
+    }
+
+    return result;
+  }
+
+  public Map<Producer, DailyData> getActualStock(Integer day) {
+    List<Client> clientsList = this.network.getEntitiesWithClass(Client.class);
+    Map<Producer, DailyData> prodStocks = this.network.getProducersStockUntilDate(day);
+
+    for (int i = 1; i < day; i++) { // iterate all days before
+      for (int j = 0; j < clientsList.size(); j++) { // iterate all clients
+        Map<Product, Double> ordered = clientsList.get(j).getDayData(i);
+
+        if (ordered == null)
+          continue;
+
+        for (Product product : ordered.keySet()) { // iterates client product orders
+          Producer bestProducer = null;
+          Double bestQuant = 0.;
+
+          Double quantOrdered = ordered.get(product);
+
+          for (Producer producer : prodStocks.keySet()) { // iterates all producers
+            Double quantAvailable = prodStocks.get(producer).getNonExpiredProductQuantity(product, i);
+
+            if (quantAvailable >= quantOrdered) {
+              bestProducer = producer;
+              bestQuant = quantOrdered;
+              break;
+            } else if (bestQuant < quantAvailable) {
+              bestProducer = producer;
+              bestQuant = quantAvailable;
+            }
+          }
+
+          if (bestProducer != null)
+            prodStocks.get(bestProducer).removeValidProductQuantity(product, bestQuant, i);
+        }
+      }
+    }
+    return prodStocks;
+  }
+
+  public Map<Enterprise, Map<Producer, DailyData>> getActualStockForNNearestProducers(Integer day, Integer nProducers) {
+    List<Client> clientsList = this.network.getEntitiesWithClass(Client.class);
+    Map<Client, Enterprise> clientHub = new HashMap<>();
+
+    for (int i = 0; i < clientsList.size(); i++) {
+      clientHub.put(clientsList.get(i), this.getNearestHub(clientsList.get(i)));
+    }
+
+    Map<Enterprise, Map<Producer, DailyData>> prodStocks = this.getNNearestProducersStock(nProducers, day);
+
+    for (int i = 1; i < day; i++) { // iterate all days before
+      for (Client client : clientHub.keySet()) { // iterate all clients
+        Map<Product, Double> ordered = client.getDayData(i);
+        Enterprise hub = clientHub.get(client);
+
+        if (ordered == null)
+          continue;
+
+        for (Product product : ordered.keySet()) { // iterates client product orders
+          Producer bestProducer = null;
+          Double bestQuant = 0.;
+
+          Double quantOrdered = ordered.get(product);
+
+          for (Producer producer : prodStocks.get(hub).keySet()) { // iterates all producers
+            Double quantAvailable = prodStocks.get(hub).get(producer).getNonExpiredProductQuantity(product, i);
+
+            if (quantAvailable >= quantOrdered) {
+              bestProducer = producer;
+              bestQuant = quantOrdered;
+              break;
+            } else if (bestQuant < quantAvailable) {
+              bestProducer = producer;
+              bestQuant = quantAvailable;
+            }
+          }
+
+          if (bestProducer != null)
+            prodStocks.get(hub).get(bestProducer).removeValidProductQuantity(product, bestQuant, i);
+        }
+      }
+    }
+    return prodStocks;
+  }
+
   public int getWeightOfPath(List<Entity> entities) {
     int weight = 0;
     for (int i = 0; i < entities.size() - 1; i++) {
@@ -215,7 +453,7 @@ public class DistributionNetwork {
     return weight;
   }
 
-  public List<Producer> getNNearestProducers(Enterprise hub, int n) {
+  public List<Producer> getNNearestProducersByHub(Enterprise hub, int n) {
     List<Producer> producers = network.getEntitiesWithClass(Producer.class);
 
     if (producers.size() < n)
@@ -269,4 +507,9 @@ public class DistributionNetwork {
   public List<Entity> getShortestPathUsingAStar(Entity start, Entity target) {
     return AStar.findShortestPath(this.network, start, target);
   }
+
+  public boolean hasHub() {
+    return this.network.hasHubs();
+  }
+
 }

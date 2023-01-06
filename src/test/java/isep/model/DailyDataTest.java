@@ -33,12 +33,12 @@ public class DailyDataTest {
     productsDay4.put(p, 500.);
     dailyData.addDayData(4, productsDay4);
 
-    assertEquals(1100., dailyData.getQuantityAvailable(p, 4));
+    assertEquals(500., dailyData.getQuantityOfProductForDay(4, p));
   }
 
   @Test
   public void testQuantityAvailableWorksWithNoData() {
-    assertEquals(0, new DailyData().getQuantityAvailable(new Product("test"), 2));
+    assertEquals(0, new DailyData().getQuantityOfProductForDay(2, new Product("test")));
   }
 
   @Test
@@ -56,7 +56,7 @@ public class DailyDataTest {
     productsDay2.put(new Product("Tomato"), 200.);
     dailyData.addDayData(2, productsDay2);
 
-    assertEquals(400., dailyData.getQuantityAvailable(p, 3));
+    assertEquals(400, dailyData.getNonExpiredProductQuantity(p, 3));
   }
 
   @Test
