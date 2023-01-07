@@ -7,7 +7,7 @@
 
 void print_result(Sensor *arr, unsigned int size) {
     if (size == 0) return;
-    printf("-- Registos %s: --\n", arr[0].name);
+    printf("-- Registos %s: --\n", SENSOR_TYPE_DESIGNATIONS[arr[0].sensor_type]);
     for (int j = 0; j < size; j++) {
         printf("\nSensor id %d:\n", arr[j].id);
         for (int i = 0; i < arr[j].readings_size; i++) {
@@ -19,7 +19,7 @@ void print_result(Sensor *arr, unsigned int size) {
 void print_signed_result(Sensor *arr, unsigned int size) {
     if (size == 0) return;
 
-    printf("-- Registos %s: --\n", arr[0].name);
+    printf("-- Registos %s: --\n", SENSOR_TYPE_DESIGNATIONS[arr[0].sensor_type]);
     for (int j = 0; j < size; j++) {
         printf("\nSensor id %d:\n", arr[j].id);
         for (int i = 0; i < arr[j].readings_size; i++) {
