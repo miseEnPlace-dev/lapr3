@@ -50,7 +50,7 @@ public class GenerateExpeditionListUI implements Runnable {
           System.out.println(e.getMessage());
         }
       }
-    } while (option >= 1 && option <= 2);
+    } while (option < 1 && option > 2);
   }
 
   private void expeditionListWithNullRestritions()
@@ -61,7 +61,9 @@ public class GenerateExpeditionListUI implements Runnable {
     expeditionList = controller.getExpeditionList(day);
 
     if (expeditionList == null) {
-      System.out.println("There is no data for this day");
+      System.out
+          .println(
+              "There is no data for this day\nTip: Before generating an expedition list, you may want to set the network hubs.");
     } else {
       App.getInstance().getCompany().setCurrentExpeditionList(expeditionList);
 
@@ -78,7 +80,9 @@ public class GenerateExpeditionListUI implements Runnable {
     expeditionList = controller.getExpeditionList(day, nProducers);
 
     if (expeditionList == null) {
-      System.out.println("There is no data for this day");
+      System.out
+          .println(
+              "There is no data for this day\nTip: Before generating an expedition list, you may want to set the network hubs.");
     } else {
       App.getInstance().getCompany().setCurrentExpeditionList(expeditionList);
 
