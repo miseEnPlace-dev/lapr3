@@ -15,6 +15,7 @@
 #include "export_to_csv.h"
 #include "readings_generate.h"
 #include "sensor_summary.h"
+#include "ui.h"
 
 uint64_t state = 0;
 uint64_t inc = 0;
@@ -34,7 +35,7 @@ int main(void)
 
   if (n_sensors[TEMPERATURE_SENSOR_TYPE] < 1 || n_sensors[PLUVIO_SENSOR_TYPE] < 1) {
     printf("Número de sensores inválido.\nVerifique se o número de sensores de temperatura e de pluviosidade são maiores que 0.\n");
-    return -1;
+    return 1;
   }
 
   Sensor **data = bootstrap(n_sensors);
@@ -84,53 +85,7 @@ int main(void)
     data[AIR_HUMIDITY_SENSOR_TYPE][j] = current_sensor;
   }
 
-  printf("\n-- Leituras dos sensores --\n\n");
-  print_signed_result(data[TEMPERATURE_SENSOR_TYPE], n_sensors[TEMPERATURE_SENSOR_TYPE]);
-  printf("\n");
-
-  for (int i = 1; i < NUM_OF_SENSOR_TYPES; i++)
-  {
-    print_result(data[i], n_sensors[i]);
-    printf("\n");
-  }
-
-  // summary
-  print_summary(data, n_sensors);
-  printf("\n\n");
-
-  // export data
-  export_result(data, n_sensors);
-  export_summary(data, n_sensors);
-
-  print_small(data, n_sensors);
-
-  // add sensor
-  Sensor new_sensor = bootstrap_temperature(TEMPERATURES_SENSOR_INTERVAL, ++count);
-  add_sensor(new_sensor, data, n_sensors);
-  printf("\nAdicionado 1 sensor do tipo %s.\n\n", new_sensor.name);
-
-  print_small(data, n_sensors);
-
-  // delete sensor
-  Sensor *p_delete = &data[SOIL_HUMIDITY_SENSOR_TYPE][1];
-  unsigned short deleted_id = p_delete->id;
-  remove_sensor(p_delete, data, n_sensors);
-  printf("\nRemovido 1 sensor com o id %hu.\n\n", deleted_id);
-
-  print_small(data, n_sensors);
-
-  // adjust sensor frequency
-  Sensor *p_sens = &data[AIR_HUMIDITY_SENSOR_TYPE][0];
-  unsigned long new_freq = p_sens->frequency * 2;
-  adjust_sensor_freq(p_sens, new_freq);
-  printf("\nAjustada a frequência do sensor c/ id %hu para %lu segundos.", p_sens->id, new_freq);
-
-  p_sens = &data[WIND_DIRECTION_SENSOR_TYPE][2];
-  new_freq = 5400;
-  adjust_sensor_freq(p_sens, new_freq);
-  printf("\nAjustada a frequência do sensor c/ id %hu para %lu segundos.\n\n", p_sens->id, new_freq);
-
-  print_small(data, n_sensors);
+  init_ui(data, n_sensors, &count);
 
   deallocate(data, n_sensors);
 

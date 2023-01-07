@@ -40,3 +40,16 @@ void print_small(Sensor **data, unsigned int const *n_sensors) {
     }
 }
 
+void print_readings(Sensor **data, unsigned int const *n_sensors) {
+    printf("-- Leituras dos sensores --\n\n");
+    print_signed_result(data[TEMPERATURE_SENSOR_TYPE], n_sensors[TEMPERATURE_SENSOR_TYPE]);
+    printf("\n");
+
+    for (int i = 1; i < NUM_OF_SENSOR_TYPES; i++)
+    {
+        print_result(data[i], n_sensors[i]);
+	if (i < NUM_OF_SENSOR_TYPES - 1) // fix to avoid printing extra new line in last iteration
+            printf("\n");
+    }
+}
+

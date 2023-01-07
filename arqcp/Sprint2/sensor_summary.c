@@ -67,7 +67,7 @@ void print_summary(Sensor **data, unsigned int const*n_sensors) {
 
   get_summary_matrix(data, n_sensors, result);
 
-  printf("\n  ---   |");
+  printf("  ---   |");
   for (int i = 0; i < NUM_OF_SENSOR_TYPES; i++)
     printf(" %12s |", SENSOR_TYPE_DESIGNATIONS[i]);
 
