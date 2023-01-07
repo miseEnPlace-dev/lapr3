@@ -13,6 +13,7 @@ import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 
+import isep.controller.LoadBasketsController;
 import isep.controller.LoadDistributionNetworkController;
 import isep.mock.DistributionNetworkWithOrdersMock;
 import isep.model.store.EntityStore;
@@ -27,8 +28,10 @@ import isep.utils.graph.Graph;
 public class DistributionNetworkTest {
   private static final String SMALL_FILE_DISTANCES = "data/small/distancias_small.csv";
   private static final String SMALL_ENTITIES = "data/small/clientes-produtores_small.csv";
-  private static final String BIG_FILE_DISTANCES = "data/small/distancias_big.csv";
-  private static final String BIG_ENTITIES = "data/small/clientes-produtores_big.csv";
+  private static final String SMALL_BASKETS = "data/small/cabazes_small.csv";
+  private static final String BIG_FILE_DISTANCES = "data/big/distancias_big.csv";
+  private static final String BIG_ENTITIES = "data/big/clientes-produtores_big.csv";
+  private static final String BIG_BASKETS = "data/big/cabazes_big.csv";
 
   @Test
   public void testAddRelation() {
@@ -648,6 +651,137 @@ public class DistributionNetworkTest {
     assertEquals(150, basket.getQuantityOfSuppliedProduct(new Producer("P3", 0, 0, "CT6"), new Product("banana")));
     assertEquals(200, basket.getQuantityOfSuppliedProduct(new Producer("P3", 0, 0, "CT6"), new Product("orange")));
     assertEquals(100, basket.getQuantityOfSuppliedProduct(new Producer("P3", 0, 0, "CT6"), new Product("lemon")));
+  }
+
+  @Test
+  public void testGetExpeditionListWithSmallFile() throws FileNotFoundException, InvalidNumberOfHubsException,
+      InvalidOrderException, InvalidHubException, UndefinedHubsException {
+
+    CSVReader reader = new CSVReader(SMALL_FILE_DISTANCES);
+    List<Map<String, String>> distances = reader.read();
+
+    reader = new CSVReader(SMALL_ENTITIES);
+    List<Map<String, String>> entities = reader.read();
+
+    EntityStore entityStore = new EntityStore();
+    entityStore.addEntitiesFromList(entities);
+
+    LoadDistributionNetworkController controller = new LoadDistributionNetworkController(
+        entityStore, distances);
+    DistributionNetwork network = controller.loadDistributionNetwork();
+
+    network.defineHubs(1);
+
+    LoadBasketsController loadBasketsController = new LoadBasketsController(SMALL_BASKETS);
+    List<Map<String, String>> data = loadBasketsController.readData();
+
+    int count = loadBasketsController.mapBaskets(data, entityStore);
+
+    ExpeditionList expeditionListDay4 = network.getExpeditionList(4);
+    assertEquals(85, count);
+    assertEquals(5, expeditionListDay4.getBaskets().size());
+    assertEquals(5, expeditionListDay4.getClients().size());
+    assertEquals(1, expeditionListDay4.getHubs().size());
+    assertEquals(2, expeditionListDay4.getProducers().size());
+  }
+
+  @Test
+  public void testGetExpeditionListWithSmallFileWithNProducers()
+      throws FileNotFoundException, InvalidNumberOfHubsException,
+      InvalidOrderException, InvalidHubException, UndefinedHubsException {
+
+    CSVReader reader = new CSVReader(SMALL_FILE_DISTANCES);
+    List<Map<String, String>> distances = reader.read();
+
+    reader = new CSVReader(SMALL_ENTITIES);
+    List<Map<String, String>> entities = reader.read();
+
+    EntityStore entityStore = new EntityStore();
+    entityStore.addEntitiesFromList(entities);
+
+    LoadDistributionNetworkController controller = new LoadDistributionNetworkController(
+        entityStore, distances);
+    DistributionNetwork network = controller.loadDistributionNetwork();
+
+    network.defineHubs(1);
+
+    LoadBasketsController loadBasketsController = new LoadBasketsController(SMALL_BASKETS);
+    List<Map<String, String>> data = loadBasketsController.readData();
+
+    int count = loadBasketsController.mapBaskets(data, entityStore);
+
+    ExpeditionList expeditionListDay4 = network.getExpeditionListForNNearestProducers(4, 2);
+
+    assertEquals(85, count);
+    assertEquals(5, expeditionListDay4.getBaskets().size());
+    assertEquals(5, expeditionListDay4.getClients().size());
+    assertEquals(1, expeditionListDay4.getHubs().size());
+    assertEquals(2, expeditionListDay4.getProducers().size());
+  }
+
+  @Test
+  public void testGetExpeditionListWithBigFile() throws FileNotFoundException, InvalidNumberOfHubsException,
+      InvalidOrderException, InvalidHubException, UndefinedHubsException {
+    CSVReader reader = new CSVReader(BIG_FILE_DISTANCES);
+    List<Map<String, String>> distances = reader.read();
+
+    reader = new CSVReader(BIG_ENTITIES);
+    List<Map<String, String>> entities = reader.read();
+
+    EntityStore entityStore = new EntityStore();
+    entityStore.addEntitiesFromList(entities);
+
+    LoadDistributionNetworkController controller = new LoadDistributionNetworkController(
+        entityStore, distances);
+    DistributionNetwork network = controller.loadDistributionNetwork();
+
+    network.defineHubs(2);
+
+    LoadBasketsController loadBasketsController = new LoadBasketsController(BIG_BASKETS);
+    List<Map<String, String>> data = loadBasketsController.readData();
+
+    int count = loadBasketsController.mapBaskets(data, entityStore);
+
+    ExpeditionList expeditionListDay4 = network.getExpeditionListForNNearestProducers(4, 2);
+
+    assertEquals(1615, count);
+    assertEquals(109, expeditionListDay4.getBaskets().size());
+    assertEquals(109, expeditionListDay4.getClients().size());
+    assertEquals(2, expeditionListDay4.getHubs().size());
+    assertEquals(2, expeditionListDay4.getProducers().size());
+  }
+
+  @Test
+  public void testGetExpeditionListWithBigFileWithDay5() throws FileNotFoundException, InvalidNumberOfHubsException,
+      InvalidOrderException, InvalidHubException, UndefinedHubsException {
+    CSVReader reader = new CSVReader(BIG_FILE_DISTANCES);
+    List<Map<String, String>> distances = reader.read();
+
+    reader = new CSVReader(BIG_ENTITIES);
+    List<Map<String, String>> entities = reader.read();
+
+    EntityStore entityStore = new EntityStore();
+    entityStore.addEntitiesFromList(entities);
+
+    LoadDistributionNetworkController controller = new LoadDistributionNetworkController(
+        entityStore, distances);
+    DistributionNetwork network = controller.loadDistributionNetwork();
+
+    network.defineHubs(10);
+
+    LoadBasketsController loadBasketsController = new LoadBasketsController(BIG_BASKETS);
+    List<Map<String, String>> data = loadBasketsController.readData();
+
+    int count = loadBasketsController.mapBaskets(data, entityStore);
+
+    ExpeditionList expeditionListDay4 = network.getExpeditionListForNNearestProducers(5, 10);
+
+    assertEquals(1615, count);
+    assertEquals(122, expeditionListDay4.getBaskets().size());
+    assertEquals(122, expeditionListDay4.getClients().size());
+    assertEquals(9, expeditionListDay4.getHubs().size());
+    assertEquals(17, expeditionListDay4.getProducers().size());
+
   }
 
   @Test
