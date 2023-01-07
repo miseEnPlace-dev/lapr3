@@ -583,7 +583,7 @@ public class DistributionNetworkTest {
       throws FileNotFoundException, InvalidNumberOfHubsException {
     DistributionNetwork network = new DistributionNetworkWithOrdersMock().distributionNetworkWithOrdersMockSmall();
 
-    List<Enterprise> hubs = network.defineHubs(1);
+    network.defineHubs(1);
 
     Map<Enterprise, Map<Producer, DailyData>> stock = network.getNNearestProducersStock(2, 4);
 
@@ -612,7 +612,7 @@ public class DistributionNetworkTest {
       throws FileNotFoundException, InvalidNumberOfHubsException {
     DistributionNetwork network = new DistributionNetworkWithOrdersMock().distributionNetworkWithOrdersMockSmall();
 
-    List<Enterprise> hubs = network.defineHubs(1);
+    network.defineHubs(1);
 
     Map<Enterprise, Map<Producer, DailyData>> stock = network.getActualStockForNNearestProducers(4, 2);
 
