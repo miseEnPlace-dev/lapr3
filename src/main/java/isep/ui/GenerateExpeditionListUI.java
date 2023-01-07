@@ -17,14 +17,14 @@ public class GenerateExpeditionListUI implements Runnable {
 
     List<String> options = new ArrayList<>();
 
-    options.add("With zero restritions");
+    options.add("Without restrictions");
     options.add("With N Producers");
 
     int option = 0;
 
     do {
 
-      Utils.showList(options, "\nMenu:");
+      Utils.showList(options, "\nGenerate expedition list:");
       option = Utils.readIntegerFromConsole("Select an option: ");
 
       if (option == 1) {
@@ -37,14 +37,14 @@ public class GenerateExpeditionListUI implements Runnable {
 
   private ExpeditionList expeditionListWithNullRestritions() {
     ExpeditionList eList = new ExpeditionList(0);
-    System.out.println("\nexpedition list without Restritions");
+    System.out.println("\nExpedition list without restrictions");
 
     return eList;
   }
 
   private ExpeditionList expeditionListWithNProducers() {
     ExpeditionList eList = new ExpeditionList(0);
-    System.out.println("\nexpedition list with n producers");
+    System.out.println("\nExpedition list with n producers");
 
     return eList;
   }

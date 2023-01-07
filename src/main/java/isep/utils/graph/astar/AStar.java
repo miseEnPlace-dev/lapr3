@@ -15,7 +15,7 @@ import isep.utils.graph.Graph;
 /**
  * Class that implements the A* algorithm.
  * 
- * Addapted from https://www.happycoders.eu/algorithms/a-star-algorithm-java/
+ * Adapted from https://www.happycoders.eu/algorithms/a-star-algorithm-java/
  * 
  * @author Tomás Russo <1211288@isep.ipp.pt>
  */

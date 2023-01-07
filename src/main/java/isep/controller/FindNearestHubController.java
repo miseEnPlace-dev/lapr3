@@ -44,9 +44,9 @@ public class FindNearestHubController {
 
     // For each client or enterprise, find the nearest hub
     for (Entity entity : clientsAndEnterprises) {
-      System.out.println("Getting nearest hub for " + entity.getId() + "...");
+      // System.out.println("Getting nearest hub for " + entity.getId() + "...");
       result.put(entity, distributionNetwork.getNearestHub(entity));
-      System.out.println("Nearest hub found!");
+      // System.out.println("Nearest hub found!");
     }
 
     return result;

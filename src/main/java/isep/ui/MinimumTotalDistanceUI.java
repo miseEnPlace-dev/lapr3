@@ -26,6 +26,7 @@ public class MinimumTotalDistanceUI implements Runnable {
 
     expeditionPath = controller.findExpeditionPath();
 
+    System.out.println("");
     expeditionPath.printPath();
 
   }
