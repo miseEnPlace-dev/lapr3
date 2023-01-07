@@ -73,7 +73,7 @@ public class EntityStoreTest {
 
   @Test
   public void testGetEntitiesWithRoleClient() {
-    List<Client> expected = new ArrayList();
+    List<Client> expected = new ArrayList<>();
     expected.add(new Client("C1", 10.0, 0.0, "CT1"));
     expected.add(new Client("C2", 20.0, 0.0, "CT2"));
     expected.add(new Client("C3", 30.0, 10.0, "CT4"));

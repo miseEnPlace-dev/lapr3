@@ -217,7 +217,7 @@ public class DistributionNetwork {
       throws InvalidOrderException, InvalidHubException, UndefinedHubsException {
     ExpeditionList expeditionList = new ExpeditionList(day);
 
-    List<Client> clientsList = this.network.getEntitiesWithClass(Client.class);
+    List<Client> clientsList = this.network.getClients();
 
     if (this.getNearestHub(clientsList.get(0)) == null)
       throw new UndefinedHubsException();
@@ -285,7 +285,7 @@ public class DistributionNetwork {
       throws InvalidOrderException, InvalidHubException, UndefinedHubsException {
     ExpeditionList expeditionList = new ExpeditionList(day);
 
-    List<Client> clientsList = this.network.getEntitiesWithClass(Client.class);
+    List<Client> clientsList = this.network.getClients();
 
     if (this.getNearestHub(clientsList.get(0)) == null)
       throw new UndefinedHubsException();
@@ -377,7 +377,7 @@ public class DistributionNetwork {
   }
 
   public Map<Producer, DailyData> getActualStock(Integer day) {
-    List<Client> clientsList = this.network.getEntitiesWithClass(Client.class);
+    List<Client> clientsList = this.network.getClients();
     Map<Producer, DailyData> prodStocks = this.network.getProducersStockUntilDate(day);
 
     for (int i = 1; i < day; i++) { // iterate all days before
@@ -415,7 +415,7 @@ public class DistributionNetwork {
   }
 
   public Map<Enterprise, Map<Producer, DailyData>> getActualStockForNNearestProducers(Integer day, Integer nProducers) {
-    List<Client> clientsList = this.network.getEntitiesWithClass(Client.class);
+    List<Client> clientsList = this.network.getClients();
     Map<Client, Enterprise> clientHub = new HashMap<>();
 
     for (int i = 0; i < clientsList.size(); i++) {
