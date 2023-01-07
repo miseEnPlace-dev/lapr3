@@ -232,10 +232,13 @@ public class DistributionNetwork {
 
       double sum = 0.;
 
+      if (ordered == null)
+        continue;
+
       for (Double quant : ordered.values())
         sum += quant;
 
-      if (ordered == null || sum == 0.)
+      if (sum == 0.)
         continue;
 
       for (Product product : ordered.keySet()) { // iterates client product orders
@@ -297,10 +300,13 @@ public class DistributionNetwork {
 
       double sum = 0.;
 
+      if (ordered == null)
+        continue;
+
       for (Double quant : ordered.values())
         sum += quant;
 
-      if (ordered == null || sum == 0.)
+      if (sum == 0.)
         continue;
 
       for (Product product : ordered.keySet()) { // iterates client product orders
