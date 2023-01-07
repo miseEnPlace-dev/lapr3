@@ -8,8 +8,6 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.SortedMap;
-import java.util.concurrent.RecursiveAction;
 
 import isep.shared.exceptions.InvalidHubException;
 import isep.shared.exceptions.InvalidNumberOfHubsException;
@@ -232,7 +230,7 @@ public class DistributionNetwork {
 
       Enterprise hub = this.getNearestHub(client);
 
-      if (ordered == null)
+      if (ordered == null || ordered.values().stream().mapToDouble(Double::doubleValue).sum() == 0.)
         continue;
 
       for (Product product : ordered.keySet()) { // iterates client product orders
@@ -292,7 +290,7 @@ public class DistributionNetwork {
 
       Enterprise hub = this.getNearestHub(client);
 
-      if (ordered == null)
+      if (ordered == null || ordered.values().stream().mapToDouble(Double::doubleValue).sum() == 0.)
         continue;
 
       for (Product product : ordered.keySet()) { // iterates client product orders

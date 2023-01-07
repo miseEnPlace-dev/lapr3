@@ -59,7 +59,7 @@ public class Basket {
     if (ordered == null)
       throw new IllegalArgumentException("Null ordered map is Invalid!");
 
-    Double sum = .0;
+    Double sum = 0.;
     for (Double quantity : ordered.values())
       sum += quantity;
 
@@ -189,13 +189,14 @@ public class Basket {
   }
 
   @Override
-  public String toString(){
-    String result = "Basket of Client: " + this.client.getId() + "\nDelivery Hub: " + this.hub.getId() + "\nOrdered Products:\n";
-    
+  public String toString() {
+    String result = "Basket of Client: " + this.client.getId() + "\nDelivery Hub: " + this.hub.getId()
+        + "\nOrdered Products:\n";
+
     for (Product product : this.ordered.keySet()) {
       result += "   Product: " + product.getName() + " - Quantity: " + ordered.get(product) + "\n";
     }
-    result += "\nDelivered Products:\n" + this.received.toString() + "\n\n";
+    result += this.received.toString() + "\n\n";
 
     return result;
   }
