@@ -117,6 +117,22 @@ public class Utils {
     } while (true);
   }
 
+  static public Date readHourDateFromConsole(String prompt) {
+    do {
+      try {
+        String strDate = readLineFromConsole(prompt);
+
+        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+
+        Date date = df.parse(strDate);
+
+        return date;
+      } catch (ParseException ex) {
+        System.out.println("Invalid input! Please try again.\n");
+      }
+    } while (true);
+  }
+
   static public Date readDateInFutureFromConsole(String prompt) {
     SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 
