@@ -24,5 +24,3 @@ const char *SENSOR_TYPE_DESIGNATIONS[] = {
     "Humid. Ar"
 };
 
-
-
