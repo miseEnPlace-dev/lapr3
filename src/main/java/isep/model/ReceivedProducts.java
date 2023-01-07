@@ -122,13 +122,13 @@ public class ReceivedProducts {
 
   @Override
   public String toString() {
-    String result = "Received Products: \n\n";
+    String result = "Received Products: \n";
 
     for (Producer producer : this.received.keySet()) {
-      result += "Producer: " + producer.getId() + "\n";
+      result += "   Producer: " + producer.getId() + "\n";
       Map<Product, Double> products = this.received.get(producer);
       for (Product product : products.keySet()) {
-        result += "   Product: " + product.getName() + " - Quantity: " + products.get(product) + "\n";
+        result += "      Product: " + product.getName() + " - Quantity: " + products.get(product) + "\n";
       }
     }
 
