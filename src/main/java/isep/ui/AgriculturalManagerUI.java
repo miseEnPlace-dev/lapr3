@@ -17,6 +17,7 @@ public class AgriculturalManagerUI implements Runnable {
     List<MenuItem> networkOptions = new ArrayList<>();
 
     options.add(new MenuItem("Load distribution network", new LoadDistributionNetworkUI()));
+    options.add(new MenuItem("Build irrigation controller", new BuildIrrigationCtrlUI()));
 
     networkOptions.add(new MenuItem("Find minimum number of connections", new GetMinNumberOfConnectionsUI()));
     networkOptions.add(new MenuItem("Set network hubs", new DefineHubsUI()));
