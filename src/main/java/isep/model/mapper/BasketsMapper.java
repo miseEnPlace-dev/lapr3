@@ -37,6 +37,8 @@ public class BasketsMapper {
         String productName = Field.PRODUCT.name + i;
         Double quantity = Double.parseDouble(map.get(Field.PRODUCT.name + i));
 
+        if (quantity <= 0) continue;
+
         try {
           Product product = new Product(productName);
           thisDayData.put(product, quantity);
