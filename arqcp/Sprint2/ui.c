@@ -87,8 +87,29 @@ void option5(Sensor **data, unsigned int *n_sensors, unsigned int *count) {
 
 void option6(Sensor **data, unsigned int *n_sensors, unsigned int *count) {
     // adjust freq
-    Sensor *p_sens = &data[WIND_DIRECTION_SENSOR_TYPE][0];
-    unsigned long new_freq = p_sens->frequency * 2;
+    int choice;
+    printf("Insira o ID do sensor que pretende: ");
+    scanf("%d", &choice);
+    Sensor *p_sens = find_sensor_by_id((unsigned short)choice, data, n_sensors);
+
+    if (p_sens == NULL) {
+        printf("Não existe nenhum sensor com o id %d.\n", choice);
+        return;
+    }
+
+    printf("\nSensor do tipo %s c/ id %hu.\n", SENSOR_TYPE_DESIGNATIONS[p_sens->sensor_type], p_sens->id);
+    printf("Nº de leituras do sensor: %lu leituras\n", p_sens->readings_size);
+    printf("Frequência atual do sensor: %lu segundos\n", p_sens->frequency);
+    printf("\nInsira a nova frequência: ");
+    long input;
+    scanf("%ld", &input);
+    
+    if (input <= 0) {
+        printf("Frequência inserida inválida.\n");
+        return;
+    }
+
+    unsigned long new_freq = (unsigned long)input;
     adjust_sensor_freq(p_sens, new_freq);
     printf("Ajustada a frequência do sensor c/ id %hu para %lu segundos.\n", p_sens->id, new_freq);
 }
