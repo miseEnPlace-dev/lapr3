@@ -37,7 +37,7 @@ public class GenerateExpeditionListUI implements Runnable {
 
       if (option == 1) {
         try {
-          expeditionListWithNullRestritions();
+          expeditionListWithNoRestrictions();
         } catch (InvalidOrderException | InvalidHubException | UndefinedHubsException e) {
           System.out.println("Invalid data");
           System.out.println(e.getMessage());
@@ -53,7 +53,7 @@ public class GenerateExpeditionListUI implements Runnable {
     } while (option < 1 && option > 2);
   }
 
-  private void expeditionListWithNullRestritions()
+  private void expeditionListWithNoRestrictions()
       throws InvalidOrderException, InvalidHubException, UndefinedHubsException {
     readDays();
 
