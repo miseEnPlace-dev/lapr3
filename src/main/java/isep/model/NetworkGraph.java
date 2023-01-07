@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 import isep.utils.graph.AdjacencyMapGraph;
 
 public class NetworkGraph<V, E> extends AdjacencyMapGraph<V, E> {
@@ -43,9 +42,9 @@ public class NetworkGraph<V, E> extends AdjacencyMapGraph<V, E> {
     return result;
   }
 
-  public boolean hasHubs(){
+  public boolean hasHubs() {
     for (V vertex : super.mapVertices.keySet())
-      if (vertex.getClass() == Enterprise.class && ((Enterprise) vertex).isHub()) 
+      if (vertex.getClass() == Enterprise.class && ((Enterprise) vertex).isHub())
         return true;
     return false;
   }
