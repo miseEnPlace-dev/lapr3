@@ -3,6 +3,8 @@ package isep.ui;
 import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Map;
+
+import isep.controller.App;
 import isep.controller.LoadBasketsController;
 import isep.ui.utils.Utils;
 
@@ -26,6 +28,7 @@ public class ImportBasketListUI implements Runnable {
       List<Map<String, String>> data = ctrler.readData();
       int count = ctrler.mapBaskets(data);
       System.out.println("\nSuccessfully imported " + count + " baskets!");
+      App.getInstance().getCompany().setCurrentBasketsFilePath(filePath);
     } catch (FileNotFoundException e) {
       System.out.println("\nFile does not exist.");
     }

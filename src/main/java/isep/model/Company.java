@@ -20,6 +20,7 @@ public class Company {
   private ExpeditionList currentExpeditionList;
   private String currentEntitiesFilePath = null;
   private String currentDistancesFilePath = null;
+  private String currentBasketsFilePath = null;
 
   public Company() {
     this.distributionNetwork = new DistributionNetwork();
@@ -50,6 +51,14 @@ public class Company {
 
   public void setCurrentDistancesFilePath(String currentDistancesFilePath) {
     this.currentDistancesFilePath = currentDistancesFilePath;
+  }
+
+  public String getCurrentBasketsFilePath() {
+    return currentBasketsFilePath;
+  }
+
+  public void setCurrentBasketsFilePath(String currentBasketsFilePath) {
+    this.currentBasketsFilePath = currentBasketsFilePath;
   }
 
   public void setDistributionNetwork(DistributionNetwork distributionNetwork) {

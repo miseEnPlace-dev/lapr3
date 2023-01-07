@@ -12,7 +12,7 @@ import java.util.TreeMap;
  */
 public class DailyData {
   private final int DAYS_TO_EXPIRE = 3;
-  private SortedMap<Integer, Map<Product, Double>> dailyData;
+  private Map<Integer, Map<Product, Double>> dailyData;
 
   public DailyData() {
     this.dailyData = new TreeMap<>();
@@ -78,26 +78,30 @@ public class DailyData {
    */
   public Double getQuantityOfProductForDay(Integer day, Product product) {
     if (dailyData.get(day) == null)
-      return .0;
+      return 0.;
     if (dailyData.get(day).get(product) == null)
-      return .0;
+      return 0.;
 
     return this.dailyData.get(day).get(product);
   }
 
   public void setQuantityOfProductDay(Integer day, Product p, Double quant) {
-    this.dailyData.get(day).put(p, quant);
+    if (this.dailyData.containsKey(day))
+      this.dailyData.get(day).put(p, quant);
   }
 
   public DailyData getDailyDataUntilDate(Integer day) {
     DailyData result = new DailyData();
-    this.dailyData = this.dailyData.subMap(0, day);
+
+    for (int i = 1; i <= day; i++)
+      if (dailyData.get(i) != null)
+        result.addDayData(i, dailyData.get(i));
 
     return result;
   }
 
   public Double getNonExpiredProductQuantity(Product product, int day) {
-    Double quantity = .0;
+    Double quantity = 0.;
 
     for (int i = day; i > day - DAYS_TO_EXPIRE; i--)
       quantity += getQuantityOfProductForDay(i, product);
@@ -105,27 +109,19 @@ public class DailyData {
     return quantity;
   }
 
-  public Double getQuantityAvailable(Product p, Integer day) {
-    Double quant = .0;
-    for (int i = 0; i < 3; i++) {
-      if (this.dailyData.containsKey(day - i))
-        quant += this.dailyData.get(day - i).get(p);
-    }
-    return quant;
-  }
-
   public void removeValidProductQuantity(Product p, Double quant, Integer day) {
     for (int i = 2; i >= 0; i--) {
-      if (quant != 0) {
-        Double quantAvailable = this.getQuantityOfProductForDay(day - i, p);
-        if (quantAvailable < quant) {
-          quant -= quantAvailable;
-          this.setQuantityOfProductDay(day - i, p, .0);
-        } else {
-          this.setQuantityOfProductDay(day - i, p, quantAvailable - quant);
-          quant = .0;
-        }
+      if (quant == 0)
+        continue;
+      Double quantAvailable = this.getQuantityOfProductForDay(day - i, p);
+      if (quantAvailable < quant) {
+        quant -= quantAvailable;
+        this.setQuantityOfProductDay(day - i, p, 0.);
+      } else {
+        this.setQuantityOfProductDay(day - i, p, quantAvailable - quant);
+        quant = 0.;
       }
+
     }
   }
 }

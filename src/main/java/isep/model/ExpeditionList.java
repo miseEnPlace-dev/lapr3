@@ -285,4 +285,15 @@ public class ExpeditionList {
 
     return count;
   }
+
+  @Override
+  public String toString() {
+    String result = "Expedition List - Day " + this.day + "\n\n";
+
+    for (int i = 0; i < baskets.size(); i++) {
+      result += baskets.get(i).toString();
+    }
+
+    return result;
+  }
 }
