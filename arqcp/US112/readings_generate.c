@@ -35,7 +35,7 @@ void generate_temperature(Sensor current_sensor) {
     } while (total_errors > MAX_INCORRECT_READS);
 }
 
-void generate_general(Sensor current_sensor, int base_value, unsigned short (*sens_func)(unsigned short, short)) {
+void generate_general(Sensor current_sensor, int base_value, unsigned short (*sens_func)(unsigned short, short), char is_char) {
     int total_errors = 0;
 
     do { // retry on excess of errors
@@ -44,7 +44,13 @@ void generate_general(Sensor current_sensor, int base_value, unsigned short (*se
       for (int i = 0; i < current_sensor.readings_size; i++) {
         // generate readings
         // sens_func: funtion pointer to the generator function
-        last_read = sens_func(last_read, pcg32_random_r());
+	
+	if (is_char) { // !!! workaround for bad values
+	    unsigned char (*char_sens_func)(unsigned char, char) = (unsigned char (*)(unsigned char, char))sens_func; 
+	    last_read = char_sens_func(last_read, pcg32_random_r());
+	} else {
+	    last_read = sens_func(last_read, pcg32_random_r());
+	}
         current_sensor.readings[i] = last_read;
 
         current_sensor.errors[i] = exceeded_limits(i, current_sensor);
@@ -60,7 +66,7 @@ void generate_general(Sensor current_sensor, int base_value, unsigned short (*se
     } while (total_errors > MAX_INCORRECT_READS);
 }
 
-void generate_dependant(Sensor current_sensor, Sensor dependant, int base_value, unsigned short (*sens_func)(unsigned short, unsigned short, short)) {
+void generate_dependant(Sensor current_sensor, Sensor dependant, int base_value, unsigned short (*sens_func)(unsigned short, unsigned short, short), char is_char) {
     int total_errors = 0;
 
     do { // retry on excess of errors
@@ -69,7 +75,13 @@ void generate_dependant(Sensor current_sensor, Sensor dependant, int base_value,
       for (int i = 0; i < current_sensor.readings_size; i++) {
         // generate readings
         unsigned short last_dependant_read = dependant.readings[i * (dependant.frequency / current_sensor.frequency)];
-        last_read = (unsigned short)sens_func(last_read, last_dependant_read, pcg32_random_r());
+	
+	if (is_char) { // !!! workaround for bad values
+	    unsigned char (*char_sens_func)(unsigned char, unsigned char, char) = (unsigned char (*)(unsigned char, unsigned char, char))sens_func; 
+	    last_read = char_sens_func(last_read, last_dependant_read, pcg32_random_r());
+	} else {
+            last_read = (unsigned short)sens_func(last_read, last_dependant_read, pcg32_random_r());
+	}
         current_sensor.readings[i] = last_read;
 
         current_sensor.errors[i] = exceeded_limits(i, current_sensor);

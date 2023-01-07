@@ -70,7 +70,7 @@ Sensor bootstrap_wind_vel(unsigned long frequency, unsigned int id) {
     unsigned short base_value = pcg32_random_r() % VELC_BASE_VALUE;
 
     // generate readings
-    generate_general(s, base_value, sens_func);
+    generate_general(s, base_value, sens_func, 1);
 
     return s;
 }
@@ -96,7 +96,7 @@ Sensor bootstrap_wind_dir(unsigned long frequency, unsigned int id) {
     unsigned short base_value = pcg32_random_r() % DIR_BASE_VALUE;
 
     // generate readings
-    generate_general(s, base_value, sens_func);
+    generate_general(s, base_value, sens_func, 0);
 
     return s;
 }
@@ -122,7 +122,7 @@ Sensor bootstrap_pluvio(unsigned long frequency, unsigned int id, Sensor temp_se
     unsigned short base_value = pcg32_random_r() % PLUVIO_BASE_VALUE;
 
     // generate readings
-    generate_dependant(s, temp_sensor, base_value, sens_func);
+    generate_dependant(s, temp_sensor, base_value, sens_func, 1);
 
     return s;
 }
@@ -148,7 +148,7 @@ Sensor bootstrap_soil_humidity(unsigned long frequency, unsigned int id, Sensor 
     unsigned short base_value = SOIL_BASE_VALUE;
 
     // generate readings
-    generate_dependant(s, pluvio_sensor, base_value, sens_func);
+    generate_dependant(s, pluvio_sensor, base_value, sens_func, 0);
 
     return s;
 }
@@ -174,7 +174,7 @@ Sensor bootstrap_air_humidity(unsigned long frequency, unsigned int id, Sensor p
     unsigned short base_value = AIR_BASE_VALUE;
 
     // generate readings
-    generate_dependant(s, pluvio_sensor, base_value, sens_func);
+    generate_dependant(s, pluvio_sensor, base_value, sens_func, 0);
 
     return s;
 }
