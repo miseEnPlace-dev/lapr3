@@ -1,9 +1,12 @@
 package isep.ui;
 
+import java.util.Map;
+
 import isep.controller.App;
 import isep.controller.FindNearestHubController;
 import isep.model.DistributionNetwork;
-import isep.ui.utils.Utils;
+import isep.model.Enterprise;
+import isep.model.Entity;
 
 public class NearestHubUI implements Runnable {
   private FindNearestHubController findNearestHubController;
@@ -15,6 +18,7 @@ public class NearestHubUI implements Runnable {
   @Override
   public void run() {
     network = App.getInstance().getCompany().getDistributionNetwork();
+
     if (network.getEntities().isEmpty()) {
       System.out.println("\nYou must load a distribution network first");
       return;
@@ -22,10 +26,12 @@ public class NearestHubUI implements Runnable {
 
     findNearestHubController = new FindNearestHubController(network);
     System.out.println("\nYour nearest hub is:");
-    findNearestHubController.findNearestHub();
+    printNearestHub();
   }
 
   private void printNearestHub() {
-    // TODO Auto-generated method stub
+    for (Map.Entry<Entity, Enterprise> entry : findNearestHubController.findNearestHub().entrySet()) {
+      System.out.println("Hub :" + entry.getKey().getId());
+    }
   }
 }

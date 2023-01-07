@@ -3,7 +3,6 @@ package isep.ui;
 import isep.controller.App;
 import isep.controller.GetMinNumberOfConnectionsController;
 import isep.model.DistributionNetwork;
-import isep.ui.utils.Utils;
 
 public class GetMinNumberOfConnectionsUI implements Runnable {
   GetMinNumberOfConnectionsController controller;
@@ -16,8 +15,15 @@ public class GetMinNumberOfConnectionsUI implements Runnable {
   public void run() {
     network = App.getInstance().getCompany().getDistributionNetwork();
     controller = new GetMinNumberOfConnectionsController(network);
-    // TODO Auto-generated method stub
 
+    if (controller.isConnected()) {
+      System.out.println("\nThe network is connected!");
+
+      int minNumberOfConnections = controller.getMinimumNumOfConnections();
+      System.out.println("The minimum number of connections is: " + minNumberOfConnections);
+    } else {
+      System.out.println("\nThe network is not connected!");
+    }
   }
 
 }
