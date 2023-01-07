@@ -5,16 +5,8 @@ import java.util.Map;
 import isep.controller.App;
 import isep.controller.FindNearestHubController;
 import isep.model.DistributionNetwork;
-<<<<<<< HEAD
-import isep.ui.utils.Utils;
 import isep.model.Entity;
 import isep.model.Enterprise;
-
-import java.util.Map;
-=======
-import isep.model.Enterprise;
-import isep.model.Entity;
->>>>>>> a90b1a1c82a1e96e072d303075759c134263f34a
 
 public class NearestHubUI implements Runnable {
   private FindNearestHubController findNearestHubController;
