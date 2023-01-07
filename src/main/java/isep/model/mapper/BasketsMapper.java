@@ -34,7 +34,7 @@ public class BasketsMapper {
       int i = 1;
 
       while (map.get(Field.PRODUCT.name + i) != null) {
-        String productName = map.get(Field.PRODUCT.name + i);
+        String productName = Field.PRODUCT.name + i;
         Double quantity = Double.parseDouble(map.get(Field.PRODUCT.name + i));
 
         try {
