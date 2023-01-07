@@ -14,6 +14,7 @@
 #include "dynamic_sensors.h"
 #include "export_to_csv.h"
 #include "readings_generate.h"
+#include "sensor_summary.h"
 
 uint64_t state = 0;
 uint64_t inc = 0;
@@ -93,6 +94,10 @@ int main(void)
     printf("\n");
   }
 
+  // summary
+  print_summary(data, n_sensors);
+  printf("\n\n");
+
   print_small(data, n_sensors);
 
   // add sensor
@@ -126,10 +131,6 @@ int main(void)
   // export data
   //export_result(data, n_sensors);
   //export_summary(data, n_sensors);
-
-  // TODO:
-  // meter a US103 aqui (matriz de resumo)
-  //
 
   deallocate(data, n_sensors);
 
