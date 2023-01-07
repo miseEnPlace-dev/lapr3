@@ -62,7 +62,7 @@ void quit(Sensor **data, unsigned int *n_sensors, unsigned int *count) {
 
 void init_ui(Sensor **data, unsigned int *n_sensors, unsigned int *count) {
     do {
-        printf("\n\nMenu:\n");
+        printf("\nMenu:\n");
         printf(" 1. Mostrar leituras\n");
         printf(" 2. Mostrar detalhes dos sensores\n");
         printf(" 3. Apresentar matriz de resumo\n");
@@ -70,16 +70,16 @@ void init_ui(Sensor **data, unsigned int *n_sensors, unsigned int *count) {
         printf(" 5. Remover sensor\n");
         printf(" 6. Alterar frequência de um sensor\n");
         printf(" 7. Exportar dados\n");
-        printf(" 8. Sair\n");
+        printf(" 0. Sair\n");
     
         printf("\nSelecione uma opção: ");
         int choice;
         scanf("%d", &choice);
         printf("\n");
     
-        void (*options[])() = {option1, option2, option3, option4, option5, option6, option7, quit};
-        if (choice >= 1 && choice <= 8) {
-            options[choice - 1](data, n_sensors, count);
+        void (*options[])() = {quit, option1, option2, option3, option4, option5, option6, option7};
+        if (choice >= 0 && choice <= 7) {
+            options[choice](data, n_sensors, count);
         } else {
             printf("Opção inválida.\n");
         }
@@ -87,5 +87,11 @@ void init_ui(Sensor **data, unsigned int *n_sensors, unsigned int *count) {
         while ((choice = getchar()) != '\n' && choice != EOF); // flush the stdin else getchar will be skipped
         getchar();
     } while(1);
+}
+
+void get_config(char *filename) {
+    printf("Insira o nome do ficheiro de configuração: ");
+    scanf("%99s", filename);
+    printf("\n");
 }
 

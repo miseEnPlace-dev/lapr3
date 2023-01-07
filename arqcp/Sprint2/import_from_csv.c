@@ -15,7 +15,7 @@ void read_file(char *filename, unsigned int *n_sensors, unsigned int *f_sensors)
   FILE *fp = fopen(filename, "r");
   if (fp == NULL)
   {
-    printf("Error opening file!");
+    printf("Error opening file!\n");
     exit(1);
   }
 

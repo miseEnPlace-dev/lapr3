@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "generate_base_values.h"
 #include "limits.h"
 #include "print_result.h"
 #include "random.h"
@@ -11,10 +10,6 @@
 #include "shared.h"
 #include "bootstrap.h"
 #include "import_from_csv.h"
-#include "dynamic_sensors.h"
-#include "export_to_csv.h"
-#include "readings_generate.h"
-#include "sensor_summary.h"
 #include "ui.h"
 
 uint64_t state = 0;
@@ -31,7 +26,9 @@ int main(void)
   unsigned int f_sensors[NUM_OF_SENSOR_TYPES];
 
   // read the number of sensors and frequency from the config file
-  read_file(CONFIG_FILENAME, n_sensors, f_sensors);
+  char config_file[100];
+  get_config(config_file);
+  read_file(config_file, n_sensors, f_sensors);
 
   if (n_sensors[TEMPERATURE_SENSOR_TYPE] < 1 || n_sensors[PLUVIO_SENSOR_TYPE] < 1) {
     printf("Número de sensores inválido.\nVerifique se o número de sensores de temperatura e de pluviosidade são maiores que 0.\n");
