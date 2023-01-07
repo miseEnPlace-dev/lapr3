@@ -30,12 +30,10 @@ public class AgriculturalManagerUI implements Runnable {
     int option = 0;
 
     do {
-      if (!App.getInstance().getCompany().getDistributionNetwork().getEntities().isEmpty() && options.size() == 1) {
-        Utils.showRightToLeftText("Loaded distances", App.getInstance().getCompany().getCurrentDistancesFilePath());
-        Utils.showRightToLeftText("Loaded entities", App.getInstance().getCompany().getCurrentEntitiesFilePath());
-
+      if (!App.getInstance().getCompany().getDistributionNetwork().getEntities().isEmpty() && options.size() == 1)
         options.addAll(networkOptions);
-      }
+
+      showFilePathsSelected();
 
       option = Utils.showAndSelectIndex(options, "\nAgricultural Manager Menu:");
 
@@ -45,5 +43,14 @@ public class AgriculturalManagerUI implements Runnable {
       }
 
     } while (option != -1);
+  }
+
+  private void showFilePathsSelected() {
+    if (App.getInstance().getCompany().getCurrentDistancesFilePath() != null)
+      Utils.showRightToLeftText("Loaded distances", App.getInstance().getCompany().getCurrentDistancesFilePath());
+    if (App.getInstance().getCompany().getCurrentEntitiesFilePath() != null)
+      Utils.showRightToLeftText("Loaded entities", App.getInstance().getCompany().getCurrentEntitiesFilePath());
+    if (App.getInstance().getCompany().getCurrentBasketsFilePath() != null)
+      Utils.showRightToLeftText("Loaded baskets", App.getInstance().getCompany().getCurrentBasketsFilePath());
   }
 }
