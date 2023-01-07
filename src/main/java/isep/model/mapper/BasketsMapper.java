@@ -37,7 +37,10 @@ public class BasketsMapper {
         String productName = Field.PRODUCT.name + i;
         Double quantity = Double.parseDouble(map.get(Field.PRODUCT.name + i));
 
-        if (quantity <= 0) continue;
+        i++;
+
+        if (quantity <= 0)
+          continue;
 
         try {
           Product product = new Product(productName);
@@ -45,8 +48,11 @@ public class BasketsMapper {
         } catch (IllegalArgumentException e) {
           System.out.println("Invalid product name: " + productName);
         }
-        i++;
       }
+
+      if (thisDayData.isEmpty() || thisDayData == null)
+        continue;
+
       foundEntity.getDailyData().addDayData(day, thisDayData);
       count++;
     }
