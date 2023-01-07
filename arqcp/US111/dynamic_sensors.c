@@ -34,10 +34,18 @@ void adjust_sensor_freq(Sensor *s, unsigned long new_freq) {
     if (s == NULL || new_freq == 0) return;
 
     s->frequency = new_freq;
+    unsigned long old_size = s->readings_size;
     s->readings_size = SECS_IN_DAY / new_freq;
 
     s->readings = (unsigned short *)realloc(s->readings, s->readings_size * sizeof(unsigned short));
     s->errors = (unsigned char *) realloc(s->errors, s->readings_size * sizeof(unsigned char));
+
+    // initialize if realloced to a bigger size
+    while (old_size < s->readings_size) {
+        s->readings[old_size] = 0;
+        s->errors[old_size] = 0;
+        old_size++;
+    }
 }
 
 void shift(Sensor *arr, unsigned int size, Sensor const *s) {
