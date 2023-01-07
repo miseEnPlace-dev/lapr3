@@ -17,7 +17,7 @@ public class AgriculturalManagerUI implements Runnable {
     List<MenuItem> networkOptions = new ArrayList<>();
 
     options.add(new MenuItem("Load distribution network", new LoadDistributionNetworkUI()));
-    options.add(new MenuItem("Build irrigation controller", new BuildIrrigationCtrlUI()));
+    options.add(new MenuItem("Build irrigation controller", new BuildIrrigationCtrlUI(), true));
 
     networkOptions.add(new MenuItem("Find minimum number of connections", new GetMinNumberOfConnectionsUI()));
     networkOptions.add(new MenuItem("Set network hubs", new DefineHubsUI()));
@@ -31,7 +31,7 @@ public class AgriculturalManagerUI implements Runnable {
     int option = 0;
 
     do {
-      if (!App.getInstance().getCompany().getDistributionNetwork().getEntities().isEmpty() && options.size() == 1)
+      if (!App.getInstance().getCompany().getDistributionNetwork().getEntities().isEmpty() && options.size() == 2)
         options.addAll(networkOptions);
 
       showFilePathsSelected();
@@ -40,7 +40,8 @@ public class AgriculturalManagerUI implements Runnable {
 
       if ((option >= 0) && (option < options.size())) {
         options.get(option).run();
-        Utils.readLineFromConsole("\nPress any key to continue... ");
+        if (!options.get(option).skipEnterToContinue())
+          Utils.readLineFromConsole("\nPress any key to continue... ");
       }
 
     } while (option != -1);
