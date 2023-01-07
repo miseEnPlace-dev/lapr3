@@ -290,11 +290,11 @@ public class ExpeditionPath {
       if (i != path.size() - 1) {
         // If it's not the last stop, print the distance to the next stop
         int distance = getDistanceBetweenEntities(path.get(i).entity, path.get(i + 1).entity);
-        System.out.println("   : " + distance + "m");
+        System.out.println("   : " + (distance / 1000) + "km");
       }
     }
     // Print the total distance
-    System.out.println("----------\nTotal distance: " + getTotalDistance() + "m");
+    System.out.println("----------\nTotal distance: " + (getTotalDistance() / 1000) + "km");
   }
 
   /**
