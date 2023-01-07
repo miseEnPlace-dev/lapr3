@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import isep.model.Entity;
+import isep.model.Producer;
 import isep.model.Product;
 import isep.model.store.EntityStore;
 import isep.utils.Field;
@@ -39,7 +40,7 @@ public class BasketsMapper {
 
         i++;
 
-        if (quantity <= 0)
+        if (quantity <= 0 && !foundEntity.getClass().isInstance(Producer.class))
           continue;
 
         try {
