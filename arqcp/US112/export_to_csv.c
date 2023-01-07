@@ -5,6 +5,7 @@
 #include "sensor.h"
 #include "shared.h"
 #include "limits.h"
+#include "sensor_summary.h"
 
 void format_time(char *output);
 
@@ -22,7 +23,7 @@ void write_csv(char *buffer, char const *name) {
     strcat(file_name, ".csv");
 
     file_ptr = fopen(file_name, "w");
-    fprintf(file_ptr, "%s\n", buffer);
+    fprintf(file_ptr, "%s", buffer);
     fclose(file_ptr);
 }
 
@@ -33,7 +34,7 @@ void export_result(Sensor **data, unsigned int const *n_sensors) {
     char temp[256]; // here too
     for (int j = 0; j < n_sensors[0]; j++) {
         for (int k = 0; k < data[0][j].readings_size; k++) {
-            sprintf(temp, "%s,%hhu,%hu,%d%s,%hhu\n", data[0][j].name, data[0][j].sensor_type, data[0][j].id, data[0][j].readings[k], data[0][j].units, data[0][j].errors[k]);
+            sprintf(temp, "%s,%s,%hu,%d%s,%hhu\n", data[0][j].name, SENSOR_TYPE_DESIGNATIONS[data[0][j].sensor_type], data[0][j].id, data[0][j].readings[k], data[0][j].units, data[0][j].errors[k]);
             strcat(buffer, temp);
         }
     }
@@ -41,7 +42,7 @@ void export_result(Sensor **data, unsigned int const *n_sensors) {
     for (int i = 1; i < NUM_OF_SENSOR_TYPES; i++) {
         for (int j = 0; j < n_sensors[i]; j++) {
             for (int k = 0; k < data[i][j].readings_size; k++) {
-                sprintf(temp, "%s,%hhu,%hu,%u%s,%hhu\n", data[i][j].name, data[i][j].sensor_type, data[i][j].id, data[i][j].readings[k], data[i][j].units, data[i][j].errors[k]);
+                sprintf(temp, "%s,%s,%hu,%u%s,%hhu\n", data[i][j].name, SENSOR_TYPE_DESIGNATIONS[data[i][j].sensor_type], data[i][j].id, data[i][j].readings[k], data[i][j].units, data[i][j].errors[k]);
                 strcat(buffer, temp);
             }
         }
@@ -52,10 +53,16 @@ void export_result(Sensor **data, unsigned int const *n_sensors) {
 
 void export_summary(Sensor **data, unsigned int const *n_sensors) {
     char buffer[16384]; // be careful with buffer overflow
-    strcpy(buffer, "ID,Leitura,Erro");
+    strcpy(buffer, "Tipo,Mínimo,Máximo,Média\n");
 
-    //char temp[256];
+    int result[NUM_OF_SENSOR_TYPES][SUMMARY_COLUMNS];
+    get_summary_matrix(data, n_sensors, result);
 
+    char temp[256];
+    for (int i = 0; i < NUM_OF_SENSOR_TYPES; i++) {
+	sprintf(temp, "%s,%d,%d,%d\n", SENSOR_TYPE_DESIGNATIONS[i], result[i][0], result[i][1], result[i][2]);
+	strcat(buffer, temp);
+    }
 
     write_csv(buffer, "summary");
 }

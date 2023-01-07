@@ -33,7 +33,7 @@ Sensor bootstrap_temperature(unsigned long frequency, unsigned int id) {
     if (frequency == 0) frequency = TEMPERATURES_SENSOR_INTERVAL;
     Sensor s;
     s.id = id;
-    s.name = "Temperatura";
+    s.name = "temp sens";
     s.sensor_type = TEMPERATURE_SENSOR_TYPE;
     s.max_limit = UPPER_LIMIT_TEMPERATURE;
     s.min_limit = LOWER_LIMIT_TEMPERATURE;
@@ -53,7 +53,7 @@ Sensor bootstrap_wind_vel(unsigned long frequency, unsigned int id) {
     if (frequency == 0) frequency = WIND_VELOCITY_SENSOR_INTERVAL;
     Sensor s;
     s.id = id;
-    s.name = "Velocidade do Vento";
+    s.name = "wind veloc sens";
     s.sensor_type = WIND_VELOCITY_SENSOR_TYPE;
     s.max_limit = UPPER_LIMIT_WIND_VELOCITY;
     s.min_limit = LOWER_LIMIT_WIND_VELOCITY;
@@ -79,7 +79,7 @@ Sensor bootstrap_wind_dir(unsigned long frequency, unsigned int id) {
     if (frequency == 0) frequency = WIND_DIRECTION_SENSOR_INTERVAL;
     Sensor s;
     s.id = id;
-    s.name = "Direção do Vento";
+    s.name = "wind dir sens";
     s.sensor_type = WIND_DIRECTION_SENSOR_TYPE;
     s.max_limit = UPPER_LIMIT_WIND_DIRECTION;
     s.min_limit = LOWER_LIMIT_WIND_DIRECTION;
@@ -105,7 +105,7 @@ Sensor bootstrap_pluvio(unsigned long frequency, unsigned int id, Sensor temp_se
     if (frequency == 0) frequency = PLUVIO_SENSOR_INTERVAL;
     Sensor s;
     s.id = id;
-    s.name = "Pluviosidade";
+    s.name = "pluvio sens";
     s.sensor_type = PLUVIO_SENSOR_TYPE;
     s.max_limit = UPPER_LIMIT_PLUVIO;
     s.min_limit = LOWER_LIMIT_PLUVIO;
@@ -131,7 +131,7 @@ Sensor bootstrap_soil_humidity(unsigned long frequency, unsigned int id, Sensor 
     if (frequency == 0) frequency = SOIL_HUMIDITY_SENSOR_INTERVAL;
     Sensor s;
     s.id = id;
-    s.name = "Humidade do Solo";
+    s.name = "soil hum sens";
     s.sensor_type = SOIL_HUMIDITY_SENSOR_TYPE;
     s.max_limit = UPPER_LIMIT_SOIL_HUMIDITY;
     s.min_limit = LOWER_LIMIT_SOIL_HUMIDITY;
@@ -157,7 +157,7 @@ Sensor bootstrap_air_humidity(unsigned long frequency, unsigned int id, Sensor p
     if (frequency == 0) frequency = AIR_HUMIDITY_SENSOR_INTERVAL;
     Sensor s;
     s.id = id;
-    s.name = "Humidade do Ar";
+    s.name = "air hum sens";
     s.sensor_type = AIR_HUMIDITY_SENSOR_TYPE;
     s.max_limit = UPPER_LIMIT_AIR_HUMIDITY;
     s.min_limit = LOWER_LIMIT_AIR_HUMIDITY;

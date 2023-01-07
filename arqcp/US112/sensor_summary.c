@@ -61,26 +61,31 @@ void get_summary_matrix(Sensor **data, unsigned int const *n_sensors, int result
   }
 }
 
-void print_summary(Sensor **data, unsigned int *n_sensors) {
+void print_summary(Sensor **data, unsigned int const*n_sensors) {
   // US103
   int result[NUM_OF_SENSOR_TYPES][COLUMNS];
 
   get_summary_matrix(data, n_sensors, result);
 
-  printf("\n  ---   | %11s | %11s | %11s | %11s | %11s | %11s |\n", "Temperature", "Wind Vel.", "Dir. Wind", "Pluvio.", "Soil Hum.", "Air Hum.");
-  printf("--------+-------------+-------------+-------------+-------------+-------------+-------------+");
+  printf("\n  ---   |");
+  for (int i = 0; i < NUM_OF_SENSOR_TYPES; i++)
+    printf(" %12s |", SENSOR_TYPE_DESIGNATIONS[i]);
+
+  printf("\n--------+");
+  for (int i = 0; i < NUM_OF_SENSOR_TYPES; i++)
+    printf("--------------+");
 
   printf("\nMin     |");
   for (int i = 0; i < NUM_OF_SENSOR_TYPES; i++)
-    printf(" %11d |", **(result + i));
+    printf(" %12d |", **(result + i));
 
   printf("\nMax     |");
   for (int i = 0; i < NUM_OF_SENSOR_TYPES; i++)
-    printf(" %11d |", *(*(result + i) + 1));
+    printf(" %12d |", *(*(result + i) + 1));
 
   printf("\nAverage |");
   for (int i = 0; i < NUM_OF_SENSOR_TYPES; i++)
-    printf(" %11d |", *(*(result + i) + 2));
+    printf(" %12d |", *(*(result + i) + 2));
 
   printf("\n");
 }

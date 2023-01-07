@@ -15,3 +15,14 @@ const char PLUVIO_SENSOR_MAX_VARIATION = 5;
 const char HIGH_TEMP_DEFAULT = 25;
 const char PLUVIO_SENSOR_MAX_VARIATION_HIGH_TEMP = 2;
 
+const char *SENSOR_TYPE_DESIGNATIONS[] = {
+    "Temperatura",
+    "Veloc. Vento",
+    "Dir. Vento",
+    "Pluviosidade",
+    "Humid. Solo",
+    "Humid. Ar"
+};
+
+
+

@@ -98,6 +98,10 @@ int main(void)
   print_summary(data, n_sensors);
   printf("\n\n");
 
+  // export data
+  export_result(data, n_sensors);
+  export_summary(data, n_sensors);
+
   print_small(data, n_sensors);
 
   // add sensor
@@ -127,10 +131,6 @@ int main(void)
   printf("\nAjustada a frequência do sensor c/ id %hu para %lu segundos.\n\n", p_sens->id, new_freq);
 
   print_small(data, n_sensors);
-
-  // export data
-  //export_result(data, n_sensors);
-  //export_summary(data, n_sensors);
 
   deallocate(data, n_sensors);
 
