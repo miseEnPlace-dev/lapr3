@@ -26,7 +26,7 @@ public class ImportBasketListUI implements Runnable {
 
     try {
       List<Map<String, String>> data = ctrler.readData();
-      int count = ctrler.mapBaskets(data);
+      int count = ctrler.mapBaskets(data, App.getInstance().getCompany().getEntityStore());
       System.out.println("\nSuccessfully imported " + count + " baskets!");
       App.getInstance().getCompany().setCurrentBasketsFilePath(filePath);
     } catch (FileNotFoundException e) {

@@ -32,10 +32,8 @@ public class LoadDistributionNetworkUI implements Runnable {
       network = controller.loadDistributionNetwork();
 
       App.getInstance().getCompany().setDistributionNetwork(network);
-      App.getInstance().getCompany().setDistributionNetwork(network);
+      App.getInstance().getCompany().setEntityStore(entityStore);
     } catch (FileNotFoundException e) {
-      App.getInstance().getCompany().setCurrentDistancesFilePath(null);
-      App.getInstance().getCompany().setCurrentEntitiesFilePath(null);
       System.out.println("\nFile not found!");
     }
   }
@@ -62,10 +60,13 @@ public class LoadDistributionNetworkUI implements Runnable {
   private EntityStore insertDataEntities() throws FileNotFoundException {
     String filePath = Utils.readLineFromConsole("\nFile path entities: ");
     csvReader = new CSVReader(filePath);
-    entityStore.addEntitiesFromList(csvReader.read());
+
+    EntityStore store = new EntityStore();
+
+    store.addEntitiesFromList(csvReader.read());
     App.getInstance().getCompany().setCurrentEntitiesFilePath(filePath);
 
-    return entityStore;
+    return store;
   }
 
 }
