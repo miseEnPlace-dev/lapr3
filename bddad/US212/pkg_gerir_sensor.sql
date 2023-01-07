@@ -27,6 +27,7 @@ CREATE OR REPLACE PACKAGE gerir_sensores AS
     p_identificador SENSOR.identificador%TYPE
   );
 
+  /** Permite imprimir a informação de uma leitura. */
   PROCEDURE pr_imprime_informacao_leitura (
     p_id_leitura LEITURAINPUTSENSOR.id_leitura%TYPE
   );
