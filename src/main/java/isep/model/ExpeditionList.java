@@ -287,7 +287,7 @@ public class ExpeditionList {
   }
 
   @Override
-  public String toString(){
+  public String toString() {
     String result = "Expedition List - Day " + this.day + "\n\n";
 
     for (int i = 0; i < baskets.size(); i++) {

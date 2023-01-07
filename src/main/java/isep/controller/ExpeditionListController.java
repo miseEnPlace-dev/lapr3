@@ -8,17 +8,34 @@ import isep.shared.exceptions.UndefinedHubsException;
 
 public class ExpeditionListController {
 
-    private DistributionNetwork network;
+  private DistributionNetwork network;
 
-    public ExpeditionListController(){
-        network = App.getInstance().getCompany().getDistributionNetwork();
-    }
+  public ExpeditionListController() {
+    network = App.getInstance().getCompany().getDistributionNetwork();
+  }
 
-    public ExpeditionList getExpeditionList(Integer day) throws InvalidOrderException, InvalidHubException, UndefinedHubsException{
-        if(!network.hasHub())
-            return null;
-        
-        return network.getExpeditionList(day); 
+  public ExpeditionList getExpeditionList(Integer day)
+      throws InvalidOrderException, InvalidHubException, UndefinedHubsException {
+    if (!network.hasHub())
+      return null;
+
+    return network.getExpeditionList(day);
+  }
+
+  public ExpeditionList getExpeditionList(Integer day, Integer nProducers)
+      throws InvalidOrderException, InvalidHubException, UndefinedHubsException {
+    if (!network.hasHub())
+      return null;
+
+    return network.getExpeditionListForNNearestProducers(day, nProducers);
+  }
+
+  public void printExpeditionList(ExpeditionList expeditionList) {
+    if (expeditionList == null) {
+      System.out.println("There is no data for this day");
+    } else {
+      System.out.println(expeditionList.toString());
     }
-    
+  }
+
 }

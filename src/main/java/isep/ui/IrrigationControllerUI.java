@@ -1,7 +1,5 @@
 package isep.ui;
 
-import isep.ui.utils.Utils;
-
 public class IrrigationControllerUI implements Runnable {
 
   public IrrigationControllerUI() {
