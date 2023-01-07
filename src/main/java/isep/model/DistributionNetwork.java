@@ -230,7 +230,12 @@ public class DistributionNetwork {
 
       Enterprise hub = this.getNearestHub(client);
 
-      if (ordered == null || ordered.values().stream().mapToDouble(Double::doubleValue).sum() == 0.)
+      double sum = 0.;
+
+      for (Double quant : ordered.values())
+        sum += quant;
+
+      if (ordered == null || sum == 0.)
         continue;
 
       for (Product product : ordered.keySet()) { // iterates client product orders
@@ -290,7 +295,12 @@ public class DistributionNetwork {
 
       Enterprise hub = this.getNearestHub(client);
 
-      if (ordered == null || ordered.values().stream().mapToDouble(Double::doubleValue).sum() == 0.)
+      double sum = 0.;
+
+      for (Double quant : ordered.values())
+        sum += quant;
+
+      if (ordered == null || sum == 0.)
         continue;
 
       for (Product product : ordered.keySet()) { // iterates client product orders
