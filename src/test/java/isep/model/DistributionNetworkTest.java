@@ -678,11 +678,11 @@ public class DistributionNetworkTest {
     int count = loadBasketsController.mapBaskets(data, entityStore);
 
     ExpeditionList expeditionListDay4 = network.getExpeditionList(4);
-    assertEquals(85, count);
-    assertEquals(5, expeditionListDay4.getBaskets().size());
-    assertEquals(5, expeditionListDay4.getClients().size());
+    assertEquals(62, count);
+    assertEquals(8, expeditionListDay4.getBaskets().size());
+    assertEquals(8, expeditionListDay4.getClients().size());
     assertEquals(1, expeditionListDay4.getHubs().size());
-    assertEquals(2, expeditionListDay4.getProducers().size());
+    assertEquals(1, expeditionListDay4.getProducers().size());
   }
 
   @Test
@@ -703,20 +703,20 @@ public class DistributionNetworkTest {
         entityStore, distances);
     DistributionNetwork network = controller.loadDistributionNetwork();
 
-    network.defineHubs(1);
+    network.defineHubs(5);
 
     LoadBasketsController loadBasketsController = new LoadBasketsController(SMALL_BASKETS);
     List<Map<String, String>> data = loadBasketsController.readData();
 
     int count = loadBasketsController.mapBaskets(data, entityStore);
 
-    ExpeditionList expeditionListDay4 = network.getExpeditionListForNNearestProducers(4, 2);
+    ExpeditionList expeditionListDay4 = network.getExpeditionListForNNearestProducers(3, 3);
 
-    assertEquals(85, count);
-    assertEquals(5, expeditionListDay4.getBaskets().size());
-    assertEquals(5, expeditionListDay4.getClients().size());
-    assertEquals(1, expeditionListDay4.getHubs().size());
-    assertEquals(2, expeditionListDay4.getProducers().size());
+    assertEquals(62, count);
+    assertEquals(12, expeditionListDay4.getBaskets().size());
+    assertEquals(12, expeditionListDay4.getClients().size());
+    assertEquals(4, expeditionListDay4.getHubs().size());
+    assertEquals(3, expeditionListDay4.getProducers().size());
   }
 
   @Test
@@ -744,11 +744,11 @@ public class DistributionNetworkTest {
 
     ExpeditionList expeditionListDay4 = network.getExpeditionListForNNearestProducers(4, 2);
 
-    assertEquals(1615, count);
-    assertEquals(109, expeditionListDay4.getBaskets().size());
-    assertEquals(109, expeditionListDay4.getClients().size());
+    assertEquals(1087, count);
+    assertEquals(172, expeditionListDay4.getBaskets().size());
+    assertEquals(172, expeditionListDay4.getClients().size());
     assertEquals(2, expeditionListDay4.getHubs().size());
-    assertEquals(2, expeditionListDay4.getProducers().size());
+    assertEquals(1, expeditionListDay4.getProducers().size());
   }
 
   @Test
