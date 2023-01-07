@@ -53,41 +53,49 @@ public class IrrigationPlan {
       e.printStackTrace();
     }
 
-    int offset = 0;
+    /**
+     * cycle: 8h30
+     *   - parcel 1 > 15min
+     *   - parcel 2 > 8min
+     * cycle: 15h00
+     *   (same)
+     */
+
+    int parcelOffset = 0;
 
     // iterate through the parcels
     for (ParcelIrrigationWrapper wrapper : parcelIrrigations) {
       // check regularity
-      if (wrapper.getRegularity().check(diff))
+      if (!wrapper.getRegularity().check(diff))
         break;
 
       for (Hour cycleHour : hours) {
         // cycle hour: 8h30
         // current hour: 8h40
-        // duration offset: 8
-        int fixedOffset = cycleHour.getTimeInMinutes() + offset; // 8h30 + 8min = 8h38
+        // current parcel duration offset: 8
+        int fixedOffset = cycleHour.getTimeInMinutes() + parcelOffset; // 8h30 + 8min = 8h38
 
-        if (fixedOffset >= hour.getTimeInMinutes()
-            && wrapper.getDuration() + fixedOffset < hour.getTimeInMinutes()) {
+        if (fixedOffset <= hour.getTimeInMinutes() // 8h38 <= 8h40
+            && wrapper.getDuration() + fixedOffset > hour.getTimeInMinutes()) { // 15min + 8h38 (cycle end) > 8h40
           int timeRemaining = wrapper.getDuration() + fixedOffset - hour.getTimeInMinutes();
           return new CurrentIrrigationWrapper(wrapper.getParcel(), timeRemaining);
         }
       }
 
-      offset += wrapper.getDuration();
+      parcelOffset += wrapper.getDuration();
     }
 
     return null;
   }
 
   private boolean isExceeded(Calendar date) {
-    Calendar tmp = (Calendar) date.clone();
-    tmp.set(Calendar.HOUR_OF_DAY, 0);
-    tmp.set(Calendar.MINUTE, 0);
-    tmp.set(Calendar.SECOND, 0);
-    tmp.set(Calendar.MILLISECOND, 0);
-    tmp.add(Calendar.DAY_OF_MONTH, -planDuration);
-    return creationDate.after(tmp);
+    Calendar endDate = (Calendar) creationDate.clone();
+    endDate.set(Calendar.HOUR_OF_DAY, 0);
+    endDate.set(Calendar.MINUTE, 0);
+    endDate.set(Calendar.SECOND, 0);
+    endDate.set(Calendar.MILLISECOND, 0);
+    endDate.add(Calendar.DAY_OF_MONTH, planDuration + 1);
+    return date.after(endDate) || date.before(creationDate);
   }
 
   @Override
