@@ -24,7 +24,6 @@ void remove_sensor(Sensor *s, Sensor **data, unsigned int *n_sensors) {
     shift(data[type], n_sensors[type], s);
 
     Sensor *ptr = (Sensor *)realloc(data[type], (n_sensors[type] - 1) * sizeof(Sensor));
-    if (ptr == NULL) return;
     data[type] = ptr;
 
     n_sensors[type]--;
