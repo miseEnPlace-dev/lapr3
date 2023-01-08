@@ -484,14 +484,14 @@ public class DistributionNetworkTest {
     Client c1 = new Client("c1", 2, 2, "l2");
 
     network.addRelation(e1, c1, 100);
+    assertEquals(0, network.getNNearestProducersByHub(e1, 2).size());
 
-    assertNull(network.getNNearestProducersByHub(e1, 1));
   }
 
   @Test
   public void testGetNNearestProducersEmptyNetwork() {
-    assertNull(
-        new DistributionNetwork().getNNearestProducersByHub(new Enterprise("e1", 1, 1, "l1"), 1));
+    assertThrows(IndexOutOfBoundsException.class,
+        () -> new DistributionNetwork().getNNearestProducersByHub(new Enterprise("e1", 1, 1, "l1"), 2));
   }
 
   @Test
