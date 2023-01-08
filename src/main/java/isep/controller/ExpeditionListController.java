@@ -7,7 +7,6 @@ import isep.shared.exceptions.InvalidOrderException;
 import isep.shared.exceptions.UndefinedHubsException;
 
 public class ExpeditionListController {
-
   private DistributionNetwork network;
 
   public ExpeditionListController() {
@@ -31,11 +30,9 @@ public class ExpeditionListController {
   }
 
   public void printExpeditionList(ExpeditionList expeditionList) {
-    if (expeditionList == null) {
+    if (expeditionList == null)
       System.out.println("There is no data for this day");
-    } else {
+    else
       System.out.println(expeditionList.toString());
-    }
   }
-
 }

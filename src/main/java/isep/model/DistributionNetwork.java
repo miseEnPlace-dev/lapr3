@@ -8,7 +8,6 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
 import isep.shared.exceptions.InvalidHubException;
 import isep.shared.exceptions.InvalidNumberOfHubsException;
 import isep.shared.exceptions.InvalidOrderException;
@@ -33,8 +32,8 @@ public class DistributionNetwork {
 
   /**
    *
-   * @param e1       First entity
-   * @param e2       Second entity
+   * @param e1 First entity
+   * @param e2 Second entity
    * @param distance Distance between them (in meters)
    * @return True if the relation was added successfully, false otherwise
    */
@@ -45,8 +44,7 @@ public class DistributionNetwork {
   /**
    * @param e1 entity 1
    * @param e2 entity 2
-   * @return Integer - If e1 and e2 are directed connected, returns distance
-   *         between, null otherwise
+   * @return Integer - If e1 and e2 are directed connected, returns distance between, null otherwise
    */
   public Integer getDistanceBetweenConnectedEntities(Entity e1, Entity e2) {
     if (network.edge(e1, e2) != null)
@@ -56,8 +54,7 @@ public class DistributionNetwork {
 
   /**
    *
-   * @return The number of entities that have a minimum of one relation
-   *         represented in the network
+   * @return The number of entities that have a minimum of one relation represented in the network
    */
   public int getNumberOfEntities() {
     return network.numVertices();
@@ -101,12 +98,14 @@ public class DistributionNetwork {
   }
 
   public int shortestPathDistance(Entity e1, Entity e2) {
-    return GraphAlgorithms.shortestPath(network, e1, e2, Integer::compareTo, Integer::sum, 0, new LinkedList<>());
+    return GraphAlgorithms.shortestPath(network, e1, e2, Integer::compareTo, Integer::sum, 0,
+        new LinkedList<>());
   }
 
   public ArrayList<Integer> shortestPathsDistances(Entity e1) {
     ArrayList<Integer> distances = new ArrayList<>();
-    GraphAlgorithms.shortestPaths(network, e1, Integer::compareTo, Integer::sum, 0, new ArrayList<>(), distances);
+    GraphAlgorithms.shortestPaths(network, e1, Integer::compareTo, Integer::sum, 0,
+        new ArrayList<>(), distances);
     return distances;
   }
 
@@ -139,12 +138,13 @@ public class DistributionNetwork {
       list.add(new AbstractMap.SimpleEntry<Enterprise, Integer>(e1, average));
     }
 
-    final Comparator<Map.Entry<Enterprise, Integer>> cmp = new Comparator<Map.Entry<Enterprise, Integer>>() {
-      @Override
-      public int compare(Map.Entry<Enterprise, Integer> o1, Map.Entry<Enterprise, Integer> o2) {
-        return (int) (o1.getValue() - o2.getValue());
-      }
-    };
+    final Comparator<Map.Entry<Enterprise, Integer>> cmp =
+        new Comparator<Map.Entry<Enterprise, Integer>>() {
+          @Override
+          public int compare(Map.Entry<Enterprise, Integer> o1, Map.Entry<Enterprise, Integer> o2) {
+            return (int) (o1.getValue() - o2.getValue());
+          }
+        };
 
     // order list
     list = new MergeSort<Map.Entry<Enterprise, Integer>>().sort(list, cmp);
@@ -168,7 +168,8 @@ public class DistributionNetwork {
   public int getAveragePathDistanceBetweenGroupOfEntities(Entity e1) {
 
     ArrayList<Integer> distances = new ArrayList<>();
-    GraphAlgorithms.shortestPaths(network, e1, Integer::compareTo, Integer::sum, 0, new ArrayList<>(), distances);
+    GraphAlgorithms.shortestPaths(network, e1, Integer::compareTo, Integer::sum, 0,
+        new ArrayList<>(), distances);
 
     int sum = 0;
     int count = distances.size();
@@ -240,7 +241,8 @@ public class DistributionNetwork {
         Double quantOrdered = ordered.get(product);
 
         for (Producer producer : prodStocks.keySet()) { // iterates all producers
-          Double quantAvailable = prodStocks.get(producer).getNonExpiredProductQuantity(product, day);
+          Double quantAvailable =
+              prodStocks.get(producer).getNonExpiredProductQuantity(product, day);
 
           if (quantAvailable >= quantOrdered) {
             bestProducer = producer;
@@ -250,7 +252,6 @@ public class DistributionNetwork {
             bestProducer = producer;
             bestQuant = quantAvailable;
           }
-
         }
 
         if (bestProducer == null)
@@ -261,13 +262,11 @@ public class DistributionNetwork {
 
         // register for expeditionsList
         received.setProduct(bestProducer, product, bestQuant);
-
       }
 
       Basket basket = new Basket(ordered, received, hub, client);
 
       expeditionList.addBasket(basket);
-
     }
 
     return expeditionList;
@@ -281,7 +280,8 @@ public class DistributionNetwork {
 
     if (this.getNearestHub(clientsList.get(0)) == null)
       throw new UndefinedHubsException();
-    Map<Enterprise, Map<Producer, DailyData>> prodStocks = this.getActualStockForNNearestProducers(day, nProducers);
+    Map<Enterprise, Map<Producer, DailyData>> prodStocks =
+        this.getActualStockForNNearestProducers(day, nProducers);
 
     for (int j = 0; j < clientsList.size(); j++) { // iterate all clients
       Client client = clientsList.get(j);
@@ -300,7 +300,8 @@ public class DistributionNetwork {
         Double quantOrdered = ordered.get(product);
 
         for (Producer producer : prodStocks.get(hub).keySet()) { // iterates all producers
-          Double quantAvailable = prodStocks.get(hub).get(producer).getNonExpiredProductQuantity(product, day);
+          Double quantAvailable =
+              prodStocks.get(hub).get(producer).getNonExpiredProductQuantity(product, day);
 
           if (quantAvailable >= quantOrdered) {
             bestProducer = producer;
@@ -310,7 +311,6 @@ public class DistributionNetwork {
             bestProducer = producer;
             bestQuant = quantAvailable;
           }
-
         }
 
         if (bestProducer == null)
@@ -321,19 +321,18 @@ public class DistributionNetwork {
 
         // register for expeditionsList
         received.setProduct(bestProducer, product, bestQuant);
-
       }
 
       Basket basket = new Basket(ordered, received, hub, client);
 
       expeditionList.addBasket(basket);
-
     }
 
     return expeditionList;
   }
 
-  public Map<Enterprise, Map<Producer, DailyData>> getNNearestProducersStock(Integer nProducers, Integer day) {
+  public Map<Enterprise, Map<Producer, DailyData>> getNNearestProducersStock(Integer nProducers,
+      Integer day) {
     List<Enterprise> hubs = this.getHubs();
     Map<Enterprise, Map<Producer, DailyData>> result = new HashMap<>();
 
@@ -378,7 +377,8 @@ public class DistributionNetwork {
           Double quantOrdered = ordered.get(product);
 
           for (Producer producer : prodStocks.keySet()) { // iterates all producers
-            Double quantAvailable = prodStocks.get(producer).getNonExpiredProductQuantity(product, i);
+            Double quantAvailable =
+                prodStocks.get(producer).getNonExpiredProductQuantity(product, i);
 
             if (quantAvailable >= quantOrdered) {
               bestProducer = producer;
@@ -398,7 +398,8 @@ public class DistributionNetwork {
     return prodStocks;
   }
 
-  public Map<Enterprise, Map<Producer, DailyData>> getActualStockForNNearestProducers(Integer day, Integer nProducers) {
+  public Map<Enterprise, Map<Producer, DailyData>> getActualStockForNNearestProducers(Integer day,
+      Integer nProducers) {
     List<Client> clientsList = this.network.getClients();
     Map<Client, Enterprise> clientHub = new HashMap<>();
 
@@ -406,7 +407,8 @@ public class DistributionNetwork {
       clientHub.put(clientsList.get(i), this.getNearestHub(clientsList.get(i)));
     }
 
-    Map<Enterprise, Map<Producer, DailyData>> prodStocks = this.getNNearestProducersStock(nProducers, day);
+    Map<Enterprise, Map<Producer, DailyData>> prodStocks =
+        this.getNNearestProducersStock(nProducers, day);
 
     for (int i = 1; i < day; i++) { // iterate all days before
       for (Client client : clientHub.keySet()) { // iterate all clients
@@ -423,7 +425,8 @@ public class DistributionNetwork {
           Double quantOrdered = ordered.get(product);
 
           for (Producer producer : prodStocks.get(hub).keySet()) { // iterates all producers
-            Double quantAvailable = prodStocks.get(hub).get(producer).getNonExpiredProductQuantity(product, i);
+            Double quantAvailable =
+                prodStocks.get(hub).get(producer).getNonExpiredProductQuantity(product, i);
 
             if (quantAvailable >= quantOrdered) {
               bestProducer = producer;
@@ -485,10 +488,9 @@ public class DistributionNetwork {
   /**
    * Get the shortest path between a start entity and a list of target entities.
    *
-   * @param start   The start entity
+   * @param start The start entity
    * @param targets A {@code List} of target entities
-   * @return A {@code List} of entities representing the shortest path between
-   *         both entities
+   * @return A {@code List} of entities representing the shortest path between both entities
    */
   public List<Entity> getShortestPathUsingAStar(Entity start, List<? extends Entity> targets) {
     return AStar.findShortestPath(this.network, start, targets);
@@ -497,10 +499,9 @@ public class DistributionNetwork {
   /**
    * Get the shortest path between two entities of the network.
    *
-   * @param start  The start entity
+   * @param start The start entity
    * @param target The target entity
-   * @return A {@code List} of entities representing the shortest path between
-   *         both entities
+   * @return A {@code List} of entities representing the shortest path between both entities
    */
   public List<Entity> getShortestPathUsingAStar(Entity start, Entity target) {
     return AStar.findShortestPath(this.network, start, target);
@@ -508,6 +509,21 @@ public class DistributionNetwork {
 
   public boolean hasHub() {
     return this.network.hasHubs();
+  }
+
+
+  /**
+   * @return NetworkGraph<Entity, Integer> return the network
+   */
+  public NetworkGraph<Entity, Integer> getNetwork() {
+    return network;
+  }
+
+  /**
+   * @param network the network to set
+   */
+  public void setNetwork(NetworkGraph<Entity, Integer> network) {
+    this.network = network;
   }
 
 }

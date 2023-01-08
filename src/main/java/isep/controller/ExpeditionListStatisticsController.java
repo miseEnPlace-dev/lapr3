@@ -62,6 +62,7 @@ public class ExpeditionListStatisticsController {
       int numberOfDistinctProducers =
           expeditionList.getNumberOfDistinctProducersThatSupplyAllClientsBasket(client);
 
+      current.put("Client", client.getId());
       current.put("No. of totally fulfilled baskets",
           Integer.toString(numberOfFullyFulfilledBaskets));
       current.put("No. of partially fulfilled baskets",
@@ -88,6 +89,7 @@ public class ExpeditionListStatisticsController {
       int numberOfOutOfStockProducts = expeditionList.getNumberOfOutOfStockProducts(producer);
       int numberOfSuppliedHubs = expeditionList.getNumberOfDistinctHubs(producer);
 
+      current.put("Producer", producer.getId());
       current.put("No. of totally supplied baskets",
           Integer.toString(numberOfFullySuppliedBaskets));
       current.put("No. of partially supplied baskets",
@@ -111,6 +113,7 @@ public class ExpeditionListStatisticsController {
       int numberOfDistinctClients = expeditionList.getNumberOfDistinctClients(hub);
       int numberOfDistinctProducers = expeditionList.getNumberOfDistinctProducers(hub);
 
+      current.put("Hub", hub.getId());
       current.put("No. of distinct clients", Integer.toString(numberOfDistinctClients));
       current.put("No. of distinct producers", Integer.toString(numberOfDistinctProducers));
 

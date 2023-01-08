@@ -7,10 +7,8 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Expedition Path class. Holds information about US310: - expedition path
- * (entities list) - baskets
- * delivered at a given hub - distance between all entities of path - total
- * distance of the path
+ * Expedition Path class. Holds information about US310: - expedition path (entities list) - baskets
+ * delivered at a given hub - distance between all entities of path - total distance of the path
  *
  * @author Tomás Russo <1211288@isep.ipp.pt>
  */
@@ -49,7 +47,7 @@ public class ExpeditionPath {
    * Constructor fot ExpeditionPath.
    *
    * @param distributionNetwork The distribution network
-   * @param path                The expedition path
+   * @param path The expedition path
    */
   public ExpeditionPath(DistributionNetwork distributionNetwork, ExpeditionList expeditionList) {
     this.distributionNetwork = distributionNetwork;
@@ -107,8 +105,7 @@ public class ExpeditionPath {
   }
 
   /**
-   * Generates the {@code List} of Stops for Producers. Checks for hubs that can
-   * already be
+   * Generates the {@code List} of Stops for Producers. Checks for hubs that can already be
    * supplied, and returns them.
    *
    * @param entities The path
@@ -150,11 +147,10 @@ public class ExpeditionPath {
   }
 
   /**
-   * Generates the {@code List} of Stops for Hubs. It checks for already supplied
-   * hubs, and puts
+   * Generates the {@code List} of Stops for Hubs. It checks for already supplied hubs, and puts
    * their delivered baskets to 0.
    *
-   * @param entities     The path
+   * @param entities The path
    * @param suppliedHubs A {@code List} of the already supplied hubs
    */
   private void generateStopsForHubs(List<Entity> entities, List<Enterprise> suppliedHubs) {
@@ -198,9 +194,9 @@ public class ExpeditionPath {
 
   private List<Entity> convertStopListToEntityList() {
     List<Entity> list = new ArrayList<>();
-    for (Stop stop : path) {
+    for (Stop stop : path)
       list.add(stop.entity);
-    }
+
     return list;
   }
 
@@ -224,8 +220,7 @@ public class ExpeditionPath {
    * Get the number of baskets delivered at the given hub.
    *
    * @param hub The hub to search for
-   * @return Number of baskets delivered at the given hub, or {@code -1} if hub
-   *         does not exist in
+   * @return Number of baskets delivered at the given hub, or {@code -1} if hub does not exist in
    *         the path
    */
   public int getNumberOfBasketsDeliveredAtHub(Enterprise hub) {
@@ -248,8 +243,7 @@ public class ExpeditionPath {
   /**
    * Get the distance between all entities of the path.
    *
-   * @return A {@code Map} that associates a {@code Entry} of two Entities to it's
-   *         distance
+   * @return A {@code Map} that associates a {@code Entry} of two Entities to it's distance
    */
   public Map<Map.Entry<Entity, Entity>, Integer> getDistanceBetweenAllEntities() {
     Map<Map.Entry<Entity, Entity>, Integer> map = new HashMap<>();
@@ -275,14 +269,14 @@ public class ExpeditionPath {
         str = str.concat("Producer " + path.get(i).entity.getId());
       else if (path.get(i).entity.getClass() == Enterprise.class)
         // If the entity is a Hub, print it's ID and the number of baskets delivered
-        str = str.concat(
-            (((Enterprise) path.get(i).entity).isHub() ? "Hub " : "Enterprise ") + path.get(i).entity.getId() + " ("
-                + (getNumberOfBasketsDeliveredAtHub((Enterprise) path.get(i).entity) == -1
-                    ? "No baskets to deliver here"
-                    : path.get(i).basketsDelivered + " basket(s) delivered in this stop (Total: "
-                        + path.get(i).basketsDelivered + "/"
-                        + getNumberOfBasketsDeliveredAtHub((Enterprise) path.get(i).entity) + ")")
-                + ")");
+        str = str.concat((((Enterprise) path.get(i).entity).isHub() ? "Hub " : "Enterprise ")
+            + path.get(i).entity.getId() + " ("
+            + (getNumberOfBasketsDeliveredAtHub((Enterprise) path.get(i).entity) == -1
+                ? "No baskets to deliver here"
+                : path.get(i).basketsDelivered + " basket(s) delivered in this stop (Total: "
+                    + path.get(i).basketsDelivered + "/"
+                    + getNumberOfBasketsDeliveredAtHub((Enterprise) path.get(i).entity) + ")")
+            + ")");
       else
         // If the entity is a Client, print it's ID
         str = str.concat("Client " + path.get(i).entity.getId());
