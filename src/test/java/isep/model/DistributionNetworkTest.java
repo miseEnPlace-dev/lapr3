@@ -760,6 +760,38 @@ public class DistributionNetworkTest {
   }
 
   @Test
+  public void testGetExpeditionListWithBigFileWithoutRestritions()
+      throws FileNotFoundException, InvalidNumberOfHubsException, InvalidOrderException,
+      InvalidHubException, UndefinedHubsException {
+    CSVReader reader = new CSVReader(BIG_FILE_DISTANCES);
+    List<Map<String, String>> distances = reader.read();
+
+    reader = new CSVReader(BIG_ENTITIES);
+    List<Map<String, String>> entities = reader.read();
+
+    EntityStore entityStore = new EntityStore();
+    entityStore.addEntitiesFromList(entities);
+
+    LoadDistributionNetworkController controller = new LoadDistributionNetworkController(entityStore, distances);
+    DistributionNetwork network = controller.loadDistributionNetwork();
+
+    network.defineHubs(2);
+
+    LoadBasketsController loadBasketsController = new LoadBasketsController(BIG_BASKETS);
+    List<Map<String, String>> data = loadBasketsController.readData();
+
+    int count = loadBasketsController.mapBaskets(data, entityStore);
+
+    ExpeditionList expeditionListDay4 = network.getExpeditionList(4);
+
+    assertEquals(1087, count);
+    assertEquals(172, expeditionListDay4.getBaskets().size());
+    assertEquals(172, expeditionListDay4.getClients().size());
+    assertEquals(2, expeditionListDay4.getHubs().size());
+    assertEquals(41, expeditionListDay4.getProducers().size());
+  }
+
+  @Test
   public void testGetExpeditionListWithBigFileWithDay5()
       throws FileNotFoundException, InvalidNumberOfHubsException, InvalidOrderException,
       InvalidHubException, UndefinedHubsException {
@@ -786,9 +818,9 @@ public class DistributionNetworkTest {
 
     assertEquals(1087, count);
     assertEquals(186, expeditionListDay4.getBaskets().size());
-    assertEquals(122, expeditionListDay4.getClients().size());
+    assertEquals(186, expeditionListDay4.getClients().size());
     assertEquals(9, expeditionListDay4.getHubs().size());
-    assertEquals(17, expeditionListDay4.getProducers().size());
+    assertEquals(15, expeditionListDay4.getProducers().size());
 
   }
 
