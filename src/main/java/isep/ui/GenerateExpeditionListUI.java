@@ -16,7 +16,8 @@ public class GenerateExpeditionListUI implements Runnable {
   private int nProducers;
   private ExpeditionList expeditionList;
 
-  public GenerateExpeditionListUI() {}
+  public GenerateExpeditionListUI() {
+  }
 
   @Override
   public void run() {

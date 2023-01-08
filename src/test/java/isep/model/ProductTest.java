@@ -57,4 +57,17 @@ public class ProductTest {
     Product product2 = new Product("Test");
     assertEquals(true, product.equals(product2));
   }
+
+  @Test
+  public void testToString() {
+    Product product = new Product("Test");
+    assertEquals("Test", product.toString());
+  }
+
+  @Test
+  public void testHashCode() {
+    Product product = new Product("Test");
+    assertEquals("Test".hashCode(), product.hashCode());
+  }
+
 }

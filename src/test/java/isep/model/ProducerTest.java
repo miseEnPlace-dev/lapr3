@@ -55,4 +55,37 @@ public class ProducerTest {
 
     assertEquals(100.1, producer.getNonExpiredQuantityUntilDate(new Product("apple"), 1), 0.1);
   }
+
+  @Test
+  public void testGetNonExpiredUntilDateWithExpiredProduct() {
+    Producer producer = new Producer("id", 0, 0, "loc");
+    DailyData dailyData = new DailyData();
+
+    dailyData.addDayData(1, products);
+    producer.setDailyData(dailyData);
+
+    assertEquals(0, producer.getNonExpiredQuantityUntilDate(new Product("apple"), 0), 0.1);
+  }
+
+  @Test
+  public void testGetNonExpiredUntilDateWithExpiredProductAndExpiredDate() {
+    Producer producer = new Producer("id", 0, 0, "loc");
+    DailyData dailyData = new DailyData();
+
+    dailyData.addDayData(1, products);
+    producer.setDailyData(dailyData);
+
+    assertEquals(0, producer.getNonExpiredQuantityUntilDate(new Product("apple"), 0), 0.1);
+  }
+
+  @Test
+  public void testGetNonExpiredUntilDateWithExpiredProductAndNonExpiredDate() {
+    Producer producer = new Producer("id", 0, 0, "loc");
+    DailyData dailyData = new DailyData();
+
+    dailyData.addDayData(1, products);
+    producer.setDailyData(dailyData);
+
+    assertEquals(100.1, producer.getNonExpiredQuantityUntilDate(new Product("apple"), 2), 0.1);
+  }
 }
