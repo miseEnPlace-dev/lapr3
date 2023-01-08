@@ -13,12 +13,13 @@
 -- A fact table Producao é composta por 5 atributos: id_producao, id_produto, id_setor, id_tempo e quantidade.
 
 -- Este esquema 'Star' tem as hierarquias divididas em dimensões separadas.
--- Existe grande redundância de dados
 -- Um simples join com a fact table é suficiente para obter os dados.
 -- É um modelo simples e fácil de implementar.
 
 -- Estimativa de cardinalidades:
--- A estimativa da cardinalidade é importante porque ela afeta o design da base de dados e o desempenho das consultas. Se a cardinalidade for subestimada, isso pode levar ao desperdício de recursos, como espaço em disco ou memória, ou ao uso excessivo de recursos. Por outro lado, se a cardinalidade for sobrestimada, isso pode levar ao desperdício de espaço em disco e ao aumento do tempo de inserção de dados.
+-- A estimativa da cardinalidade é importante porque ela afeta o design da base de dados e o desempenho das consultas.
+-- Se a cardinalidade for subestimada, isso pode levar ao desperdício de recursos, como espaço em disco ou memória, ou ao uso excessivo de recursos.
+-- Por outro lado, se a cardinalidade for sobrestimada, isso pode levar ao desperdício de espaço em disco e ao aumento do tempo de inserção de dados.
 -- A cardinalidade de uma tabela é o número de linhas que ela pode conter. A cardinalidade de uma coluna é o número de valores distintos que ela pode conter.
 -- Tempo: a dimensão Tempo pode ter cardinalidade de 12 (meses) * 100 (anos) = 1200.
 -- Cliente: a dimensão Cliente pode ter cardinalidade de 100000 (clientes).
