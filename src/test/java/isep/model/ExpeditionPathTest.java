@@ -186,4 +186,9 @@ public class ExpeditionPathTest {
     assertEquals(expected, path.getPathList());
     assertEquals(410, path.getTotalDistance());
   }
+
+  @Test
+  public void testWithSmallFileForDay1() {
+    
+  }
 }

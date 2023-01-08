@@ -2,12 +2,9 @@ package isep.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import java.util.ArrayList;
-
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-
 import isep.mock.ExpeditionListMock;
 import isep.shared.exceptions.InvalidHubException;
 
@@ -58,8 +55,8 @@ public class ExpeditionListTest {
 
   @Test
   public void testGetPercentageOfFullySatisfiedProducts() {
-    assertEquals(0.6666666666666666, expList.getPercentageOfFullySatisfiedProducts(expList.getBaskets().get(0)));
-    assertEquals(0.3333333333333333, expList.getPercentageOfFullySatisfiedProducts(expList.getBaskets().get(1)));
+    assertEquals(0.867, expList.getBasketFulfillmentPercentage(expList.getBaskets().get(0)), .001);
+    assertEquals(0.067, expList.getBasketFulfillmentPercentage(expList.getBaskets().get(1)), .001);
   }
 
   @Test
@@ -70,53 +67,60 @@ public class ExpeditionListTest {
 
   @Test
   public void testGetNumberOfFullySuppliedBasketsByProducer() {
-    assertEquals(1, expList.getNumberOfFullySuppliedBasketsByProducer(new ArrayList<>(expList.getProducers()).get(0)));
-    assertEquals(0, expList.getNumberOfFullySuppliedBasketsByProducer(new ArrayList<>(expList.getProducers()).get(1)));
+    assertEquals(1, expList
+        .getNumberOfFullySuppliedBasketsByProducer(new ArrayList<>(expList.getProducers()).get(0)));
+    assertEquals(0, expList
+        .getNumberOfFullySuppliedBasketsByProducer(new ArrayList<>(expList.getProducers()).get(1)));
   }
 
   @Test
   public void testGetNumberOfPartiallySuppliedBasketsByProducer() {
-    assertEquals(1,
-        expList.getNumberOfPartiallySuppliedBasketsByProducer(new ArrayList<>(expList.getProducers()).get(0)));
-    assertEquals(1,
-        expList.getNumberOfPartiallySuppliedBasketsByProducer(new ArrayList<>(expList.getProducers()).get(1)));
+    assertEquals(1, expList.getNumberOfPartiallySuppliedBasketsByProducer(
+        new ArrayList<>(expList.getProducers()).get(0)));
+    assertEquals(1, expList.getNumberOfPartiallySuppliedBasketsByProducer(
+        new ArrayList<>(expList.getProducers()).get(1)));
   }
 
   @Test
   public void testGetNumberOfFullyFulfilledBasketsByClient() {
-    assertEquals(0, expList.getNumberOfFullyFulfilledBasketsByClient(new Client("id2", 0, 0, "C01")));
+    assertEquals(0,
+        expList.getNumberOfFullyFulfilledBasketsByClient(new Client("id2", 0, 0, "C01")));
   }
 
   @Test
   public void testGetNumberOfPartiallyFulfilledBasketsByClient() {
-    assertEquals(1, expList.getNumberOfPartiallyFulfilledBasketsByClient(mockClient));
+    assertEquals(0, expList.getNumberOfPartiallyFulfilledBasketsByClient(mockClient));
   }
 
   @Test
   public void testGetProducersThatSupplyAllClientsBaskets() {
-    assertEquals(2, expList.getNumberOfDistinctProducersThatSupplyAllClientsBasket(mockClient));
+    assertEquals(1, expList.getNumberOfDistinctProducersThatSupplyAllClientsBasket(mockClient));
   }
 
   @Test
   public void testGetNumberOfDistinctClientsFromProducer() {
-    assertEquals(1, expList.getNumberOfDistinctClients(new ArrayList<>(expList.getProducers()).get(0)));
-    assertEquals(1, expList.getNumberOfDistinctClients(new ArrayList<>(expList.getProducers()).get(1)));
+    assertEquals(2,
+        expList.getNumberOfDistinctClients(new ArrayList<>(expList.getProducers()).get(0)));
+    assertEquals(1,
+        expList.getNumberOfDistinctClients(new ArrayList<>(expList.getProducers()).get(1)));
   }
 
   @Test
   public void testGetNumberOfDistinctHubs() {
-    assertEquals(1, expList.getNumberOfDistinctHubs(new ArrayList<>(expList.getProducers()).get(0)));
-    assertEquals(1, expList.getNumberOfDistinctHubs(new ArrayList<>(expList.getProducers()).get(1)));
+    assertEquals(1,
+        expList.getNumberOfDistinctHubs(new ArrayList<>(expList.getProducers()).get(0)));
+    assertEquals(1,
+        expList.getNumberOfDistinctHubs(new ArrayList<>(expList.getProducers()).get(1)));
   }
 
   @Test
   public void testGetNumberOfDistinctClientsFromHub() {
-    assertEquals(1, expList.getNumberOfDistinctClients(mockHub));
+    assertEquals(2, expList.getNumberOfDistinctClients(mockHub));
   }
 
   @Test
   public void testGetClients() {
-    assertEquals(1, expList.getClients().size());
+    assertEquals(2, expList.getClients().size());
   }
 
   @Test
@@ -126,8 +130,10 @@ public class ExpeditionListTest {
 
   @Test
   public void testGetNumberOfOutOfStockProducts() {
-    assertEquals(2, expList.getNumberOfOutOfStockProducts(new ArrayList<>(expList.getProducers()).get(0)));
-    assertEquals(0, expList.getNumberOfOutOfStockProducts(new ArrayList<>(expList.getProducers()).get(1)));
+    assertEquals(2,
+        expList.getNumberOfOutOfStockProducts(new ArrayList<>(expList.getProducers()).get(0)));
+    assertEquals(0,
+        expList.getNumberOfOutOfStockProducts(new ArrayList<>(expList.getProducers()).get(1)));
   }
 
   @Test

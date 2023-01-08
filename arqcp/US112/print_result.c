@@ -7,9 +7,9 @@
 
 void print_result(Sensor *arr, unsigned int size) {
     if (size == 0) return;
-    printf("-- Registos %s: --\n", arr[0].name);
+    printf("-- Registos %s: --\n", SENSOR_TYPE_DESIGNATIONS[arr[0].sensor_type]);
     for (int j = 0; j < size; j++) {
-        printf("\nSensor %d:\n", arr[j].id);
+        printf("\nSensor id %d:\n", arr[j].id);
         for (int i = 0; i < arr[j].readings_size; i++) {
             printf("Leitura: %u%s %s\n", arr[j].readings[i], arr[j].units, arr[j].errors[i] == 1 ? "(Erro)" : "");
         }   
@@ -19,9 +19,9 @@ void print_result(Sensor *arr, unsigned int size) {
 void print_signed_result(Sensor *arr, unsigned int size) {
     if (size == 0) return;
 
-    printf("-- Registos %s: --\n", arr[0].name);
+    printf("-- Registos %s: --\n", SENSOR_TYPE_DESIGNATIONS[arr[0].sensor_type]);
     for (int j = 0; j < size; j++) {
-        printf("\nSensor %d:\n", arr[j].id);
+        printf("\nSensor id %d:\n", arr[j].id);
         for (int i = 0; i < arr[j].readings_size; i++) {
             printf("Leitura: %d%s %s\n", (char)arr[j].readings[i], arr[j].units, arr[j].errors[i] == 1 ? "(Erro)" : "");
         }

@@ -3,7 +3,6 @@ package isep.model;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-
 import isep.shared.exceptions.InvalidHubException;
 import isep.shared.exceptions.InvalidOrderException;
 
@@ -11,6 +10,7 @@ import isep.shared.exceptions.InvalidOrderException;
  * Basket class
  *
  * @author Carlos Lopes <1211277@isep.ipp.pt>
+ *
  * @author Tomás Lopes <1211289@isep.ipp.pt>
  */
 public class Basket {
@@ -59,7 +59,7 @@ public class Basket {
     if (ordered == null)
       throw new IllegalArgumentException("Null ordered map is Invalid!");
 
-    Double sum = .0;
+    Double sum = 0.;
     for (Double quantity : ordered.values())
       sum += quantity;
 
@@ -136,7 +136,8 @@ public class Basket {
   }
 
   public boolean isPartiallyFulfilled() {
-    int numberOfFulfilledProducts = getNumberOfFullySatisfiedProducts() + getNumberOfPartiallySatisfiedProducts();
+    int numberOfFulfilledProducts =
+        getNumberOfFullySatisfiedProducts() + getNumberOfPartiallySatisfiedProducts();
 
     return numberOfFulfilledProducts > 0 && numberOfFulfilledProducts < ordered.size();
   }
@@ -168,6 +169,18 @@ public class Basket {
     return ordered.size() - getNumberOfFullySatisfiedProducts() - getNumberOfNotSatisfiedProducts();
   }
 
+  public double getBasketFulfillmentPercentage() {
+    Double orderedSum = 0.;
+    Double receivedSum = 0.;
+
+    for (Product product : ordered.keySet()) {
+      orderedSum += ordered.get(product);
+      receivedSum += received.getReceivedQuantity(product);
+    }
+
+    return receivedSum / orderedSum;
+  }
+
   public boolean isFullySuppliedBy(Producer producer) {
     return received.getNumberOfDistinctProducers() == 1
         && received.getProducers().contains(producer);
@@ -186,5 +199,18 @@ public class Basket {
 
   public Set<Product> getProducts() {
     return ordered.keySet();
+  }
+
+  @Override
+  public String toString() {
+    String result = "Basket of Client: " + this.client.getId() + "\nDelivery Hub: "
+        + this.hub.getId() + "\nOrdered Products:\n";
+
+    for (Product product : this.ordered.keySet()) {
+      result += "   Product: " + product.getName() + " - Quantity: " + ordered.get(product) + "\n";
+    }
+    result += this.received.toString() + "\n\n";
+
+    return result;
   }
 }

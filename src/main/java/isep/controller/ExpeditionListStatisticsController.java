@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
 import isep.model.Basket;
 import isep.model.Client;
 import isep.model.Enterprise;
@@ -26,13 +25,20 @@ public class ExpeditionListStatisticsController {
 
       int fullySatisfiedProducts = expeditionList.getNumberOfFullySatisfiedProducts(basket);
       int partiallySatisfiedProducts = expeditionList.getNumberOfPartiallySatisfiedProducts(basket);
-      double percentageOfFullySatisfiedProducts = expeditionList.getPercentageOfFullySatisfiedProducts(basket);
+      int notSatisfiedProducts = expeditionList.getNumberOfNotSatisfiedProducts(basket);
+      Double percentageOfFullySatisfiedProducts =
+          expeditionList.getBasketFulfillmentPercentage(basket);
       int numberOfDistinctProducers = expeditionList.getNumberOfDistinctProducersForBasket(basket);
 
+      current.put("Client", basket.getClient().getId());
       current.put("No. of products totally fulfilled", Integer.toString(fullySatisfiedProducts));
-      current.put("No. of products partially fulfilled", Integer.toString(partiallySatisfiedProducts));
-      current.put("Basket fulfillment percentage", String.format("%.1f%%", percentageOfFullySatisfiedProducts * 100));
-      current.put("No. of producers that supply basket", Integer.toString(numberOfDistinctProducers));
+      current.put("No. of products partially fulfilled",
+          Integer.toString(partiallySatisfiedProducts));
+      current.put("No. of products not fulfilled", Integer.toString(notSatisfiedProducts));
+      current.put("Basket fulfillment percentage",
+          String.format("%.1f%%", percentageOfFullySatisfiedProducts * 100));
+      current.put("No. of producers that supply basket",
+          Integer.toString(numberOfDistinctProducers));
 
       result.add(current);
     }
@@ -49,13 +55,20 @@ public class ExpeditionListStatisticsController {
 
     for (Client client : expeditionList.getClients()) {
       Map<String, String> current = new LinkedHashMap<>();
-      int numberOfFullyFulfilledBaskets = expeditionList.getNumberOfFullyFulfilledBasketsByClient(client);
-      int numberOfPartiallyFulfilledBaskets = expeditionList.getNumberOfPartiallyFulfilledBasketsByClient(client);
-      int numberOfDistinctProducers = expeditionList.getNumberOfDistinctProducersThatSupplyAllClientsBasket(client);
+      int numberOfFullyFulfilledBaskets =
+          expeditionList.getNumberOfFullyFulfilledBasketsByClient(client);
+      int numberOfPartiallyFulfilledBaskets =
+          expeditionList.getNumberOfPartiallyFulfilledBasketsByClient(client);
+      int numberOfDistinctProducers =
+          expeditionList.getNumberOfDistinctProducersThatSupplyAllClientsBasket(client);
 
-      current.put("No. of totally fulfilled baskets", Integer.toString(numberOfFullyFulfilledBaskets));
-      current.put("No. of partially fulfilled baskets", Integer.toString(numberOfPartiallyFulfilledBaskets));
-      current.put("No. of distinct producers that supply all baskets", Integer.toString(numberOfDistinctProducers));
+      current.put("Client", client.getId());
+      current.put("No. of totally fulfilled baskets",
+          Integer.toString(numberOfFullyFulfilledBaskets));
+      current.put("No. of partially fulfilled baskets",
+          Integer.toString(numberOfPartiallyFulfilledBaskets));
+      current.put("No. of distinct producers that supply all baskets",
+          Integer.toString(numberOfDistinctProducers));
 
       result.add(current);
     }
@@ -68,14 +81,19 @@ public class ExpeditionListStatisticsController {
 
     for (Producer producer : expeditionList.getProducers()) {
       Map<String, String> current = new LinkedHashMap<>();
-      int numberOfFullySuppliedBaskets = expeditionList.getNumberOfFullySuppliedBasketsByProducer(producer);
-      int numberOfPartiallySuppliedBaskets = expeditionList.getNumberOfPartiallySuppliedBasketsByProducer(producer);
+      int numberOfFullySuppliedBaskets =
+          expeditionList.getNumberOfFullySuppliedBasketsByProducer(producer);
+      int numberOfPartiallySuppliedBaskets =
+          expeditionList.getNumberOfPartiallySuppliedBasketsByProducer(producer);
       int numberOfDistinctClients = expeditionList.getNumberOfDistinctClients(producer);
       int numberOfOutOfStockProducts = expeditionList.getNumberOfOutOfStockProducts(producer);
       int numberOfSuppliedHubs = expeditionList.getNumberOfDistinctHubs(producer);
 
-      current.put("No. of totally supplied baskets", Integer.toString(numberOfFullySuppliedBaskets));
-      current.put("No. of partially supplied baskets", Integer.toString(numberOfPartiallySuppliedBaskets));
+      current.put("Producer", producer.getId());
+      current.put("No. of totally supplied baskets",
+          Integer.toString(numberOfFullySuppliedBaskets));
+      current.put("No. of partially supplied baskets",
+          Integer.toString(numberOfPartiallySuppliedBaskets));
       current.put("No. of distinct clients", Integer.toString(numberOfDistinctClients));
       current.put("No. of out of stock products", Integer.toString(numberOfOutOfStockProducts));
       current.put("No. of supplied hubs", Integer.toString(numberOfSuppliedHubs));
@@ -95,6 +113,7 @@ public class ExpeditionListStatisticsController {
       int numberOfDistinctClients = expeditionList.getNumberOfDistinctClients(hub);
       int numberOfDistinctProducers = expeditionList.getNumberOfDistinctProducers(hub);
 
+      current.put("Hub", hub.getId());
       current.put("No. of distinct clients", Integer.toString(numberOfDistinctClients));
       current.put("No. of distinct producers", Integer.toString(numberOfDistinctProducers));
 

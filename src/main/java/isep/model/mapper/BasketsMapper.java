@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import isep.model.Entity;
+import isep.model.Producer;
 import isep.model.Product;
 import isep.model.store.EntityStore;
 import isep.utils.Field;
@@ -34,8 +35,13 @@ public class BasketsMapper {
       int i = 1;
 
       while (map.get(Field.PRODUCT.name + i) != null) {
-        String productName = map.get(Field.PRODUCT.name + i);
+        String productName = Field.PRODUCT.name + i;
         Double quantity = Double.parseDouble(map.get(Field.PRODUCT.name + i));
+
+        i++;
+
+        if (quantity <= 0 && !foundEntity.getClass().isInstance(Producer.class))
+          continue;
 
         try {
           Product product = new Product(productName);
@@ -43,8 +49,11 @@ public class BasketsMapper {
         } catch (IllegalArgumentException e) {
           System.out.println("Invalid product name: " + productName);
         }
-        i++;
       }
+
+      if (thisDayData.isEmpty() || thisDayData == null)
+        continue;
+
       foundEntity.getDailyData().addDayData(day, thisDayData);
       count++;
     }

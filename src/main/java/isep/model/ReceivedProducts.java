@@ -2,7 +2,6 @@ package isep.model;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -37,6 +36,26 @@ public class ReceivedProducts {
     received.put(producer, producerProducts);
   }
 
+  public void setProduct(Producer producer, Product product, Double quantity) {
+    if (producer == null)
+      throw new IllegalArgumentException("Producer cannot be null");
+
+    if (product == null)
+      throw new IllegalArgumentException("Product cannot be null");
+
+    if (quantity == null)
+      throw new IllegalArgumentException("Quantity cannot be null");
+
+    if (this.received.containsKey(producer)) {
+      this.received.get(producer).put(product, quantity);
+    } else {
+      Map<Product, Double> products = new LinkedHashMap<>();
+      products.put(product, quantity);
+      this.received.put(producer, products);
+    }
+
+  }
+
   public void addAllProducts(Producer producer, Map<Product, Double> products) {
     if (producer == null)
       throw new IllegalArgumentException("Producer cannot be null");
@@ -66,12 +85,18 @@ public class ReceivedProducts {
   }
 
   public Set<Producer> getProducers() {
-    Set<Producer> producers = new LinkedHashSet<>();
+    return this.received.keySet();
+  }
 
-    for (Producer producer : received.keySet())
-      producers.add(producer);
+  public Double getReceivedQuantity(Product product) {
+    for (Producer producer : received.keySet()) {
+      Map<Product, Double> receivedProducts = received.get(producer);
 
-    return producers;
+      if (receivedProducts.get(product) != null)
+        return receivedProducts.get(product);
+    }
+
+    return 0.;
   }
 
   public boolean matchesProductQuantity(Product product, Double quantity) {
@@ -95,14 +120,30 @@ public class ReceivedProducts {
       if (receivedProducts.get(product) == null)
         continue;
 
-      if (receivedProducts.get(product) == 0)
-        return true;
+      if (receivedProducts.get(product) != 0)
+        return false;
     }
 
-    return false;
+    return true;
   }
 
   public int getNumberOfDistinctProducers() {
     return received.size();
+  }
+
+  @Override
+  public String toString() {
+    String result = "Received Products: \n";
+
+    for (Producer producer : this.received.keySet()) {
+      result += "   Producer: " + producer.getId() + "\n";
+      Map<Product, Double> products = this.received.get(producer);
+      for (Product product : products.keySet()) {
+        result +=
+            "      Product: " + product.getName() + " - Quantity: " + products.get(product) + "\n";
+      }
+    }
+
+    return result;
   }
 }

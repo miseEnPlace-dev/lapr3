@@ -29,6 +29,11 @@ public class ExpeditionPath {
       this.entity = producer;
       this.basketsDelivered = null;
     }
+
+    public Stop(Client client) {
+      this.entity = client;
+      this.basketsDelivered = null;
+    }
   }
 
   private DistributionNetwork distributionNetwork;
@@ -129,9 +134,12 @@ public class ExpeditionPath {
           // If the hub can't be supplied, add it to the path with 0 baskets
           path.add(new Stop((Enterprise) stop, 0));
         }
-      } else {
+      } else if (stop.getClass() == Producer.class) {
         // If the stop is a Producer, add it to the path
         path.add(new Stop((Producer) stop));
+      } else {
+        // If the stop is a Client, add it to the path
+        path.add(new Stop((Client) stop));
       }
     }
 
@@ -160,9 +168,12 @@ public class ExpeditionPath {
           // path with 0 baskets
           path.add(new Stop((Enterprise) stop, 0));
         }
-      } else {
+      } else if (stop.getClass() == Producer.class) {
         // If the stop is a Producer, add it to the path
         path.add(new Stop((Producer) stop));
+      } else {
+        // If the stop is a Client, add it to the path
+        path.add(new Stop((Client) stop));
       }
     }
   }
@@ -183,9 +194,9 @@ public class ExpeditionPath {
 
   private List<Entity> convertStopListToEntityList() {
     List<Entity> list = new ArrayList<>();
-    for (Stop stop : path) {
+    for (Stop stop : path)
       list.add(stop.entity);
-    }
+
     return list;
   }
 
@@ -256,24 +267,28 @@ public class ExpeditionPath {
       if (path.get(i).entity.getClass() == Producer.class)
         // If the entity is a Producer, print it's ID
         str = str.concat("Producer " + path.get(i).entity.getId());
-      else
+      else if (path.get(i).entity.getClass() == Enterprise.class)
         // If the entity is a Hub, print it's ID and the number of baskets delivered
-        str = str.concat("Hub " + path.get(i).entity.getId() + " ("
+        str = str.concat((((Enterprise) path.get(i).entity).isHub() ? "Hub " : "Enterprise ")
+            + path.get(i).entity.getId() + " ("
             + (getNumberOfBasketsDeliveredAtHub((Enterprise) path.get(i).entity) == -1
                 ? "No baskets to deliver here"
                 : path.get(i).basketsDelivered + " basket(s) delivered in this stop (Total: "
                     + path.get(i).basketsDelivered + "/"
                     + getNumberOfBasketsDeliveredAtHub((Enterprise) path.get(i).entity) + ")")
             + ")");
+      else
+        // If the entity is a Client, print it's ID
+        str = str.concat("Client " + path.get(i).entity.getId());
       System.out.println(str);
       if (i != path.size() - 1) {
         // If it's not the last stop, print the distance to the next stop
         int distance = getDistanceBetweenEntities(path.get(i).entity, path.get(i + 1).entity);
-        System.out.println("   : " + distance + "m");
+        System.out.println("   : " + (distance / 1000) + "km");
       }
     }
     // Print the total distance
-    System.out.println("----------\nTotal distance: " + getTotalDistance() + "m");
+    System.out.println("----------\nTotal distance: " + (getTotalDistance() / 1000) + "km");
   }
 
   /**
