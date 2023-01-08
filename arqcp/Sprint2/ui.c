@@ -171,13 +171,13 @@ int get_sensor_type() {
 
         printf("\nSelecione o tipo de sensor que pretende: ");
         scanf("%d", &choice);
-        if (choice < 0 || choice > NUM_OF_SENSOR_TYPES) {
+        if (choice <= 0 || choice > NUM_OF_SENSOR_TYPES) {
             printf("Opção inválida.\n\nPressione ENTER para continuar... ");
             flush_stdin(choice);
             getchar();
             printf("\n");
         }
-    } while(choice < 0 || choice > NUM_OF_SENSOR_TYPES);
+    } while(choice <= 0 || choice > NUM_OF_SENSOR_TYPES);
 
     return choice - 1;
 }
