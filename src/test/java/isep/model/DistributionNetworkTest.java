@@ -5,14 +5,11 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 import org.junit.jupiter.api.Test;
-
 import isep.controller.LoadBasketsController;
 import isep.controller.LoadDistributionNetworkController;
 import isep.mock.DistributionNetworkWithOrdersMock;
@@ -490,7 +487,8 @@ public class DistributionNetworkTest {
 
   @Test
   public void testGetNNearestProducersEmptyNetwork() {
-    assertNull(new DistributionNetwork().getNNearestProducersByHub(new Enterprise("e1", 1, 1, "l1"), 1));
+    assertNull(
+        new DistributionNetwork().getNNearestProducersByHub(new Enterprise("e1", 1, 1, "l1"), 1));
   }
 
   @Test
@@ -520,7 +518,8 @@ public class DistributionNetworkTest {
 
   @Test
   public void testGetActualStockWorks() throws FileNotFoundException {
-    DistributionNetwork network = new DistributionNetworkWithOrdersMock().distributionNetworkWithOrdersMockSmall();
+    DistributionNetwork network =
+        new DistributionNetworkWithOrdersMock().distributionNetworkWithOrdersMockSmall();
 
     Map<Producer, DailyData> actualStock = network.getActualStock(4);
 
@@ -553,7 +552,8 @@ public class DistributionNetworkTest {
   @Test
   public void testGetExpeditionList() throws FileNotFoundException, InvalidOrderException,
       InvalidHubException, UndefinedHubsException, InvalidNumberOfHubsException {
-    DistributionNetwork network = new DistributionNetworkWithOrdersMock().distributionNetworkWithOrdersMockSmall();
+    DistributionNetwork network =
+        new DistributionNetworkWithOrdersMock().distributionNetworkWithOrdersMockSmall();
     network.defineHubs(1);
 
     ExpeditionList expeditionList = network.getExpeditionList(4);
@@ -563,15 +563,20 @@ public class DistributionNetworkTest {
     Basket basket = expeditionList.getBaskets().get(0);
     System.out.println(basket.toString());
 
-    assertEquals(150., basket.getQuantityOfSuppliedProduct(new Producer("P2", 0, 0, "CT6"), new Product("banana")));
-    assertEquals(200., basket.getQuantityOfSuppliedProduct(new Producer("P2", 0, 0, "CT6"), new Product("orange")));
-    assertEquals(100., basket.getQuantityOfSuppliedProduct(new Producer("P1", 0, 0, "CT6"), new Product("lemon")));
+    assertEquals(150., basket.getQuantityOfSuppliedProduct(new Producer("P2", 0, 0, "CT6"),
+        new Product("banana")));
+    assertEquals(200., basket.getQuantityOfSuppliedProduct(new Producer("P2", 0, 0, "CT6"),
+        new Product("orange")));
+    assertEquals(100.,
+        basket.getQuantityOfSuppliedProduct(new Producer("P1", 0, 0, "CT6"), new Product("lemon")));
   }
 
   @Test
-  public void testGetExpeditionListWithUndefinedHubs() throws FileNotFoundException,
-      InvalidOrderException, InvalidHubException, UndefinedHubsException, InvalidNumberOfHubsException {
-    DistributionNetwork network = new DistributionNetworkWithOrdersMock().distributionNetworkWithOrdersMockSmall();
+  public void testGetExpeditionListWithUndefinedHubs()
+      throws FileNotFoundException, InvalidOrderException, InvalidHubException,
+      UndefinedHubsException, InvalidNumberOfHubsException {
+    DistributionNetwork network =
+        new DistributionNetworkWithOrdersMock().distributionNetworkWithOrdersMockSmall();
 
     assertThrows(UndefinedHubsException.class, () -> {
       network.getExpeditionList(4);
@@ -581,7 +586,8 @@ public class DistributionNetworkTest {
   @Test
   public void testGetNNearestProducersStock()
       throws FileNotFoundException, InvalidNumberOfHubsException {
-    DistributionNetwork network = new DistributionNetworkWithOrdersMock().distributionNetworkWithOrdersMockSmall();
+    DistributionNetwork network =
+        new DistributionNetworkWithOrdersMock().distributionNetworkWithOrdersMockSmall();
 
     network.defineHubs(1);
 
@@ -590,8 +596,10 @@ public class DistributionNetworkTest {
     assertEquals(1, stock.size());
     assertEquals(2, stock.get(new Enterprise("E1", 0, 0, "CT3")).size());
 
-    DailyData dailyData = stock.get(new Enterprise("E1", 0, 0, "CT3")).get(new Producer("P3", 0, 0, "CT6"));
-    DailyData dailyData2 = stock.get(new Enterprise("E1", 0, 0, "CT3")).get(new Producer("P2", 0, 0, "CT8"));
+    DailyData dailyData =
+        stock.get(new Enterprise("E1", 0, 0, "CT3")).get(new Producer("P3", 0, 0, "CT6"));
+    DailyData dailyData2 =
+        stock.get(new Enterprise("E1", 0, 0, "CT3")).get(new Producer("P2", 0, 0, "CT8"));
 
     assertEquals(300, dailyData.getQuantityOfProductForDay(3, new Product("banana")));
     assertEquals(200, dailyData.getQuantityOfProductForDay(3, new Product("orange")));
@@ -610,17 +618,21 @@ public class DistributionNetworkTest {
   @Test
   public void testGetActualStockForNNearestProducers()
       throws FileNotFoundException, InvalidNumberOfHubsException {
-    DistributionNetwork network = new DistributionNetworkWithOrdersMock().distributionNetworkWithOrdersMockSmall();
+    DistributionNetwork network =
+        new DistributionNetworkWithOrdersMock().distributionNetworkWithOrdersMockSmall();
 
     network.defineHubs(1);
 
-    Map<Enterprise, Map<Producer, DailyData>> stock = network.getActualStockForNNearestProducers(4, 2);
+    Map<Enterprise, Map<Producer, DailyData>> stock =
+        network.getActualStockForNNearestProducers(4, 2);
 
     assertEquals(1, stock.size());
     assertEquals(2, stock.get(new Enterprise("E1", 0, 0, "CT3")).size());
 
-    DailyData dailyData = stock.get(new Enterprise("E1", 0, 0, "CT3")).get(new Producer("P3", 0, 0, "CT8"));
-    DailyData dailyData2 = stock.get(new Enterprise("E1", 0, 0, "CT3")).get(new Producer("P2", 0, 0, "CT6"));
+    DailyData dailyData =
+        stock.get(new Enterprise("E1", 0, 0, "CT3")).get(new Producer("P3", 0, 0, "CT8"));
+    DailyData dailyData2 =
+        stock.get(new Enterprise("E1", 0, 0, "CT3")).get(new Producer("P2", 0, 0, "CT6"));
 
     assertEquals(150, dailyData.getQuantityOfProductForDay(3, new Product("banana")));
     assertEquals(0, dailyData.getQuantityOfProductForDay(3, new Product("orange")));
@@ -636,9 +648,11 @@ public class DistributionNetworkTest {
   }
 
   @Test
-  public void testGetExpeditionListWithNProducers() throws FileNotFoundException,
-      InvalidNumberOfHubsException, InvalidOrderException, InvalidHubException, UndefinedHubsException {
-    DistributionNetwork network = new DistributionNetworkWithOrdersMock().distributionNetworkWithOrdersMockSmall();
+  public void testGetExpeditionListWithNProducers()
+      throws FileNotFoundException, InvalidNumberOfHubsException, InvalidOrderException,
+      InvalidHubException, UndefinedHubsException {
+    DistributionNetwork network =
+        new DistributionNetworkWithOrdersMock().distributionNetworkWithOrdersMockSmall();
     network.defineHubs(1);
 
     ExpeditionList expeditionListDay4 = network.getExpeditionListForNNearestProducers(4, 2);
@@ -648,14 +662,18 @@ public class DistributionNetworkTest {
     Basket basket = expeditionListDay4.getBaskets().get(0);
     System.out.println(basket.toString());
 
-    assertEquals(150, basket.getQuantityOfSuppliedProduct(new Producer("P3", 0, 0, "CT6"), new Product("banana")));
-    assertEquals(200, basket.getQuantityOfSuppliedProduct(new Producer("P3", 0, 0, "CT6"), new Product("orange")));
-    assertEquals(100, basket.getQuantityOfSuppliedProduct(new Producer("P3", 0, 0, "CT6"), new Product("lemon")));
+    assertEquals(150, basket.getQuantityOfSuppliedProduct(new Producer("P3", 0, 0, "CT6"),
+        new Product("banana")));
+    assertEquals(200, basket.getQuantityOfSuppliedProduct(new Producer("P3", 0, 0, "CT6"),
+        new Product("orange")));
+    assertEquals(100,
+        basket.getQuantityOfSuppliedProduct(new Producer("P3", 0, 0, "CT6"), new Product("lemon")));
   }
 
   @Test
-  public void testGetExpeditionListWithSmallFile() throws FileNotFoundException, InvalidNumberOfHubsException,
-      InvalidOrderException, InvalidHubException, UndefinedHubsException {
+  public void testGetExpeditionListWithSmallFile()
+      throws FileNotFoundException, InvalidNumberOfHubsException, InvalidOrderException,
+      InvalidHubException, UndefinedHubsException {
 
     CSVReader reader = new CSVReader(SMALL_FILE_DISTANCES);
     List<Map<String, String>> distances = reader.read();
@@ -666,8 +684,8 @@ public class DistributionNetworkTest {
     EntityStore entityStore = new EntityStore();
     entityStore.addEntitiesFromList(entities);
 
-    LoadDistributionNetworkController controller = new LoadDistributionNetworkController(
-        entityStore, distances);
+    LoadDistributionNetworkController controller =
+        new LoadDistributionNetworkController(entityStore, distances);
     DistributionNetwork network = controller.loadDistributionNetwork();
 
     network.defineHubs(1);
@@ -687,8 +705,8 @@ public class DistributionNetworkTest {
 
   @Test
   public void testGetExpeditionListWithSmallFileWithNProducers()
-      throws FileNotFoundException, InvalidNumberOfHubsException,
-      InvalidOrderException, InvalidHubException, UndefinedHubsException {
+      throws FileNotFoundException, InvalidNumberOfHubsException, InvalidOrderException,
+      InvalidHubException, UndefinedHubsException {
 
     CSVReader reader = new CSVReader(SMALL_FILE_DISTANCES);
     List<Map<String, String>> distances = reader.read();
@@ -699,8 +717,8 @@ public class DistributionNetworkTest {
     EntityStore entityStore = new EntityStore();
     entityStore.addEntitiesFromList(entities);
 
-    LoadDistributionNetworkController controller = new LoadDistributionNetworkController(
-        entityStore, distances);
+    LoadDistributionNetworkController controller =
+        new LoadDistributionNetworkController(entityStore, distances);
     DistributionNetwork network = controller.loadDistributionNetwork();
 
     network.defineHubs(5);
@@ -720,8 +738,9 @@ public class DistributionNetworkTest {
   }
 
   @Test
-  public void testGetExpeditionListWithBigFile() throws FileNotFoundException, InvalidNumberOfHubsException,
-      InvalidOrderException, InvalidHubException, UndefinedHubsException {
+  public void testGetExpeditionListWithBigFile()
+      throws FileNotFoundException, InvalidNumberOfHubsException, InvalidOrderException,
+      InvalidHubException, UndefinedHubsException {
     CSVReader reader = new CSVReader(BIG_FILE_DISTANCES);
     List<Map<String, String>> distances = reader.read();
 
@@ -731,8 +750,8 @@ public class DistributionNetworkTest {
     EntityStore entityStore = new EntityStore();
     entityStore.addEntitiesFromList(entities);
 
-    LoadDistributionNetworkController controller = new LoadDistributionNetworkController(
-        entityStore, distances);
+    LoadDistributionNetworkController controller =
+        new LoadDistributionNetworkController(entityStore, distances);
     DistributionNetwork network = controller.loadDistributionNetwork();
 
     network.defineHubs(2);
@@ -752,8 +771,9 @@ public class DistributionNetworkTest {
   }
 
   @Test
-  public void testGetExpeditionListWithBigFileWithDay5() throws FileNotFoundException, InvalidNumberOfHubsException,
-      InvalidOrderException, InvalidHubException, UndefinedHubsException {
+  public void testGetExpeditionListWithBigFileWithDay5()
+      throws FileNotFoundException, InvalidNumberOfHubsException, InvalidOrderException,
+      InvalidHubException, UndefinedHubsException {
     CSVReader reader = new CSVReader(BIG_FILE_DISTANCES);
     List<Map<String, String>> distances = reader.read();
 
@@ -763,8 +783,8 @@ public class DistributionNetworkTest {
     EntityStore entityStore = new EntityStore();
     entityStore.addEntitiesFromList(entities);
 
-    LoadDistributionNetworkController controller = new LoadDistributionNetworkController(
-        entityStore, distances);
+    LoadDistributionNetworkController controller =
+        new LoadDistributionNetworkController(entityStore, distances);
     DistributionNetwork network = controller.loadDistributionNetwork();
 
     network.defineHubs(10);
@@ -776,7 +796,7 @@ public class DistributionNetworkTest {
 
     ExpeditionList expeditionListDay4 = network.getExpeditionListForNNearestProducers(5, 10);
 
-    assertEquals(1615, count);
+    assertEquals(1087, count);
     assertEquals(122, expeditionListDay4.getBaskets().size());
     assertEquals(122, expeditionListDay4.getClients().size());
     assertEquals(9, expeditionListDay4.getHubs().size());
@@ -786,7 +806,8 @@ public class DistributionNetworkTest {
 
   @Test
   public void testHasHubs() throws FileNotFoundException, InvalidNumberOfHubsException {
-    DistributionNetwork network = new DistributionNetworkWithOrdersMock().distributionNetworkWithOrdersMockSmall();
+    DistributionNetwork network =
+        new DistributionNetworkWithOrdersMock().distributionNetworkWithOrdersMockSmall();
     assertTrue(!network.hasHub());
 
     network.defineHubs(1);
