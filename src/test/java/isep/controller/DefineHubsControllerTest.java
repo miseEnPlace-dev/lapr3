@@ -18,43 +18,41 @@ import isep.shared.exceptions.InvalidNumberOfHubsException;
 
 public class DefineHubsControllerTest {
 
-    @Test
-    public void testDefineHubsWithSmallTestFile() throws FileNotFoundException, InvalidNumberOfHubsException {
-        EntityStore entity = new EntityStoreMock().mockEntityStoreWithSmallFile();
-        List<Map<String, String>> distances = new DistancesDataMock().mockDistancesDataWithSmallFile();
-    
-        DistributionNetwork network =  new LoadDistributionNetworkController(entity, distances).loadDistributionNetwork();
+  @Test
+  public void testDefineHubsWithSmallTestFile() throws FileNotFoundException, InvalidNumberOfHubsException {
+    EntityStore entity = new EntityStoreMock().mockEntityStoreWithSmallFile();
+    List<Map<String, String>> distances = new DistancesDataMock().mockDistancesDataWithSmallFile();
 
-        DefineHubsController ctrl = new DefineHubsController(network);
+    DistributionNetwork network = new LoadDistributionNetworkController(entity, distances).loadDistributionNetwork();
 
-        List<Enterprise> actual = ctrl.defineHubs(3);
-        List<Enterprise> expected = new ArrayList<>();
-        expected.add((Enterprise)entity.getEntityByLocalizationId("CT5"));
-        expected.add((Enterprise)entity.getEntityByLocalizationId("CT9"));
-        expected.add((Enterprise)entity.getEntityByLocalizationId("CT11"));
-        assertEquals(expected.size(), actual.size());
-        assertEquals(expected.get(0), actual.get(0));
-        assertEquals(expected.get(1), actual.get(1));
-        assertEquals(expected.get(2), actual.get(2));
-    }
-    
-   @Test
-   public void testDefineHubsWithBigTestFile() throws FileNotFoundException, InvalidNumberOfHubsException {
-        EntityStore entity = new EntityStoreMock().mockEntityStoreWithBigFile();
-        List<Map<String, String>> distances = new DistancesDataMock().mockDistancesDataWithBigFile();
-    
-        DistributionNetwork network =  new LoadDistributionNetworkController(entity, distances).loadDistributionNetwork();
+    DefineHubsController ctrl = new DefineHubsController(network);
 
-        DefineHubsController ctrl = new DefineHubsController(network);
+    List<Enterprise> actual = ctrl.defineHubs(3);
+    List<Enterprise> expected = new ArrayList<>();
+    expected.add((Enterprise) entity.getEntityByLocalizationId("CT5"));
+    expected.add((Enterprise) entity.getEntityByLocalizationId("CT9"));
+    expected.add((Enterprise) entity.getEntityByLocalizationId("CT11"));
+    assertEquals(expected.size(), actual.size());
+    assertEquals(expected.get(0), actual.get(0));
+    assertEquals(expected.get(1), actual.get(1));
+    assertEquals(expected.get(2), actual.get(2));
+  }
 
-        List<Enterprise> actual = ctrl.defineHubs(2);
-        List<Enterprise> expected = new ArrayList<>();
-        expected.add((Enterprise)entity.getEntityByLocalizationId("CT146"));
-        expected.add((Enterprise)entity.getEntityByLocalizationId("CT142"));
-        assertEquals(expected.size(), actual.size());
-        assertEquals(expected.get(0), actual.get(0));
-        assertEquals(expected.get(1), actual.get(1));
-   }
+  @Test
+  public void testDefineHubsWithBigTestFile() throws FileNotFoundException, InvalidNumberOfHubsException {
+    EntityStore entity = new EntityStoreMock().mockEntityStoreWithBigFile();
+    List<Map<String, String>> distances = new DistancesDataMock().mockDistancesDataWithBigFile();
 
+    DistributionNetwork network = new LoadDistributionNetworkController(entity, distances).loadDistributionNetwork();
 
+    DefineHubsController ctrl = new DefineHubsController(network);
+
+    List<Enterprise> actual = ctrl.defineHubs(2);
+    List<Enterprise> expected = new ArrayList<>();
+    expected.add((Enterprise) entity.getEntityByLocalizationId("CT146"));
+    expected.add((Enterprise) entity.getEntityByLocalizationId("CT142"));
+    assertEquals(expected.size(), actual.size());
+    assertEquals(expected.get(0), actual.get(0));
+    assertEquals(expected.get(1), actual.get(1));
+  }
 }

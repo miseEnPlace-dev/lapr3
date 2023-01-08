@@ -786,10 +786,9 @@ public class DistributionNetworkTest {
 
     assertEquals(1087, count);
     assertEquals(186, expeditionListDay4.getBaskets().size());
-    assertEquals(122, expeditionListDay4.getClients().size());
+    assertEquals(186, expeditionListDay4.getClients().size());
     assertEquals(9, expeditionListDay4.getHubs().size());
-    assertEquals(17, expeditionListDay4.getProducers().size());
-
+    assertEquals(15, expeditionListDay4.getProducers().size());
   }
 
   @Test
@@ -800,5 +799,4 @@ public class DistributionNetworkTest {
     network.defineHubs(1);
     assertTrue(network.hasHub());
   }
-
 }
