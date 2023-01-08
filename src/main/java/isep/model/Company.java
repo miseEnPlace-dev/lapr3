@@ -21,6 +21,7 @@ public class Company {
   private String currentEntitiesFilePath = null;
   private String currentDistancesFilePath = null;
   private String currentBasketsFilePath = null;
+  private Integer currentExpeditionListDay = null;
 
   public Company() {
     setDistributionNetwork(new DistributionNetwork());
@@ -51,6 +52,14 @@ public class Company {
 
   public void setCurrentDistancesFilePath(String currentDistancesFilePath) {
     this.currentDistancesFilePath = currentDistancesFilePath;
+  }
+
+  public String getCurrentExpeditionListDay() {
+    return currentExpeditionListDay == null ? null : currentExpeditionListDay.toString();
+  }
+
+  public void setCurrentExpeditionListDay(int currentExpeditionListDay) {
+    this.currentExpeditionListDay = currentExpeditionListDay;
   }
 
   public String getCurrentBasketsFilePath() {

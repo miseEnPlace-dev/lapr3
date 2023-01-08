@@ -54,5 +54,7 @@ public class AgriculturalManagerUI implements Runnable {
         App.getInstance().getCompany().getCurrentEntitiesFilePath());
     Utils.showRightToLeftText("Loaded baskets",
         App.getInstance().getCompany().getCurrentBasketsFilePath());
+    Utils.showRightToLeftText("Current Expedition List Day",
+        App.getInstance().getCompany().getCurrentExpeditionListDay());
   }
 }

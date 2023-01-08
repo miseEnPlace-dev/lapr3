@@ -2,7 +2,6 @@ package isep.ui;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import isep.controller.App;
 import isep.controller.ExpeditionListController;
 import isep.model.ExpeditionList;
@@ -17,8 +16,7 @@ public class GenerateExpeditionListUI implements Runnable {
   private int nProducers;
   private ExpeditionList expeditionList;
 
-  public GenerateExpeditionListUI() {
-  }
+  public GenerateExpeditionListUI() {}
 
   @Override
   public void run() {
@@ -61,11 +59,11 @@ public class GenerateExpeditionListUI implements Runnable {
     expeditionList = controller.getExpeditionList(day);
 
     if (expeditionList == null) {
-      System.out
-          .println(
-              "There is no data for this day\nTip: Before generating an expedition list, you may want to set the network hubs.");
+      System.out.println(
+          "There is no data for this day\nTip: Before generating an expedition list, you may want to set the network hubs.");
     } else {
       App.getInstance().getCompany().setCurrentExpeditionList(expeditionList);
+      App.getInstance().getCompany().setCurrentExpeditionListDay(day);
 
       controller.printExpeditionList(expeditionList);
     }
@@ -80,11 +78,11 @@ public class GenerateExpeditionListUI implements Runnable {
     expeditionList = controller.getExpeditionList(day, nProducers);
 
     if (expeditionList == null) {
-      System.out
-          .println(
-              "There is no data for this day\nTip: Before generating an expedition list, you may want to set the network hubs.");
+      System.out.println(
+          "There is no data for this day\nTip: Before generating an expedition list, you may want to set the network hubs.");
     } else {
       App.getInstance().getCompany().setCurrentExpeditionList(expeditionList);
+      App.getInstance().getCompany().setCurrentExpeditionListDay(day);
 
       controller.printExpeditionList(expeditionList);
     }

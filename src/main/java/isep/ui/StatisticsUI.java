@@ -14,16 +14,16 @@ public class StatisticsUI implements Runnable {
   private void showStatisticsOfOptions(int option) {
     switch (option) {
       case 1:
-        Utils.showTable(controller.getBasketsStatistics(), "Baskets' Statistics");
+        Utils.showTable(controller.getBasketsStatistics(), "\nBaskets' Statistics");
         break;
       case 2:
-        Utils.showTable(controller.getClientsStatistics(), "Clients' Statistics");
+        Utils.showTable(controller.getClientsStatistics(), "\nClients' Statistics");
         break;
       case 3:
-        Utils.showTable(controller.getProducersStatistics(), "Producers' Statistics");
+        Utils.showTable(controller.getProducersStatistics(), "\nProducers' Statistics");
         break;
       case 4:
-        Utils.showTable(controller.getHubsStatistics(), "Hubs' Statistics");
+        Utils.showTable(controller.getHubsStatistics(), "\nHubs' Statistics");
         break;
       default:
         break;

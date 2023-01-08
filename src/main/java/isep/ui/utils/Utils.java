@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class Utils {
 
-  static public String readLineFromConsole(String prompt) {
+  public static String readLineFromConsole(String prompt) {
     try {
       System.out.print(prompt);
 
@@ -24,7 +24,7 @@ public class Utils {
     }
   }
 
-  static public String readLineFromConsoleWithValidation(String prompt) {
+  public static String readLineFromConsoleWithValidation(String prompt) {
     boolean valid = false;
     String answer = "";
 
@@ -49,7 +49,7 @@ public class Utils {
     return answer;
   }
 
-  static public int readIntegerFromConsole(String prompt) {
+  public static int readIntegerFromConsole(String prompt) {
     do {
       try {
         String input = readLineFromConsole(prompt);
@@ -64,7 +64,7 @@ public class Utils {
     } while (true);
   }
 
-  static public int readPositiveIntegerFromConsole(String prompt) {
+  public static int readPositiveIntegerFromConsole(String prompt) {
     while (true) {
       int n = readIntegerFromConsole(prompt);
 
@@ -75,7 +75,7 @@ public class Utils {
     }
   }
 
-  static public int readNonNegativeIntegerFromConsole(String prompt) {
+  public static int readNonNegativeIntegerFromConsole(String prompt) {
     while (true) {
       int n = readIntegerFromConsole(prompt);
 
@@ -86,7 +86,7 @@ public class Utils {
     }
   }
 
-  static public double readDoubleFromConsole(String prompt) {
+  public static double readDoubleFromConsole(String prompt) {
     do {
       try {
         String input = readLineFromConsole(prompt);
@@ -101,7 +101,7 @@ public class Utils {
     } while (true);
   }
 
-  static public Date readDateFromConsole(String prompt) {
+  public static Date readDateFromConsole(String prompt) {
     do {
       try {
         String strDate = readLineFromConsole(prompt);
@@ -118,7 +118,7 @@ public class Utils {
     } while (true);
   }
 
-  static public Date readHourDateFromConsole(String prompt) {
+  public static Date readHourDateFromConsole(String prompt) {
     do {
       try {
         String strDate = readLineFromConsole(prompt);
@@ -134,7 +134,7 @@ public class Utils {
     } while (true);
   }
 
-  static public Date readDateInFutureFromConsole(String prompt) {
+  public static Date readDateInFutureFromConsole(String prompt) {
     SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 
     do {
@@ -151,7 +151,7 @@ public class Utils {
     } while (true);
   }
 
-  static public boolean confirm(String message) {
+  public static boolean confirm(String message) {
     String input;
     do {
       input = Utils.readLineFromConsole("\n" + message + "\n");
@@ -160,22 +160,22 @@ public class Utils {
     return input.equalsIgnoreCase("y");
   }
 
-  static public <E> Object showAndSelectOne(List<E> list, String header) {
+  public static <E> Object showAndSelectOne(List<E> list, String header) {
     showList(list, header);
     return selectsObject(list);
   }
 
-  static public <E> int showAndSelectIndex(List<E> list, String header) {
+  public static <E> int showAndSelectIndex(List<E> list, String header) {
     showList(list, header);
     return selectsIndex(list);
   }
 
-  static public Object showAndSelectOneEnum(Enum[] list, String header) {
+  public static Object showAndSelectOneEnum(Enum[] list, String header) {
     showEnumItems(list, header);
     return selectEnumObject(list);
   }
 
-  static public <E> void showList(List<E> list, String header) {
+  public static <E> void showList(List<E> list, String header) {
     System.out.println(header);
 
     int index = 0;
@@ -191,42 +191,56 @@ public class Utils {
   }
 
   private static <E> int[] getColumnsWidth(Map<String, E> map) {
-    final int PADDING = 1;
-
     int[] widths = new int[map.keySet().size()];
 
     int i = 0;
     for (String key : map.keySet()) {
-      widths[i] = key.length() + PADDING;
+      widths[i] = key.length();
       i++;
     }
 
     return widths;
   }
 
-  static public <E> void showTable(List<Map<String, E>> rows, String header) {
-    System.out.println(header);
+  private static void printTableSeparator(int[] widths) {
+    for (int i = 0; i < widths.length; i++)
+      System.out.print("+" + "-".repeat(widths[i] + 2));
+    System.out.println("+");
+  }
 
-    int[] widths = getColumnsWidth(rows.get(0));
-
+  private static void printTableHeader(Map<String, ?> row, int[] widths) {
     int i = 0;
-    for (String key : rows.get(0).keySet()) {
-      System.out.printf("| %" + widths[i] + "s", key);
+    for (String key : row.keySet()) {
+      System.out.printf("| %" + widths[i] + "s ", key);
       i++;
     }
     System.out.println("|");
 
+    printTableSeparator(widths);
+  }
+
+
+  public static <E> void showTable(List<Map<String, E>> rows, String header) {
+    System.out.println(header);
+
+    int[] widths = getColumnsWidth(rows.get(0));
+
+    printTableHeader(rows.get(0), widths);
+
     for (Map<String, E> m : rows) {
-      i = 0;
+      int i = 0;
+
       for (String key : m.keySet()) {
-        System.out.printf("| %" + widths[i] + "s", m.get(key));
+        System.out.printf("| %" + widths[i] + "s ", m.get(key));
         i++;
       }
       System.out.println("|");
     }
+
+    printTableSeparator(widths);
   }
 
-  static public void showEnumItems(Enum[] items, String header) {
+  public static void showEnumItems(Enum[] items, String header) {
     System.out.println(header);
 
     int index = 0;
@@ -239,7 +253,7 @@ public class Utils {
     System.out.println("0 - Cancel");
   }
 
-  static public <E> Object selectsObject(List<E> list) {
+  public static <E> Object selectsObject(List<E> list) {
     int value = 0;
 
     do {
@@ -252,7 +266,7 @@ public class Utils {
       return list.get(value - 1);
   }
 
-  static public Object selectEnumObject(Enum[] list) {
+  public static Object selectEnumObject(Enum[] list) {
     int value = 0;
 
     do {
@@ -265,7 +279,7 @@ public class Utils {
       return list[value - 1];
   }
 
-  static public <E> int selectsIndex(List<E> list) {
+  public static <E> int selectsIndex(List<E> list) {
     int value = -1;
     do {
       value = Utils.readIntegerFromConsole("Type your option: ");
@@ -274,7 +288,7 @@ public class Utils {
     return value - 1;
   }
 
-  static public void showRightToLeftText(String title, String text) {
+  public static void showRightToLeftText(String title, String text) {
     final int MAX_WIDTH = 120;
 
     String displayedText = text == null ? "--" : text;
