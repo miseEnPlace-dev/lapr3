@@ -222,10 +222,10 @@ public class DistributionNetwork {
 
     if (this.getNearestHub(clientsList.get(0)) == null)
       throw new UndefinedHubsException();
+
     Map<Producer, DailyData> prodStocks = this.getActualStock(day);
 
-    for (int j = 0; j < clientsList.size(); j++) { // iterate all clients
-      Client client = clientsList.get(j);
+    for (Client client : clientsList) { // iterate all clients
       Map<Product, Double> ordered = client.getDayData(day);
       ReceivedProducts received = new ReceivedProducts();
 
@@ -280,11 +280,11 @@ public class DistributionNetwork {
 
     if (this.getNearestHub(clientsList.get(0)) == null)
       throw new UndefinedHubsException();
+
     Map<Enterprise, Map<Producer, DailyData>> prodStocks =
         this.getActualStockForNNearestProducers(day, nProducers);
 
-    for (int j = 0; j < clientsList.size(); j++) { // iterate all clients
-      Client client = clientsList.get(j);
+    for (Client client : clientsList) { // iterate all clients
       Map<Product, Double> ordered = client.getDayData(day);
       ReceivedProducts received = new ReceivedProducts();
 
