@@ -230,15 +230,7 @@ public class DistributionNetwork {
 
       Enterprise hub = this.getNearestHub(client);
 
-      double sum = 0.;
-
       if (ordered == null)
-        continue;
-
-      for (Double quant : ordered.values())
-        sum += quant;
-
-      if (sum == 0.)
         continue;
 
       for (Product product : ordered.keySet()) { // iterates client product orders
@@ -298,15 +290,7 @@ public class DistributionNetwork {
 
       Enterprise hub = this.getNearestHub(client);
 
-      double sum = 0.;
-
       if (ordered == null)
-        continue;
-
-      for (Double quant : ordered.values())
-        sum += quant;
-
-      if (sum == 0.)
         continue;
 
       for (Product product : ordered.keySet()) { // iterates client product orders
