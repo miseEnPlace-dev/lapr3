@@ -9,21 +9,22 @@ import isep.ui.utils.Utils;
 public class StatisticsUI implements Runnable {
   private ExpeditionListStatisticsController controller;
 
-  public StatisticsUI() {}
+  public StatisticsUI() {
+  }
 
   private void showStatisticsOfOptions(int option) {
     switch (option) {
       case 1:
-        Utils.showTable(controller.getBasketsStatistics(), "\nBaskets' Statistics");
+        Utils.showTable(controller.getBasketsStatistics(), "\nBaskets' Statistics\n");
         break;
       case 2:
-        Utils.showTable(controller.getClientsStatistics(), "\nClients' Statistics");
+        Utils.showTable(controller.getClientsStatistics(), "\nClients' Statistics\n");
         break;
       case 3:
-        Utils.showTable(controller.getProducersStatistics(), "\nProducers' Statistics");
+        Utils.showTable(controller.getProducersStatistics(), "\nProducers' Statistics\n");
         break;
       case 4:
-        Utils.showTable(controller.getHubsStatistics(), "\nHubs' Statistics");
+        Utils.showTable(controller.getHubsStatistics(), "\nHubs' Statistics\n");
         break;
       default:
         break;

@@ -463,7 +463,7 @@ public class DistributionNetwork {
     List<Producer> producers = network.getEntitiesWithClass(Producer.class);
 
     if (producers.size() < n)
-      return null;
+      n = producers.size();
 
     List<Producer> result = new ArrayList<>();
 

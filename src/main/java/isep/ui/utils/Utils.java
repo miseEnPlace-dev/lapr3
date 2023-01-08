@@ -210,15 +210,15 @@ public class Utils {
 
   private static void printTableHeader(Map<String, ?> row, int[] widths) {
     int i = 0;
+    printTableSeparator(widths);
+
     for (String key : row.keySet()) {
       System.out.printf("| %" + widths[i] + "s ", key);
       i++;
     }
     System.out.println("|");
-
     printTableSeparator(widths);
   }
-
 
   public static <E> void showTable(List<Map<String, E>> rows, String header) {
     System.out.println(header);

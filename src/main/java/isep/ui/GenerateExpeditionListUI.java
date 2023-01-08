@@ -59,7 +59,7 @@ public class GenerateExpeditionListUI implements Runnable {
     controller = new ExpeditionListController();
     expeditionList = controller.getExpeditionList(day);
 
-    if (expeditionList == null) {
+    if (expeditionList == null || expeditionList.getBaskets().size() == 0) {
       System.out.println(
           "There is no data for this day\nTip: Before generating an expedition list, you may want to set the network hubs.");
     } else {
@@ -78,7 +78,7 @@ public class GenerateExpeditionListUI implements Runnable {
     controller = new ExpeditionListController();
     expeditionList = controller.getExpeditionList(day, nProducers);
 
-    if (expeditionList == null) {
+    if (expeditionList == null || expeditionList.getBaskets().size() == 0) {
       System.out.println(
           "There is no data for this day\nTip: Before generating an expedition list, you may want to set the network hubs.");
     } else {

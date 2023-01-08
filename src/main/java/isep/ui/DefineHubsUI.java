@@ -30,11 +30,14 @@ public class DefineHubsUI implements Runnable {
     int numberOfHubs = Utils.readIntegerFromConsole("\nNumber of hubs: ");
     try {
       hubs = controller.defineHubs(numberOfHubs);
+
+      System.out.println("\nHubs defined successfully");
+
+      App.getInstance().getCompany().setCurrentDefinedHubs(hubs.size());
+
+      Utils.showList(hubs, "\nHubs defined: ");
     } catch (InvalidNumberOfHubsException e) {
       System.out.println("\nInvalid number of hubs");
     }
-
-    Utils.showList(hubs, "\nHubs defined: ");
   }
-
 }

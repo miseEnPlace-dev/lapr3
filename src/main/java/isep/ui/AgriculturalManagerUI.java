@@ -7,7 +7,8 @@ import isep.ui.utils.Utils;
 
 public class AgriculturalManagerUI implements Runnable {
 
-  public AgriculturalManagerUI() {}
+  public AgriculturalManagerUI() {
+  }
 
   @Override
   public void run() {
@@ -56,5 +57,7 @@ public class AgriculturalManagerUI implements Runnable {
         App.getInstance().getCompany().getCurrentBasketsFilePath());
     Utils.showRightToLeftText("Current Expedition List Day",
         App.getInstance().getCompany().getCurrentExpeditionListDay());
+    Utils.showRightToLeftText("Current number of defined hubs",
+        App.getInstance().getCompany().getCurrentDefinedHubs());
   }
 }

@@ -1,5 +1,7 @@
 package isep.model;
 
+import java.util.List;
+
 import isep.model.store.AgriculturalParcelStore;
 import isep.model.store.CultivationStore;
 import isep.model.store.EntityStore;
@@ -22,6 +24,7 @@ public class Company {
   private String currentDistancesFilePath = null;
   private String currentBasketsFilePath = null;
   private Integer currentExpeditionListDay = null;
+  private Integer currentDefinedHubs = null;
 
   public Company() {
     setDistributionNetwork(new DistributionNetwork());
@@ -92,5 +95,13 @@ public class Company {
 
   public void setEntityStore(EntityStore entityStore) {
     this.entityStore = entityStore;
+  }
+
+  public String getCurrentDefinedHubs() {
+    return currentDefinedHubs == null ? null : currentDefinedHubs.toString();
+  }
+
+  public void setCurrentDefinedHubs(Integer hubs) {
+    this.currentDefinedHubs = hubs;
   }
 }
