@@ -8,6 +8,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -31,6 +32,7 @@ public class ExpeditionListStatisticsControllerTest {
 
   @Test
   public void testGetBasketStatistics() {
+    Locale.setDefault(new Locale("en", "US"));
     List<Map<String, String>> expected = new ArrayList<>();
 
     Map<String, String> firstBasketStats = new LinkedHashMap<>();
@@ -184,6 +186,7 @@ public class ExpeditionListStatisticsControllerTest {
   @Test
   public void testGetBasketStatisticsWithSampleFile() throws FileNotFoundException, InvalidOrderException,
       InvalidHubException, UndefinedHubsException, InvalidNumberOfHubsException {
+    Locale.setDefault(new Locale("en", "US"));
     ExpeditionList expeditionList = new ExpeditionListMock().mockExpeditionListWithSampleFile();
     ExpeditionListStatisticsController ctrl = new ExpeditionListStatisticsController(expeditionList);
 
