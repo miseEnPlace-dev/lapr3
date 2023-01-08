@@ -20,7 +20,12 @@ class Entity {
   +toString(): String
 }
 
-class Client {}
+class Client {
+  - nearestHub: Enterprise
+
+  +getNearestHub(): Enterprise
+  +setNearestHub(): void
+}
 
 class Enterprise {
   -isHub: boolean
@@ -30,7 +35,10 @@ class Enterprise {
   +isHub(): boolean
 }
 
-class Producer {}
+class Producer {
+  +getStockUntilDate(day: Integer): DailyData
+  +getNonExpiredQuantityUntilDate(product: Product, day: int): Double
+}
 
 class AgriculturalParcel {
   -designation: String
@@ -69,7 +77,13 @@ class Company {
   +getCultivationStore(): CultivationStore
 }
 
-class EntityStore {}
+class EntityStore {
+  -entities: List<Entity>
+
+  +getEntityById(id: int): Entity
+  +getEntities(): Iterator<Entity>
+  +getEntitiesWithRole(role: Role): List<Entity>
+}
 
 class AgriculturalParcelStore {}
 
@@ -118,7 +132,7 @@ class ParcelIrrigationWrapper {
 }
 
 abstract Regularity {
-   +check(day): boolean
+   {abstract}check(day): boolean
    +equals(): boolean
 }
 
@@ -126,9 +140,15 @@ class RegularityFactory {
    +getRegularity(name): Regularity
 }
 
-class RegularityAll {}
-class RegularityOdd {}
-class RegularityEven {}
+class RegularityAll {
+  +check(day): boolean
+}
+class RegularityOdd {
+  +check(day): boolean
+}
+class RegularityEven {
+  +check(day): boolean
+}
 
 class Basket {
    - ordered: Map<Product, Integer>
@@ -189,11 +209,13 @@ class ExpeditionList {
  +getDay(): int
  +addBasket(): void
  +getBaskets(): List<Basket>
- +getNUmberOfBaskets(): int
+ +getNumberOfBaskets(): int
+
  +getProducers(): Set<Producer>
  +getHubs(): Set<Enterprise>
  +getProducersThatSupplyHubs(): Map<Enterprise, List<Producer>>
  +getBasketsDeliveredAtHubs(): Map<Enterprise, Integer>
+
  +getNumberOfFullySatisfiedProducts(): int
  +getNumberOfPartiallySatisfiedProducts(): int
  +getNumberOfNotSatisfiedProducts(): int
@@ -207,9 +229,8 @@ class ExpeditionList {
  +getNumberOfDistinctClients(): int
  +getNumberOfDistinctHubs(): int
  +getNumberOfDistinctClients(): int
- +getDistinctProducers(): int
+ +getNumberOfDistinctProducers(): int
  +getNumberOfOutOfStockProducts(): int
-
 }
 
 Basket "*" --o "1" ExpeditionList
@@ -242,4 +263,5 @@ Company "1" o-- "1" EntityStore
 Company "1" o-- "1" AgriculturalParcelStore
 Company "1" o-- "1" CultivationStore
 
+Entity "1" o-- "1" DailyData
 @enduml
