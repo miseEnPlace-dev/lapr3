@@ -486,6 +486,7 @@ public class DistributionNetworkTest {
     network.addRelation(e1, c1, 100);
     assertEquals(0, network.getNNearestProducersByHub(e1, 2).size());
 
+    assertEquals(0, network.getNNearestProducersByHub(e1, 1).size());
   }
 
   @Test
