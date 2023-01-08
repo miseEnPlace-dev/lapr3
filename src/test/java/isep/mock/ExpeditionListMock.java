@@ -16,6 +16,7 @@ import isep.model.ExpeditionList;
 import isep.model.Producer;
 import isep.model.Product;
 import isep.shared.exceptions.InvalidHubException;
+import isep.shared.exceptions.InvalidNumberOfHubsException;
 import isep.shared.exceptions.InvalidOrderException;
 import isep.shared.exceptions.UndefinedHubsException;
 import isep.utils.CSVReader;
@@ -69,21 +70,41 @@ public class ExpeditionListMock {
     return expList;
   }
 
-  public ExpeditionList mockExpeditionListWithBigFile()
-      throws FileNotFoundException, InvalidOrderException, InvalidHubException, UndefinedHubsException {
+  public ExpeditionList mockExpeditionListWithSampleFile()
+      throws FileNotFoundException, InvalidOrderException, InvalidHubException, UndefinedHubsException,
+      InvalidNumberOfHubsException {
+    final int DAY = 4;
+    final int NUMBER_OF_HUBS = 1;
+    DistributionNetwork network = new DistributionNetworkWithOrdersMock().distributionNetworkWithOrdersMockSmall();
+    network.defineHubs(NUMBER_OF_HUBS);
+
+    ExpeditionListController expeditionListController = new ExpeditionListController(network);
+    return expeditionListController.getExpeditionList(DAY);
+  }
+
+  public ExpeditionList mockExpeditionListWithSmallFile()
+      throws FileNotFoundException, InvalidOrderException, InvalidHubException, UndefinedHubsException,
+      InvalidNumberOfHubsException {
     final int DAY = 3;
+    final int NUMBER_OF_HUBS = 3;
 
     Company company = new Company();
-    List<Map<String, String>> entities = new CSVReader(DISTANCES_BIG_FILE_PATH).read();
+    List<Map<String, String>> distances = new CSVReader(DISTANCES_SMALL_FILE_PATH).read();
+    List<Map<String, String>> entities = new CSVReader(ENTITIES_SMALL_FILE_PATH).read();
+
+    company.getEntityStore().addEntitiesFromList(entities);
+
     LoadDistributionNetworkController controller = new LoadDistributionNetworkController(company.getEntityStore(),
-        entities);
+        distances);
 
     DistributionNetwork network = controller.loadDistributionNetwork();
     company.setDistributionNetwork(network);
 
-    LoadBasketsController loadBasketsController = new LoadBasketsController(BASKETS_BIG_FILE_PATH, company);
+    LoadBasketsController loadBasketsController = new LoadBasketsController(BASKETS_SMALL_FILE_PATH, company);
     List<Map<String, String>> data = loadBasketsController.readData();
     loadBasketsController.mapBaskets(data, company.getEntityStore());
+
+    company.getDistributionNetwork().defineHubs(NUMBER_OF_HUBS);
 
     ExpeditionListController expeditionListController = new ExpeditionListController(company.getDistributionNetwork());
     return expeditionListController.getExpeditionList(DAY);
