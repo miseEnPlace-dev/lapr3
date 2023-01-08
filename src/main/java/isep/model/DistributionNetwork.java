@@ -101,12 +101,14 @@ public class DistributionNetwork {
   }
 
   public int shortestPathDistance(Entity e1, Entity e2) {
-    return GraphAlgorithms.shortestPath(network, e1, e2, Integer::compareTo, Integer::sum, 0, new LinkedList<>());
+    return GraphAlgorithms.shortestPath(network, e1, e2, Integer::compareTo, Integer::sum, 0,
+        new LinkedList<>());
   }
 
   public ArrayList<Integer> shortestPathsDistances(Entity e1) {
     ArrayList<Integer> distances = new ArrayList<>();
-    GraphAlgorithms.shortestPaths(network, e1, Integer::compareTo, Integer::sum, 0, new ArrayList<>(), distances);
+    GraphAlgorithms.shortestPaths(network, e1, Integer::compareTo, Integer::sum, 0,
+        new ArrayList<>(), distances);
     return distances;
   }
 
@@ -116,6 +118,13 @@ public class DistributionNetwork {
 
   public int[][] shortestPathsBetweenAllNodes() {
     return GraphAlgorithms.minEdges(network, Integer::compare, Integer::sum, 0);
+  }
+
+  private void updateClientsNearestHubs() {
+    for (Client client : this.getClients())
+      client.setNearestHub(getNearestHub(client));
+    for (Enterprise enterprise : this.getEnterprises())
+      enterprise.setNearestHub(getNearestHub(enterprise));
   }
 
   public List<Enterprise> defineHubs(int numberOfHubs) throws InvalidNumberOfHubsException {
@@ -162,13 +171,16 @@ public class DistributionNetwork {
       }
     }
 
+    updateClientsNearestHubs();
+
     return result;
   }
 
   public int getAveragePathDistanceBetweenGroupOfEntities(Entity e1) {
 
     ArrayList<Integer> distances = new ArrayList<>();
-    GraphAlgorithms.shortestPaths(network, e1, Integer::compareTo, Integer::sum, 0, new ArrayList<>(), distances);
+    GraphAlgorithms.shortestPaths(network, e1, Integer::compareTo, Integer::sum, 0,
+        new ArrayList<>(), distances);
 
     int sum = 0;
     int count = distances.size();
@@ -219,16 +231,16 @@ public class DistributionNetwork {
 
     List<Client> clientsList = this.network.getClients();
 
-    if (this.getNearestHub(clientsList.get(0)) == null)
+    if (clientsList.get(0).getNearestHub() == null)
       throw new UndefinedHubsException();
+
     Map<Producer, DailyData> prodStocks = this.getActualStock(day);
 
-    for (int j = 0; j < clientsList.size(); j++) { // iterate all clients
-      Client client = clientsList.get(j);
+    for (Client client : clientsList) { // iterate all clients
       Map<Product, Double> ordered = client.getDayData(day);
       ReceivedProducts received = new ReceivedProducts();
 
-      Enterprise hub = this.getNearestHub(client);
+      Enterprise hub = client.getNearestHub();
 
       if (ordered == null)
         continue;
@@ -250,7 +262,6 @@ public class DistributionNetwork {
             bestProducer = producer;
             bestQuant = quantAvailable;
           }
-
         }
 
         if (bestProducer == null)
@@ -261,13 +272,11 @@ public class DistributionNetwork {
 
         // register for expeditionsList
         received.setProduct(bestProducer, product, bestQuant);
-
       }
 
       Basket basket = new Basket(ordered, received, hub, client);
 
       expeditionList.addBasket(basket);
-
     }
 
     return expeditionList;
@@ -279,16 +288,16 @@ public class DistributionNetwork {
 
     List<Client> clientsList = this.network.getClients();
 
-    if (this.getNearestHub(clientsList.get(0)) == null)
+    if (clientsList.get(0).getNearestHub() == null)
       throw new UndefinedHubsException();
+
     Map<Enterprise, Map<Producer, DailyData>> prodStocks = this.getActualStockForNNearestProducers(day, nProducers);
 
-    for (int j = 0; j < clientsList.size(); j++) { // iterate all clients
-      Client client = clientsList.get(j);
+    for (Client client : clientsList) { // iterate all clients
       Map<Product, Double> ordered = client.getDayData(day);
       ReceivedProducts received = new ReceivedProducts();
 
-      Enterprise hub = this.getNearestHub(client);
+      Enterprise hub = client.getNearestHub();
 
       if (ordered == null)
         continue;
@@ -310,7 +319,6 @@ public class DistributionNetwork {
             bestProducer = producer;
             bestQuant = quantAvailable;
           }
-
         }
 
         if (bestProducer == null)
@@ -321,19 +329,18 @@ public class DistributionNetwork {
 
         // register for expeditionsList
         received.setProduct(bestProducer, product, bestQuant);
-
       }
 
       Basket basket = new Basket(ordered, received, hub, client);
 
       expeditionList.addBasket(basket);
-
     }
 
     return expeditionList;
   }
 
-  public Map<Enterprise, Map<Producer, DailyData>> getNNearestProducersStock(Integer nProducers, Integer day) {
+  public Map<Enterprise, Map<Producer, DailyData>> getNNearestProducersStock(Integer nProducers,
+      Integer day) {
     List<Enterprise> hubs = this.getHubs();
     Map<Enterprise, Map<Producer, DailyData>> result = new HashMap<>();
 
@@ -365,8 +372,8 @@ public class DistributionNetwork {
     Map<Producer, DailyData> prodStocks = this.network.getProducersStockUntilDate(day);
 
     for (int i = 1; i < day; i++) { // iterate all days before
-      for (int j = 0; j < clientsList.size(); j++) { // iterate all clients
-        Map<Product, Double> ordered = clientsList.get(j).getDayData(i);
+      for (Client client : clientsList) { // iterate all clients
+        Map<Product, Double> ordered = client.getDayData(i);
 
         if (ordered == null)
           continue;
@@ -398,20 +405,14 @@ public class DistributionNetwork {
     return prodStocks;
   }
 
-  public Map<Enterprise, Map<Producer, DailyData>> getActualStockForNNearestProducers(Integer day, Integer nProducers) {
-    List<Client> clientsList = this.network.getClients();
-    Map<Client, Enterprise> clientHub = new HashMap<>();
-
-    for (int i = 0; i < clientsList.size(); i++) {
-      clientHub.put(clientsList.get(i), this.getNearestHub(clientsList.get(i)));
-    }
-
+  public Map<Enterprise, Map<Producer, DailyData>> getActualStockForNNearestProducers(Integer day,
+      Integer nProducers) {
     Map<Enterprise, Map<Producer, DailyData>> prodStocks = this.getNNearestProducersStock(nProducers, day);
 
     for (int i = 1; i < day; i++) { // iterate all days before
-      for (Client client : clientHub.keySet()) { // iterate all clients
+      for (Client client : this.network.getClients()) { // iterate all clients
         Map<Product, Double> ordered = client.getDayData(i);
-        Enterprise hub = clientHub.get(client);
+        Enterprise hub = client.getNearestHub();
 
         if (ordered == null)
           continue;
@@ -508,6 +509,20 @@ public class DistributionNetwork {
 
   public boolean hasHub() {
     return this.network.hasHubs();
+  }
+
+  /**
+   * @return NetworkGraph<Entity, Integer> return the network
+   */
+  public NetworkGraph<Entity, Integer> getNetwork() {
+    return network;
+  }
+
+  /**
+   * @param network the network to set
+   */
+  public void setNetwork(NetworkGraph<Entity, Integer> network) {
+    this.network = network;
   }
 
 }

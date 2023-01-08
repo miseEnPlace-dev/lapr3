@@ -57,6 +57,7 @@ public class ExpeditionListStatisticsControllerTest {
 
     Map<String, String> firstClientStats = new LinkedHashMap<>();
 
+    firstClientStats.put("Client", "id2");
     firstClientStats.put("No. of totally fulfilled baskets", "0");
     firstClientStats.put("No. of partially fulfilled baskets", "0");
     firstClientStats.put("No. of distinct producers that supply all baskets", "1");
@@ -65,6 +66,7 @@ public class ExpeditionListStatisticsControllerTest {
 
     Map<String, String> secondClientStats = new LinkedHashMap<>();
 
+    secondClientStats.put("Client", "id3");
     secondClientStats.put("No. of totally fulfilled baskets", "0");
     secondClientStats.put("No. of partially fulfilled baskets", "1");
     secondClientStats.put("No. of distinct producers that supply all baskets", "2");
@@ -80,6 +82,7 @@ public class ExpeditionListStatisticsControllerTest {
 
     Map<String, String> firstProducerStats = new LinkedHashMap<>();
 
+    firstProducerStats.put("Producer", "id3");
     firstProducerStats.put("No. of totally supplied baskets", "1");
     firstProducerStats.put("No. of partially supplied baskets", "1");
     firstProducerStats.put("No. of distinct clients", "2");
@@ -90,6 +93,7 @@ public class ExpeditionListStatisticsControllerTest {
 
     Map<String, String> secondProducerStats = new LinkedHashMap<>();
 
+    secondProducerStats.put("Producer", "id4");
     secondProducerStats.put("No. of totally supplied baskets", "0");
     secondProducerStats.put("No. of partially supplied baskets", "1");
     secondProducerStats.put("No. of distinct clients", "1");
@@ -107,6 +111,7 @@ public class ExpeditionListStatisticsControllerTest {
 
     Map<String, String> firstHubStats = new LinkedHashMap<>();
 
+    firstHubStats.put("Hub", "id1");
     firstHubStats.put("No. of distinct clients", "2");
     firstHubStats.put("No. of distinct producers", "2");
 
