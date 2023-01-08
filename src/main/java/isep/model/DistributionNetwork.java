@@ -128,6 +128,8 @@ public class DistributionNetwork {
   }
 
   public List<Enterprise> defineHubs(int numberOfHubs) throws InvalidNumberOfHubsException {
+    System.out.printf("Defining %d hubs...%n", numberOfHubs);
+
     if (numberOfHubs <= 0)
       throw new InvalidNumberOfHubsException();
 
@@ -177,16 +179,15 @@ public class DistributionNetwork {
   }
 
   public int getAveragePathDistanceBetweenGroupOfEntities(Entity e1) {
-
     ArrayList<Integer> distances = new ArrayList<>();
     GraphAlgorithms.shortestPaths(network, e1, Integer::compareTo, Integer::sum, 0,
         new ArrayList<>(), distances);
 
     int sum = 0;
     int count = distances.size();
-    for (int i = 0; i < count; i++) {
+
+    for (int i = 0; i < count; i++)
       sum += distances.get(i);
-    }
 
     return sum / count;
   }
@@ -227,6 +228,8 @@ public class DistributionNetwork {
 
   public ExpeditionList getExpeditionList(Integer day)
       throws InvalidOrderException, InvalidHubException, UndefinedHubsException {
+    System.out.printf("Calculating expedition list for day=%d%n", day);
+
     ExpeditionList expeditionList = new ExpeditionList(day);
 
     List<Client> clientsList = this.network.getClients();
@@ -284,6 +287,8 @@ public class DistributionNetwork {
 
   public ExpeditionList getExpeditionListForNNearestProducers(Integer day, Integer nProducers)
       throws InvalidOrderException, InvalidHubException, UndefinedHubsException {
+    System.out.printf("Calculating expedition list for day=%d%n", day);
+
     ExpeditionList expeditionList = new ExpeditionList(day);
 
     List<Client> clientsList = this.network.getClients();

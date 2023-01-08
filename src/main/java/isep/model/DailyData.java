@@ -121,7 +121,6 @@ public class DailyData {
         this.setQuantityOfProductDay(day - i, p, quantAvailable - quant);
         quant = 0.;
       }
-
     }
   }
 }
