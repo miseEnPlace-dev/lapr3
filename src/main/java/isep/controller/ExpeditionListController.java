@@ -13,6 +13,10 @@ public class ExpeditionListController {
     network = App.getInstance().getCompany().getDistributionNetwork();
   }
 
+  public ExpeditionListController(DistributionNetwork network) {
+    this.network = network;
+  }
+
   public ExpeditionList getExpeditionList(Integer day)
       throws InvalidOrderException, InvalidHubException, UndefinedHubsException {
     if (!network.hasHub())

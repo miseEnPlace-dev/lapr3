@@ -3,15 +3,21 @@ package isep.controller;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+
 import isep.mock.ExpeditionListMock;
 import isep.model.ExpeditionList;
 import isep.shared.exceptions.InvalidHubException;
+import isep.shared.exceptions.InvalidOrderException;
+import isep.shared.exceptions.UndefinedHubsException;
 
 public class ExpeditionListStatisticsControllerTest {
   private static ExpeditionListStatisticsController controller;
@@ -124,8 +130,14 @@ public class ExpeditionListStatisticsControllerTest {
   public void testIsExpeditionListLoaded() throws InvalidHubException {
     ExpeditionListStatisticsController controller = new ExpeditionListStatisticsController(null);
     assertFalse(controller.isExpeditionListLoaded());
-    controller =
-        new ExpeditionListStatisticsController(new ExpeditionListMock().mockSimpleExpeditionList());
+    controller = new ExpeditionListStatisticsController(new ExpeditionListMock().mockSimpleExpeditionList());
     assertTrue(controller.isExpeditionListLoaded());
+  }
+
+  @Test
+  public void testGetClientStatisticsWithBigFile()
+      throws InvalidHubException, FileNotFoundException, InvalidOrderException, UndefinedHubsException {
+    ExpeditionList expeditionList = new ExpeditionListMock().mockExpeditionListWithBigFile();
+
   }
 }

@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
 import javax.naming.NameNotFoundException;
+
 import isep.controller.BuildIrrigationCtrlController;
 import isep.mock.ParcelsMock;
 import isep.model.CurrentIrrigationWrapper;
@@ -17,7 +19,8 @@ public class BuildIrrigationCtrlUI implements Runnable {
   BuildIrrigationCtrlController ctrl;
   IrrigationController irrigationCtrl;
 
-  public BuildIrrigationCtrlUI() {}
+  public BuildIrrigationCtrlUI() {
+  }
 
   @Override
   public void run() {
@@ -49,8 +52,7 @@ public class BuildIrrigationCtrlUI implements Runnable {
   }
 
   private void buildIrrigationCtrl() {
-    String filePath =
-        Utils.readLineFromConsole("\nInsert the path of the file containing an irrigation plan: ");
+    String filePath = Utils.readLineFromConsole("\nInsert the path of the file containing an irrigation plan: ");
 
     try {
       ctrl = new BuildIrrigationCtrlController(filePath);
@@ -58,7 +60,6 @@ public class BuildIrrigationCtrlUI implements Runnable {
       IrrigationPlan plan = ctrl.mapIrrigationPlanData(data);
       irrigationCtrl = ctrl.createIrrigationController(plan);
       System.out.println("Irrigation controller created successfully.");
-
 
     } catch (FileNotFoundException e) {
       System.out.println("The file does not exist.");
