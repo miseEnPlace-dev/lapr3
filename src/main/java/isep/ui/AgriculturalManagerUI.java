@@ -2,14 +2,12 @@ package isep.ui;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import isep.controller.App;
 import isep.ui.utils.Utils;
 
 public class AgriculturalManagerUI implements Runnable {
 
-  public AgriculturalManagerUI() {
-  }
+  public AgriculturalManagerUI() {}
 
   @Override
   public void run() {
@@ -19,7 +17,8 @@ public class AgriculturalManagerUI implements Runnable {
     options.add(new MenuItem("Load distribution network", new LoadDistributionNetworkUI()));
     options.add(new MenuItem("Build irrigation controller", new BuildIrrigationCtrlUI(), true));
 
-    networkOptions.add(new MenuItem("Find minimum number of connections", new GetMinNumberOfConnectionsUI()));
+    networkOptions
+        .add(new MenuItem("Find minimum number of connections", new GetMinNumberOfConnectionsUI()));
     networkOptions.add(new MenuItem("Set network hubs", new DefineHubsUI()));
     networkOptions.add(new MenuItem("Find nearest hub for all clients", new NearestHubUI()));
     networkOptions.add(new MenuItem("Find minimum cost network", new NetworkMinimumCostUI()));
@@ -31,7 +30,8 @@ public class AgriculturalManagerUI implements Runnable {
     int option = 0;
 
     do {
-      if (!App.getInstance().getCompany().getDistributionNetwork().getEntities().isEmpty() && options.size() == 2)
+      if (!App.getInstance().getCompany().getDistributionNetwork().getEntities().isEmpty()
+          && options.size() == 2)
         options.addAll(networkOptions);
 
       showFilePathsSelected();
@@ -48,11 +48,11 @@ public class AgriculturalManagerUI implements Runnable {
   }
 
   private void showFilePathsSelected() {
-    if (App.getInstance().getCompany().getCurrentDistancesFilePath() != null)
-      Utils.showRightToLeftText("Loaded distances", App.getInstance().getCompany().getCurrentDistancesFilePath());
-    if (App.getInstance().getCompany().getCurrentEntitiesFilePath() != null)
-      Utils.showRightToLeftText("Loaded entities", App.getInstance().getCompany().getCurrentEntitiesFilePath());
-    if (App.getInstance().getCompany().getCurrentBasketsFilePath() != null)
-      Utils.showRightToLeftText("Loaded baskets", App.getInstance().getCompany().getCurrentBasketsFilePath());
+    Utils.showRightToLeftText("Loaded distances",
+        App.getInstance().getCompany().getCurrentDistancesFilePath());
+    Utils.showRightToLeftText("Loaded entities",
+        App.getInstance().getCompany().getCurrentEntitiesFilePath());
+    Utils.showRightToLeftText("Loaded baskets",
+        App.getInstance().getCompany().getCurrentBasketsFilePath());
   }
 }

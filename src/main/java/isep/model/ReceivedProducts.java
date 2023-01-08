@@ -88,6 +88,17 @@ public class ReceivedProducts {
     return this.received.keySet();
   }
 
+  public Double getReceivedQuantity(Product product) {
+    for (Producer producer : received.keySet()) {
+      Map<Product, Double> receivedProducts = received.get(producer);
+
+      if (receivedProducts.get(product) != null)
+        return receivedProducts.get(product);
+    }
+
+    return 0.;
+  }
+
   public boolean matchesProductQuantity(Product product, Double quantity) {
     for (Producer producer : received.keySet()) {
       Map<Product, Double> receivedProducts = received.get(producer);
@@ -109,11 +120,11 @@ public class ReceivedProducts {
       if (receivedProducts.get(product) == null)
         continue;
 
-      if (receivedProducts.get(product) == 0)
-        return true;
+      if (receivedProducts.get(product) != 0)
+        return false;
     }
 
-    return false;
+    return true;
   }
 
   public int getNumberOfDistinctProducers() {
@@ -128,7 +139,8 @@ public class ReceivedProducts {
       result += "   Producer: " + producer.getId() + "\n";
       Map<Product, Double> products = this.received.get(producer);
       for (Product product : products.keySet()) {
-        result += "      Product: " + product.getName() + " - Quantity: " + products.get(product) + "\n";
+        result +=
+            "      Product: " + product.getName() + " - Quantity: " + products.get(product) + "\n";
       }
     }
 

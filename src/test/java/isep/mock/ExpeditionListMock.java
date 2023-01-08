@@ -33,7 +33,7 @@ public class ExpeditionListMock {
     firstBasket.addReceivedProduct(producer, new Product("Banana"), 800.);
     firstBasket.addReceivedProduct(producer, new Product("Orange"), 10.);
 
-    Client secondClient = new Client("id2", 0, 0, "C02");
+    Client secondClient = new Client("id3", 0, 0, "C02");
     Basket secondBasket = new Basket(hub, secondClient);
     secondBasket.addOrderedProduct(new Product("Apple"), 10000.);
     secondBasket.addOrderedProduct(new Product("Banana"), 200.);

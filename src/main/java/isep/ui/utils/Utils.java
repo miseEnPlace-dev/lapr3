@@ -6,6 +6,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public class Utils {
 
@@ -189,6 +190,42 @@ public class Utils {
     System.out.println("0 - Cancel");
   }
 
+  private static <E> int[] getColumnsWidth(Map<String, E> map) {
+    final int PADDING = 1;
+
+    int[] widths = new int[map.keySet().size()];
+
+    int i = 0;
+    for (String key : map.keySet()) {
+      widths[i] = key.length() + PADDING;
+      i++;
+    }
+
+    return widths;
+  }
+
+  static public <E> void showTable(List<Map<String, E>> rows, String header) {
+    System.out.println(header);
+
+    int[] widths = getColumnsWidth(rows.get(0));
+
+    int i = 0;
+    for (String key : rows.get(0).keySet()) {
+      System.out.printf("| %" + widths[i] + "s", key);
+      i++;
+    }
+    System.out.println("|");
+
+    for (Map<String, E> m : rows) {
+      i = 0;
+      for (String key : m.keySet()) {
+        System.out.printf("| %" + widths[i] + "s", m.get(key));
+        i++;
+      }
+      System.out.println("|");
+    }
+  }
+
   static public void showEnumItems(Enum[] items, String header) {
     System.out.println(header);
 
@@ -240,11 +277,13 @@ public class Utils {
   static public void showRightToLeftText(String title, String text) {
     final int MAX_WIDTH = 120;
 
-    int nOfSpaces = MAX_WIDTH - title.length() - text.length() - 2;
+    String displayedText = text == null ? "--" : text;
+
+    int nOfSpaces = MAX_WIDTH - title.length() - displayedText.length() - 2;
 
     for (int i = 0; i < nOfSpaces; i++)
       System.out.print(" ");
 
-    System.out.printf("%s: %s%n", title, text);
+    System.out.printf("%s: %s%n", title, displayedText);
   }
 }
